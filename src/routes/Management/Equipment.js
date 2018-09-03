@@ -1,115 +1,96 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Table, Button, Input, Divider, Popconfirm, message } from 'antd';
+import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon } from 'antd';
 
+import G from '../../gobal';
 import styles from './Person.less';
 import EquipModal from './components/EquipModal.js';
 
-@connect(({ manaEquip, loading }) => ({
+@connect(({ manaEquip, manaCustomer, loading }) => ({
   manaEquip,
-  loading: loading.effects['manaEquip/fetchEquip'],
+  manaCustomer,
+  loading: loading.effects['manaEquip/fetch'],
 }))
-export default class Wework extends Component {
+export default class Equipment extends Component {
   // 表单以及分页
   state = {
-    searchInfo: '',
-    filteredInfo: {},
-    pagination: {
-      current: 1,
-      pageSize: 15,
-      showQuickJumper: true,
-      total: 250,
-    },
-    loading: false,
+    query: '',
+    filterParam: {},
+    sortParam: {},
+    modalLoading: false,
     visible: false,
     editValue: {},
   };
 
   componentDidMount() {
+    this.fetchDataList();
+  }
+
+  componentWillUnmount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaEquip/fetchEquip',
+      type: 'manaCustomer/setcompanyId',
+      payload: '',
     });
   }
 
   onSearch() {
-    // console.log('******** 搜索 ******** ', this.state);
+    this.fetchDataList({ offset: 1 });
   }
 
   onChangeSearchInfo = e => {
-    this.setState({ searchInfo: e.target.value });
+    this.setState({ query: e.target.value });
   };
 
-  untied(text, record, index) {
-    console.log('********* 解绑 ******** ', text, record, index);
-  }
-
-  untiedConfirm() {
-    console.log('******解除绑定的回调******');
-  }
-
-  // 解除弹窗
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-
-  handleOk = () => {
-    // console.log('******* handleOK ******* ', fieldsValue);
-    this.setState({ loading: true });
-    setTimeout(() => {
-      this.setState({ loading: false, visible: false });
-    }, 3000);
-  };
-
-  handleCancel = () => {
-    this.setState({ visible: false, editValue: {} });
-  };
-  // 解除弹窗
-
-  onMack(text, record, index) {
-    console.log('********* 标注 ******** ', text, record, index);
+  onMark(text) {
     this.setState({
       visible: true,
       editValue: text,
     });
   }
 
-  getColumns(filteredInfo) {
+  getColumns() {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'id',
         key: 'id',
+        render: (text, record, index) => (
+          <Fragment>
+            <font>{index + 1}</font>
+          </Fragment>
+        ),
       },
       {
         title: '桌子编号',
-        dataIndex: 'daskId',
-        key: 'daskId',
+        dataIndex: 'number',
+        key: 'number',
+        sorter: true,
       },
       {
         title: '状态',
         dataIndex: 'status',
         key: 'status',
-        filters: [{ text: '使用中', value: '使用中' }, { text: '空闲', value: '空闲' }],
-        filteredValue: filteredInfo.mark || null,
-        onFilter: (value, record) => record.mark.includes(value),
+        filters: [
+          { text: '全部', value: 1 },
+          { text: '使用中', value: 2 },
+          { text: '空闲', value: 3 },
+          { text: '离线', value: 4 },
+        ],
       },
       {
         title: '用户',
-        dataIndex: 'user',
-        key: 'user',
+        dataIndex: 'user_id',
+        key: 'user_id',
       },
       {
         title: '备注',
-        dataIndex: 'mark',
-        key: 'mark',
+        dataIndex: 'remark',
+        key: 'remark',
       },
       {
         title: '最后使用时间',
-        dataIndex: 'lastTime',
-        key: 'lastTime',
+        dataIndex: 'createdAt',
+        key: 'createdAt',
       },
       {
         title: '操作',
@@ -119,7 +100,7 @@ export default class Wework extends Component {
             <Popconfirm
               placement="left"
               title="解除绑定后，该用户将被强制退出该设备，导致用户无法正常使用（可重新登录使用）"
-              onConfirm={this.untiedConfirm.bind(this)}
+              onConfirm={this.untiedConfirm.bind(this, text)}
               okText="解绑"
               cancelText="取消"
             >
@@ -128,7 +109,7 @@ export default class Wework extends Component {
             <Divider type="vertical" />
             <a
               onClick={() => {
-                this.onMack(text, record, index);
+                this.onMark(text, record, index);
               }}
             >
               备注
@@ -140,19 +121,106 @@ export default class Wework extends Component {
     return columns;
   }
 
-  handleChange = (pagination, filters, sorter) => {
-    // console.log('Various parameters', pagination, filters, sorter);
+  handleCancel = () => {
+    this.setState({ visible: false, editValue: {} });
+  };
+
+  upload = res => {
+    if (res.status === 'success') {
+      this.setState({ modalLoading: false, visible: false });
+      this.fetchDataList();
+    } else {
+      this.setState({ modalLoading: false });
+    }
+  };
+
+  // 备注
+  handleOk = (fieldsValue, id) => {
+    this.setState({ modalLoading: true });
+    // delete fieldsValue.upload;
+    const { editValue } = this.state;
+    if (G._.isEmpty(editValue)) {
+      return;
+    }
+    const { fieldsValues } = fieldsValue;
+    fieldsValues.id = id;
+    this.addRemark({ ...fieldsValues, callback: this.upload.bind(this) });
+  };
+
+  // 解除弹窗
+  showModal = () => {
     this.setState({
-      filteredInfo: filters,
-      pagination,
+      visible: true,
     });
   };
 
+  emitEmpty = () => {
+    this.userNameInput.focus();
+    this.setState({ query: '' });
+  };
+
+  // 排序筛选
+  handleChange = (pagination, filters, sorter) => {
+    let filterParam = {};
+    let sortParam = {};
+    if (!G._.isEmpty(filters && filters.status)) {
+      filterParam = { status: filters.status };
+    }
+    if (!G._.isEmpty(sorter)) {
+      sortParam = { number: sorter.order === 'descend' ? 'desc' : 'asc' };
+    }
+    this.setState({
+      filterParam,
+      sortParam,
+    });
+    this.fetchDataList({ filterParam, sortParam });
+  };
+
+  pageChange = pageNumber => {
+    this.fetchDataList({ offset: pageNumber });
+  };
+
+  // 调用备注的接口
+  addRemark(data) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'manaEquip/addRemark',
+      payload: data,
+    });
+  }
+
+  untiedConfirm(value) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'manaEquip/release',
+      payload: { id: value.id, callback: this.fetchDataList.bind(this) },
+    });
+  }
+
+  fetchDataList(value) {
+    const { dispatch, manaEquip, manaCustomer } = this.props;
+    const { companyId } = manaCustomer;
+    const equipData = manaEquip.data;
+    const { query, filterParam, sortParam } = this.state;
+    dispatch({
+      type: 'manaEquip/fetch',
+      payload: {
+        offset: (value && value.offset) || equipData.offset,
+        limit: (value && value.limit) || equipData.limit,
+        query: (value && value.query) || query,
+        filterParam: (value && value.filterParam) || filterParam,
+        sortParam: (value && value.sortParam) || sortParam,
+        companyId,
+      },
+    });
+  }
+
   render() {
-    const { manaEquip } = this.props;
-    const { filteredInfo, pagination, visible, loading, editValue } = this.state;
+    const { manaEquip, loading } = this.props;
+    const { filteredInfo, visible, modalLoading, editValue, query } = this.state;
     const columns = this.getColumns(filteredInfo);
-    // console.log('********* manaEquip ********* ', manaEquip);
+    const { limit, offset, count } = manaEquip.data;
+    const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
         <h3>设备管理</h3>
@@ -169,8 +237,11 @@ export default class Wework extends Component {
               搜索
             </Button>
             <Input
+              value={query}
               className={styles.widthInput}
               placeholder="设备编号 / 使用者 / 备注"
+              suffix={suffix}
+              ref={node => this.userNameInput === node}
               onChange={this.onChangeSearchInfo.bind(this)}
             />
           </Col>
@@ -181,17 +252,26 @@ export default class Wework extends Component {
           <Col span={24}>
             <Table
               rowKey="id"
-              dataSource={manaEquip.equipmentlList}
+              loading={loading}
+              dataSource={manaEquip.data.rows}
               columns={columns}
               onChange={this.handleChange.bind(this)}
-              pagination={pagination}
+              pagination={false}
+            />
+            <Pagination
+              style={{ marginTop: 20, float: 'right' }}
+              current={offset}
+              showQuickJumper
+              total={count}
+              pageSize={limit}
+              onChange={this.pageChange.bind(this)}
             />
           </Col>
         </Row>
         {/* 弹窗 */}
         <EquipModal
           visible={visible}
-          loading={loading}
+          loading={modalLoading}
           editValue={editValue}
           handleOk={this.handleOk.bind(this)}
           handleCancel={this.handleCancel.bind(this)}

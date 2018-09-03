@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Button, Input, Form, Icon, Upload } from 'antd';
+import { Modal, Button, Input, Form } from 'antd';
 import G from '../../../gobal';
 
 const FormItem = Form.Item;
 
 class EquipModal extends Component {
-  state = {
-    imageUrl: '',
-    avatarLoading: false,
-  };
-
   componentWillReceiveProps(nextProps) {
     const { visible, editValue } = nextProps;
     if (this.visible !== visible && !G._.isEqual(this.editValue, editValue)) {
@@ -17,23 +12,22 @@ class EquipModal extends Component {
       this.editValue = editValue;
       if (visible && !G._.isEmpty(editValue)) {
         nextProps.form.setFieldsValue({
-          mark: editValue.mark,
+          remark: editValue.remark,
         });
       } else {
         nextProps.form.setFieldsValue({
-          mark: '',
+          remark: '',
         });
       }
     }
   }
 
-  //
   okHandle = () => {
-    const { form, handleOk } = this.props;
+    const { form, handleOk, editValue } = this.props;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
-      handleOk(fieldsValue);
+      handleOk({ ...fieldsValue, remark: fieldsValue.remark || '' }, editValue.id);
     });
   };
 
@@ -60,8 +54,12 @@ class EquipModal extends Component {
         ]}
       >
         <FormItem {...formItemLayout} label="备注">
-          {getFieldDecorator('mark', {
+          {getFieldDecorator('remark', {
             rules: [
+              {
+                required: true,
+                message: '备注不能为空',
+              },
               {
                 max: 100,
                 message: '最大长度100',

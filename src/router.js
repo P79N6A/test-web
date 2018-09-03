@@ -12,12 +12,15 @@ const { AuthorizedRoute } = Authorized;
 function RouterConfig({ history, app }) {
   const routerData = getRouterData(app);
   const UserLayout = routerData['/user'].component;
+  const AdminLayout = routerData['/admin_user'].component;
   const BasicLayout = routerData['/'].component;
   return (
     <LocaleProvider locale={zhCN}>
       <ConnectedRouter history={history}>
         <Switch>
           <Route path="/user" component={UserLayout} />
+          <Route path="/admin_user" component={AdminLayout} />
+          {/* 判定权限默认全部 */}
           <AuthorizedRoute
             path="/"
             render={props => <BasicLayout {...props} />}

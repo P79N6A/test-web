@@ -1,6 +1,6 @@
 // https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 module.exports = {
-  'primary-color': '#35536C',
+  'primary-color': '#A6D6D0',
   // 'border-radius-base': '20px',
   // 'border-radius-sm': '10px',
   'text-color': '#35536C',

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { parse, stringify } from 'qs';
+import G from '../gobal';
 
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -9,14 +10,14 @@ export function getTimeDistance(type) {
   const now = new Date();
   const oneDay = 1000 * 60 * 60 * 24;
 
-  if (type === 'today') {
+  if (type === 'DAILY') {
     now.setHours(0);
     now.setMinutes(0);
     now.setSeconds(0);
     return [moment(now), moment(now.getTime() + (oneDay - 1000))];
   }
 
-  if (type === 'week') {
+  if (type === 'WEEKLY') {
     let day = now.getDay();
     now.setHours(0);
     now.setMinutes(0);
@@ -33,7 +34,7 @@ export function getTimeDistance(type) {
     return [moment(beginTime), moment(beginTime + (7 * oneDay - 1000))];
   }
 
-  if (type === 'month') {
+  if (type === 'MONTHLY') {
     const year = now.getFullYear();
     const month = now.getMonth();
     const nextDate = moment(now).add(1, 'months');
@@ -46,7 +47,7 @@ export function getTimeDistance(type) {
     ];
   }
 
-  if (type === 'year') {
+  if (type === 'YEARLY') {
     const year = now.getFullYear();
 
     return [moment(`${year}-01-01 00:00:00`), moment(`${year}-12-31 23:59:59`)];
@@ -108,7 +109,7 @@ export function digitUppercase(n) {
 
 function getRelation(str1, str2) {
   if (str1 === str2) {
-    console.warn('Two path are equal!'); // eslint-disable-line
+    // console.warn('Two path are equal!'); // eslint-disable-line
   }
   const arr1 = str1.split('/');
   const arr2 = str2.split('/');
@@ -180,3 +181,54 @@ const reg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(
 export function isUrl(path) {
   return reg.test(path);
 }
+// 过滤url
+export function filterUrl(url) {
+  let newUrl = '';
+  let count = 0;
+  for (const p in url) {
+    if (url[p] && url[p] !== '' && url[p] !== undefined && isNaN(url[p])) {
+      if (count === 0) {
+        newUrl = `${newUrl + p}=${url[p]}`;
+      } else {
+        newUrl = `${newUrl}&${p}=${url[p]}`;
+      }
+      count += 1;
+    }
+  }
+  return newUrl;
+}
+
+// 过滤body
+export function filterBody(body) {
+  const filter = G._.mapKeys(body, (value, key) => {
+    if (typeof value !== 'object' && (value || typeof value === 'boolean')) {
+      return key;
+    }
+    if (!G._.isEmpty(value)) {
+      if (value instanceof Array) {
+        if (value.length > 1 || !G._.isEmpty(value[0])) {
+          return key;
+        }
+      } else {
+        return key;
+      }
+    }
+  });
+  delete filter.undefined;
+  return filter;
+}
+
+// 根据时间类型返回对应时间和单位
+export function getTimeByType(date, type) {
+  if (type === 'DAILY' || type === 'WEEKLY') {
+    return G.moment(date).format('D号');
+  }
+  if (type === 'MONTHLY') {
+    return G.moment(date).format('M月');
+  }
+  if (type === 'HOURLY') {
+    return G.moment(date).format('H时');
+  }
+}
+
+export function getRoutePath() {}

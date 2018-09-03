@@ -1,21 +1,78 @@
 import G from '../gobal';
-// import { stringify } from 'qs';
-// import request from '../utils/request';
+import store from '../index';
+import request from '../utils/request';
+import { filterUrl, filterBody } from '../utils/utils';
 
+const { API_URL } = G;
 // 登录
 export async function login(params) {
+  let username = params.username;
+  let password = params.password;
   // 执行api请求
-  return {
-    status: 'ok',
-    type: params.userName === 'admin' ? 'admin' : 'account',
-    currentAuthority: 'user',
-    user: {
-      name: 'Serati Ma',
-      avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-      userId: '00000001',
-      token: 'XXXX-XXXX-XXXX-XXXX',
-    },
-  };
+  return request(`${API_URL}/users/login`, {
+    method: 'POST',
+    body: { username: username.replace(/\s+/g, ""), password: password.replace(/\s+/g, "") },
+  });
+}
+
+// 登出
+export async function logout() {
+  return request(`${API_URL}/users/logout`, {
+    method: 'POST',
+    body: { token: store.getState().user.user.token },
+  });
+}
+
+// 修改密码
+export async function changePassword(payload) {
+  return request(`${API_URL}/users/password`, {
+    method: 'POST',
+    body: { ...payload, token: store.getState().user.user.token },
+  });
+}
+
+// 设备数
+export async function getResourceNum() {
+  return request(`${API_URL}/resources/count?token=${store.getState().user.user.token}`, {
+    method: 'GET',
+  });
+}
+
+// 用户数
+export async function getUserNum() {
+  return request(`${API_URL}/users/count?token=${store.getState().user.user.token}`, {
+    method: 'GET',
+  });
+}
+
+// 通知数
+export async function getNotificationCount() {
+  return request(`${API_URL}/notifications/count?token=${store.getState().user.user.token}`, {
+    method: 'GET',
+  });
+}
+
+// 通知数
+export async function getStandNum() {
+  return request(`${API_URL}/stats/standTotalTime?token=${store.getState().user.user.token}`, {
+    method: 'GET',
+  });
+}
+
+// 站立时间
+export async function getHomeStand(payload) {
+  const url = filterUrl({ ...payload, token: store.getState().user.user.token });
+  return request(`${API_URL}/stats/standTime?${url}`, {
+    method: 'GET',
+  });
+}
+
+// 站立排行榜
+export async function getHomeRank(payload) {
+  const url = filterUrl({ ...payload, token: store.getState().user.user.token });
+  return request(`${API_URL}/stats/standRank?${url}`, {
+    method: 'GET',
+  });
 }
 
 // 首页获取站立时间趋势数据
@@ -28,7 +85,7 @@ export async function getStandingData() {
     });
   }
   return {
-    status: 'ok',
+    status: 'success',
     data: salesData,
   };
 }
@@ -50,94 +107,115 @@ export async function getTimeRanking() {
 }
 
 // 首页获取收集的数据
-export async function getGatherData() {
-  const gatherData = [];
-  for (let i = 0; i < 4; i += 1) {
-    gatherData.push({
-      total: i === 3 ? Math.floor(Math.random() * 100) : Math.floor(Math.random() * 10000),
-      useCount: Math.floor(Math.random() * 1000),
-      rate: `${Math.floor(Math.random() * 100)}%`,
-    });
-  }
-  return {
-    status: 'ok',
-    data: gatherData,
-  };
+export async function getHomeData() {
+  return request(`${G.API_URL}/space/homeData`, {
+    method: 'GET',
+  });
 }
 
 // 获取人员数组
 export async function getPersonnelList(payload) {
-  const userData = [];
-  for (let i = 0; i < payload.currentNum; i += 1) {
-    const random1 = parseInt((Math.random() * 1000) % 3);
-    const random2 = parseInt((Math.random() * 1000) % 3);
-    const random3 = parseInt((Math.random() * 1000) % 3);
-    userData.push({
-      id: (payload.currentPage - 1) * 10 + i + 1,
-      name: `大华 第${payload.currentPage}页 ${i}`,
-      phone: `${payload.quire || G.moment().unix()}-${i}`,
-      duty: random1 === 0 ? '市场部' : random1 === 1 ? '人事部' : '技术部',
-      status: random2 === 0 ? '10002' : random2 === 1 ? '1004、1005' : '未使用',
-      mark: random3 === 0 ? '内部员工' : random3 === 1 ? '管理员' : '游客',
-    });
-  }
-  return {
-    status: 'ok',
-    data: {
-      currentPage: payload.currentPage,
-      totalPage: payload.quire ? 10 : 20,
-      totalNum: payload.quire ? 150 : 300,
-      currentNum: payload.currentNum,
-      dataList: userData,
-    },
-  };
+  const body = filterBody({ ...payload, token: store.getState().user.user.token });
+  return request(`${G.API_URL}/users/list`, {
+    method: 'POST',
+    body,
+  });
 }
+
+// 添加人员
+export async function addPerson(payload) {
+  const url = `${G.API_URL}/users`;
+  return request(url, {
+    method: 'PUT',
+    body: { ...payload, token: store.getState().user.user.token },
+  });
+}
+
+// 修改或删除人员
+export async function updatePerson(payload) {
+  const url = `${G.API_URL}/users/update`;
+  return request(url, {
+    method: 'POST',
+    body: { ...payload, token: store.getState().user.user.token },
+  });
+}
+
 // 获取设备列表
-export async function getEquipmentlList() {
-  const userData = [];
-  for (let i = 0; i < 150; i += 1) {
-    const random1 = parseInt((Math.random() * 1000) % 2);
-    const random2 = parseInt((Math.random() * 1000) % 3);
-    const random3 = parseInt((Math.random() * 1000) % 3);
-    userData.push({
-      id: i + 1,
-      daskId: `daskid${i}`,
-      status: random1 === 0 ? '使用中' : '空闲',
-      user: `lilei${i}`,
-      mark: random2 === 0 ? '备注非法' : random2 === 1 ? '备注合格' : '未备注',
-      lastTime: random3 === 0 ? '20180501' : random3 === 1 ? '20180604' : '20180101',
-    });
-  }
-  return {
-    status: 'ok',
-    data: userData,
-  };
+export async function getResourceList(payload) {
+  const body = filterBody({ ...payload, token: store.getState().user.user.token });
+  return request(`${G.API_URL}/resources/list`, { method: 'POST', body });
+}
+
+// 设备列表添加备注
+export async function addRemark(payload) {
+  const { id } = payload;
+  const url = `${G.API_URL}/resources/${id}/remark`;
+  return request(url, {
+    method: 'POST',
+    body: { remark: payload.remark, token: store.getState().user.user.token },
+  });
+}
+
+// 解绑设备
+export async function releaseDevice(payload) {
+  const { id } = payload;
+  const body = filterBody({ ...payload, token: store.getState().user.user.token });
+  return request(`${G.API_URL}/resources/${id}/release`, { method: 'POST', body });
 }
 
 // 获去通知列表
-export async function getNoticeList() {
-  const userData = [];
-  const unix = G.moment().unix();
-  for (let i = 0; i < 150; i += 1) {
-    userData.push({
-      id: i + 1,
-      noticeId: `notice${i}`,
-      title: `上海自来水来自海上${i}`,
-      receiver: ['id10', 'id11'],
-      editor: '<p>Hello World</p>',
-      createdAt: G.moment.unix(unix + i * 600).format('MM/DD  hh:mm'),
-      topping: false,
-    });
-  }
-  return {
-    status: 'ok',
-    data: userData,
-  };
+export async function getNoticeList(payload) {
+  const body = filterBody({ ...payload, token: store.getState().user.user.token });
+  return request(`${G.API_URL}/notifications/list`, { method: 'POST', body });
 }
 
 // 发送通知
-export async function sendNotice(params) {
-  return {
-    status: 'ok',
-  };
+export async function sendNotice(payload) {
+  const url = `${G.API_URL}/notifications`;
+  return request(url, {
+    method: 'PUT',
+    body: { ...payload, token: store.getState().user.user.token },
+  });
+}
+
+// 置顶通知
+export async function topNotice(payload) {
+  const { noticeId } = payload;
+  const body = filterBody({ status: payload.status, token: store.getState().user.user.token });
+  return request(`${G.API_URL}/notifications/${noticeId}/pinToTop`, { method: 'POST', body });
+}
+
+// 获取客户数组
+export async function getCustomerList(payload) {
+  const body = filterBody({ ...payload, token: store.getState().user.user.token });
+  return request(`${G.API_URL}/company/list`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// 添加客户
+export async function addCustomer(payload) {
+  const url = `${G.API_URL}/company/add`;
+  return request(url, {
+    method: 'PUT',
+    body: { ...payload, token: store.getState().user.user.token },
+  });
+}
+// 编辑客户
+export async function editCustomer(payload) {
+  const url = `${G.API_URL}/company/update`;
+  return request(url, {
+    method: 'PUT',
+    body: { ...payload, token: store.getState().user.user.token },
+  });
+}
+// 重置密码
+export async function resetPassword(payload) {
+  const { account } = payload;
+  const body = filterBody({ token: store.getState().user.user.token });
+  return request(`${G.API_URL}/company/${account}/resetPassword`, {
+    method: 'POST',
+    body,
+  });
 }

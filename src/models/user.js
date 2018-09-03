@@ -2,11 +2,15 @@ export default {
   namespace: 'user',
 
   state: {
-    user: {},
+    user: {
+      token: '',
+      name: 'Guest',
+      avatar: '',
+    },
   },
 
   effects: {
-    *user({ payload }, { call, put }) {
+    *user({ payload }, { put }) {
       yield put({
         type: 'saveUser',
         payload,

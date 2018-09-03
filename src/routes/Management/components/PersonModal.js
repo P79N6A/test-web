@@ -20,6 +20,7 @@ class PersonModal extends Component {
   state = {
     imageUrl: '',
     avatarLoading: false,
+    title: '新增用户',
   };
 
   componentWillReceiveProps(nextProps) {
@@ -31,26 +32,37 @@ class PersonModal extends Component {
         nextProps.form.setFieldsValue({
           name: editValue.name,
           phone: editValue.phone,
-          duty: editValue.duty,
-          mark: editValue.mark,
+          position: editValue.position,
+          remark: editValue.remark,
         });
+        this.setState({ title: '编辑用户' });
       } else {
         nextProps.form.setFieldsValue({
           name: '',
           phone: '',
-          duty: '',
-          mark: '',
+          position: '',
+          remark: '',
         });
       }
     }
   }
 
-  normFile = e => {
-    if (!e || !e.fileList) {
-      return e;
-    }
-    const { fileList } = e;
-    return fileList;
+  onCancel(handleCancel) {
+    this.setState({ imageUrl: '' });
+    handleCancel();
+  }
+
+  okHandle = () => {
+    const { form, handleOk } = this.props;
+    const { imageUrl, editValue } = this.props;
+    form.validateFields((err, fieldsValue) => {
+      if (err) return;
+      handleOk(
+        { ...fieldsValue, position: fieldsValue.position || '', remark: fieldsValue.remark || '' },
+        imageUrl,
+        editValue.uid
+      );
+    });
   };
 
   checkPhone = (rule, value, callback) => {
@@ -59,20 +71,19 @@ class PersonModal extends Component {
       return;
     }
     const re = /^1[3|4|5|8][0-9]\d{4,8}$/;
-    if (value.length === 11 || re.test(value)) {
+    if (value.length === 11 && re.test(value)) {
       callback();
     } else {
       callback('手机号格式有误');
     }
   };
 
-  okHandle = () => {
-    const { form, handleOk } = this.props;
-    form.validateFields((err, fieldsValue) => {
-      if (err) return;
-      form.resetFields();
-      handleOk(fieldsValue);
-    });
+  normFile = e => {
+    if (!e || !e.fileList) {
+      return e;
+    }
+    const { fileList } = e;
+    return fileList;
   };
 
   handleChange = info => {
@@ -90,21 +101,24 @@ class PersonModal extends Component {
     }
   };
 
-  next(value) {}
+  next() {}
 
-  error(err) {
+  error() {
     this.setState({ avatarLoading: false });
   }
 
   complete(response) {
-    this.setState({ avatarLoading: false });
+    this.setState({
+      avatarLoading: false,
+      imageUrl: `http://pd36a7jvw.bkt.clouddn.com/${response.key}`,
+    });
   }
 
   beforeUpload(file) {
-    const { user } = this.props.user;
+    const { editValue } = this.props;
     const config = { useCdnDomain: true };
     const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
-    const avatarUrl = `${user.userId}-${G.moment().unix()}.png`;
+    const avatarUrl = `${editValue.uid}-${G.moment().unix()}.png`;
     const bucket = `dshow:${avatarUrl}`;
     const mac = new qiniuNode.auth.digest.Mac(ACCESSKEY, SECRETKEY);
     const options = { scope: bucket };
@@ -117,8 +131,8 @@ class PersonModal extends Component {
   }
 
   render() {
-    const { visible, loading, handleCancel, form, user } = this.props;
-    const { imageUrl, avatarLoading } = this.state;
+    const { visible, loading, handleCancel, form } = this.props;
+    const { imageUrl, avatarLoading, title } = this.state;
     const { getFieldDecorator } = form;
     const uploadButton = (
       <div className="avatar-uploader2">
@@ -132,11 +146,11 @@ class PersonModal extends Component {
     return (
       <Modal
         visible={visible}
-        title="新增用户"
+        title={title}
         onOk={this.okHandle}
-        onCancel={handleCancel}
+        onCancel={this.onCancel.bind(this, handleCancel)}
         footer={[
-          <Button key="back" onClick={handleCancel}>
+          <Button key="back" onClick={this.onCancel.bind(this, handleCancel)}>
             关闭
           </Button>,
           <Button key="submit" type="primary" loading={loading} onClick={this.okHandle}>
@@ -195,7 +209,7 @@ class PersonModal extends Component {
           })(<Input placeholder="请输入手机号" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="职务">
-          {getFieldDecorator('duty', {
+          {getFieldDecorator('position', {
             rules: [
               {
                 max: 10,
@@ -205,7 +219,7 @@ class PersonModal extends Component {
           })(<Input placeholder="请输入职务" />)}
         </FormItem>
         <FormItem {...formItemLayout} label="备注">
-          {getFieldDecorator('mark', {
+          {getFieldDecorator('remark', {
             rules: [
               {
                 max: 100,

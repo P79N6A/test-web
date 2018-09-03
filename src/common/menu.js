@@ -12,16 +12,23 @@ const menuData = [
     path: 'management',
     children: [
       {
+        name: '客户管理',
+        path: 'customer',
+        authority: 'admin',
+      },
+      {
         name: '人员管理',
         path: 'person',
+        authority: 'user',
       },
       {
         name: '设备管理',
-        path: 'equipment',
+        path: 'device',
       },
       {
-        name: '信息管理',
+        name: '通知管理',
         path: 'notice',
+        authority: 'user',
       },
     ],
   },

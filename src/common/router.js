@@ -77,19 +77,35 @@ export const getRouterData = app => {
     '/home': {
       component: dynamicWrapper(app, ['home'], () => import('../routes/Home/Home')),
     },
+    // 人员管理
     '/management/person': {
       component: dynamicWrapper(app, ['manaPerson', 'user'], () =>
         import('../routes/Management/Person')
       ),
     },
-    '/management/equipment': {
-      component: dynamicWrapper(app, ['manaEquip'], () => import('../routes/Management/Equipment')),
+    // 设备管理
+    '/management/device': {
+      component: dynamicWrapper(app, ['manaEquip'], () => import('../routes/Management/Device')),
     },
+    // 通知管理
     '/management/notice': {
       component: dynamicWrapper(app, ['manaNotice'], () => import('../routes/Management/Notice')),
     },
+    // 新建通知
     '/management/newNotice': {
       component: dynamicWrapper(app, [], () => import('../routes/Management/NewNotice')),
+    },
+    // 客户管理
+    '/management/customer': {
+      component: dynamicWrapper(app, ['manaCustomer'], () =>
+        import('../routes/Management/Customer')
+      ),
+    },
+    // 新建客户
+    '/management/newCustomer': {
+      component: dynamicWrapper(app, ['manaCustomer'], () =>
+        import('../routes/Management/newCustomer')
+      ),
     },
     '/exception/403': {
       component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
@@ -105,6 +121,15 @@ export const getRouterData = app => {
     },
     '/user/login': {
       component: dynamicWrapper(app, ['login'], () => import('../routes/User/Login')),
+    },
+    '/admin_user': {
+      component: dynamicWrapper(app, [], () => import('../layouts/AdminLayout')),
+    },
+    '/admin_user/login': {
+      component: dynamicWrapper(app, ['login'], () => import('../routes/User/Login')),
+    },
+    '/change/password': {
+      component: dynamicWrapper(app, ['changePass'], () => import('../routes/User/ChangePassword')),
     },
   };
   // Get name from ./menu.js or just set it in the router data.

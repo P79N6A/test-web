@@ -1,44 +1,60 @@
-import { getNoticeList, sendNotice } from '../services/api';
+import { message } from 'antd';
+import { getNoticeList, sendNotice, topNotice } from '../services/api';
 import G from '../gobal';
 
 export default {
   namespace: 'manaNotice',
 
   state: {
-    noticeList: [],
+    data: {
+      row: [],
+      offset: 1,
+      limit: 15,
+    },
     copyValue: '',
   },
 
   effects: {
     *fetch({ payload }, { call, put }) {
       const response = yield call(getNoticeList, payload);
-      if (response.status === 'ok') {
+      if (response && response.status === 'success') {
         yield put({
           type: 'save',
           payload: response.data,
         });
+      } else {
+        message.error(response.err.message);
       }
     },
-    *sendNotice({ payload }, { call, put }) {
+
+    // 发送通知
+    *sendNotice({ payload }, { call }) {
       const response = yield call(sendNotice, payload);
-      if (response.status === 'ok') {
-        yield put({
-          type: 'add',
-          payload,
-        });
+      payload.callback(response);
+    },
+
+    // 置顶消息通知
+    *topNotice({ payload }, { call }) {
+      const response = yield call(topNotice, payload);
+      if (response && response.status === 'success') {
+        message.success('操作成功');
+      } else {
+        message.error(response.err.message);
       }
+      payload.callback(response);
     },
   },
 
   reducers: {
     save(state, action) {
-      if (state.noticeList.length > 0) {
-        // 临时处理
-        return state;
-      }
+      const { offset } = action.payload;
       return {
         ...state,
-        noticeList: action.payload,
+        data: {
+          ...action.payload,
+          offset: Number(offset),
+          limit: state.data.limit,
+        },
       };
     },
     add(state, action) {

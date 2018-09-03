@@ -1,23 +1,30 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Table, Button, Input, Divider, Drawer, Icon } from 'antd';
+import {
+  Row,
+  Col,
+  Table,
+  Button,
+  Input,
+  Divider,
+  Drawer,
+  Icon,
+  Pagination,
+  Popconfirm,
+} from 'antd';
 
+import G from '../../gobal';
 import styles from './Person.less';
 
-@connect(({ manaNotice, loading }) => ({
+@connect(({ manaNotice, loading, manaPerson }) => ({
+  manaPerson,
   manaNotice,
   loading: loading.effects['manaNotice/fetch'],
 }))
 export default class Notice extends Component {
   // 表单以及分页
   state = {
-    searchInfo: '',
-    pagination: {
-      current: 1,
-      pageSize: 15,
-      showQuickJumper: true,
-      total: 250,
-    },
+    query: '',
     visible: false,
     detail: {
       title: '标题',
@@ -27,73 +34,98 @@ export default class Notice extends Component {
     },
   };
 
+  componentDidMount() {
+    const { dispatch, manaNotice } = this.props;
+    const { offset } = manaNotice.data;
+    this.fetchDataList(offset);
+    dispatch({
+      type: 'manaNotice/setCopyValue',
+      payload: '',
+    });
+    // 请求全部人员
+    dispatch({
+      type: 'manaPerson/fetch',
+      payload: {
+        offset: 1,
+        limit: 10000,
+      },
+    });
+  }
+
   onClose = () => {
     this.setState({
       visible: false,
     });
   };
-  // 详情
-
-  componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'manaNotice/fetch',
-    });
-    dispatch({
-      type: 'manaNotice/setCopyValue',
-      payload: '',
-    });
-  }
 
   onSearch() {
-    // console.log('******** 搜索 ******** ', this.state);
+    this.fetchDataList(1);
   }
 
   onChangeSearchInfo = e => {
-    this.setState({ searchInfo: e.target.value });
+    this.setState({ query: e.target.value });
   };
 
-  onDetail(text, record, index) {
-    console.log('********* 详情 ******** ', text, record, index);
+  // 详情
+  onDetail(text) {
     this.setState({
       detail: {
         title: text.title,
-        lookNum: 20,
+        lookNum: text.viewCount,
         lastTime: text.createdAt,
-        content: text.editor,
+        content: text.content,
       },
     });
     this.showDrawer();
   }
 
-  getColumns(filteredInfo) {
+  getColumns() {
     const columns = [
       {
         title: '序号',
-        dataIndex: 'id',
         key: 'id',
+        render: (text, record, index) => (
+          <Fragment>
+            <font>{index + 1}</font>
+          </Fragment>
+        ),
       },
       {
         title: '标题',
         dataIndex: 'title',
+        width: '200px',
         key: 'title',
+        render: text => {
+          return <span className={styles.colSql}>{text}</span>;
+        },
       },
       {
-        title: '接收人',
-        render: text => <font>{text.receiver.length}</font>,
-        key: 'receiver',
+        title: '未读人数',
+        dataIndex: 'unreadCount',
+        key: 'unreadCount',
       },
       {
         title: '发布时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
+        render: text => {
+          return <span>{G.moment(text).format('YYYY-MM-DD hh:mm:s')}</span>;
+        },
       },
       {
         title: '操作',
         key: 'setting',
         render: (text, record, index) => (
           <Fragment>
-            <a onClick={() => {}}>置顶</a>
+            <Popconfirm
+              placement="left"
+              title={text.topStatus ? '确定要取消置顶此条通知吗？' : '确定要置顶此条通知吗？'}
+              onConfirm={this.untiedConfirm.bind(this, text)}
+              okText="确定"
+              cancelText="取消"
+            >
+              <a>{text.topStatus ? '取消置顶' : '置顶'}</a>
+            </Popconfirm>
             <Divider type="vertical" />
             <a onClick={this.copyPush.bind(this, text)}>复制</a>
             <Divider type="vertical" />
@@ -111,6 +143,11 @@ export default class Notice extends Component {
     return columns;
   }
 
+  emitEmpty = () => {
+    this.userNameInput.focus();
+    this.setState({ query: '' });
+  };
+
   // 详情
   showDrawer = () => {
     this.setState({
@@ -118,29 +155,63 @@ export default class Notice extends Component {
     });
   };
 
-  handleChange = (pagination, filters, sorter) => {
-    // console.log('Various parameters', pagination, filters, sorter);
-    this.setState({
-      pagination,
-    });
-  };
+  handleChange = () => {};
 
   copyPush = value => {
-    this.props.dispatch({
+    const { dispatch } = this.props;
+    const { values } = value;
+    dispatch({
       type: 'manaNotice/setCopyValue',
-      payload: value,
+      payload: values,
     });
     this.newNotice();
   };
 
+  pageChange = pageNumber => {
+    this.fetchDataList(pageNumber);
+  };
+
+  release() {
+    this.fetchDataList(1);
+  }
+
+  // 置顶
+  untiedConfirm(value) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'manaNotice/topNotice',
+      payload: {
+        status: !value.topStatus,
+        noticeId: value.noticeId,
+        callback: this.release.bind(this),
+      },
+    });
+  }
+
+  fetchDataList(offset) {
+    const { manaNotice, dispatch } = this.props;
+    const { limit } = manaNotice.data;
+    const { query } = this.state;
+    dispatch({
+      type: 'manaNotice/fetch',
+      payload: { offset, limit, query },
+    });
+  }
+
   newNotice() {
+    if (G.env === 'dev') {
+      window.location.href = `${window.location.origin}/home/#/management/newNotice`;
+      return;
+    }
     window.location.href = `${window.location.origin}/#/management/newNotice`;
   }
 
   render() {
-    const { manaNotice } = this.props;
-    const { filteredInfo, pagination } = this.state;
+    const { manaNotice, loading } = this.props;
+    const { filteredInfo, query, detail, visible } = this.state;
     const columns = this.getColumns(filteredInfo);
+    const { limit, offset, count } = manaNotice.data;
+    const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
         <h3>通知列表</h3>
@@ -162,8 +233,11 @@ export default class Notice extends Component {
               搜索
             </Button>
             <Input
+              value={query}
               className={styles.widthInput}
               placeholder="标题"
+              suffix={suffix}
+              ref={node => this.userNameInput === node}
               onChange={this.onChangeSearchInfo.bind(this)}
             />
           </Col>
@@ -173,29 +247,40 @@ export default class Notice extends Component {
           {/* 表单 */}
           <Col span={24}>
             <Table
-              rowKey="id"
-              dataSource={manaNotice.noticeList}
+              rowKey="_id"
+              loading={loading}
+              dataSource={manaNotice.data.row}
               columns={columns}
               onChange={this.handleChange.bind(this)}
-              pagination={pagination}
+              pagination={false}
+            />
+            <Pagination
+              style={{ marginTop: 20, float: 'right' }}
+              current={offset}
+              showQuickJumper
+              total={count}
+              pageSize={limit}
+              onChange={this.pageChange.bind(this)}
             />
           </Col>
         </Row>
         <Drawer
           width={512}
-          title={this.state.detail.title}
+          title={detail.title}
           placement="right"
           closable={false}
           onClose={this.onClose}
-          visible={this.state.visible}
+          visible={visible}
         >
           <p>
             <Icon type="eye-o" style={{ marginRight: '6px' }} />
-            {this.state.detail.lookNum}
-            <Icon type="clock-circle-o" style={{ marginLeft: '10px', marginRight: '6px' }} />
-            {this.state.detail.lastTime}
+            {detail.lookNum}
+            <Icon type="clock-circle-o" style={{ marginLeft: '18px', marginRight: '6px' }} />
+            {G.moment(detail.lastTime).format('YYYY-MM-DD hh:mm:s')}
           </p>
-          <div dangerouslySetInnerHTML={{ __html: this.state.detail.content }} />
+          <br />
+          <br />
+          <div dangerouslySetInnerHTML={{ __html: detail.content }} />
         </Drawer>
       </div>
     );

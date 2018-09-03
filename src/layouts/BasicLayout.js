@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Icon, message } from 'antd';
+import { Layout, message } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
 import { Route, Redirect, Switch, routerRedux } from 'dva/router';
@@ -16,7 +16,7 @@ import { getRoutes } from '../utils/utils';
 import Authorized from '../utils/Authorized';
 import { getUserInfo } from '../utils/storage';
 import { getMenuData } from '../common/menu';
-import logo from '../assets/logoGreen.png';
+import G from './../gobal'
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -110,15 +110,15 @@ class BasicLayout extends React.PureComponent {
   componentWillMount() {
     const userInfo = getUserInfo();
     const { dispatch } = this.props;
-    // return;
-    if (userInfo) {
+    const user = JSON.parse(userInfo);
+    if (user) {
       dispatch({
         type: 'user/saveUser',
-        payload: JSON.parse(userInfo),
+        payload: user,
       });
     } else {
       dispatch({
-        type: 'login/logout',
+        type: 'login/logoutWithoutToken',
       });
     }
   }
@@ -196,6 +196,10 @@ class BasicLayout extends React.PureComponent {
       dispatch(routerRedux.push('/exception/trigger'));
       return;
     }
+    if (key === 'change_pass') {
+      dispatch(routerRedux.push('/change/password'));
+      return;
+    }
     if (key === 'logout') {
       dispatch({
         type: 'login/logout',
@@ -227,7 +231,7 @@ class BasicLayout extends React.PureComponent {
     const layout = (
       <Layout>
         <SiderMenu
-          logo={logo}
+          logo={`${G.picUrl}logoGreen.png`}
           // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
           // If you do not have the Authorized parameter
           // you will be forced to jump to the 403 interface without permission
@@ -241,7 +245,7 @@ class BasicLayout extends React.PureComponent {
         <Layout>
           <Header style={{ padding: 0 }}>
             <GlobalHeader
-              logo={logo}
+              logo={`${G.picUrl}logoGreen.png`}
               currentUser={currentUser}
               fetchingNotices={fetchingNotices}
               notices={notices}
@@ -280,15 +284,15 @@ class BasicLayout extends React.PureComponent {
                   title: (
                     <span>
                       <img
-                        src={require('./../assets/favicon.png')}
+                        src={`${G.picUrl}favicons.png`}
                         alt="pic"
                         align="absmiddle"
-                        style={{ width: '14px', height: '14px' }}
+                        style={{ width: '20px', height: '20px' }}
                       />{' '}
                       9AM
                     </span>
                   ),
-                  href: 'https://github.com/ant-design/ant-design-pro',
+                  href: '#',
                   blankTarget: true,
                 },
                 {
@@ -296,19 +300,19 @@ class BasicLayout extends React.PureComponent {
                   title: (
                     <span>
                       <img
-                        src={require('./../assets/officewell.png')}
+                        src={`${G.picUrl}officewell.png`}
                         alt="pic"
                         align="absmiddle"
-                        style={{ width: '15px', height: '15px' }}
+                        style={{ width: '20px', height: '20px' }}
                       />{' '}
                       OfficeWell
                     </span>
                   ),
-                  href: 'https://github.com/ant-design/ant-design-pro',
+                  href: '#',
                   blankTarget: true,
                 },
               ]}
-              copyright={<Fragment>Copyright©2018 站坐（宁波）技术部出品</Fragment>}
+              copyright={<Fragment>Copyright©2018 9AM Inc.</Fragment>}
             />
           </Footer>
         </Layout>

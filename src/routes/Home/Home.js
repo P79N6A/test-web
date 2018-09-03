@@ -11,44 +11,43 @@ import styles from './Home.less';
 const { TabPane } = Tabs;
 const { MonthPicker } = DatePicker;
 
-const rankingListData = [];
-for (let i = 0; i < 7; i += 1) {
-  rankingListData.push({
-    title: `工专路 ${i} 号店`,
-    total: 323234,
-  });
-}
-
 @connect(({ home, loading }) => ({
   home,
-  loading: loading.effects['home/fetchGatherData'],
+  loading: loading.effects['home/getHomeStand'],
 }))
 export default class Home extends Component {
   state = {
-    rangePickerValue: getTimeDistance('month'),
+    rangePickerValue: getTimeDistance('MONTHLY'),
+    type: 'MONTHLY',
   };
 
   componentDidMount() {
     const { dispatch } = this.props;
-    const { rangePickerValue } = this.state;
-    dispatch({
-      type: 'home/fetchGatherData',
-      payload: rangePickerValue,
-    });
-    dispatch({
-      type: 'home/fetchStandingData',
-      payload: rangePickerValue,
-    });
-    dispatch({
-      type: 'home/fetchTimeRanking',
-      payload: rangePickerValue,
-    });
+    dispatch({ type: 'home/getResourceNum' });
+    dispatch({ type: 'home/getUserNum' });
+    dispatch({ type: 'home/getNotificationCount' });
+    dispatch({ type: 'home/getStandNum' });
+    this.getHomeStand({});
   }
 
-  componentWillUnmount() {
+  getHomeStand({ date, type2 }) {
     const { dispatch } = this.props;
+    const { rangePickerValue, type } = this.state;
     dispatch({
-      type: 'home/clear',
+      type: 'home/getHomeStand',
+      payload: {
+        date:
+          G.moment(date).format('YYYY-MM-DD') || G.moment(rangePickerValue[0]).format('YYYY-MM-DD'),
+        type: type2 || type,
+      },
+    });
+    dispatch({
+      type: 'home/getHomeRank',
+      payload: {
+        date:
+          G.moment(date).format('YYYY-MM-DD') || G.moment(rangePickerValue[0]).format('YYYY-MM-DD'),
+        type: type2 || type,
+      },
     });
   }
 
@@ -62,34 +61,14 @@ export default class Home extends Component {
         .add(1, 'month')
         .subtract(1, 'day'),
     ];
-    this.setState({
-      rangePickerValue,
-    });
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'home/fetchStandingData',
-      payload: rangePickerValue,
-    });
-    dispatch({
-      type: 'home/fetchTimeRanking',
-      payload: rangePickerValue,
-    });
+    this.setState({ rangePickerValue, type: 'MONTHLY' });
+    this.getHomeStand({ date: rangePickerValue[0], type2: 'MONTHLY' });
   };
 
   selectDate = type => {
     const rangePickerValue = getTimeDistance(type);
-    this.setState({
-      rangePickerValue,
-    });
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'home/fetchStandingData',
-      payload: rangePickerValue,
-    });
-    dispatch({
-      type: 'home/fetchTimeRanking',
-      payload: rangePickerValue,
-    });
+    this.setState({ rangePickerValue, type });
+    this.getHomeStand({ date: rangePickerValue[0], type2: type });
   };
 
   isActive(type) {
@@ -108,21 +87,22 @@ export default class Home extends Component {
 
   render() {
     const { rangePickerValue } = this.state;
-    const { home, loading } = this.props;
-    const { gatherData, timeRanking, standingData } = home;
+    const { home } = this.props;
+    const { resourceNum, userNum, notificationNum, standNum, homeStand, homeRank } = home;
+    // return null;
     const salesExtra = (
       <div className={styles.salesExtraWrap}>
         <div className={styles.salesExtra}>
-          <a className={this.isActive('today')} onClick={() => this.selectDate('today')}>
+          <a className={this.isActive('DAILY')} onClick={() => this.selectDate('DAILY')}>
             今日
           </a>
-          <a className={this.isActive('week')} onClick={() => this.selectDate('week')}>
+          <a className={this.isActive('WEEKLY')} onClick={() => this.selectDate('WEEKLY')}>
             本周
           </a>
-          <a className={this.isActive('month')} onClick={() => this.selectDate('month')}>
+          <a className={this.isActive('MONTHLY')} onClick={() => this.selectDate('MONTHLY')}>
             本月
           </a>
-          <a className={this.isActive('year')} onClick={() => this.selectDate('year')}>
+          <a className={this.isActive('YEARLY')} onClick={() => this.selectDate('YEARLY')}>
             全年
           </a>
         </div>
@@ -150,19 +130,25 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               title="设备数"
-              loading={loading}
               action={
                 <Tooltip title="指标说明">
                   <Icon type="info-circle-o" />
                 </Tooltip>
               }
-              total={() => <h4>{numeral(gatherData[0].total).format('0,0')}</h4>}
-              footer={<Field label="使用率" value={gatherData[0].rate} />}
+              total={() => <h4>{numeral(resourceNum.totalCount).format('0,0')}</h4>}
+              footer={
+                <Field
+                  label="使用率"
+                  value={`${Number((resourceNum.liveCount / resourceNum.totalCount) * 100).toFixed(
+                    2
+                  )}%`}
+                />
+              }
               contentHeight={46}
             >
               <font style={{ marginRight: 16 }}>
                 使用数
-                <span className={styles.trendText}>{gatherData[0].useCount}</span>
+                <span className={styles.trendText}>{resourceNum.liveCount}</span>
               </font>
             </ChartCard>
           </Col>
@@ -170,19 +156,23 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               title="用户数"
-              loading={loading}
               action={
                 <Tooltip title="指标说明">
                   <Icon type="info-circle-o" />
                 </Tooltip>
               }
-              total={numeral(gatherData[1].total).format('0,0')}
-              footer={<Field label="当前使用率" value={gatherData[1].rate} />}
+              total={numeral(userNum.totalCount).format('0,0')}
+              footer={
+                <Field
+                  label="当前使用率"
+                  value={`${Number((userNum.liveCount / userNum.totalCount) * 100).toFixed(2)}%`}
+                />
+              }
               contentHeight={46}
             >
               <font style={{ marginRight: 16 }}>
                 使用数
-                <span className={styles.trendText}>{gatherData[1].useCount}</span>
+                <span className={styles.trendText}>{userNum.liveCount}</span>
               </font>
             </ChartCard>
           </Col>
@@ -190,19 +180,29 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               title="通知数"
-              loading={loading}
               action={
                 <Tooltip title="指标说明">
                   <Icon type="info-circle-o" />
                 </Tooltip>
               }
-              total={numeral(gatherData[2].total).format('0,0')}
-              footer={<Field label="阅读率" value={gatherData[2].rate} />}
+              total={numeral(notificationNum.total).format('0,0')}
+              footer={
+                <Field
+                  label="阅读率"
+                  value={
+                    `${Number(
+                      (notificationNum.viewTotal /
+                        (notificationNum.viewTotal + notificationNum.unreadTotal)) *
+                      100
+                    ).toFixed(2)}% ` || `0`
+                  }
+                />
+              }
               contentHeight={46}
             >
               <font style={{ marginRight: 16 }}>
                 阅读量
-                <span className={styles.trendText}>{gatherData[2].useCount}</span>
+                <span className={styles.trendText}>{notificationNum.viewTotal}</span>
               </font>
             </ChartCard>
           </Col>
@@ -210,53 +210,77 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               title="站立时长"
-              loading={loading}
               action={
                 <Tooltip title="指标说明">
                   <Icon type="info-circle-o" />
                 </Tooltip>
               }
-              total={`${numeral(gatherData[3].total).format('0,0')}天`}
-              footer={<Field label="站坐时间比例" value={gatherData[3].rate} />}
+              total={`${parseInt(standNum.duration)}天`}
+              footer={
+                <Field
+                  label="站坐时间比例"
+                  value={`${Number(standNum.rate * 100).toFixed(2)}%` || `0`}
+                />
+              }
               contentHeight={46}
             >
               <font style={{ marginRight: 16 }}>
                 平均次数
-                <span className={styles.trendText}>{gatherData[3].useCount}</span>
+                <span className={styles.trendText}>{standNum.count}</span>
               </font>
             </ChartCard>
           </Col>
         </Row>
 
-        <Card loading={loading} bordered={false} bodyStyle={{ padding: 0 }}>
+        <Card bordered={false} bodyStyle={{ padding: 0 }}>
           <div className={styles.salesCard}>
             <Tabs tabBarExtraContent={salesExtra} size="large" tabBarStyle={{ marginBottom: 24 }}>
               <TabPane tab="站立时间趋势" key="views">
                 <Row>
-                  <Col xl={16} lg={12} md={12} sm={24} xs={24} className={styles.scalesTab}>
+                  <Col xl={16} lg={16} md={16} sm={30} xs={30} className={styles.scalesTab}>
                     <div className={styles.salesBar}>
-                      <Bar height={292} title="" data={standingData} color="#A6D6D0" />
+                      {homeStand.length > 0 ? (
+                        <Bar height={400} title="" data={homeStand} color="#A6D6D0" />
+                      ) : (
+                          <div className={styles.emptyBar}>
+                            <font className={styles.emptyText}>暂无数据</font>
+                          </div>
+                        )}
                     </div>
                   </Col>
                   <Col xl={8} lg={12} md={12} sm={24} xs={24}>
                     <div className={styles.salesRank}>
                       <h4 className={styles.rankingTitle}>人员站立时间排行</h4>
-                      <ul className={styles.rankingList}>
-                        {timeRanking.map((item, i) => (
-                          <li key={item.title}>
-                            <div>
-                              <span className={i < 3 ? styles.active : ''}>{i + 1}</span>
-                              <span>{item.title}</span>
-                              <span>
-                                {item.hours}
-                                <i>小时</i>
-                                {item.minutes}
-                                <i>分钟</i>
-                              </span>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
+                      {homeRank.length > 0 ? (
+                        <ul className={styles.rankingList}>
+                          {homeRank.map((item, i) => {
+                            const { duration, username } = item;
+                            const days = G.moment.duration(duration, 'm').days();
+                            const hours = G.moment.duration(duration, 'm').hours();
+                            const minutes = G.moment.duration(duration, 'm').minutes();
+                            return (
+                              <li>
+                                <div>
+                                  <span className={i < 3 ? styles.active : ''}>{i + 1}</span>
+                                  <span>{username}</span>
+                                  <span>
+                                    {days || null}
+                                    {days ? <i>天</i> : null}
+                                    {hours || null}
+                                    {hours ? <i>小时</i> : null}
+                                    {minutes || null}
+                                    {minutes ? <i>分钟</i> : null}
+                                  </span>
+                                </div>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                          <div className={styles.emptyRand}>
+                            <font>暂无数据</font>
+                          </div>
+                        )}
                     </div>
                   </Col>
                 </Row>

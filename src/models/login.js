@@ -1,9 +1,9 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { login } from '../services/api';
+import { message } from 'antd';
+import { login, logout } from '../services/api';
 import { setAuthority, setUserInfo } from '../utils/storage';
 import { reloadAuthorized } from '../utils/Authorized';
-import { getPageQuery } from '../utils/utils';
 
 export default {
   namespace: 'login',
@@ -15,47 +15,57 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: response,
-      });
-      yield put({
-        type: 'user/user',
-        payload: response.user,
-      });
-      // Login successfully
-      if (response.status === 'ok') {
+      if (response.status === 'success') {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: response,
+        });
+        yield put({
+          type: 'user/user',
+          payload: response.data,
+        });
         reloadAuthorized();
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params;
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.startsWith('/#')) {
-              redirect = redirect.substr(2);
-            }
-          } else {
-            window.location.href = redirect;
-            return;
-          }
-        }
-        yield put(routerRedux.replace(redirect || '/'));
+        yield put(routerRedux.replace('/home'));
+      } else if (typeof response.message === 'object') {
+        message.error('登录失败！');
+      } else {
+        message.error(response.message || '登录失败！');
       }
     },
-    *logout(_, { put }) {
+    *logout({ payload = {} }, { call, put }) {
+      if (payload.tokenExpired) {
+        message.error('登录信息过期');
+        yield put({ type: 'logoutWithoutToken' });
+        return;
+      }
+      const response = yield call(logout);
+      if (response.status === 'success') {
+        yield put({ type: 'logoutWithoutToken' });
+      }
+    },
+    *logoutWithoutToken(_, { put }) {
+      const authority = localStorage.getItem('antd-pro-authority') || 'user';
+      let path = '/user/login';
+      if (authority === 'admin') {
+        path = '/admin_user/login';
+      }
       yield put({
         type: 'changeLoginStatus',
         payload: {
-          status: false,
-          currentAuthority: 'guest',
+          data: {
+            status: false,
+            currentAuthority: 'guest',
+          },
         },
+      });
+      yield put({
+        type: 'user/user',
+        payload: {},
       });
       reloadAuthorized();
       yield put(
         routerRedux.push({
-          pathname: '/user/login',
+          pathname: path,
           search: stringify({
             redirect: window.location.href,
           }),
@@ -66,8 +76,8 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
-      setUserInfo(payload.user);
+      setAuthority(payload.data.currentAuthority || 'user');
+      setUserInfo(payload.data);
       return {
         ...state,
         status: payload.status,

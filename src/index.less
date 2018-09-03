@@ -30,12 +30,12 @@ body {
     width: 100%;
     margin: 40px 0 !important;
   }
-  .ant-input {
-    border-radius: 8px !important;
+  .ant-menu-item-selected > a,
+  .ant-menu-item-selected > a:hover {
+    color: RGBA(70, 151, 141, 0.65) !important;
   }
-  .ant-btn {
-    border-radius: 20px !important;
-    padding: 0 25px !important;
+  .ant-tabs-nav .ant-tabs-tab-active {
+    color: #35536c !important;
   }
   //按钮
   .ant-btn > .anticon {
@@ -44,9 +44,20 @@ body {
   .ant-popover-buttons button {
     margin-left: 15px !important;
   }
+  .ant-btn {
+    border-radius: 20px !important;
+    padding: 0 25px !important;
+    height: 33px !important;
+    line-height: 30px !important;
+    color: #46978d !important;
+  }
+  .ant-btn-primary {
+    color: #fff !important;
+  }
   //输入框
   .ant-input {
-    color: rgba(154, 169, 181, 0.8) !important;
+    border-radius: 8px !important;
+    color: #35536C !important;
     margin-right: 10px !important;
   }
   //图片上传
@@ -87,41 +98,35 @@ body {
   }
   //分页
   .ant-pagination-item-active {
-    background-color: #35536C !important;
+    background-color: #a6d6d0 !important;
   }
   .ant-pagination-item-active a {
     color: #fff !important;
   }
-  //sliderBar
-  .ant-layout-sider{
-    background: #35536C!important;
+  //富文本编辑器
+  .rdw-fontfamily-placeholder,
+  .rdw-dropdown-selectedtext {
+    color: rgba(0, 0, 0, 0.65) !important;
   }
-  .ant-menu{
-    background: #35536C!important;
-    color: #BCE5E2!important;
+  .ant-select-selection {
+    border-radius: 8px !important;
   }
-  .ant-menu-item > a{
-    color: #BCE5E2!important;
+  //输入清除框
+  .ant-input-affix-wrapper .ant-input-prefix,
+  .ant-input-affix-wrapper .ant-input-suffix {
+    color: #a6d6d0 !important;
   }
-  .ant-menu-item-selected > a, .ant-menu-item-selected > a:hover{
-    color: #35536C!important;
+  //登录页
+  .index__login___1MW8J .index__prefixIcon___5euWy {
+    color: #a6d6d0 !important;
   }
-
-  .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected{
-    background: #BCE5E2!important;
+  table {
+    table-layout:fixed;
   }
-  .ant-menu-vertical .ant-menu-item:after, .ant-menu-vertical-left .ant-menu-item:after, .ant-menu-vertical-right .ant-menu-item:after, .ant-menu-inline .ant-menu-item:after{
-    border-right: none!important;
+  td {
+    word-break:keep-all;/* 不换行 */
+    white-space:nowrap;/* 不换行 */
+    overflow:hidden;/* 内容超出宽度时隐藏超出部分的内容 */
+    text-overflow:ellipsis;/* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用*/
   }
-  .ant-menu-inline, .ant-menu-vertical, .ant-menu-vertical-left{
-    border-right: none!important;
-  }
-  .ant-menu-item:hover,
-  .ant-menu-item-active,
-  .ant-menu:not(.ant-menu-inline) .ant-menu-submenu-open,
-  .ant-menu-submenu-active,
-  .ant-menu-submenu-title:hover{
-    color: #BCE5E2!important;
-  }
-
 }

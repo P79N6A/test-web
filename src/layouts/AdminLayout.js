@@ -31,10 +31,10 @@ class UserLayout extends React.PureComponent {
     const { routerData, match } = this.props;
     return (
       <DocumentTitle title={this.getPageTitle()}>
-        <div className={styles.container}>
+        <div className={styles.admin_container}>
           <div className={styles.containers}>
             <div className={styles.contents}>
-              <img alt="背景图片" src={`${G.picUrl}backchart.png`} />
+              <img alt="pic" src={`${G.picUrl}backcharts.png`} />
             </div>
             <div className={styles.content}>
               <div className={styles.top}>
@@ -43,7 +43,8 @@ class UserLayout extends React.PureComponent {
                     <img
                       alt="logo"
                       className={styles.logo}
-                      src={`${G.picUrl}logoGreen.png`} />
+                      src={`${G.picUrl}logoBlue.png`}
+                    />
                   </Link>
                 </div>
                 <div className={styles.desc}>Create Healthier & Smarter Workplace</div>

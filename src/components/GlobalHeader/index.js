@@ -1,12 +1,10 @@
 import React, { PureComponent } from 'react';
-// import { Menu, Icon, Spin, Tag, Dropdown, Avatar, Divider, Tooltip } from 'antd';
 import { Menu, Icon, Spin, Tag, Dropdown, Avatar, Divider } from 'antd';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import Debounce from 'lodash-decorators/debounce';
 import { Link } from 'dva/router';
-// import NoticeIcon from '../NoticeIcon';
-// import HeaderSearch from '../HeaderSearch';
+import { getAuthority } from '../../utils/storage';
 import styles from './index.less';
 
 export default class GlobalHeader extends PureComponent {
@@ -59,6 +57,7 @@ export default class GlobalHeader extends PureComponent {
     window.dispatchEvent(event);
   }
   render() {
+    const Authorized = getAuthority();
     const {
       currentUser = {},
       collapsed,
@@ -81,6 +80,11 @@ export default class GlobalHeader extends PureComponent {
           <Icon type="close-circle" />触发报错
         </Menu.Item>
         <Menu.Divider /> */}
+        {Authorized === 'user' ? (
+          <Menu.Item key="change_pass">
+            <Icon type="edit" />修改密码
+          </Menu.Item>
+        ) : null}
         <Menu.Item key="logout">
           <Icon type="logout" />退出登录
         </Menu.Item>
@@ -152,16 +156,16 @@ export default class GlobalHeader extends PureComponent {
               emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
             />
           </NoticeIcon> */}
-          {currentUser.name ? (
+          {currentUser.username ? (
             <Dropdown overlay={menu}>
               <span className={`${styles.action} ${styles.account}`}>
                 <Avatar size="small" className={styles.avatar} src={currentUser.avatar} />
-                <span className={styles.name}>{currentUser.name}</span>
+                <span className={styles.name}>{currentUser.username}</span>
               </span>
             </Dropdown>
           ) : (
-            <Spin size="small" style={{ marginLeft: 8 }} />
-          )}
+              <Spin size="small" style={{ marginLeft: 8 }} />
+            )}
         </div>
       </div>
     );

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Alert } from 'antd';
 import Login from 'components/Login';
-import styles from './Login.less';
+import styles from './adminLogin.less';
 
 const { UserName, Password, Submit } = Login;
 
@@ -12,7 +12,7 @@ const { UserName, Password, Submit } = Login;
 }))
 export default class LoginPage extends Component {
   state = {
-    type: ''
+    type: '',
   };
 
   onTabChange = type => {

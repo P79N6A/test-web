@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Input, Row, Col, Button, message, DatePicker } from 'antd';
+import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
-import moment from 'moment';
+import G from '../../../gobal';
 
 const FormItem = Form.Item;
 
@@ -10,7 +10,7 @@ const FormItem = Form.Item;
 }))
 class NewCustomer extends Component {
   state = {
-    title: '新建客户',
+    title: '新增客户',
   };
 
   componentDidMount() {
@@ -29,11 +29,18 @@ class NewCustomer extends Component {
         website: editValue.company.website,
         industry: editValue.company.industry,
         contractNo: editValue.company.contractNo,
-        contractDate: moment(editValue.company.contractDate),
         remark: editValue.company.remark,
       });
       this.setState({ title: '编辑客户' });
     }
+  }
+
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'manaCustomer/setEditValue',
+      payload: '',
+    });
   }
 
   // 时间选择器
@@ -42,12 +49,12 @@ class NewCustomer extends Component {
   // 上传成功或者失败的回调
   release(res) {
     if (res.status === 'success') {
-      message.success(res.data.data.msg || '添加成功！');
+      message.success(res.message || '添加成功！');
       setTimeout(() => {
         this.goBack();
       }, 2000);
     } else {
-      message.error(res.message.err);
+      message.error(res.message || '创建公司失败');
     }
   }
 
@@ -68,7 +75,6 @@ class NewCustomer extends Component {
           payload: {
             companyId: editValue.companyId,
             ...all,
-            contractDate: moment(form.getFieldsValue().contractDate).format('YYYY-MM-DD'),
             callback: this.release.bind(this),
           },
         });
@@ -78,7 +84,6 @@ class NewCustomer extends Component {
           type: 'manaCustomer/addCustomer',
           payload: {
             ...form.getFieldsValue(),
-            contractDate: moment(form.getFieldsValue().contractDate).format('YYYY-MM-DD'),
             callback: this.release.bind(this),
           },
         });
@@ -93,7 +98,11 @@ class NewCustomer extends Component {
       type: 'manaCustomer/setEditValue',
       payload: '',
     });
-    history.back(-1);
+    if (G.env === '') {
+      window.location.href = `${window.location.origin}/#/management/customer`;
+    } else {
+      window.location.href = `${window.location.origin}/home/#/management/customer`;
+    }
   }
 
   render() {
@@ -108,47 +117,113 @@ class NewCustomer extends Component {
         <Form style={{ backgroundColor: '#fff', padding: '20px' }}>
           <Row>
             <Col span={12}>
-              <FormItem label="账号" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('account', {
-                  rules: [
-                    { required: true, message: '请输入账号' },
-                    {
-                      min: 8,
-                      message: '最小长度8',
-                    },
-                    {
-                      max: 20,
-                      message: '最大长度20',
-                    },
-                    {
-                      pattern: /^[a-zA-Z]\w$/,
-                      message: '仅支持半角英文数字和下划线',
-                    },
-                  ],
-                })(<Input placeholder="请输入账号" size="large" disabled={editValue !== ''} />)}
+              <FormItem label="公司全称" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('companyName', {
+                  rules:
+                    editValue === ''
+                      ? [
+                          { required: true, message: '请输入公司全称' },
+                          {
+                            max: 50,
+                            message: '最大长度50',
+                          },
+                        ]
+                      : [],
+                })(<Input placeholder="请输入公司全称" size="large" disabled={editValue !== ''} />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="密码" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('password', {
+              <FormItem label="客户所属行业" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('industry', {
                   rules: [
-                    { required: true, message: '请输入密码' },
                     {
                       max: 20,
                       message: '最大长度20',
                     },
-                    {
-                      pattern: /^[a-zA-Z]\w$/,
-                      message: '仅支持半角英文数字和下划线',
-                    },
                   ],
-                })(<Input placeholder="请输入密码" size="large" disabled={editValue !== ''} />)}
+                })(<Input placeholder="请输入客户所属行业" size="large" />)}
               </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <FormItem label="邮箱" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
+              <FormItem label="账号" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('account', {
+                  rules:
+                    editValue === ''
+                      ? [
+                          { required: true, message: '请输入账号' },
+                          {
+                            min: 8,
+                            message: '最小长度8',
+                          },
+                          {
+                            max: 20,
+                            message: '最大长度20',
+                          },
+                          {
+                            pattern: /^\w+$/,
+                            message: '仅支持半角英文数字和下划线',
+                          },
+                        ]
+                      : [],
+                })(<Input placeholder="请输入账号" size="large" disabled={editValue !== ''} />)}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem label="客户详细地址" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('address', {
+                  rules: [
+                    {
+                      max: 100,
+                      message: '最大长度100',
+                    },
+                  ],
+                })(<Input placeholder="请输入客户详细地址" size="large" />)}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <FormItem label="密码" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('password', {
+                  rules:
+                    editValue === ''
+                      ? [
+                          { required: true, message: '请输入密码' },
+                          {
+                            min: 8,
+                            message: '最小长度8',
+                          },
+                          {
+                            max: 20,
+                            message: '最大长度20',
+                          },
+                          {
+                            pattern: /^\w+$/,
+                            message: '仅支持半角英文数字和下划线',
+                          },
+                        ]
+                      : [],
+                })(<Input placeholder="请输入密码" size="large" disabled={editValue !== ''} />)}
+              </FormItem>
+            </Col>
+            <Col span={12}>
+              <FormItem label="网址" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('website', {
+                  rules: [
+                    {
+                      max: 100,
+                      message: '最大长度100',
+                    },
+                  ],
+                })(<Input placeholder="请输入网址" size="large" />)}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <FormItem label="邮箱" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('email', {
                   rules: [
                     { required: true, message: '请输入邮箱' },
@@ -165,92 +240,7 @@ class NewCustomer extends Component {
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="公司全称" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('companyName', {
-                  rules: [
-                    { required: true, message: '请输入公司全称' },
-                    {
-                      max: 50,
-                      message: '最大长度50',
-                    },
-                  ],
-                })(<Input placeholder="请输入公司全称" size="large" disabled={editValue !== ''} />)}
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <FormItem label="管理员姓名" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('contacts', {
-                  rules: [
-                    { required: true, message: '请输入管理员姓名' },
-                    {
-                      max: 20,
-                      message: '最大长度20',
-                    },
-                  ],
-                })(<Input placeholder="请输入管理员姓名" size="large" />)}
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem label="管理员手机号码" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('telephone', {
-                  rules: [
-                    { required: true, message: '请输入管理员手机号码' },
-                    {
-                      max: 11,
-                      message: '最大长度11',
-                    },
-                    {
-                      pattern: /^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\d{8}$/,
-                      message: '请正确输入管理员手机号码',
-                    },
-                  ],
-                })(<Input placeholder="请输入管理员手机号码" size="large" />)}
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <FormItem label="客户详细地址" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('address', {
-                  rules: [
-                    {
-                      max: 100,
-                      message: '最大长度100',
-                    },
-                  ],
-                })(<Input placeholder="请输入客户详细地址" size="large" />)}
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem label="网址" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('website', {
-                  rules: [
-                    {
-                      max: 100,
-                      message: '最大长度100',
-                    },
-                  ],
-                })(<Input placeholder="请输入网址" size="large" />)}
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <FormItem label="客户所属行业" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('industry', {
-                  rules: [
-                    {
-                      max: 20,
-                      message: '最大长度20',
-                    },
-                  ],
-                })(<Input placeholder="请输入客户所属行业" size="large" />)}
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem label="合同编号" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
+              <FormItem label="合同编号" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('contractNo', {
                   rules: [
                     {
@@ -264,14 +254,20 @@ class NewCustomer extends Component {
           </Row>
           <Row>
             <Col span={12}>
-              <FormItem label="签约时间" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('contractDate', {
-                  rules: [{ required: true, message: '请选择签约时间' }],
-                })(<DatePicker onChange={this.onChange.bind(this)} size="large" />)}
+              <FormItem label="管理员姓名" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('contacts', {
+                  rules: [
+                    { required: true, message: '请输入管理员姓名' },
+                    {
+                      max: 20,
+                      message: '最大长度20',
+                    },
+                  ],
+                })(<Input placeholder="请输入管理员姓名" size="large" />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="备注" labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
+              <FormItem label="备注" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('remark', {
                   rules: [
                     {
@@ -280,6 +276,25 @@ class NewCustomer extends Component {
                     },
                   ],
                 })(<Input placeholder="请输入备注" size="large" />)}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row>
+            <Col span={12}>
+              <FormItem label="管理员手机号码" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+                {getFieldDecorator('telephone', {
+                  rules: [
+                    { required: true, message: '请输入管理员手机号码' },
+                    {
+                      max: 11,
+                      message: '最大长度11',
+                    },
+                    {
+                      pattern: /^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\d{8}$/,
+                      message: '请正确输入管理员手机号码',
+                    },
+                  ],
+                })(<Input placeholder="请输入管理员手机号码" size="large" />)}
               </FormItem>
             </Col>
           </Row>

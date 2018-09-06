@@ -39,11 +39,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(response.data.msg);
       } else {
-        const { errors } = response.message;
-        if (!errors[0]) {
-          return message.error('重置密码失败');
-        }
-        message.error(`${errors[0].field} ${errors[0].message}`);
+        message.success(response.message.err || '重置密码失败');
       }
     },
   },

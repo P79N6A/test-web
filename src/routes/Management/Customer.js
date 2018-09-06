@@ -38,14 +38,14 @@ export default class Wework extends Component {
     this.newCustomer();
   }
 
-  getColumns() {
+  getColumns(offset) {
     const columns = [
       {
         title: '序号',
         key: 'id',
         render: (text, record, index) => (
           <Fragment>
-            <font>{index + 1}</font>
+            <font>{(offset - 1) * 15 + index + 1}</font>
           </Fragment>
         ),
       },
@@ -88,10 +88,12 @@ export default class Wework extends Component {
         title: '备注',
         dataIndex: 'company.remark',
         key: 'company.remark',
+        width: 260,
       },
       {
         title: '操作',
         key: 'setting',
+        width: 160,
         render: (text, record, index) => (
           <Fragment>
             <Popconfirm
@@ -117,6 +119,12 @@ export default class Wework extends Component {
     ];
     return columns;
   }
+
+  handelKeydown = e => {
+    if (e.keyCode === 13) {
+      this.onSearch();
+    }
+  };
 
   emitEmpty = () => {
     this.userNameInput.focus();
@@ -148,9 +156,9 @@ export default class Wework extends Component {
       payload: companyId,
     });
     if (G.env === '') {
-      window.location.href = `${window.location.origin}/#/management/equipment`;
+      window.location.href = `${window.location.origin}/#/management/device`;
     } else {
-      window.location.href = `${window.location.origin}/home/#/management/equipment`;
+      window.location.href = `${window.location.origin}/home/#/management/device`;
     }
   }
 
@@ -189,19 +197,20 @@ export default class Wework extends Component {
 
   render() {
     const { manaCustomer, loading } = this.props;
-    const { filteredInfo, query } = this.state;
-    const columns = this.getColumns(filteredInfo);
+    const { query } = this.state;
     const { limit, offset, count } = manaCustomer.data;
+    const columns = this.getColumns(offset);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
         <h3>客户管理</h3>
         <br />
         <Row className={styles.lageBox}>
+          <p>客户列表</p>
           {/* 查询 */}
           <Col span={12}>
             <Button icon="plus" type="primary" onClick={this.newCustomer}>
-              新建
+              新增
             </Button>
           </Col>
           <Col span={24}>
@@ -220,6 +229,7 @@ export default class Wework extends Component {
               suffix={suffix}
               ref={node => this.userNameInput === node}
               onChange={this.onChangeSearchInfo.bind(this)}
+              onKeyUp={this.handelKeydown.bind(this)}
             />
           </Col>
           <br />

@@ -27,26 +27,18 @@ export default {
       const response = yield call(addPerson, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.data.data.msg);
+        message.success(response.message || '添加成功');
       } else {
-        const { errors } = response.message;
-        if (!errors[0]) {
-          return message.error('添加失败');
-        }
-        message.error(`${errors[0].field} ${errors[0].message}`);
+        message.error(response.message || '添加失败');
       }
     },
     *updatePerson({ payload }, { call }) {
       const response = yield call(updatePerson, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(payload.isDel ? '删除成功' : '修改成功');
+        message.success(response.message || '修改成功');
       } else {
-        const { errors } = response.message;
-        if (!errors[0]) {
-          return message.error(payload.isDel ? '删除失败' : '修改失败');
-        }
-        message.error(`${errors[0].field} ${errors[0].message}`);
+        message.error(response.message || '修改失败');
       }
     },
   },

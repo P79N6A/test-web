@@ -43,6 +43,7 @@ class PersonModal extends Component {
           position: '',
           remark: '',
         });
+        this.setState({ title: '新增用户' });
       }
     }
   }

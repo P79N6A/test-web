@@ -1,3 +1,4 @@
+/* eslint-disable react/no-danger */
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import {
@@ -79,14 +80,14 @@ export default class Notice extends Component {
     this.showDrawer();
   }
 
-  getColumns() {
+  getColumns(offset) {
     const columns = [
       {
         title: '序号',
         key: 'id',
         render: (text, record, index) => (
           <Fragment>
-            <font>{index + 1}</font>
+            <font>{(offset - 1) * 15 + index + 1}</font>
           </Fragment>
         ),
       },
@@ -142,6 +143,12 @@ export default class Notice extends Component {
     ];
     return columns;
   }
+
+  handelKeydown = e => {
+    if (e.keyCode === 13) {
+      this.onSearch();
+    }
+  };
 
   emitEmpty = () => {
     this.userNameInput.focus();
@@ -208,15 +215,16 @@ export default class Notice extends Component {
 
   render() {
     const { manaNotice, loading } = this.props;
-    const { filteredInfo, query, detail, visible } = this.state;
-    const columns = this.getColumns(filteredInfo);
+    const { query, detail, visible } = this.state;
     const { limit, offset, count } = manaNotice.data;
+    const columns = this.getColumns(offset);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
-        <h3>通知列表</h3>
+        <h3>通知管理</h3>
         <br />
         <Row className={styles.lageBox}>
+          <p>通知列表</p>
           {/* 查询 */}
           <Col span={12}>
             <Button icon="plus" type="primary" onClick={this.newNotice}>
@@ -239,6 +247,7 @@ export default class Notice extends Component {
               suffix={suffix}
               ref={node => this.userNameInput === node}
               onChange={this.onChangeSearchInfo.bind(this)}
+              onKeyUp={this.handelKeydown.bind(this)}
             />
           </Col>
           <br />

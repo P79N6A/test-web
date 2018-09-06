@@ -5,9 +5,11 @@
   "private": true,
   "scripts": {
     "precommit": "npm run lint-staged",
-    "start:dev": "cross-env ESLINT=none roadhog dev",
+    "start:dev": "cross-env NODE_ENVS=dev BUILD_ENV=''  ESLINT=none roadhog dev",
+    "start:pro": "cross-env NODE_ENVS=pro BUILD_ENV=''  ESLINT=none roadhog dev",
     "start:no-proxy": "cross-env NO_PROXY=true ESLINT=none roadhog dev",
-    "build:dev": "cross-env ESLINT=none roadhog build",
+    "build:dev": "cross-env NODE_ENVS=dev BUILD_ENV=dev ESLINT=none roadhog build",
+    "build:pro": "cross-env NODE_ENVS=pro BUILD_ENV=pro ESLINT=none roadhog build",
     "site": "roadhog-api-doc static && gh-pages -d dist",
     "analyze": "cross-env ANALYZE=true roadhog build",
     "lint:style": "stylelint \"src/**/*.less\" --syntax less",

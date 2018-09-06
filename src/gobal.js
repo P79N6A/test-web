@@ -3,18 +3,16 @@ import _ from 'lodash';
 import axios from 'axios';
 
 moment.locale('zh-cn');
-const env = '';
-// const env = 'dev';
-// const env = 'prod';
+const env = process.BUILD_ENV;
 
-let API_URL = 'http://39.108.86.241:9201';
-if (env === 'prod') {
-  API_URL = 'http://39.108.86.241:9201';
-} else if (env === 'dev') {
-  API_URL = 'http://39.108.86.241:9201';
-} else {
+let API_URL = '';
+if (env === '') {
   API_URL = '/space';
+} else {
+  API_URL = process.PROXY_URL;
 }
+
+const picUrl = 'http://pdum0jw3j.bkt.clouddn.com/';
 
 export default {
   API_URL,
@@ -22,4 +20,5 @@ export default {
   _,
   moment,
   axios,
+  picUrl,
 };

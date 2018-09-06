@@ -1,4 +1,4 @@
-const path = require('path');
+import path from 'path';
 
 export default {
   entry: 'src/index.js',
@@ -11,8 +11,12 @@ export default {
     },
     // 打包时各个文件指向的路径
     production: {
-      publicPath: process.env.SPACE_API_URL,
-    }
+      publicPath: JSON.parse(process.env.SPACE)[process.env.NODE_ENVS].PACK_URL,
+    },
+  },
+  define: {
+    'process.PROXY_URL': JSON.parse(process.env.SPACE)[process.env.NODE_ENVS].PROXY_URL,
+    'process.BUILD_ENV': process.env.BUILD_ENV,
   },
   outputPath: `./home/`,
   externals: {
@@ -32,7 +36,7 @@ export default {
   },
   proxy: {
     '/space': {
-      target: process.env.SPACE_PROXY_URL, // 本地运行时启用代理访问的路由
+      target: JSON.parse(process.env.SPACE)[process.env.NODE_ENVS].PROXY_URL, // 本地运行时启用代理访问的路由
       changeOrigin: true,
       pathRewrite: { '^/space': '' },
     },

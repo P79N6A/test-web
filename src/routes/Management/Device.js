@@ -11,7 +11,7 @@ import EquipModal from './components/EquipModal.js';
   manaCustomer,
   loading: loading.effects['manaEquip/fetch'],
 }))
-export default class Equipment extends Component {
+export default class Device extends Component {
   // 表单以及分页
   state = {
     query: '',
@@ -20,6 +20,12 @@ export default class Equipment extends Component {
     modalLoading: false,
     visible: false,
     editValue: {},
+    filterStatus: [
+      { text: '全部', value: 1 },
+      { text: '使用中', value: 2 },
+      { text: '空闲', value: 3 },
+      { text: '离线', value: 4 },
+    ],
   };
 
   componentDidMount() {
@@ -49,43 +55,45 @@ export default class Equipment extends Component {
     });
   }
 
-  getColumns() {
+  getColumns(offset, filterStatus) {
     const columns = [
       {
         title: '序号',
         key: 'id',
-        render: (text, record, index) => (
+        render: index => (
           <Fragment>
-            <font>{index + 1}</font>
+            <font>{(offset - 1) * 15 + index + 1}</font>
           </Fragment>
         ),
       },
       {
         title: '桌子编号',
-        dataIndex: 'number',
-        key: 'number',
+        dataIndex: 'serialNumber',
+        key: 'serialNumber',
         sorter: true,
       },
       {
         title: '状态',
-        dataIndex: 'status',
         key: 'status',
-        filters: [
-          { text: '全部', value: 1 },
-          { text: '使用中', value: 2 },
-          { text: '空闲', value: 3 },
-          { text: '离线', value: 4 },
-        ],
+        filters: filterStatus,
+        render: text => {
+          return (
+            <Fragment>
+              <font>{filterStatus[text.status - 1].text}</font>
+            </Fragment>
+          );
+        },
       },
       {
         title: '用户',
-        dataIndex: 'user_id',
-        key: 'user_id',
+        dataIndex: 'user_name',
+        key: 'user_name',
       },
       {
         title: '备注',
         dataIndex: 'remark',
         key: 'remark',
+        width: 260,
       },
       {
         title: '最后使用时间',
@@ -121,6 +129,12 @@ export default class Equipment extends Component {
     return columns;
   }
 
+  handelKeydown = e => {
+    if (e.keyCode === 13) {
+      this.onSearch();
+    }
+  };
+
   handleCancel = () => {
     this.setState({ visible: false, editValue: {} });
   };
@@ -137,14 +151,11 @@ export default class Equipment extends Component {
   // 备注
   handleOk = (fieldsValue, id) => {
     this.setState({ modalLoading: true });
-    // delete fieldsValue.upload;
     const { editValue } = this.state;
     if (G._.isEmpty(editValue)) {
       return;
     }
-    const { fieldsValues } = fieldsValue;
-    fieldsValues.id = id;
-    this.addRemark({ ...fieldsValues, callback: this.upload.bind(this) });
+    this.addRemark({ ...fieldsValue, id, callback: this.upload.bind(this) });
   };
 
   // 解除弹窗
@@ -217,15 +228,16 @@ export default class Equipment extends Component {
 
   render() {
     const { manaEquip, loading } = this.props;
-    const { filteredInfo, visible, modalLoading, editValue, query } = this.state;
-    const columns = this.getColumns(filteredInfo);
+    const { visible, modalLoading, editValue, query, filterStatus } = this.state;
     const { limit, offset, count } = manaEquip.data;
+    const columns = this.getColumns(offset, filterStatus);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
         <h3>设备管理</h3>
         <br />
         <Row className={styles.lageBox}>
+          <p>设备列表</p>
           {/* 查询 */}
           <Col span={24}>
             <Button
@@ -243,6 +255,7 @@ export default class Equipment extends Component {
               suffix={suffix}
               ref={node => this.userNameInput === node}
               onChange={this.onChangeSearchInfo.bind(this)}
+              onKeyUp={this.handelKeydown.bind(this)}
             />
           </Col>
           <br />

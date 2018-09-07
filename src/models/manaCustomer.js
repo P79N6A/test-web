@@ -39,7 +39,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(response.data.msg);
       } else {
-        message.success(response.message.err || '重置密码失败');
+        message.error(response.message.err || '重置密码失败');
       }
     },
   },

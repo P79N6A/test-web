@@ -245,7 +245,9 @@ export default class Notice extends Component {
               className={styles.widthInput}
               placeholder="标题"
               suffix={suffix}
-              ref={node => this.userNameInput === node}
+              ref={node => {
+                this.userNameInput = node;
+              }}
               onChange={this.onChangeSearchInfo.bind(this)}
               onKeyUp={this.handelKeydown.bind(this)}
             />

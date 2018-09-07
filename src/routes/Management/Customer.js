@@ -227,7 +227,9 @@ export default class Wework extends Component {
               className={styles.widthInput}
               placeholder="客户名称 / 账号 / 备注"
               suffix={suffix}
-              ref={node => this.userNameInput === node}
+              ref={node => {
+                this.userNameInput = node;
+              }}
               onChange={this.onChangeSearchInfo.bind(this)}
               onKeyUp={this.handelKeydown.bind(this)}
             />

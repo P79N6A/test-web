@@ -178,7 +178,7 @@ export default class Device extends Component {
       filterParam = { status: filters.status };
     }
     if (!G._.isEmpty(sorter)) {
-      sortParam = { number: sorter.order === 'descend' ? 'desc' : 'asc' };
+      sortParam = { serialNumber: sorter.order === 'descend' ? 'desc' : 'asc' };
     }
     this.setState({
       filterParam,
@@ -253,7 +253,9 @@ export default class Device extends Component {
               className={styles.widthInput}
               placeholder="设备编号 / 使用者 / 备注"
               suffix={suffix}
-              ref={node => this.userNameInput === node}
+              ref={node => {
+                this.userNameInput = node;
+              }}
               onChange={this.onChangeSearchInfo.bind(this)}
               onKeyUp={this.handelKeydown.bind(this)}
             />

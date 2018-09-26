@@ -8,7 +8,7 @@
     "start": "cross-env SERVER_URL=http://localhost:8000 PACK_URL=http://urwork.partner.9amtech.com/ PROXY_URL=http://39.108.86.241:9201 APP_TYPE=site umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
     "build:dev": "SERVER_URL=http://urwork.partner.test.9amtech.com PACK_URL=http://urwork.partner.test.9amtech.com/urwork/ PROXY_URL=http://urwork.partner.test.9amtech.com/api BUILD_ENV=dev umi build",
-    "build:pro": "SERVER_URL=http://urwork.partner.9amtech.com PACK_URL=http://peu13ly3f.bkt.clouddn.com/pro/ PROXY_URL=http://urwork.partner.9amtech.com/api BUILD_ENV=pro umi build",
+    "build:pro": "SERVER_URL=http://localhost:8000 PACK_URL=http://peu13ly3f.bkt.clouddn.com/space/ PROXY_URL=http://47.95.219.105:9200 BUILD_ENV=pro umi build",
     "site": "npm run presite && cross-env APP_TYPE=site npm run build && firebase deploy",
     "analyze": "cross-env ANALYZE=1 umi build",
     "lint:style": "stylelint \"src/**/*.less\" --syntax less",

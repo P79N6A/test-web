@@ -1,9 +1,11 @@
 @import '~antd/lib/style/themes/default.less';
-@ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+
+@nav-header-height: 64px;
+
 .logo {
-  height: 64px;
+  height: @nav-header-height;
   position: relative;
-  line-height: 64px;
+  line-height: @nav-header-height;
   padding-left: (@menu-collapsed-width - 32px) / 2;
   transition: all 0.3s;
   background: #35536c;
@@ -14,8 +16,6 @@
     height: 32px;
   }
   h1 {
-    line-height: 52px;
-    padding-top: 12px;
     color: white;
     display: inline-block;
     vertical-align: middle;
@@ -28,17 +28,30 @@
 
 .sider {
   min-height: 100vh;
-  background: #fff;
-  // box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+  box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
   position: relative;
   z-index: 10;
-  &.ligth {
+  &.fixSiderbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    :global(.ant-menu-root) {
+      overflow-y: auto;
+      height: ~'calc(100vh - @{nav-header-height})';
+    }
+  }
+  &.light {
+    box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
     background-color: white;
     .logo {
       background: white;
+      box-shadow: 1px 1px 0 0 @border-color-split;
       h1 {
-        color: #35536c;
+        color: @primary-color;
       }
+    }
+    :global(.ant-menu-light) {
+      border-right-color: transparent;
     }
   }
 }

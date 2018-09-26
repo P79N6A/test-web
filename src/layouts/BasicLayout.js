@@ -1,63 +1,53 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
 import { Layout, message } from 'antd';
 import DocumentTitle from 'react-document-title';
+import isEqual from 'lodash/isEqual';
+import memoizeOne from 'memoize-one';
 import { connect } from 'dva';
-import { Route, Redirect, Switch, routerRedux } from 'dva/router';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
 import pathToRegexp from 'path-to-regexp';
 import { enquireScreen, unenquireScreen } from 'enquire-js';
-import GlobalHeader from '../components/GlobalHeader';
+import { formatMessage } from 'umi/locale';
+import SiderMenu from '@/components/SiderMenu';
+import Authorized from '@/utils/Authorized';
+import Header from './Header';
+import Footer from './Footer';
 import GlobalFooter from '../components/GlobalFooter';
-import SiderMenu from '../components/SiderMenu';
-import NotFound from '../routes/Exception/404';
-import { getRoutes } from '../utils/utils';
-import Authorized from '../utils/Authorized';
-import { getUserInfo } from '../utils/storage';
-import { getMenuData } from '../common/menu';
-import G from './../gobal'
+import logo from '../assets/logo.svg';
+import G from '@/gobal';
+import Exception403 from '../pages/Exception/403';
+import Context from './MenuContext';
+import { getUserInfo, setUserInfo } from '@/utils/authority';
 
-const { Content, Header, Footer } = Layout;
-const { AuthorizedRoute, check } = Authorized;
+const { Content } = Layout;
+const CTOKEN = 'EJ3lZjIAqUanJPqOPFlf8fC9AMCKbBp9amrr9FS69am82h';
 
-/**
- * 根据菜单取得重定向地址.
- */
-const redirectData = [];
-const getRedirect = item => {
-  if (item && item.children) {
-    if (item.children[0] && item.children[0].path) {
-      redirectData.push({
-        from: `${item.path}`,
-        to: `${item.children[0].path}`,
-      });
-      item.children.forEach(children => {
-        getRedirect(children);
-      });
+// Conversion router to menu.
+function formatter(data, parentPath = '', parentAuthority, parentName) {
+  return data.map(item => {
+    let locale = 'menu';
+    if (parentName && item.name) {
+      locale = `${parentName}.${item.name}`;
+    } else if (item.name) {
+      locale = `menu.${item.name}`;
+    } else if (parentName) {
+      locale = parentName;
     }
-  }
-};
-getMenuData().forEach(getRedirect);
-
-/**
- * 获取面包屑映射
- * @param {Object} menuData 菜单配置
- * @param {Object} routerData 路由配置
- */
-const getBreadcrumbNameMap = (menuData, routerData) => {
-  const result = {};
-  const childResult = {};
-  for (const i of menuData) {
-    if (!routerData[i.path]) {
-      result[i.path] = i;
+    const result = {
+      ...item,
+      locale,
+      authority: item.authority || parentAuthority,
+    };
+    if (item.routes) {
+      const children = formatter(item.routes, `${parentPath}${item.path}/`, item.authority, locale);
+      // Reduce memory usage
+      result.children = children;
     }
-    if (i.children) {
-      Object.assign(childResult, getBreadcrumbNameMap(i.children, routerData));
-    }
-  }
-  return Object.assign({}, routerData, result, childResult);
-};
+    delete result.routes;
+    return result;
+  });
+}
 
 const query = {
   'screen-xs': {
@@ -84,34 +74,49 @@ const query = {
   },
 };
 
-let isMobile;
-enquireScreen(b => {
-  isMobile = b;
-});
-
 class BasicLayout extends React.PureComponent {
-  static childContextTypes = {
-    location: PropTypes.object,
-    breadcrumbNameMap: PropTypes.object,
-  };
+  constructor(props) {
+    super(props);
+    this.getPageTitle = memoizeOne(this.getPageTitle);
+    this.getBreadcrumbNameMap = memoizeOne(this.getBreadcrumbNameMap, isEqual);
+    this.breadcrumbNameMap = this.getBreadcrumbNameMap();
+    this.matchParamsPath = memoizeOne(this.matchParamsPath, isEqual);
+    message.config({
+      top: 100,
+      duration: 2,
+      maxCount: 3,
+    });
+  }
 
   state = {
-    isMobile,
+    rendering: true,
+    isMobile: false,
   };
-
-  getChildContext() {
-    const { location, routerData } = this.props;
-    return {
-      location,
-      breadcrumbNameMap: getBreadcrumbNameMap(getMenuData(), routerData),
-    };
-  }
 
   componentWillMount() {
     const userInfo = getUserInfo();
     const { dispatch } = this.props;
     const user = JSON.parse(userInfo);
-    if (user) {
+    const index = window.location.href.indexOf('ctoken');
+    const payload = {
+      token: window.location.href.substr(index + 7),
+      name: 'guest',
+      nickName: '优客工场',
+      avatar: `${G.picUrl}urwork_head.png`,
+    };
+    if (index > -1 && payload.token === CTOKEN) {
+      setUserInfo({ ...payload, autoLogin: true });
+      dispatch({
+        type: 'user/saveUser',
+        payload,
+      });
+      dispatch({
+        type: 'user/changeLoginStatus',
+        payload,
+      });
+      return;
+    }
+    if (user && user.token) {
       dispatch({
         type: 'user/saveUser',
         payload: user,
@@ -124,53 +129,109 @@ class BasicLayout extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.enquireHandler = enquireScreen(mobile => {
+    const { dispatch } = this.props;
+    this.renderRef = requestAnimationFrame(() => {
       this.setState({
-        isMobile: mobile,
+        rendering: false,
       });
     });
+    this.enquireHandler = enquireScreen(mobile => {
+      const { isMobile } = this.state;
+      if (isMobile !== mobile) {
+        this.setState({
+          isMobile: mobile,
+        });
+      }
+    });
+  }
+
+  componentDidUpdate(preProps) {
+    // After changing to phone mode,
+    // if collapsed is true, you need to click twice to display
+    this.breadcrumbNameMap = this.getBreadcrumbNameMap();
+    const { isMobile } = this.state;
+    const { collapsed } = this.props;
+    if (isMobile && !preProps.isMobile && !collapsed) {
+      this.handleMenuCollapse(false);
+    }
   }
 
   componentWillUnmount() {
+    cancelAnimationFrame(this.renderRef);
     unenquireScreen(this.enquireHandler);
   }
 
-  getPageTitle() {
-    const { routerData, location } = this.props;
-    const { pathname } = location;
-    let title = 'Smart Space';
-    let currRouterData = null;
-    // match params path
-    Object.keys(routerData).forEach(key => {
-      if (pathToRegexp(key).test(pathname)) {
-        currRouterData = routerData[key];
-      }
-    });
-    if (currRouterData && currRouterData.name) {
-      title = `Smart Space`;
-    }
-    return title;
+  getContext() {
+    const { location } = this.props;
+    return {
+      location,
+      breadcrumbNameMap: this.breadcrumbNameMap,
+    };
   }
 
-  getBaseRedirect = () => {
-    // According to the url parameter to redirect
-    // 这里是重定向的,重定向到 url 的 redirect 参数所示地址
-    const urlParams = new URL(window.location.href);
+  getMenuData() {
+    const {
+      route: { routes },
+    } = this.props;
+    return formatter(routes);
+  }
 
-    const redirect = urlParams.searchParams.get('redirect');
-    // Remove the parameters in the url
-    if (redirect) {
-      urlParams.searchParams.delete('redirect');
-      window.history.replaceState(null, 'redirect', urlParams.href);
-    } else {
-      const { routerData } = this.props;
-      // get the first authorized route path in routerData
-      const authorizedPath = Object.keys(routerData).find(
-        item => check(routerData[item].authority, item) && item !== '/'
-      );
-      return authorizedPath;
+  /**
+   * 获取面包屑映射
+   * @param {Object} menuData 菜单配置
+   */
+  getBreadcrumbNameMap() {
+    const routerMap = {};
+    const mergeMenuAndRouter = data => {
+      data.forEach(menuItem => {
+        if (menuItem.children) {
+          mergeMenuAndRouter(menuItem.children);
+        }
+        // Reduce memory usage
+        routerMap[menuItem.path] = menuItem;
+      });
+    };
+    mergeMenuAndRouter(this.getMenuData());
+    return routerMap;
+  }
+
+  matchParamsPath = pathname => {
+    const pathKey = Object.keys(this.breadcrumbNameMap).find(key =>
+      pathToRegexp(key).test(pathname)
+    );
+    return this.breadcrumbNameMap[pathKey];
+  };
+
+  getPageTitle = pathname => {
+    const currRouterData = this.matchParamsPath(pathname);
+
+    if (!currRouterData) {
+      return 'Smart Space';
     }
-    return redirect;
+    const message = formatMessage({
+      id: currRouterData.locale || currRouterData.name,
+      defaultMessage: currRouterData.name,
+    });
+    return `${message}`;
+  };
+
+  getLayoutStyle = () => {
+    const { isMobile } = this.state;
+    const { fixSiderbar, collapsed, layout } = this.props;
+    if (fixSiderbar && layout !== 'topmenu' && !isMobile) {
+      return {
+        paddingLeft: collapsed ? '80px' : '256px',
+      };
+    }
+    return null;
+  };
+
+  getContentStyle = () => {
+    const { fixedHeader } = this.props;
+    return {
+      margin: '24px 24px 0',
+      paddingTop: fixedHeader ? 64 : 0,
+    };
   };
 
   handleMenuCollapse = collapsed => {
@@ -181,157 +242,79 @@ class BasicLayout extends React.PureComponent {
     });
   };
 
-  handleNoticeClear = type => {
-    message.success(`清空了${type}`);
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'global/clearNotices',
-      payload: type,
-    });
-  };
-
-  handleMenuClick = ({ key }) => {
-    const { dispatch } = this.props;
-    if (key === 'triggerError') {
-      dispatch(routerRedux.push('/exception/trigger'));
-      return;
-    }
-    if (key === 'change_pass') {
-      dispatch(routerRedux.push('/change/password'));
-      return;
-    }
-    if (key === 'logout') {
-      dispatch({
-        type: 'login/logout',
-      });
-    }
-  };
-
-  handleNoticeVisibleChange = () => {
-    // const { dispatch } = this.props;
-    // if (visible) {
-    //   dispatch({
-    //     type: 'global/fetchNotices',
-    //   });
-    // }
-  };
-
   render() {
     const {
       currentUser,
-      collapsed,
-      fetchingNotices,
-      notices,
-      routerData,
-      match,
-      location,
+      navTheme,
+      layout: PropsLayout,
+      children,
+      location: { pathname },
     } = this.props;
-    const { isMobile: mb } = this.state;
-    const bashRedirect = this.getBaseRedirect();
+    const { isMobile } = this.state;
+    const isTop = PropsLayout === 'topmenu';
+    const menuData = this.getMenuData();
+    const routerConfig = this.matchParamsPath(pathname);
     const layout = (
       <Layout>
-        <SiderMenu
-          logo={`${G.picUrl}logoGreen.png`}
-          // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
-          // If you do not have the Authorized parameter
-          // you will be forced to jump to the 403 interface without permission
-          Authorized={Authorized}
-          menuData={getMenuData()}
-          collapsed={collapsed}
-          location={location}
-          isMobile={mb}
-          onCollapse={this.handleMenuCollapse}
-        />
-        <Layout>
-          <Header style={{ padding: 0 }}>
-            <GlobalHeader
-              logo={`${G.picUrl}logoGreen.png`}
-              currentUser={currentUser}
-              fetchingNotices={fetchingNotices}
-              notices={notices}
-              collapsed={collapsed}
-              isMobile={mb}
-              onNoticeClear={this.handleNoticeClear}
-              onCollapse={this.handleMenuCollapse}
-              onMenuClick={this.handleMenuClick}
-              onNoticeVisibleChange={this.handleNoticeVisibleChange}
-            />
-          </Header>
-          <Content style={{ margin: '24px 24px 0', height: '100%' }}>
-            <Switch>
-              {redirectData.map(item => (
-                <Redirect key={item.from} exact from={item.from} to={item.to} />
-              ))}
-              {getRoutes(match.path, routerData).map(item => (
-                <AuthorizedRoute
-                  key={item.key}
-                  path={item.path}
-                  component={item.component}
-                  exact={item.exact}
-                  authority={item.authority}
-                  redirectPath="/exception/403"
-                />
-              ))}
-              <Redirect exact from="/" to={bashRedirect} />
-              <Route render={NotFound} />
-            </Switch>
+        {isTop && !isMobile ? null : (
+          <SiderMenu
+            logo={`${G.picUrl}logoGreen.png`}
+            // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
+            // If you do not have the Authorized parameter
+            // you will be forced to jump to the 403 interface without permission
+            Authorized={Authorized}
+            theme={navTheme}
+            onCollapse={this.handleMenuCollapse}
+            menuData={menuData}
+            isMobile={isMobile}
+            {...this.props}
+          />
+        )}
+        <Layout
+          style={{
+            ...this.getLayoutStyle(),
+            minHeight: '100vh',
+          }}
+        >
+          <Header
+            currentUser={currentUser}
+            menuData={menuData}
+            handleMenuCollapse={this.handleMenuCollapse}
+            logo={logo}
+            isMobile={isMobile}
+            {...this.props}
+          />
+          <Content style={{ margin: '24px 24px 0', height: '100%', position: 'relative' }}>
+            <Authorized authority={routerConfig.authority} noMatch={<Exception403 />}>
+              {children}
+            </Authorized>
           </Content>
+
           <Footer style={{ padding: 0 }}>
-            <GlobalFooter
-              links={[
-                {
-                  key: '9AM',
-                  title: (
-                    <span>
-                      <img
-                        src={`${G.picUrl}favicons.png`}
-                        alt="pic"
-                        align="absmiddle"
-                        style={{ width: '20px', height: '20px' }}
-                      />{' '}
-                      9AM
-                    </span>
-                  ),
-                  href: '#',
-                  blankTarget: true,
-                },
-                {
-                  key: 'OfficeWell',
-                  title: (
-                    <span>
-                      <img
-                        src={`${G.picUrl}officewell.png`}
-                        alt="pic"
-                        align="absmiddle"
-                        style={{ width: '20px', height: '20px' }}
-                      />{' '}
-                      OfficeWell
-                    </span>
-                  ),
-                  href: '#',
-                  blankTarget: true,
-                },
-              ]}
-              copyright={<Fragment>Copyright©2018 9AM Inc.</Fragment>}
-            />
+            <GlobalFooter copyright={<Fragment>Copyright©2018 9AM Inc.</Fragment>} />
           </Footer>
         </Layout>
       </Layout>
     );
-
     return (
-      <DocumentTitle title={this.getPageTitle()}>
-        <ContainerQuery query={query}>
-          {params => <div className={classNames(params)}>{layout}</div>}
-        </ContainerQuery>
-      </DocumentTitle>
+      <React.Fragment>
+        <DocumentTitle title={this.getPageTitle(pathname)}>
+          <ContainerQuery query={query}>
+            {params => (
+              <Context.Provider value={this.getContext()}>
+                <div className={classNames(params)}>{layout}</div>
+              </Context.Provider>
+            )}
+          </ContainerQuery>
+        </DocumentTitle>
+      </React.Fragment>
     );
   }
 }
 
-export default connect(({ user, global = {}, loading }) => ({
+export default connect(({ user, global, setting }) => ({
   currentUser: user.user,
   collapsed: global.collapsed,
-  fetchingNotices: loading.effects['global/fetchNotices'],
-  notices: global.notices,
+  layout: setting.layout,
+  ...setting,
 }))(BasicLayout);

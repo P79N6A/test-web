@@ -1,7 +1,6 @@
 import fetch from 'dva/fetch';
-
-import { routerRedux } from 'dva/router';
-import store from '../index';
+import router from 'umi/router';
+import { getUserInfo } from '@/utils/authority';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -22,21 +21,31 @@ const codeMessage = {
 };
 
 function checkStatus(response) {
-  const { dispatch } = store;
-  if (response.status >= 200 && response.status < 500) {
-    if (response.status === 401) {
-      dispatch({
-        type: 'login/logout',
-        payload: { tokenExpired: true },
-      });
-    }
-    return response;
+  const { dispatch } = window.g_app._store;
+  if (response.status < 200 || response.status >= 500) {
+    const errortext = codeMessage[response.status] || response.statusText;
+    const error = new Error(errortext);
+    error.name = response.status;
+    error.response = response;
+    throw error;
   }
-  const errortext = codeMessage[response.status] || response.statusText;
-  const error = new Error(errortext);
-  error.name = response.status;
-  error.response = response;
-  throw error;
+  if (response.status !== 401) return response;
+  const user = getUserInfo();
+  if (JSON.parse(user).autoLogin) {
+    dispatch({
+      type: 'login/login',
+      payload: {
+        password: 'Lato7176',
+        username: 'ucommune@9amtech.com',
+      },
+    });
+  } else {
+    dispatch({
+      type: 'login/logout',
+      payload: { tokenExpired: true },
+    });
+  }
+  return response;
 }
 
 /**

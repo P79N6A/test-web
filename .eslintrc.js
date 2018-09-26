@@ -62,6 +62,9 @@ module.exports = {
     'function-paren-newline': [0],
     'no-restricted-globals': [0],
     'require-yield': [1],
+    'no-unused-vars': 0,
+    'no-underscore-dangle': 0,
+    'no-undef': 0,
   },
   parserOptions: {
     ecmaFeatures: {

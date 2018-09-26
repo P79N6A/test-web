@@ -1,17 +1,16 @@
-import G from '../gobal';
-import store from '../index';
-import request from '../utils/request';
-import { filterUrl, filterBody } from '../utils/utils';
+import request from '@/utils/request';
+import G from '@/gobal';
+import { filterUrl, filterBody, getToken } from '@/utils/utils';
 
 const { API_URL } = G;
 // 登录
 export async function login(params) {
-  let username = params.username;
-  let password = params.password;
+  const username = params.userName;
+  const password = params.password;
   // 执行api请求
   return request(`${API_URL}/users/login`, {
     method: 'POST',
-    body: { username: username.replace(/\s+/g, ""), password: password.replace(/\s+/g, "") },
+    body: { username, password },
   });
 }
 
@@ -19,7 +18,7 @@ export async function login(params) {
 export async function logout() {
   return request(`${API_URL}/users/logout`, {
     method: 'POST',
-    body: { token: store.getState().user.user.token },
+    body: { token: getToken() },
   });
 }
 
@@ -27,41 +26,41 @@ export async function logout() {
 export async function changePassword(payload) {
   return request(`${API_URL}/users/password`, {
     method: 'POST',
-    body: { ...payload, token: store.getState().user.user.token },
+    body: { ...payload, token: getToken() },
   });
 }
 
 // 设备数
 export async function getResourceNum() {
-  return request(`${API_URL}/resources/count?token=${store.getState().user.user.token}`, {
+  return request(`${API_URL}/resources/count?token=${getToken()}`, {
     method: 'GET',
   });
 }
 
 // 用户数
 export async function getUserNum() {
-  return request(`${API_URL}/users/count?token=${store.getState().user.user.token}`, {
+  return request(`${API_URL}/users/count?token=${getToken()}`, {
     method: 'GET',
   });
 }
 
 // 通知数
 export async function getNotificationCount() {
-  return request(`${API_URL}/notifications/count?token=${store.getState().user.user.token}`, {
+  return request(`${API_URL}/notifications/count?token=${getToken()}`, {
     method: 'GET',
   });
 }
 
 // 通知数
 export async function getStandNum() {
-  return request(`${API_URL}/stats/standTotalTime?token=${store.getState().user.user.token}`, {
+  return request(`${API_URL}/stats/standTotalTime?token=${getToken()}`, {
     method: 'GET',
   });
 }
 
 // 站立时间
 export async function getHomeStand(payload) {
-  const url = filterUrl({ ...payload, token: store.getState().user.user.token });
+  const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/stats/standTime?${url}`, {
     method: 'GET',
   });
@@ -69,7 +68,7 @@ export async function getHomeStand(payload) {
 
 // 站立排行榜
 export async function getHomeRank(payload) {
-  const url = filterUrl({ ...payload, token: store.getState().user.user.token });
+  const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/stats/standRank?${url}`, {
     method: 'GET',
   });
@@ -115,7 +114,7 @@ export async function getHomeData() {
 
 // 获取人员数组
 export async function getPersonnelList(payload) {
-  const body = filterBody({ ...payload, token: store.getState().user.user.token });
+  const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/users/list`, {
     method: 'POST',
     body,
@@ -127,7 +126,7 @@ export async function addPerson(payload) {
   const url = `${G.API_URL}/users`;
   return request(url, {
     method: 'PUT',
-    body: { ...payload, token: store.getState().user.user.token },
+    body: { ...payload, token: getToken() },
   });
 }
 
@@ -136,13 +135,13 @@ export async function updatePerson(payload) {
   const url = `${G.API_URL}/users/update`;
   return request(url, {
     method: 'POST',
-    body: { ...payload, token: store.getState().user.user.token },
+    body: { ...payload, token: getToken() },
   });
 }
 
 // 获取设备列表
 export async function getResourceList(payload) {
-  const body = filterBody({ ...payload, token: store.getState().user.user.token });
+  const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/resources/list`, { method: 'POST', body });
 }
 
@@ -152,20 +151,20 @@ export async function addRemark(payload) {
   const url = `${G.API_URL}/resources/${id}/remark`;
   return request(url, {
     method: 'POST',
-    body: { remark: payload.remark, token: store.getState().user.user.token },
+    body: { remark: payload.remark, token: getToken() },
   });
 }
 
 // 解绑设备
 export async function releaseDevice(payload) {
   const { id } = payload;
-  const body = filterBody({ ...payload, token: store.getState().user.user.token });
+  const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/resources/${id}/release`, { method: 'POST', body });
 }
 
 // 获去通知列表
 export async function getNoticeList(payload) {
-  const body = filterBody({ ...payload, token: store.getState().user.user.token });
+  const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/notifications/list`, { method: 'POST', body });
 }
 
@@ -174,20 +173,20 @@ export async function sendNotice(payload) {
   const url = `${G.API_URL}/notifications`;
   return request(url, {
     method: 'PUT',
-    body: { ...payload, token: store.getState().user.user.token },
+    body: { ...payload, token: getToken() },
   });
 }
 
 // 置顶通知
 export async function topNotice(payload) {
   const { noticeId } = payload;
-  const body = filterBody({ status: payload.status, token: store.getState().user.user.token });
+  const body = filterBody({ status: payload.status, token: getToken() });
   return request(`${G.API_URL}/notifications/${noticeId}/pinToTop`, { method: 'POST', body });
 }
 
 // 获取客户数组
 export async function getCustomerList(payload) {
-  const body = filterBody({ ...payload, token: store.getState().user.user.token });
+  const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/company/list`, {
     method: 'POST',
     body,
@@ -199,7 +198,7 @@ export async function addCustomer(payload) {
   const url = `${G.API_URL}/company/add`;
   return request(url, {
     method: 'PUT',
-    body: { ...payload, token: store.getState().user.user.token },
+    body: { ...payload, token: getToken() },
   });
 }
 // 编辑客户
@@ -207,13 +206,13 @@ export async function editCustomer(payload) {
   const url = `${G.API_URL}/company/update`;
   return request(url, {
     method: 'PUT',
-    body: { ...payload, token: store.getState().user.user.token },
+    body: { ...payload, token: getToken() },
   });
 }
 // 重置密码
 export async function resetPassword(payload) {
   const { account } = payload;
-  const body = filterBody({ token: store.getState().user.user.token });
+  const body = filterBody({ token: getToken() });
   return request(`${G.API_URL}/company/${account}/resetPassword`, {
     method: 'POST',
     body,

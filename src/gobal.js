@@ -1,6 +1,7 @@
 import moment from 'moment';
 import _ from 'lodash';
 import axios from 'axios';
+import { message } from 'antd';
 
 moment.locale('zh-cn');
 const env = process.BUILD_ENV;
@@ -12,7 +13,10 @@ if (env === '') {
   API_URL = process.PROXY_URL;
 }
 
-const picUrl = 'http://pdum0jw3j.bkt.clouddn.com/';
+const picUrl = 'https://cdn.9amtech.com/space/';
+message.config({
+  maxCount: 3,
+});
 
 export default {
   API_URL,
@@ -21,4 +25,5 @@ export default {
   moment,
   axios,
   picUrl,
+  message,
 };

@@ -1,9 +1,10 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
+import { login } from '@/services/api';
+import { setAuthority, setUserInfo, getUserInfo } from '@/utils/authority';
+import { getPageQuery, isJSON } from '@/utils/utils';
+import { reloadAuthorized } from '@/utils/Authorized';
 import { message } from 'antd';
-import { login, logout } from '../services/api';
-import { setAuthority, setUserInfo } from '../utils/storage';
-import { reloadAuthorized } from '../utils/Authorized';
 
 export default {
   namespace: 'login',
@@ -15,17 +16,21 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
+      // Login successfully
       if (response.status === 'success') {
+        let user = {};
+        if (isJSON(getUserInfo())) user = JSON.parse(getUserInfo());
+        // 获取 session 中缓存的 user 信息，保存之前登录 user 中 autoLogin 属性。
         yield put({
           type: 'changeLoginStatus',
-          payload: response,
+          payload: { data: { ...user, ...response.data }, status: response.status },
         });
         yield put({
-          type: 'user/user',
+          type: 'user/saveUser',
           payload: response.data,
         });
         reloadAuthorized();
-        yield put(routerRedux.replace('/home'));
+        yield put(routerRedux.replace('/'));
       } else if (typeof response.message === 'object') {
         message.error('登录失败！');
       } else {

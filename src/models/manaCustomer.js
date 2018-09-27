@@ -22,7 +22,7 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error('请求失败');
+        message.error(response.message || '请求失败');
       }
     },
     *addCustomer({ payload }, { call }) {
@@ -39,7 +39,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(response.data.msg);
       } else {
-        message.error(response.message.err || '重置密码失败');
+        message.error(response.message || '重置密码失败');
       }
     },
   },

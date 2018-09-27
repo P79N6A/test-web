@@ -43,41 +43,46 @@ export default [
       {
         name: 'management',
         icon: 'table',
-        path: '/management',
-        authority: ['admin', 'user'],
+        path: './management',
         routes: [
           // exception
           {
             path: '/management/customer',
             name: 'customer',
             component: './Management/Customer',
+            authority: ['admin'],
           },
           {
             path: '/management/newCustomer',
             name: 'newCustomer',
             hideInMenu: true,
             component: './Management/newCustomer',
+            authority: ['admin', 'user'],
           },
           {
             path: '/management/person',
             name: 'person',
-            component: './management/Person',
+            component: './Management/Person',
+            authority: ['admin', 'user'],
           },
           {
             path: '/management/device',
             name: 'device',
-            component: './management/Device',
+            component: './Management/Device',
+            authority: ['admin', 'user'],
           },
           {
             path: '/management/notice',
             name: 'notice',
-            comments: './management/Notice',
+            component: './Management/Notice',
+            authority: ['admin', 'user'],
           },
           {
             path: '/management/newNotice',
             name: 'newNotice',
             hideInMenu: true,
-            comments: './management/newNotice',
+            component: './Management/newNotice',
+            authority: ['admin', 'user'],
           },
         ],
       },

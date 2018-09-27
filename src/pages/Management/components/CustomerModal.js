@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
-import G from '../../../gobal';
+import { routerRedux } from '../../../../node_modules/dva/router';
 
 const FormItem = Form.Item;
 
@@ -44,7 +44,7 @@ class NewCustomer extends Component {
   }
 
   // 时间选择器
-  onChange() {}
+  onChange() { }
 
   // 上传成功或者失败的回调
   release(res) {
@@ -98,11 +98,7 @@ class NewCustomer extends Component {
       type: 'manaCustomer/setEditValue',
       payload: '',
     });
-    if (G.env === '') {
-      window.location.href = `${window.location.origin}/#/management/customer`;
-    } else {
-      window.location.href = `${window.location.origin}/home/#/management/customer`;
-    }
+    this.props.dispatch(routerRedux.push('/management/customer'))
   }
 
   render() {
@@ -122,12 +118,12 @@ class NewCustomer extends Component {
                   rules:
                     editValue === ''
                       ? [
-                          { required: true, message: '请输入公司全称' },
-                          {
-                            max: 50,
-                            message: '最大长度50',
-                          },
-                        ]
+                        { required: true, message: '请输入公司全称' },
+                        {
+                          max: 50,
+                          message: '最大长度50',
+                        },
+                      ]
                       : [],
                 })(<Input placeholder="请输入公司全称" size="large" disabled={editValue !== ''} />)}
               </FormItem>
@@ -152,20 +148,20 @@ class NewCustomer extends Component {
                   rules:
                     editValue === ''
                       ? [
-                          { required: true, message: '请输入账号' },
-                          {
-                            min: 8,
-                            message: '最小长度8',
-                          },
-                          {
-                            max: 20,
-                            message: '最大长度20',
-                          },
-                          {
-                            pattern: /^\w+$/,
-                            message: '仅支持半角英文数字和下划线',
-                          },
-                        ]
+                        { required: true, message: '请输入账号' },
+                        {
+                          min: 8,
+                          message: '最小长度8',
+                        },
+                        {
+                          max: 20,
+                          message: '最大长度20',
+                        },
+                        {
+                          pattern: /^\w+$/,
+                          message: '仅支持半角英文数字和下划线',
+                        },
+                      ]
                       : [],
                 })(<Input placeholder="请输入账号" size="large" disabled={editValue !== ''} />)}
               </FormItem>
@@ -190,20 +186,20 @@ class NewCustomer extends Component {
                   rules:
                     editValue === ''
                       ? [
-                          { required: true, message: '请输入密码' },
-                          {
-                            min: 8,
-                            message: '最小长度8',
-                          },
-                          {
-                            max: 20,
-                            message: '最大长度20',
-                          },
-                          {
-                            pattern: /^\w+$/,
-                            message: '仅支持半角英文数字和下划线',
-                          },
-                        ]
+                        { required: true, message: '请输入密码' },
+                        {
+                          min: 8,
+                          message: '最小长度8',
+                        },
+                        {
+                          max: 20,
+                          message: '最大长度20',
+                        },
+                        {
+                          pattern: /^\w+$/,
+                          message: '仅支持半角英文数字和下划线',
+                        },
+                      ]
                       : [],
                 })(<Input placeholder="请输入密码" size="large" disabled={editValue !== ''} />)}
               </FormItem>

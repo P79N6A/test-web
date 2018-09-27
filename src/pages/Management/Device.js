@@ -60,7 +60,7 @@ export default class Device extends Component {
       {
         title: '序号',
         key: 'id',
-        render: index => (
+        render: (text, record, index) => (
           <Fragment>
             <font>{(offset - 1) * 15 + index + 1}</font>
           </Fragment>

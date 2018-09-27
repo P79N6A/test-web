@@ -31,7 +31,7 @@ export default {
       const response = yield call(addRemark, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.data);
+        message.success(response.message);
       } else {
         const { errors } = response.message;
         if (!errors[0]) {
@@ -46,7 +46,7 @@ export default {
       if (response && response.status === 'success') {
         message.success('解绑成功');
       } else {
-        message.error('解绑失败' && (response && response.message));
+        message.error(response.message || '解绑失败');
       }
     },
   },

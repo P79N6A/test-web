@@ -81,15 +81,14 @@ let routes = [
         "name": "management",
         "icon": "table",
         "path": "/management",
-        "authority": [
-          "admin",
-          "user"
-        ],
         "routes": [
           {
             "path": "/management/customer",
             "name": "customer",
             "component": dynamic({ loader: () => import('../Management/Customer'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
+            "authority": [
+              "admin"
+            ],
             "exact": true
           },
           {
@@ -97,31 +96,51 @@ let routes = [
             "name": "newCustomer",
             "hideInMenu": true,
             "component": dynamic({ loader: () => import('../Management/newCustomer'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
+            "authority": [
+              "admin",
+              "user"
+            ],
             "exact": true
           },
           {
             "path": "/management/person",
             "name": "person",
-            "component": dynamic({ loader: () => import('../management/Person'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
+            "component": dynamic({ loader: () => import('../Management/Person'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
+            "authority": [
+              "admin",
+              "user"
+            ],
             "exact": true
           },
           {
             "path": "/management/device",
             "name": "device",
-            "component": dynamic({ loader: () => import('../management/Device'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
+            "component": dynamic({ loader: () => import('../Management/Device'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
+            "authority": [
+              "admin",
+              "user"
+            ],
             "exact": true
           },
           {
             "path": "/management/notice",
             "name": "notice",
-            "comments": "./management/Notice",
+            "component": dynamic({ loader: () => import('../Management/Notice'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
+            "authority": [
+              "admin",
+              "user"
+            ],
             "exact": true
           },
           {
             "path": "/management/newNotice",
             "name": "newNotice",
             "hideInMenu": true,
-            "comments": "./management/newNotice",
+            "component": dynamic({ loader: () => import('../Management/newNotice'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
+            "authority": [
+              "admin",
+              "user"
+            ],
             "exact": true
           },
           {

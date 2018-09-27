@@ -57,9 +57,16 @@ class HeaderView extends PureComponent {
       return;
     }
     if (key === 'logout') {
-      dispatch({
-        type: 'login/logout',
-      });
+      const currentAuthority = this.props.currentUser.currentAuthority;
+      window.sessionStorage.removeItem('userInfo');
+      window.localStorage.setItem('antd-pro-authority', '["guest"]');
+      if (currentAuthority === 'user') {
+        router.push('/user/login');
+      } else {
+        router.push('/admin_user/login');
+      }
+
+      return;
     }
   };
 
@@ -125,15 +132,15 @@ class HeaderView extends PureComponent {
             {...this.props}
           />
         ) : (
-          <GlobalHeader
-            currentUser={currentUser}
-            onCollapse={handleMenuCollapse}
-            onNoticeClear={this.handleNoticeClear}
-            onMenuClick={this.handleMenuClick}
-            onNoticeVisibleChange={this.handleNoticeVisibleChange}
-            {...this.props}
-          />
-        )}
+            <GlobalHeader
+              currentUser={currentUser}
+              onCollapse={handleMenuCollapse}
+              onNoticeClear={this.handleNoticeClear}
+              onMenuClick={this.handleMenuClick}
+              onNoticeVisibleChange={this.handleNoticeVisibleChange}
+              {...this.props}
+            />
+          )}
       </Header>
     ) : null;
     return (

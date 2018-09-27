@@ -16,12 +16,14 @@ import {
 
 import G from '../../gobal';
 import styles from './Notice.less';
+import { routerRedux } from '../../../node_modules/dva/router';
 
 @connect(({ manaNotice, loading, manaPerson }) => ({
   manaPerson,
   manaNotice,
   loading: loading.effects['manaNotice/fetch'],
 }))
+
 export default class Notice extends Component {
   // 表单以及分页
   state = {
@@ -162,7 +164,7 @@ export default class Notice extends Component {
     });
   };
 
-  handleChange = () => {};
+  handleChange = () => { };
 
   copyPush = value => {
     const { dispatch } = this.props;
@@ -206,11 +208,7 @@ export default class Notice extends Component {
   }
 
   newNotice() {
-    if (G.env === 'dev') {
-      window.location.href = `${window.location.origin}/home/#/management/newNotice`;
-      return;
-    }
-    window.location.href = `${window.location.origin}/#/management/newNotice`;
+    this.props.dispatch(routerRedux.push('/management/newNotice'))
   }
 
   render() {
@@ -227,7 +225,7 @@ export default class Notice extends Component {
           <p>通知列表</p>
           {/* 查询 */}
           <Col span={12}>
-            <Button icon="plus" type="primary" onClick={this.newNotice}>
+            <Button icon="plus" type="primary" onClick={this.newNotice.bind(this)}>
               新建
             </Button>
           </Col>

@@ -4,6 +4,7 @@ import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon }
 
 import G from '../../gobal';
 import styles from './Person.less';
+import { routerRedux } from '../../../node_modules/dva/router';
 
 @connect(({ manaCustomer, loading }) => ({
   manaCustomer,
@@ -155,20 +156,12 @@ export default class Wework extends Component {
       type: 'manaCustomer/setcompanyId',
       payload: companyId,
     });
-    if (G.env === '') {
-      window.location.href = `${window.location.origin}/#/management/device`;
-    } else {
-      window.location.href = `${window.location.origin}/home/#/management/device`;
-    }
+    this.props.dispatch(routerRedux.push('/management/device'))
   }
 
   // 添加客户
   newCustomer() {
-    if (G.env === '') {
-      window.location.href = `${window.location.origin}/#/management/newCustomer`;
-    } else {
-      window.location.href = `${window.location.origin}/home/#/management/newCustomer`;
-    }
+    this.props.dispatch(routerRedux.push('/management/newCustomer'))
   }
 
   // 重置密码
@@ -209,7 +202,7 @@ export default class Wework extends Component {
           <p>客户列表</p>
           {/* 查询 */}
           <Col span={12}>
-            <Button icon="plus" type="primary" onClick={this.newCustomer}>
+            <Button icon="plus" type="primary" onClick={this.newCustomer.bind(this)}>
               新增
             </Button>
           </Col>

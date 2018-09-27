@@ -23,7 +23,7 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error(response.err.message);
+        message.error(response.message);
       }
     },
 
@@ -37,9 +37,9 @@ export default {
     *topNotice({ payload }, { call }) {
       const response = yield call(topNotice, payload);
       if (response && response.status === 'success') {
-        message.success('操作成功');
+        message.success(response.message || '操作成功');
       } else {
-        message.error(response.err.message);
+        message.error(response.message || '操作失败');
       }
       payload.callback(response);
     },

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as qiniu from 'qiniu-js';
-import * as qiniuNode from 'qiniu';
+// import * as qiniuNode from 'qiniu';
 import { Modal, Button, Input, Form, Icon, Upload } from 'antd';
 import G from '../../../gobal';
 import styles from './PersonModal.less';
@@ -102,7 +102,7 @@ class PersonModal extends Component {
     }
   };
 
-  next() {}
+  next() { }
 
   error() {
     this.setState({ avatarLoading: false });
@@ -176,8 +176,8 @@ class PersonModal extends Component {
               {imageUrl ? (
                 <img className={styles.avatar} src={imageUrl} alt="avatar" />
               ) : (
-                uploadButton
-              )}
+                  uploadButton
+                )}
             </Upload>
           )}
         </FormItem>

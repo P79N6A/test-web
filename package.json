@@ -27,6 +27,7 @@
     "@babel/runtime": "^7.0.0",
     "antd": "^3.9.2",
     "axios": "^0.18.0",
+    "babel-loader": "^7.1.5",
     "bizcharts": "^3.2.2",
     "bizcharts-plugin-slider": "^2.0.3",
     "classnames": "^2.2.6",
@@ -86,7 +87,11 @@
     "stylelint-config-prettier": "^4.0.0",
     "stylelint-config-standard": "^18.0.0",
     "umi": "^2.0.1",
-    "umi-plugin-react": "^1.0.1"
+    "umi-plugin-react": "^1.0.1",
+    "webpack": "^4.20.2",
+    "webpack-dev-middleware": "^3.4.0",
+    "webpack-dev-server": "^3.1.9",
+    "webpack-hot-middleware": "^2.24.2"
   },
   "optionalDependencies": {
     "puppeteer": "^1.6.0"

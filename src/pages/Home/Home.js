@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Row, Col, Icon, Card, Tabs, DatePicker, Tooltip } from 'antd';
 import numeral from 'numeral';
 import { ChartCard, Field, Bar } from '@/components/Charts';
-import G from '@/gobal';
+import G from '@/global';
 import { getTimeDistance } from '../../utils/utils';
 
 import styles from './Home.less';

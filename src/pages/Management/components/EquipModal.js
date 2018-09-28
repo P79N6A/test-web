@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, Input, Form } from 'antd';
-import G from '../../../gobal';
+import G from '@/global';
 
 const FormItem = Form.Item;
 

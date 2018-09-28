@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
 import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon } from 'antd';
 
-import G from '../../gobal';
+import G from '@/global';
 import styles from './Person.less';
 import { routerRedux } from '../../../node_modules/dva/router';
 

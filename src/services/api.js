@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import G from '@/gobal';
+import G from '@/global';
 import { filterUrl, filterBody, getToken } from '@/utils/utils';
 
 const { API_URL } = G;

@@ -2,7 +2,7 @@ import moment from 'moment';
 import React from 'react';
 import nzh from 'nzh/cn';
 import { parse, stringify } from 'qs';
-import G from '@/gobal';
+import G from '@/global';
 
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;

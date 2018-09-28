@@ -16,7 +16,7 @@ import Footer from './Footer';
 import GlobalFooter from '../components/GlobalFooter';
 import { getAuthority } from '@/utils/authority';
 
-import G from '@/gobal';
+import G from '@/global';
 import Exception403 from '../pages/Exception/403';
 import Context from './MenuContext';
 import { getUserInfo, setUserInfo } from '@/utils/authority';

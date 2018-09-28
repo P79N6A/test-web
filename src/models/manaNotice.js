@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { getNoticeList, getNoticeState, sendNotice, topNotice } from '../services/api';
-import G from '../gobal';
+import G from '@/global';
 
 export default {
   namespace: 'manaNotice',

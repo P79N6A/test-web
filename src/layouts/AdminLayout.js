@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'dva/router';
-import G from '@/gobal';
+import G from '@/global';
 import styles from './UserLayout.less';
 
 class UserLayout extends React.PureComponent {

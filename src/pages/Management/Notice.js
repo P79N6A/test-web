@@ -15,7 +15,7 @@ import {
   Popover
 } from 'antd';
 
-import G from '../../gobal';
+import G from '@/global';
 import styles from './Notice.less';
 import { routerRedux } from '../../../node_modules/dva/router';
 

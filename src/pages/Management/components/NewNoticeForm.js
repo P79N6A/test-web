@@ -5,7 +5,7 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import G from '../../../gobal';
+import G from '@/global';
 
 const SelectOption = Select.Option;
 

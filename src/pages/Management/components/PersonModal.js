@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as qiniu from 'qiniu-js';
 // import * as qiniuNode from 'qiniu';
 import { Modal, Button, Input, Form, Icon, Upload } from 'antd';
-import G from '../../../gobal';
+import G from '@/global';
 import styles from './PersonModal.less';
 
 const FormItem = Form.Item;

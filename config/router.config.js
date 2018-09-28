@@ -45,7 +45,6 @@ export default [
         icon: 'table',
         path: './management',
         routes: [
-          // exception
           {
             path: '/management/customer',
             name: 'customer',
@@ -56,7 +55,7 @@ export default [
             path: '/management/newCustomer',
             name: 'newCustomer',
             hideInMenu: true,
-            component: './Management/newCustomer',
+            component: './Management/NewCustomer',
             authority: ['admin', 'user'],
           },
           {
@@ -81,7 +80,7 @@ export default [
             path: '/management/newNotice',
             name: 'newNotice',
             hideInMenu: true,
-            component: './Management/newNotice',
+            component: './Management/NewNotice',
             authority: ['user'],
           },
           {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import CustomerModal from './components/CustomerModal';
+import CustomerModal from '@/pages/Management/components/CustomerModal';
 import styles from './Person.less';
 
 @connect(({ manaCustomer }) => ({

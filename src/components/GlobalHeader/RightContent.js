@@ -4,7 +4,7 @@ import { Spin, Tag, Menu, Icon, Dropdown, Avatar } from 'antd';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import styles from './index.less';
-import G from '@/gobal';
+import G from '@/global';
 
 export default class GlobalHeaderRight extends PureComponent {
   getNoticeData() {

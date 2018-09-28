@@ -2,6 +2,7 @@
 import os from 'os';
 import pageRoutes from './router.config';
 import webpackplugin from './plugin.config';
+import defaultSettings from '../src/defaultSettings';
 
 export default {
   // add for transfer to umi
@@ -13,6 +14,9 @@ export default {
         dva: {
           hmr: true,
         },
+        targets: {
+          ie: 11,
+        },
         locale: {
           enable: true, // default false
           default: 'zh-CN', // default zh-CN
@@ -21,7 +25,6 @@ export default {
         dynamicImport: {
           loadingComponent: './components/PageLoading/index',
         },
-        polyfills: ['ie11'],
         ...(!process.env.TEST && os.platform() === 'darwin'
           ? {
               dll: {
@@ -33,8 +36,16 @@ export default {
           : {}),
       },
     ],
+    [
+      'umi-plugin-ga',
+      {
+        code: 'UA-72788897-6',
+      },
+    ],
   ],
-  hash: true,
+  targets: {
+    ie: 11,
+  },
   define: {
     APP_TYPE: process.env.APP_TYPE || '',
     'process.PROXY_URL': process.env.PROXY_URL,
@@ -65,6 +76,7 @@ export default {
   lessLoaderOptions: {
     javascriptEnabled: true,
   },
+  disableRedirectHoist: true,
   cssLoaderOptions: {
     modules: true,
     getLocalIdent: (context, localIdentName, localName) => {

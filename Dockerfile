@@ -10,5 +10,6 @@ RUN npm install
 
 ADD . /root
 RUN npm run build:pro
+RUN rm -rf node_modules
 
 CMD ["sh", "/root/scripts/start.sh"]

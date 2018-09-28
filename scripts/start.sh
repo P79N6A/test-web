@@ -11,4 +11,6 @@ rm -f /root/dist/static
 mkdir -p /root/dist/static
 cp -rf /root/static/* /root/dist/static/
 # Start server
+cd /root/server
+npm i
 node /root/server/app.js

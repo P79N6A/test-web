@@ -18,7 +18,7 @@ const { MonthPicker } = DatePicker;
 export default class Home extends Component {
   state = {
     rangePickerValue: getTimeDistance('MONTHLY'),
-    type: 'MONTHLY',
+    type: 'MONTHLY'
   };
 
   componentDidMount() {
@@ -85,6 +85,11 @@ export default class Home extends Component {
     }
   }
 
+  disabledDate = (nowValue) => {
+    const oldValue = G.moment();
+    return nowValue.valueOf() > oldValue.valueOf();
+  }
+
   render() {
     const { rangePickerValue } = this.state;
     const { home } = this.props;
@@ -107,9 +112,12 @@ export default class Home extends Component {
           </a>
         </div>
         <MonthPicker
+          allowClear={false}
           value={rangePickerValue[0]}
           onChange={this.handleMonthPickerChange}
           style={{ width: 100 }}
+          locale={'zh-cn'}
+          disabledDate={this.disabledDate}
         />
       </div>
     );
@@ -130,11 +138,6 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               title="设备数"
-              action={
-                <Tooltip title="指标说明">
-                  <Icon type="info-circle-o" />
-                </Tooltip>
-              }
               total={() => <h4>{numeral(resourceNum.totalCount).format('0,0')}</h4>}
               footer={
                 <Field
@@ -156,11 +159,6 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               title="用户数"
-              action={
-                <Tooltip title="指标说明">
-                  <Icon type="info-circle-o" />
-                </Tooltip>
-              }
               total={numeral(userNum.totalCount).format('0,0')}
               footer={
                 <Field
@@ -181,11 +179,6 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               title="通知数"
-              action={
-                <Tooltip title="指标说明">
-                  <Icon type="info-circle-o" />
-                </Tooltip>
-              }
               total={numeral(notificationNum.total).format('0,0')}
               footer={
                 <Field
@@ -193,7 +186,7 @@ export default class Home extends Component {
                   value={`${Number(
                     (notificationNum.viewTotal /
                       (notificationNum.viewTotal + notificationNum.unreadTotal)) *
-                      100
+                    100
                   ).toFixed(2) || 0}% `}
                 />
               }
@@ -209,11 +202,6 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               title="站立时长"
-              action={
-                <Tooltip title="指标说明">
-                  <Icon type="info-circle-o" />
-                </Tooltip>
-              }
               total={`${parseInt(standNum.duration)}天`}
               footer={
                 <Field
@@ -241,10 +229,8 @@ export default class Home extends Component {
                       {homeStand.length > 0 ? (
                         <Bar height={400} title="" data={homeStand} color="#A6D6D0" />
                       ) : (
-                        <div className={styles.emptyBar}>
-                          <font className={styles.emptyText}>暂无数据</font>
-                        </div>
-                      )}
+                          <div className={styles.emptyBar}></div>
+                        )}
                     </div>
                   </Col>
                   <Col xl={8} lg={12} md={12} sm={24} xs={24}>
@@ -276,10 +262,8 @@ export default class Home extends Component {
                           })}
                         </ul>
                       ) : (
-                        <div className={styles.emptyRand}>
-                          <font>暂无数据</font>
-                        </div>
-                      )}
+                          <div className={styles.emptyRand}></div>
+                        )}
                     </div>
                   </Col>
                 </Row>

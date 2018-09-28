@@ -21,7 +21,7 @@ const FooterView = () => (
               9AM
             </span>
           ),
-          href: '#',
+          href: 'https://9amtech.com',
           blankTarget: true,
         },
         {
@@ -37,7 +37,7 @@ const FooterView = () => (
               OfficeWell
             </span>
           ),
-          href: '#',
+          href: 'http://www.officewell.co',
           blankTarget: true,
         },
       ]}

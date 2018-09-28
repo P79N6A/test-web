@@ -87,7 +87,7 @@ export default class SiderMenu extends PureComponent {
   };
 
   render() {
-    const { logo, collapsed, onCollapse, fixSiderbar, theme } = this.props;
+    const { logo, collapsed, onCollapse, fixSiderbar, theme, currentUser } = this.props;
     const { openKeys } = this.state;
     const defaultProps = collapsed ? {} : { openKeys };
 
@@ -110,7 +110,7 @@ export default class SiderMenu extends PureComponent {
         <div className={styles.logo} id="logo">
           <Link to="/">
             <img src={logo} alt="logo" />
-            <h1>Smart Space</h1>
+            <h1 style={{ lineHeight: '54px', paddingTop: '10px' }}>{currentUser.currentAuthority === 'admin' ? 'System Manager' : 'Smart Space'}</h1>
           </Link>
         </div>
         <BaseMenu

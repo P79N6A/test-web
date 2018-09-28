@@ -111,7 +111,7 @@ class PersonModal extends Component {
   complete(response) {
     this.setState({
       avatarLoading: false,
-      imageUrl: `http://pd36a7jvw.bkt.clouddn.com/${response.key}`,
+      imageUrl: `http://pflmzpr9l.bkt.clouddn.com/${response.key}`,
     });
   }
 
@@ -120,13 +120,13 @@ class PersonModal extends Component {
     const config = { useCdnDomain: true };
     const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
     const avatarUrl = `${editValue.uid}-${G.moment().unix()}.png`;
-    const bucket = `dshow:${avatarUrl}`;
-    const mac = new qiniuNode.auth.digest.Mac(ACCESSKEY, SECRETKEY);
-    const options = { scope: bucket };
-    const putPolicy = new qiniuNode.rs.PutPolicy(options);
-    const token = putPolicy.uploadToken(mac);
+    // const bucket = `dshow:${avatarUrl}`;
+    // const mac = new qiniuNode.auth.digest.Mac(ACCESSKEY, SECRETKEY);
+    // const options = { scope: bucket };
+    // const putPolicy = new qiniuNode.rs.PutPolicy(options);
+    // const token = putPolicy.uploadToken(mac);
     this.setState({ avatarLoading: true });
-    const observable = qiniu.upload(file, avatarUrl, token, putExtra, config);
+    const observable = qiniu.upload(file, avatarUrl, 'h07mPP3LHfjO8BHJfCyIRsiichflVYIHtyNkXNoM:SrxIDoL5bOxJvJULizIUGKsrkzk=:eyJzY29wZSI6IjlhbS1zcGFjZSIsImRlYWRsaW5lIjoxNTM4MTIzNjg1fQ==', putExtra, config);
     observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this));
     return false;
   }

@@ -147,7 +147,7 @@ export default class Person extends Component {
     const fieldsValues = fieldsValue;
     this.setState({ modalLoading: true });
     delete fieldsValues.upload;
-    const editValue = this.state;
+    const { editValue } = this.state;
     if (G._.isEmpty(editValue)) {
       this.addPerson({ ...fieldsValues, avatar, callback: this.upload.bind(this) });
       return;

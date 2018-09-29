@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getNoticeList, sendNotice, topNotice } from '../services/api';
+import { getNoticeList, getNoticeState, sendNotice, topNotice } from '../services/api';
 import G from '../gobal';
 
 export default {
@@ -8,7 +8,8 @@ export default {
   state: {
     data: {
       row: [],
-      offset: 1,
+      offset: 0,
+      current: 1,
       limit: 15,
     },
     copyValue: '',
@@ -26,7 +27,11 @@ export default {
         message.error(response.message);
       }
     },
-
+    // 获取通知的状态
+    *getNoticeStat({ payload }, { call, put }) {
+      const response = yield call(getNoticeState, payload);
+      payload.callback(response);
+    },
     // 发送通知
     *sendNotice({ payload }, { call }) {
       const response = yield call(sendNotice, payload);
@@ -53,6 +58,7 @@ export default {
         data: {
           ...action.payload,
           offset: Number(offset),
+          current: Number(offset) / 15 + 1,
           limit: state.data.limit,
         },
       };

@@ -139,6 +139,13 @@ export async function updatePerson(payload) {
   });
 }
 
+//获取青牛云上传的token
+export async function getqiniuToken() {
+  return request(`${API_URL}/users/qiniuToken?token=${getToken()}`, {
+    method: 'GET',
+  });
+}
+
 // 获取设备列表
 export async function getResourceList(payload) {
   const body = filterBody({ ...payload, token: getToken() });
@@ -166,6 +173,13 @@ export async function releaseDevice(payload) {
 export async function getNoticeList(payload) {
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/notifications/list`, { method: 'POST', body });
+}
+
+// 获取已发送通知的状态
+export async function getNoticeState(payload) {
+  const { noticeId } = payload;
+  const body = filterBody({ token: getToken() });
+  return request(`${G.API_URL}/notifications/${noticeId}/userStatusList`, { method: 'POST', body });
 }
 
 // 发送通知

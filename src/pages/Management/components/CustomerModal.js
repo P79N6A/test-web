@@ -58,6 +58,17 @@ class NewCustomer extends Component {
     }
   }
 
+  // 编辑成功或者失败的回调
+  releases(res) {
+    if (res.status === 'success') {
+      message.success(res.message || '修改成功！');
+      setTimeout(() => {
+        this.goBack();
+      }, 2000);
+    } else {
+      message.error(res.message || '修改失败');
+    }
+  }
   // 添加
   handleCommit() {
     const { form, dispatch, manaCustomer } = this.props;
@@ -75,7 +86,7 @@ class NewCustomer extends Component {
           payload: {
             companyId: editValue.companyId,
             ...all,
-            callback: this.release.bind(this),
+            callback: this.releases.bind(this),
           },
         });
       } else {

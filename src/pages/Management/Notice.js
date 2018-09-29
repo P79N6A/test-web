@@ -12,6 +12,7 @@ import {
   Icon,
   Pagination,
   Popconfirm,
+  Popover
 } from 'antd';
 
 import G from '../../gobal';
@@ -35,12 +36,14 @@ export default class Notice extends Component {
       lastTime: '2018-04',
       content: '<p>Hello World</p>',
     },
+    noticeState: [],
+    state: ['空', '已发送', '已接收', '待办', '已读']
   };
 
   componentDidMount() {
     const { dispatch, manaNotice } = this.props;
-    const { offset } = manaNotice.data;
-    this.fetchDataList(offset);
+    const { current } = manaNotice.data;
+    this.fetchDataList(current);
     dispatch({
       type: 'manaNotice/setCopyValue',
       payload: '',
@@ -49,7 +52,7 @@ export default class Notice extends Component {
     dispatch({
       type: 'manaPerson/fetch',
       payload: {
-        offset: 1,
+        offset: 0,
         limit: 10000,
       },
     });
@@ -82,14 +85,36 @@ export default class Notice extends Component {
     this.showDrawer();
   }
 
-  getColumns(offset) {
+  handleClickChange = (noticeId) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'manaNotice/getNoticeStat',
+      payload: {
+        noticeId,
+        callback: (res) => {
+          this.setState({
+            noticeState: res.data.row
+          })
+        }
+      },
+    });
+  }
+
+  getColumns(current, noticeState, state) {
+    const contest = (
+      <div>
+        {noticeState.map((comment) => (
+          <p key={comment._id}><span>{comment.username || '暂无昵称'}</span><span style={{ float: 'right' }}>{state[comment.readingState]}</span></p>
+        ))}
+      </div>
+    );
     const columns = [
       {
         title: '序号',
         key: 'id',
         render: (text, record, index) => (
           <Fragment>
-            <font>{(offset - 1) * 15 + index + 1}</font>
+            <font>{(current - 1) * 15 + index + 1}</font>
           </Fragment>
         ),
       },
@@ -103,9 +128,22 @@ export default class Notice extends Component {
         },
       },
       {
-        title: '未读人数',
-        dataIndex: 'unreadCount',
+        title: '接收人',
         key: 'unreadCount',
+        render: (text, record, index) => {
+          return (
+            <Fragment>
+              <Popover
+                placement="rightTop"
+                content={contest}
+                title="已送达人员"
+                trigger="click"
+                onClick={this.handleClickChange.bind(this, text.noticeId)}>
+                <font style={{ cursor: 'pointer' }}>{`${text.viewCount}/${text.unreadCount + text.viewCount}`}</font>
+              </Popover>
+            </Fragment>
+          )
+        },
       },
       {
         title: '发布时间',
@@ -197,13 +235,15 @@ export default class Notice extends Component {
     });
   }
 
-  fetchDataList(offset) {
+  fetchDataList(current) {
     const { manaNotice, dispatch } = this.props;
     const { limit } = manaNotice.data;
     const { query } = this.state;
     dispatch({
       type: 'manaNotice/fetch',
-      payload: { offset, limit, query },
+      payload: {
+        offset: (current - 1) * 15, limit, query
+      },
     });
   }
 
@@ -213,9 +253,9 @@ export default class Notice extends Component {
 
   render() {
     const { manaNotice, loading } = this.props;
-    const { query, detail, visible } = this.state;
-    const { limit, offset, count } = manaNotice.data;
-    const columns = this.getColumns(offset);
+    const { query, detail, visible, noticeState, state } = this.state;
+    const { limit, current, count } = manaNotice.data;
+    const columns = this.getColumns(current, noticeState, state);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
@@ -265,7 +305,7 @@ export default class Notice extends Component {
             />
             <Pagination
               style={{ marginTop: 20, float: 'right' }}
-              current={offset}
+              current={current}
               showQuickJumper
               total={count}
               pageSize={limit}

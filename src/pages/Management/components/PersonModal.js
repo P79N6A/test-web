@@ -116,19 +116,28 @@ class PersonModal extends Component {
   }
 
   beforeUpload(file) {
-    const { editValue } = this.props;
-    const config = { useCdnDomain: true };
-    const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
-    const avatarUrl = `${editValue.uid}-${G.moment().unix()}.png`;
-    // const bucket = `dshow:${avatarUrl}`;
-    // const mac = new qiniuNode.auth.digest.Mac(ACCESSKEY, SECRETKEY);
-    // const options = { scope: bucket };
-    // const putPolicy = new qiniuNode.rs.PutPolicy(options);
-    // const token = putPolicy.uploadToken(mac);
-    this.setState({ avatarLoading: true });
-    const observable = qiniu.upload(file, avatarUrl, 'h07mPP3LHfjO8BHJfCyIRsiichflVYIHtyNkXNoM:SrxIDoL5bOxJvJULizIUGKsrkzk=:eyJzY29wZSI6IjlhbS1zcGFjZSIsImRlYWRsaW5lIjoxNTM4MTIzNjg1fQ==', putExtra, config);
-    observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this));
-    return false;
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'manaPerson/getqiniuToken',
+      payload: {
+        callback: (res) => {
+          if (res.status === 'success') {
+            const { editValue } = this.props;
+            const config = { useCdnDomain: true };
+            const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
+            const avatarUrl = `${editValue.uid}-${G.moment().unix()}.png`;
+            this.setState({ avatarLoading: true });
+            const observable = qiniu.upload(file, avatarUrl, res.data, putExtra, config);
+            observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this));
+            return false;
+          } else {
+            message.error('请刷新页面');
+          }
+        }
+      },
+
+    });
+
   }
 
   render() {
@@ -227,7 +236,7 @@ class PersonModal extends Component {
                 message: '最大长度100',
               },
             ],
-          })(<Input placeholder="请输入职务" />)}
+          })(<Input placeholder="请输入备注" />)}
         </FormItem>
       </Modal>
     );

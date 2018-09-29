@@ -22,7 +22,7 @@ export default class Wework extends Component {
   }
 
   onSearch() {
-    this.fetchDataList({ offset: 1 });
+    this.fetchDataList({ offset: 0 });
   }
 
   onChangeSearchInfo = e => {
@@ -39,14 +39,14 @@ export default class Wework extends Component {
     this.newCustomer();
   }
 
-  getColumns(offset) {
+  getColumns(current) {
     const columns = [
       {
         title: '序号',
         key: 'id',
         render: (text, record, index) => (
           <Fragment>
-            <font>{(offset - 1) * 15 + index + 1}</font>
+            <font>{(current - 1) * 15 + index + 1}</font>
           </Fragment>
         ),
       },
@@ -145,7 +145,7 @@ export default class Wework extends Component {
   };
 
   pageChange = pageNumber => {
-    this.fetchDataList({ offset: pageNumber });
+    this.fetchDataList({ current: pageNumber });
   };
 
   // 跳转到设备列表
@@ -180,7 +180,7 @@ export default class Wework extends Component {
     dispatch({
       type: 'manaCustomer/fetch',
       payload: {
-        offset: (value && value.offset) || equipData.offset,
+        offset: (value && (value.current - 1) * 15),
         limit: (value && value.limit) || equipData.limit,
         query: (value && value.query) || query,
         sortParam: (value && value.sortParam) || sortParam,
@@ -191,8 +191,8 @@ export default class Wework extends Component {
   render() {
     const { manaCustomer, loading } = this.props;
     const { query } = this.state;
-    const { limit, offset, count } = manaCustomer.data;
-    const columns = this.getColumns(offset);
+    const { limit, current, count } = manaCustomer.data;
+    const columns = this.getColumns(current);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
@@ -242,7 +242,7 @@ export default class Wework extends Component {
             />
             <Pagination
               style={{ marginTop: 20, float: 'right' }}
-              current={offset}
+              current={current}
               showQuickJumper
               total={count}
               pageSize={limit}

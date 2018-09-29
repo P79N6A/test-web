@@ -22,9 +22,6 @@ class UserLayout extends React.PureComponent {
               <div className={styles.desc}>Create Healthier & Smarter Workplace</div>
             </div>
             {children}
-            <p className={styles.ps}>
-              帮助&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;隐私&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;条款
-            </p>
             <p className={styles.ps}>Copyright©2018 9AM Inc.</p>
           </div>
         </div>

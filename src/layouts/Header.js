@@ -65,7 +65,6 @@ class HeaderView extends PureComponent {
       } else {
         router.push('/admin_user/login');
       }
-
       return;
     }
   };

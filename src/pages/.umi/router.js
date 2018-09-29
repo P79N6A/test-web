@@ -107,7 +107,6 @@ let routes = [
             "name": "person",
             "component": dynamic({ loader: () => import('../Management/Person'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
             "authority": [
-              "admin",
               "user"
             ],
             "exact": true
@@ -127,7 +126,6 @@ let routes = [
             "name": "notice",
             "component": dynamic({ loader: () => import('../Management/Notice'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
             "authority": [
-              "admin",
               "user"
             ],
             "exact": true
@@ -138,7 +136,6 @@ let routes = [
             "hideInMenu": true,
             "component": dynamic({ loader: () => import('../Management/newNotice'), loading: require('E:/company/item9AM/space-web/src/components/PageLoading/index').default  }),
             "authority": [
-              "admin",
               "user"
             ],
             "exact": true

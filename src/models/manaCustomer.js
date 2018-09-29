@@ -6,7 +6,8 @@ export default {
   state: {
     data: {
       rows: [],
-      offset: 1,
+      offset: 0,
+      current: 1,
       limit: 15,
     },
     editValue: '',
@@ -37,7 +38,7 @@ export default {
       const response = yield call(resetPassword, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.data.msg);
+        message.success(response.data);
       } else {
         message.error(response.message || '重置密码失败');
       }
@@ -52,6 +53,7 @@ export default {
         data: {
           ...action.payload,
           offset: Number(offset),
+          current: Number(offset) / 15 + 1,
           limit: state.data.limit,
         },
       };

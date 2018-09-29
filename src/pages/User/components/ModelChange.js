@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
+import { routerRedux } from '../../../../node_modules/dva/router';
 
 const FormItem = Form.Item;
 
@@ -19,9 +20,10 @@ class ModalChange extends Component {
 
   handleConfirmBlur = () => { };
 
-  // 修改成功或者失败的回调函数
+  // 修改成功或者失败的回调函数(判断角色返回不同页面)
   release(res) {
     const { form } = this.props;
+    const currentAuthority = this.props.currentUser.currentAuthority;
     if (res.status === 'success') {
       message.success(res.data.msg || '修改成功！');
       form.setFieldsValue({
@@ -29,6 +31,14 @@ class ModalChange extends Component {
         newPassword: '',
         newsPassword: '',
       });
+      window.sessionStorage.removeItem('userInfo');
+      window.localStorage.setItem('antd-pro-authority', '["guest"]');
+      if (currentAuthority === 'user') {
+        router.push('/user/login');
+      } else {
+        router.push('/admin_user/login');
+      }
+      return;
     } else {
       message.error(res.message || '修改失败！');
     }

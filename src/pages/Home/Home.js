@@ -17,8 +17,8 @@ const { MonthPicker } = DatePicker;
 }))
 export default class Home extends Component {
   state = {
-    rangePickerValue: getTimeDistance('MONTHLY'),
-    type: 'MONTHLY'
+    rangePickerValue: getTimeDistance('DAILY'),
+    type: 'DAILY'
   };
 
   componentDidMount() {
@@ -61,8 +61,8 @@ export default class Home extends Component {
         .add(1, 'month')
         .subtract(1, 'day'),
     ];
-    this.setState({ rangePickerValue, type: 'MONTHLY' });
-    this.getHomeStand({ date: rangePickerValue[0], type2: 'MONTHLY' });
+    this.setState({ rangePickerValue, type: 'DAILY' });
+    this.getHomeStand({ date: rangePickerValue[0], type2: 'DAILY' });
   };
 
   selectDate = type => {
@@ -183,7 +183,7 @@ export default class Home extends Component {
               footer={
                 <Field
                   label="阅读率"
-                  value={`${Number(
+                  value={notificationNum.viewTotal === 0 ? '0' : `${Number(
                     (notificationNum.viewTotal /
                       (notificationNum.viewTotal + notificationNum.unreadTotal)) *
                     100
@@ -236,7 +236,7 @@ export default class Home extends Component {
                   <Col xl={8} lg={12} md={12} sm={24} xs={24}>
                     <div className={styles.salesRank}>
                       <h4 className={styles.rankingTitle}>人员站立时间排行</h4>
-                      {homeRank.length > 0 ? (
+                      {homeRank && homeRank.length > 0 ? (
                         <ul className={styles.rankingList}>
                           {homeRank.map((item, i) => {
                             const { duration, username } = item;

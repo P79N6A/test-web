@@ -6,7 +6,8 @@ export default {
   state: {
     data: {
       rows: [],
-      offset: 1,
+      offset: 0,
+      current: 1,
       limit: 15,
     },
   },
@@ -31,13 +32,9 @@ export default {
       const response = yield call(addRemark, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.message);
+        message.success(response.data);
       } else {
-        const { errors } = response.message;
-        if (!errors[0]) {
-          return message.error('添加失败');
-        }
-        message.error(`${errors[0].field} ${errors[0].message}`);
+        message.error(response.message || '操作失败');
       }
     },
     *release({ payload }, { call }) {
@@ -59,6 +56,7 @@ export default {
         data: {
           ...action.payload,
           offset: Number(offset),
+          current: Number(offset) / 15 + 1,
           limit: state.data.limit,
         },
       };
@@ -68,7 +66,8 @@ export default {
         ...state,
         data: {
           rows: [],
-          offset: 1,
+          offset: 0,
+          current: 1,
           limit: 15,
         },
       };

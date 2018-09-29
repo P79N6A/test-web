@@ -1,14 +1,16 @@
 import { message } from 'antd';
-import { getPersonnelList, addPerson, updatePerson } from '../services/api';
+import { getPersonnelList, addPerson, updatePerson, getqiniuToken } from '../services/api';
 
 export default {
   namespace: 'manaPerson',
   state: {
     data: {
       rows: [],
-      offset: 1,
+      offset: 0,
+      current: 1,
       limit: 15,
     },
+    qiniuToken: ''
   },
 
   effects: {
@@ -41,6 +43,10 @@ export default {
         message.error(response.message || '修改失败');
       }
     },
+    *getqiniuToken({ payload }, { call }) {
+      const response = yield call(getqiniuToken, payload);
+      payload.callback(response);
+    },
   },
 
   reducers: {
@@ -51,9 +57,10 @@ export default {
         data: {
           ...action.payload,
           offset: Number(offset),
+          current: Number(offset) / 15 + 1,
           limit: state.data.limit,
         },
       };
-    },
+    }
   },
 };

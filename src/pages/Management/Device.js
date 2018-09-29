@@ -41,7 +41,7 @@ export default class Device extends Component {
   }
 
   onSearch() {
-    this.fetchDataList({ offset: 1 });
+    this.fetchDataList({ current: 0 });
   }
 
   onChangeSearchInfo = e => {
@@ -55,14 +55,14 @@ export default class Device extends Component {
     });
   }
 
-  getColumns(offset, filterStatus) {
+  getColumns(current, filterStatus) {
     const columns = [
       {
         title: '序号',
         key: 'id',
         render: (text, record, index) => (
           <Fragment>
-            <font>{(offset - 1) * 15 + index + 1}</font>
+            <font>{(current - 1) * 15 + index + 1}</font>
           </Fragment>
         ),
       },
@@ -188,7 +188,7 @@ export default class Device extends Component {
   };
 
   pageChange = pageNumber => {
-    this.fetchDataList({ offset: pageNumber });
+    this.fetchDataList({ current: pageNumber });
   };
 
   // 调用备注的接口
@@ -216,7 +216,7 @@ export default class Device extends Component {
     dispatch({
       type: 'manaEquip/fetch',
       payload: {
-        offset: (value && value.offset) || equipData.offset,
+        offset: (value && (value.current - 1) * 15),
         limit: (value && value.limit) || equipData.limit,
         query: (value && value.query) || query,
         filterParam: (value && value.filterParam) || filterParam,
@@ -229,8 +229,8 @@ export default class Device extends Component {
   render() {
     const { manaEquip, loading } = this.props;
     const { visible, modalLoading, editValue, query, filterStatus } = this.state;
-    const { limit, offset, count } = manaEquip.data;
-    const columns = this.getColumns(offset, filterStatus);
+    const { limit, current, count } = manaEquip.data;
+    const columns = this.getColumns(current, filterStatus);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
@@ -275,7 +275,7 @@ export default class Device extends Component {
             />
             <Pagination
               style={{ marginTop: 20, float: 'right' }}
-              current={offset}
+              current={current}
               showQuickJumper
               total={count}
               pageSize={limit}

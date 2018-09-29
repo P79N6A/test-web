@@ -29,12 +29,12 @@ export default class Person extends Component {
 
   componentDidMount() {
     const { manaPerson } = this.props;
-    const { offset } = manaPerson.data;
-    this.fetchDataList({ offset });
+    const { current } = manaPerson.data;
+    this.fetchDataList({ current });
   }
 
   onSearch() {
-    this.fetchDataList({ offset: 1 });
+    this.fetchDataList({ offset: 0 });
   }
 
   onChangeSearchInfo = e => {
@@ -58,14 +58,14 @@ export default class Person extends Component {
     this.updatePerson({ uid: text.uid, isDel: true, callback: this.update.bind(this) });
   }
 
-  getColumns(offset, filterStatus) {
+  getColumns(current, filterStatus) {
     const columns = [
       {
         title: '序号',
         key: 'uid',
         render: (text, record, index) => (
           <Fragment>
-            <font>{(offset - 1) * 15 + index + 1}</font>
+            <font>{(current - 1) * 15 + index + 1}</font>
           </Fragment>
         ),
       },
@@ -195,8 +195,8 @@ export default class Person extends Component {
     this.fetchDataList({ filterParam, sortParam });
   };
 
-  pageChange = offset => {
-    this.fetchDataList({ offset });
+  pageChange = current => {
+    this.fetchDataList({ current });
   };
 
   fetchDataList(value) {
@@ -207,7 +207,7 @@ export default class Person extends Component {
       type: 'manaPerson/fetch',
       payload: {
         limit: (value && value.limit) || personData.limit,
-        offset: (value && value.offset) || personData.offset,
+        offset: (value && (value.current - 1) * 15),
         query: (value && value.query) || query,
         filterParam: (value && value.filterParam) || filterParam,
         sortParam: (value && value.sortParam) || sortParam,
@@ -232,10 +232,10 @@ export default class Person extends Component {
   }
 
   render() {
-    const { manaPerson, user, loading } = this.props;
+    const { manaPerson, user, loading, dispatch } = this.props;
     const { modalLoading, visible, editValue, query, filterStatus } = this.state;
-    const { limit, offset, count } = manaPerson.data;
-    const columns = this.getColumns(offset, filterStatus);
+    const { limit, count, current } = manaPerson.data;
+    const columns = this.getColumns(current, filterStatus);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
@@ -284,16 +284,17 @@ export default class Person extends Component {
             />
             <Pagination
               style={{ marginTop: 20, float: 'right' }}
-              current={offset}
+              current={current}
               showQuickJumper
               total={count}
-              limit={limit}
+              pageSize={limit}
               onChange={this.pageChange.bind(this)}
             />
           </Col>
         </Row>
         {/* 弹窗 */}
         <PersonModal
+          dispatch={dispatch}
           user={user}
           visible={visible}
           loading={modalLoading}

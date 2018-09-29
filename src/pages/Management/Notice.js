@@ -315,9 +315,9 @@ export default class Notice extends Component {
         </Row>
         <Drawer
           width={512}
+          closable={true}
           title={detail.title}
           placement="right"
-          closable={false}
           onClose={this.onClose}
           visible={visible}
         >

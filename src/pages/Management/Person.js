@@ -239,7 +239,7 @@ export default class Person extends Component {
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
-        <h3>人员管理</h3>
+        <h3>用户管理</h3>
         <br />
         <Row className={styles.lageBox}>
           <p>用户列表</p>

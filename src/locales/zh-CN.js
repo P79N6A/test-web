@@ -9,7 +9,7 @@ export default {
   'menu.changePassword': '修改密码',
   'menu.management.customer': '客户管理',
   'menu.management.newCustomer': '新增客户',
-  'menu.management.person': '人员管理',
+  'menu.management.person': '用户管理',
   'menu.management.device': '设备管理',
   'menu.management.notice': '通知管理',
   'menu.management.newNotice': '新建通知',

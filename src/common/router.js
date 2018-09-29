@@ -77,7 +77,7 @@ export const getRouterData = app => {
     '/home': {
       component: dynamicWrapper(app, ['home'], () => import('../routes/Home/Home')),
     },
-    // 人员管理
+    // 用户管理
     '/management/person': {
       component: dynamicWrapper(app, ['manaPerson', 'user'], () =>
         import('../routes/Management/Person')

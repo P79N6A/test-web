@@ -37,8 +37,8 @@ const SiderMenuWrapper = props => {
       />
     </Drawer>
   ) : (
-    <SiderMenu {...props} flatMenuKeys={getFlatMenuKeys(menuData)} />
-  );
+      <SiderMenu {...props} flatMenuKeys={getFlatMenuKeys(menuData)} />
+    );
 };
 
 export default SiderMenuWrapper;

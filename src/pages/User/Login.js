@@ -62,7 +62,7 @@ class LoginPage extends Component {
   );
 
   render() {
-    const { login, submitting } = this.props;
+    const { login, submitting, match } = this.props;
     const { type, autoLogin } = this.state;
     return (
       <div className={styles.main}>
@@ -86,7 +86,7 @@ class LoginPage extends Component {
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
           </Tab>
-          <Submit loading={submitting}>登录</Submit>
+          <Submit loading={submitting} path={match.path}>登录</Submit>
         </Login>
       </div>
     );

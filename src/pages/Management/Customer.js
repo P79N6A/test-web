@@ -202,7 +202,7 @@ export default class Wework extends Component {
           <p>客户列表</p>
           {/* 查询 */}
           <Col span={12}>
-            <Button icon="plus" type="primary" onClick={this.newCustomer.bind(this)}>
+            <Button icon="plus" type="primary" size='small' onClick={this.newCustomer.bind(this)}>
               新增
             </Button>
           </Col>
@@ -210,6 +210,7 @@ export default class Wework extends Component {
             <Button
               className={styles.rights}
               icon="search"
+              size='small'
               type="primary"
               onClick={this.onSearch.bind(this)}
             >

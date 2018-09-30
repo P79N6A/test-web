@@ -14,13 +14,15 @@ import Authorized from '@/utils/Authorized';
 import Header from './Header';
 import Footer from './Footer';
 import GlobalFooter from '../components/GlobalFooter';
-import logo from '../assets/logo.svg';
+import { getAuthority } from '@/utils/authority';
+
 import G from '@/gobal';
 import Exception403 from '../pages/Exception/403';
 import Context from './MenuContext';
 import { getUserInfo, setUserInfo } from '@/utils/authority';
 
 const { Content } = Layout;
+
 const CTOKEN = 'EJ3lZjIAqUanJPqOPFlf8fC9AMCKbBp9amrr9FS69am82h';
 
 // Conversion router to menu.
@@ -243,13 +245,20 @@ class BasicLayout extends React.PureComponent {
   };
 
   render() {
+    const Authority = getAuthority();
+    let color = 'light'
+    if (Authority[0] === 'admin') {
+      color = 'dark'
+    }
+    // this.props.navTheme = color;
+    const myProps = { ...this.props, navTheme: color };
     const {
       currentUser,
       navTheme,
       layout: PropsLayout,
       children,
       location: { pathname },
-    } = this.props;
+    } = myProps;
     const { isMobile } = this.state;
     const isTop = PropsLayout === 'topmenu';
     const menuData = this.getMenuData();
@@ -259,15 +268,12 @@ class BasicLayout extends React.PureComponent {
         {isTop && !isMobile ? null : (
           <SiderMenu
             logo={`${G.picUrl}logoGreen.png`}
-            // 不带Authorized参数的情况下如果没有权限,会强制跳到403界面
-            // If you do not have the Authorized parameter
-            // you will be forced to jump to the 403 interface without permission
             Authorized={Authorized}
             theme={navTheme}
             onCollapse={this.handleMenuCollapse}
             menuData={menuData}
             isMobile={isMobile}
-            {...this.props}
+            {...myProps}
           />
         )}
         <Layout
@@ -280,7 +286,7 @@ class BasicLayout extends React.PureComponent {
             currentUser={currentUser}
             menuData={menuData}
             handleMenuCollapse={this.handleMenuCollapse}
-            logo={logo}
+            logo={`${G.picUrl}logoGreen.png`}
             isMobile={isMobile}
             {...this.props}
           />

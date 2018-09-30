@@ -244,13 +244,14 @@ export default class Person extends Component {
         <Row className={styles.lageBox}>
           <p>用户列表</p>
           <Col span={12}>
-            <Button icon="plus" type="primary" onClick={this.showModal}>
+            <Button icon="plus" type="primary" size='small' onClick={this.showModal}>
               添加
             </Button>
           </Col>
           <Col span={12}>
             <Button
               className={styles.rights}
+              size='small'
               icon="search"
               type="primary"
               onClick={this.onSearch.bind(this)}

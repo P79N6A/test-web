@@ -45,10 +45,10 @@ class EquipModal extends Component {
         onOk={this.okHandle}
         onCancel={handleCancel}
         footer={[
-          <Button key="back" onClick={handleCancel}>
+          <Button key="back" size='small' onClick={handleCancel}>
             取消
           </Button>,
-          <Button key="submit" type="primary" loading={loading} onClick={this.okHandle}>
+          <Button key="submit" size='small' type="primary" loading={loading} onClick={this.okHandle}>
             保存
           </Button>,
         ]}

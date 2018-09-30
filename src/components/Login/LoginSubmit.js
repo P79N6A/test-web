@@ -6,7 +6,11 @@ import styles from './index.less';
 const FormItem = Form.Item;
 
 const LoginSubmit = ({ className, ...rest }) => {
-  const clsString = classNames(styles.submit, className);
+  let clsString = classNames(styles.submit, className);
+  if (rest.path === '/admin_user/login') {
+    clsString = classNames(styles.submits, className);
+  }
+
   return (
     <FormItem>
       <Button size="large" className={clsString} type="primary" htmlType="submit" {...rest} />

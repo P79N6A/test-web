@@ -137,6 +137,7 @@ export default class Home extends Component {
           <Col {...topColResponsiveProps}>
             <ChartCard
               bordered={false}
+              style={{ borderRadius: '4px' }}
               title="设备数"
               total={() => <h4>{numeral(resourceNum.totalCount).format('0,0')}</h4>}
               footer={
@@ -158,6 +159,7 @@ export default class Home extends Component {
           <Col {...topColResponsiveProps}>
             <ChartCard
               bordered={false}
+              style={{ borderRadius: '4px' }}
               title="用户数"
               total={numeral(userNum.totalCount).format('0,0')}
               footer={
@@ -178,6 +180,7 @@ export default class Home extends Component {
           <Col {...topColResponsiveProps}>
             <ChartCard
               bordered={false}
+              style={{ borderRadius: '4px' }}
               title="通知数"
               total={numeral(notificationNum.total).format('0,0')}
               footer={
@@ -201,6 +204,7 @@ export default class Home extends Component {
           <Col {...topColResponsiveProps}>
             <ChartCard
               bordered={false}
+              style={{ borderRadius: '4px' }}
               title="站立时长"
               total={`${parseInt(standNum.duration)}天`}
               footer={
@@ -219,7 +223,7 @@ export default class Home extends Component {
           </Col>
         </Row>
 
-        <Card bordered={false} bodyStyle={{ padding: 0 }}>
+        <Card bordered={false} bodyStyle={{ padding: 0 }} style={{ borderRadius: '4px' }}>
           <div className={styles.salesCard}>
             <Tabs tabBarExtraContent={salesExtra} size="large" tabBarStyle={{ marginBottom: 24 }}>
               <TabPane tab="站立时间趋势" key="views">

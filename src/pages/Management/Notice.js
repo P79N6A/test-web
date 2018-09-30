@@ -265,13 +265,14 @@ export default class Notice extends Component {
           <p>通知列表</p>
           {/* 查询 */}
           <Col span={12}>
-            <Button icon="plus" type="primary" onClick={this.newNotice.bind(this)}>
+            <Button icon="plus" type="primary" size='small' onClick={this.newNotice.bind(this)}>
               新建
             </Button>
           </Col>
           <Col span={12}>
             <Button
               className={styles.rights}
+              size='small'
               icon="search"
               type="primary"
               onClick={this.onSearch.bind(this)}

@@ -242,6 +242,7 @@ export default class Device extends Component {
           <Col span={24}>
             <Button
               className={styles.rights}
+              size='small'
               icon="search"
               type="primary"
               onClick={this.onSearch.bind(this)}

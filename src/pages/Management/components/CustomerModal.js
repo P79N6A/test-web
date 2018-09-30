@@ -121,7 +121,7 @@ class NewCustomer extends Component {
       <div>
         <h3>{title}</h3>
         <br />
-        <Form style={{ backgroundColor: '#fff', padding: '20px' }}>
+        <Form style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '4px' }}>
           <Row>
             <Col span={12}>
               <FormItem label="公司全称" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
@@ -307,10 +307,10 @@ class NewCustomer extends Component {
           </Row>
           <Row>
             <Col span={24} style={{ textAlign: 'right' }}>
-              <Button type="primary" htmlType="submit" onClick={this.handleCommit.bind(this)}>
+              <Button type="primary" htmlType="submit" size='small' onClick={this.handleCommit.bind(this)}>
                 保存
               </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.goBack.bind(this)}>
+              <Button style={{ marginLeft: 8 }} size='small' onClick={this.goBack.bind(this)}>
                 取消
               </Button>
             </Col>

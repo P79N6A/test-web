@@ -89,8 +89,8 @@ export default class BaseMenu extends PureComponent {
                 <span>{name}</span>
               </span>
             ) : (
-              name
-            )
+                name
+              )
           }
           key={item.path}
         >
@@ -129,8 +129,8 @@ export default class BaseMenu extends PureComponent {
         onClick={
           isMobile
             ? () => {
-                onCollapse(true);
-              }
+              onCollapse(true);
+            }
             : undefined
         }
       >

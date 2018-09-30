@@ -168,11 +168,12 @@ class NewNoticeForm extends Component {
         </FormItem>
         <Row>
           <Col span={24} style={{ textAlign: 'left' }}>
-            <Button type="primary" htmlType="submit" onClick={this.handleCommit.bind(this)}>
+            <Button type="primary" size='small' htmlType="submit" onClick={this.handleCommit.bind(this)}>
               发布
             </Button>
             <Button
               style={{ marginLeft: 8 }}
+              size='small'
               onClick={() => {
                 history.back(-1);
               }}

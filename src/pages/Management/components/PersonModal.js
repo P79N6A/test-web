@@ -160,10 +160,10 @@ class PersonModal extends Component {
         onOk={this.okHandle}
         onCancel={this.onCancel.bind(this, handleCancel)}
         footer={[
-          <Button key="back" onClick={this.onCancel.bind(this, handleCancel)}>
+          <Button key="back" size='small' onClick={this.onCancel.bind(this, handleCancel)}>
             关闭
           </Button>,
-          <Button key="submit" type="primary" loading={loading} onClick={this.okHandle}>
+          <Button key="submit" size='small' type="primary" loading={loading} onClick={this.okHandle}>
             提交
           </Button>,
         ]}

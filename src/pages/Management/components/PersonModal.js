@@ -29,11 +29,14 @@ class PersonModal extends Component {
       this.visible = visible;
       this.editValue = editValue;
       if (visible && !G._.isEmpty(editValue)) {
+        this.setState({
+          imageUrl: editValue.avatar,
+        });
         nextProps.form.setFieldsValue({
           name: editValue.name,
           phone: editValue.phone,
           position: editValue.position,
-          remark: editValue.remark,
+          remark: editValue.remark
         });
         this.setState({ title: '编辑用户' });
       } else {
@@ -54,8 +57,8 @@ class PersonModal extends Component {
   }
 
   okHandle = () => {
-    const { form, handleOk } = this.props;
-    const { imageUrl, editValue } = this.props;
+    const { form, handleOk, editValue } = this.props;
+    const { imageUrl } = this.state;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       handleOk(

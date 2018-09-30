@@ -165,7 +165,7 @@ export default class Home extends Component {
               footer={
                 <Field
                   label="当前使用率"
-                  value={`${Number((userNum.liveCount / userNum.totalCount) * 100).toFixed(2) ||
+                  value={userNum.totalCount === 0 ? '0%' : `${Number((userNum.liveCount / userNum.totalCount) * 100).toFixed(2) ||
                     0}%`}
                 />
               }
@@ -186,7 +186,7 @@ export default class Home extends Component {
               footer={
                 <Field
                   label="阅读率"
-                  value={notificationNum.viewTotal === 0 ? '0' : `${Number(
+                  value={notificationNum.viewTotal === 0 ? '0%' : `${Number(
                     (notificationNum.viewTotal /
                       (notificationNum.viewTotal + notificationNum.unreadTotal)) *
                     100
@@ -233,7 +233,9 @@ export default class Home extends Component {
                       {homeStand.length > 0 ? (
                         <Bar height={400} title="" data={homeStand} color="#A6D6D0" />
                       ) : (
-                          <div className={styles.emptyBar}></div>
+                          <div className={styles.emptyBar}>
+                            <img src={`${G.picUrl}stand_time_trend_none.png`} />
+                          </div>
                         )}
                     </div>
                   </Col>
@@ -266,7 +268,9 @@ export default class Home extends Component {
                           })}
                         </ul>
                       ) : (
-                          <div className={styles.emptyRand}></div>
+                          <div className={styles.emptyRand}>
+                            <img src={`${G.picUrl}stand_time_rank_none.png`} />
+                          </div>
                         )}
                     </div>
                   </Col>

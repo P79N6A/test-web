@@ -14,7 +14,7 @@ if (env === '') {
   API_URL = process.PROXY_URL;
 }
 
-const picUrl = 'https://cdn.9amtech.com/space/';
+const picUrl = 'http://pflmzpr9l.bkt.clouddn.com/image/';
 message.config({
   maxCount: 3,
 });

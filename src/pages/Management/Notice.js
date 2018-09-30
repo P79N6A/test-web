@@ -150,7 +150,7 @@ export default class Notice extends Component {
         dataIndex: 'createdAt',
         key: 'createdAt',
         render: text => {
-          return <span>{G.moment(text).format('YYYY-MM-DD hh:mm:s')}</span>;
+          return <span>{G.moment(text).format('YYYY-MM-DD hh:mm:ss')}</span>;
         },
       },
       {
@@ -204,12 +204,11 @@ export default class Notice extends Component {
 
   handleChange = () => { };
 
-  copyPush = value => {
+  copyPush = (value) => {
     const { dispatch } = this.props;
-    const { values } = value;
     dispatch({
       type: 'manaNotice/setCopyValue',
-      payload: values,
+      payload: value,
     });
     this.newNotice();
   };

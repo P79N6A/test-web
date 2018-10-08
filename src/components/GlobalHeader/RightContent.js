@@ -73,15 +73,15 @@ export default class GlobalHeaderRight extends PureComponent {
               <Avatar
                 size="small"
                 className={styles.avatar}
-                src={currentUser.avatar ? currentUser.avatar : `${G.picUrl}favicon.png`}
+                src={currentUser.avatar ? currentUser.avatar : `${G.picUrl}header.png`}
                 alt="avatar"
               />
               <span className={styles.name}>{currentUser.username}</span>
             </span>
           </Dropdown>
         ) : (
-          <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
-        )}
+            <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
+          )}
       </div>
     );
   }

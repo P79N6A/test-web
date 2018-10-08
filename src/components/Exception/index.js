@@ -6,7 +6,7 @@ import styles from './index.less';
 
 class Exception extends React.PureComponent {
   static defaultProps = {
-    backText: 'back to home',
+    backText: '首页',
     redirect: '/',
   };
 
@@ -49,7 +49,7 @@ class Exception extends React.PureComponent {
                   to: redirect,
                   href: redirect,
                 },
-                <Button type="primary">{backText}</Button>
+                <Button type="primary" size='small'>{backText}</Button>
               )}
           </div>
         </div>

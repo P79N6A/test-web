@@ -84,6 +84,9 @@ export default [
             component: './Management/newNotice',
             authority: ['user'],
           },
+          {
+            component: '404',
+          }
         ],
       },
       {

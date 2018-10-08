@@ -1,18 +1,19 @@
+import G from '@/gobal';
 const config = {
   403: {
-    img: 'https://gw.alipayobjects.com/zos/rmsportal/wZcnGqRDyhPOEYFcZDnb.svg',
-    title: '403',
-    desc: '抱歉，你无权访问该页面',
+    img: `${G.picUrl}four_zero_three.png`,
+    title: '无权限访问该页面',
+    desc: '【403】权限不足',
   },
   404: {
-    img: 'https://gw.alipayobjects.com/zos/rmsportal/KpnpchXsobRgLElEozzI.svg',
-    title: '404',
-    desc: '抱歉，你访问的页面不存在',
+    img: `${G.picUrl}four_zero_four.png`,
+    title: '糟糕，设计稿飞了',
+    desc: '【404】找不到页面',
   },
   500: {
-    img: 'https://gw.alipayobjects.com/zos/rmsportal/RVRUAYdCGeYNBWoKiIwB.svg',
-    title: '500',
-    desc: '抱歉，服务器出错了',
+    img: `${G.picUrl}five_zero_zero.png`,
+    title: '服务器开了个小差',
+    desc: '【500】别着急，马上回来',
   },
 };
 

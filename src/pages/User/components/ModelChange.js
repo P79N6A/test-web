@@ -12,7 +12,7 @@ class ModalChange extends Component {
   compareToFirstPassword = (rule, value, callback) => {
     const { form } = this.props;
     if (value && value !== form.getFieldValue('newPassword')) {
-      callback('与第一次输入密码不一致，请重新输入！');
+      callback('两次密码输入不一致，请重新输入！');
     } else {
       callback();
     }

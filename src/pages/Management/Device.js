@@ -41,7 +41,7 @@ export default class Device extends Component {
   }
 
   onSearch() {
-    this.fetchDataList({ current: 0 });
+    this.fetchDataList({ current: 1 });
   }
 
   onChangeSearchInfo = e => {

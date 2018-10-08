@@ -186,7 +186,7 @@ export default class Home extends Component {
               footer={
                 <Field
                   label="阅读率"
-                  value={notificationNum.viewTotal === 0 ? '0%' : `${Number(
+                  value={notificationNum.viewTotal === 0 ? '0.00%' : `${Number(
                     (notificationNum.viewTotal /
                       (notificationNum.viewTotal + notificationNum.unreadTotal)) *
                     100

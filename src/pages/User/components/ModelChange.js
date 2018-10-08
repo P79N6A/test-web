@@ -25,7 +25,7 @@ class ModalChange extends Component {
     const { form } = this.props;
     const currentAuthority = this.props.currentUser.currentAuthority;
     if (res.status === 'success') {
-      message.success(res.data.msg || '修改成功！');
+      message.success(res.message || '修改成功！');
       form.setFieldsValue({
         oldPassword: '',
         newPassword: '',
@@ -34,9 +34,9 @@ class ModalChange extends Component {
       window.sessionStorage.removeItem('userInfo');
       window.localStorage.setItem('antd-pro-authority', '["guest"]');
       if (currentAuthority === 'user') {
-        router.push('/user/login');
+        this.props.dispatch(routerRedux.push('/user/login'));
       } else {
-        router.push('/admin_user/login');
+        this.props.dispatch(routerRedux.push('/admin_user/login'));
       }
       return;
     } else {

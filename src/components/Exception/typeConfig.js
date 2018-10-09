@@ -1,4 +1,4 @@
-import G from '@/gobal';
+import G from '@/global';
 const config = {
   403: {
     img: `${G.picUrl}four_zero_three.png`,

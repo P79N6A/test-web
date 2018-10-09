@@ -11,6 +11,7 @@ const SelectOption = Select.Option;
 
 const FormItem = Form.Item;
 
+
 class NewNoticeForm extends Component {
   state = {
     editorState: '',
@@ -18,8 +19,15 @@ class NewNoticeForm extends Component {
   };
 
   componentWillMount() {
-    const { user } = this.props;
-    this.configSelectOption(user);
+    const { dispatch } = this.props;
+    // 请求全部人员
+    dispatch({
+      type: 'manaPerson/fetch',
+      payload: {
+        offset: 0,
+        limit: 100000,
+      },
+    });
   }
 
   componentDidMount() {
@@ -36,6 +44,13 @@ class NewNoticeForm extends Component {
         const editorState = EditorState.createWithContent(contentState);
         this.setState({ editor: editorState, editorState: copyValue.content });
       }
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!G._.isEqual(this.user, nextProps.user)) {
+      this.configSelectOption(nextProps.user);
+      this.user = nextProps.user;
     }
   }
 
@@ -139,6 +154,7 @@ class NewNoticeForm extends Component {
               placeholder="请选择接收人"
               onChange={this.handleChange.bind(this)}
               style={{ width: '100%' }}
+              filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
             >
               {this.children}
             </Select>

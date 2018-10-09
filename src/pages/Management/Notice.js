@@ -48,14 +48,6 @@ export default class Notice extends Component {
       type: 'manaNotice/setCopyValue',
       payload: '',
     });
-    // 请求全部人员
-    dispatch({
-      type: 'manaPerson/fetch',
-      payload: {
-        offset: 0,
-        limit: 10000,
-      },
-    });
   }
 
   onClose = () => {

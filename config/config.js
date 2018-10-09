@@ -25,6 +25,7 @@ export default {
         dynamicImport: {
           loadingComponent: './components/PageLoading/index',
         },
+        polyfills: ['ie11'],
         ...(!process.env.TEST && os.platform() === 'darwin'
           ? {
               dll: {
@@ -34,12 +35,6 @@ export default {
               hardSource: true,
             }
           : {}),
-      },
-    ],
-    [
-      'umi-plugin-ga',
-      {
-        code: 'UA-72788897-6',
       },
     ],
   ],

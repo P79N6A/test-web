@@ -1,0 +1,515 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="Shortcut Icon" href="http://cdn.space.9amtech.com/image/favicon.png" />
+  <meta name="wap-font-scale" content="no">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+  <title></title>
+  <script src="https://cdn.9amtech.com/jq/jquery-3.3.1.min.js"></script>
+  <script>
+    var obCode = false;
+    var obLogin = false;
+    var countdown = 60;
+    var countdowns = 5;
+    var urls = 'http://47.94.253.27:9200';
+    // 尺寸
+    function getRem(pwidth, prem) {
+      var html = document.getElementsByTagName("html")[0];
+      var oWidth = document.body.clientWidth || document.documentElement.clientWidth;
+      html.style.fontSize = oWidth / pwidth * prem + "px";
+    }
+    // 调用错误提示
+    function tipsfun(text) {
+      $('#tips').val(text);
+      $('#tips').removeClass('error_hide');
+      setTimeout(function () {
+        $('#tips').addClass('error_hide');
+      }, 2000)
+    }
+    // 倒计时插件
+    function codeSettime(obj) { //发送验证码倒计时
+      if (countdown == 0) {
+        obj.addClass('font_color');
+        obj.text("获取验证码");
+        countdown = 60;
+        return;
+      } else {
+        obj.removeClass('font_color');
+        obj.text("重新发送(" + countdown + ")");
+        countdown--;
+      }
+      setTimeout(function () {
+        codeSettime(obj)
+      }, 1000)
+    }
+
+    // 校验手机号
+    function checkOut() {
+      obCode = false;
+      var reg = /^(0|86|17951)?(13[0-9]|15[012356789]|16[6]|17[12345678]|18[0-9]|14[56789]|19[89])[0-9]{8}$/;
+      if ($('#phone').val() === '') {
+        tipsfun('请输入手机号');
+        $('#code').removeClass('font_color');
+        return
+      }
+      if (!reg.test($('#phone').val())) {
+        tipsfun('请正确填写手机号');
+        $('#code').removeClass('font_color');
+        return
+      }
+      obCode = true;
+      $('#code').addClass('font_color');
+    }
+
+    // 校验手机号
+    function checkOuts() {
+      obCode = false;
+      var reg = /^(0|86|17951)?(13[0-9]|15[012356789]|16[6]|17[12345678]|18[0-9]|14[56789]|19[89])[0-9]{8}$/;
+      if ($('#phone').val() === '') {
+        $('#code').removeClass('font_color');
+        return
+      }
+      if (!reg.test($('#phone').val())) {
+        $('#code').removeClass('font_color');
+        return
+      }
+      obCode = true;
+      $('#code').addClass('font_color');
+    }
+    // 校验code码
+    function checkCode() {
+      obLogin = false;
+      var regs = /^\d{4}$/;
+      if ($('#codeNum').val() === '') {
+        tipsfun('请输入验证码');
+        $('#login_btn').removeClass('bg_color');
+        return
+      }
+      if (!regs.test($('#codeNum').val())) {
+        tipsfun('请正确填写验证码');
+        $('#login_btn').removeClass('bg_color');
+        return
+      }
+      obLogin = true;
+      $('#login_btn').addClass('bg_color');
+    }
+    // 更改颜色
+    function checkCodes() {
+      obLogin = false;
+      var regs = /^\d{4}$/;
+      if ($('#codeNum').val() === '') {
+        $('#login_btn').removeClass('bg_color');
+        return
+      }
+      if (!regs.test($('#codeNum').val())) {
+        $('#login_btn').removeClass('bg_color');
+        return
+      }
+      obLogin = true;
+      $('#login_btn').addClass('bg_color');
+    }
+
+    // 倒计时插件
+    function settime(obj) {
+      if (countdowns == 0) {
+        obj.text("");
+        countdowns = 5;
+        $('#success_model').css('display', 'none');
+        return;
+      } else {
+        obj.text("页面将自动关闭 " + countdowns + "s");
+        countdowns--;
+      }
+      setTimeout(function () {
+        settime(obj)
+      }, 1000)
+    }
+
+    $(document).ready(function () {
+      getRem(750, 100);
+    });
+
+    window.onload = function () {
+      getRem(750, 100);
+      $('#tips').addClass('error_hide');
+      // 较验手机号
+      $("#phone").on('input', function () {
+        checkOuts();
+      });
+
+      $("#phone").on('blur', function () {
+        checkOut();
+      });
+      // 获取验证码
+      $('#code').on('click', function () {
+        checkOut();
+        if (obCode === true) {
+          $.ajax({
+            url: urls + '/users/sendSms',
+            type: "PUT",
+            data: {
+              phone: $('#phone').val(),
+            },
+            async: true,
+            error: function (data) {
+              tipsfun(data.responseJSON.message);
+              countdown = 0;
+            },
+            success: function (data) {
+              tipsfun(data.data);
+            }
+          });
+          codeSettime($('#code'));
+        }
+      });
+      // 较验验证码
+      $("#codeNum").on('input', function () {
+        checkCodes();
+      });
+      // 较验验证码
+      $("#codeNum").on('blur', function () {
+        checkCode();
+      });
+      // 关闭弹窗
+      $('#certain').on('click', function () {
+        $('#model').hide();
+        $('#model_text').text('');
+      })
+      // 登录
+      $('#login_btn').on('click', function () {
+        checkOut();
+        checkCode();
+        // return
+        if (obLogin === true && obCode === true) {
+          $.ajax({
+            url: urls + '/users/dshow/login',
+            headers: {
+              "Content-type": "application/json; charset=utf-8"
+            },
+            contentType: "application/json; charset=utf-8",
+            type: "POST",
+            data: JSON.stringify({
+              phone: $('#phone').val(),
+              deskScreenId: window.sessionStorage.getItem('deskScreenId'),
+              code: Number($('#codeNum').val())
+            }),
+            async: true,
+            error: function (data) {
+              $('#model').show();
+              $('#model_text').text(data.responseJSON.message);
+            },
+            success: function (data) {
+              if (data.status === 'success') {
+                $('#phone').val('');
+                $('#codeNum').val('');
+                tipsfun(data.data.message);
+                setTimeout(function () {
+                  $('#success_model').css('display', 'block');
+                  countdown = 0;
+                  if (data.data.isForcedExit === 'true') {
+                    $('#next').text('上次使用的设备已退出登录');
+                  } else {
+                    $('#next').text('');
+                  }
+                  settime($('#times'));
+                }, 1000)
+              } else {
+                $('#model').show();
+                $('#model_text').text('登录失败');
+              }
+            }
+          });
+        } else {
+          tipsfun('请刷新页面重试');
+        }
+
+      })
+      // 关闭页面
+      $('#close').on('click', function () {
+        $('#success_model').css('display', 'none');
+      })
+
+    };
+  </script>
+  <style>
+    /* 750稿/100 */
+
+    * {
+      margin: 0;
+      padding: 0;
+      border: none;
+      box-sizing: border-box;
+      list-style: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    input,
+    select {
+      -webkit-appearance: none;
+      outline: none;
+      color: #35536C;
+    }
+
+    input::-webkit-input-placeholder {
+      /* WebKit browsers */
+      color: #9AA9B5;
+    }
+
+    input:-moz-placeholder {
+      /* Mozilla Firefox 4 to 18 */
+      color: #9AA9B5;
+    }
+
+    input::-moz-placeholder {
+      /* Mozilla Firefox 19+ */
+      color: #9AA9B5;
+    }
+
+    input:-ms-input-placeholder {
+      /* Internet Explorer 10+ */
+      color: #9AA9B5;
+    }
+
+    html,
+    body {
+      font-size: 0.28rem;
+      height: 100%;
+      background-color: #fff;
+    }
+
+    .box {
+      width: 7.5rem;
+      height: 100%;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .logo {
+      width: 4.1rem;
+      height: 1.46rem;
+      display: block;
+      margin: 0.88rem auto 1.02rem;
+    }
+
+    .list {
+      width: 6.22rem;
+      height: auto;
+      margin: 0 auto 0.8rem;
+    }
+
+    .list_demo {
+      width: 100%;
+      height: 1.24rem;
+      border-bottom: 0.01rem #DFE4E8 solid;
+    }
+
+    .log_number,
+    .log_code {
+      width: 100%;
+      height: 1.22rem;
+      line-height: 0.5rem;
+      font-size: 0.34rem;
+      color: #35536C;
+    }
+
+    .log_code {
+      width: 4.3rem;
+    }
+
+    .code_text {
+      float: right;
+      font-size: 0.28rem;
+      color: #9AA9B5;
+      line-height: 1.22rem;
+    }
+
+    .login_btn {
+      display: block;
+      width: 6.22rem;
+      height: 1rem;
+      background-color: #DBDBDB;
+      border-radius: 0.5rem;
+      margin: 0 auto;
+      color: #fff;
+      font-size: 0.34rem;
+      text-align: center;
+      line-height: 1rem;
+      letter-spacing: 0.02rem;
+    }
+
+    .login_footer {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: .6rem;
+      display: block;
+      width: 1.88rem;
+      height: 0.82rem;
+    }
+
+    .font_color {
+      color: #71AFA8;
+    }
+
+    .bg_color {
+      background-color: #71AFA8;
+    }
+
+    /* 错误小弹窗 */
+
+    .error_little_text {
+      position: absolute;
+      left: 50%;
+      bottom: 2.4rem;
+      transform: translateX(-50%);
+      display: block;
+      font-size: 0.24rem;
+      letter-spacing: 0.01rem;
+      line-height: 0.34rem;
+      padding: 0.16rem 0.24rem;
+      background-color: #35536C;
+      color: #fff;
+      border-radius: 0.08rem;
+      height: 0.74rem;
+      width: 4.4rem;
+    }
+
+    .error_hide {
+      opacity: 0;
+    }
+
+    /* 错误在线弹窗 */
+
+    .error_online {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 13.34rem;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .error_online_box {
+      width: 5.5rem;
+      height: 7.34rem;
+      background-color: #fff;
+      border-radius: 0.16rem;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .error_online_img {
+      display: block;
+      width: 4.6rem;
+      height: 2.8rem;
+      margin: 1.14rem auto 0;
+    }
+
+    .error_online_text {
+      font-size: 0.28rem;
+      line-height: 0.4rem;
+      height: 0.4rem;
+      padding: 0.86rem 0;
+      text-align: center;
+      color: #35536C;
+    }
+
+    .error_online_btn {
+      width: 4.7rem;
+      height: 0.88rem;
+      background-color: #A6D6D0;
+      border-radius: 0.44rem;
+      color: #fff;
+      font-size: 0.34rem;
+      line-height: 0.88rem;
+      letter-spacing: 0.01rem;
+      text-align: center;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .success_model {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      display: none;
+    }
+
+    .success_close {
+      font-size: 0.34rem;
+      padding: 0.2rem 0 0 0.64rem;
+      line-height: 0.48rem;
+      display: inline-block;
+    }
+
+    .success_pic {
+      width: 6.4rem;
+      height: 6.5rem;
+      display: block;
+      margin: 0.4rem auto 0.69rem;
+    }
+
+    .success_title {
+      text-align: center;
+      font-size: 0.48rem;
+      line-height: 0.67rem;
+      color: #35536C;
+      padding-bottom: 0.2rem;
+    }
+
+    .success_text {
+      text-align: center;
+      color: #35536C;
+      font-size: .28rem;
+      line-height: 0.4rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <!-- 正文 -->
+    <img class="logo" src="http://cdn.space.9amtech.com/dshow/dshow_logo.png" />
+    <ul class="list">
+      <li class="list_demo">
+        <input class="log_number" type="number" placeholder="请输入手机号" id="phone" value="" />
+      </li>
+      <li class="list_demo">
+        <input class="log_code" type="number" placeholder="请输入验证码" value="" id="codeNum" />
+        <p class="code_text" id="code">获取验证码</p>
+      </li>
+    </ul>
+    <input type="button" class="login_btn" value="登 录" id="login_btn" />
+    <input type="button" class="error_little_text" id="tips" value="" />
+    <img class="login_footer" src="http://cdn.space.9amtech.com/dshow/dshow_footer.png" />
+    <!-- 错误在线弹窗 -->
+    <div class="error_online" id="model">
+      <div class="error_online_box">
+        <img class="error_online_img" src="http://cdn.space.9amtech.com/dshow/dshow_network.png" />
+        <p class="error_online_text" id="model_text">当前网络不可用</p>
+        <input class="error_online_btn" type="button" value="确定" id="certain" />
+      </div>
+    </div>
+    <!-- 成功的弹窗 -->
+    <div class="success_model" id="success_model">
+      <a class="success_close" id="close">关闭</a>
+      <img class="success_pic" src="http://cdn.space.9amtech.com/dshow/dshow_login_success.png" />
+      <h3 class="success_title">登录成功</h3>
+      <p class="success_text" id="times">页面将自动关闭 5s</p>
+      <p class="success_text">当前帐号已成功登录</p>
+      <p class="success_text" id="next"></p>
+      <img class="login_footer" src="http://cdn.space.9amtech.com/dshow/dshow_footer.png" />
+    </div>
+  </div>
+</body>
+
+</html>

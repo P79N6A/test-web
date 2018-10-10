@@ -1,4 +1,13 @@
 export default [
+  // Dshow登录页面
+  {
+    path: '/dshow',
+    component: '../layouts/BlankLayout',
+    routes: [
+      { path: '/dshow', redirect: '/dshow/login' },
+      { path: '/dshow/login', component: './Dshow/DshowLogin' }
+    ],
+  },
   // user
   {
     path: '/user',
@@ -13,7 +22,7 @@ export default [
     path: '/admin_user',
     component: '../layouts/AdminLayout',
     routes: [
-      { path: '/admin_user', redirect: '/user/login' },
+      { path: '/admin_user', redirect: '/admin_user/login' },
       { path: '/admin_user/login', component: './User/Login' },
     ],
   },
@@ -22,7 +31,6 @@ export default [
     path: '/',
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
-
     routes: [
       // dashboard
       { path: '/', redirect: './home' },

@@ -20,6 +20,7 @@ function RouterConfig({ history, app }) {
         <Switch>
           <Route path="/user" component={UserLayout} />
           <Route path="/admin_user" component={AdminLayout} />
+          <Route path="/dshow" component={BlankLayout} />
           {/* 判定权限默认全部 */}
           <AuthorizedRoute
             path="/"

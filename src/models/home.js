@@ -14,9 +14,9 @@ export default {
 
   state: {
     loading: false,
-    resourceNum: { liveCount: 0, totalCount: 1 },
-    userNum: { liveCount: 0, totalCount: 1 },
-    notificationNum: { total: 0, unreadTotal: 1, viewTotal: 0 },
+    resourceNum: { liveCount: 0, totalCount: 0 },
+    userNum: { liveCount: 0, totalCount: 0 },
+    notificationNum: { total: 0, unreadTotal: 0, viewTotal: 0 },
     standNum: { duration: 0, count: 0, rate: 0 },
     homeStand: [],
     homeRank: [],

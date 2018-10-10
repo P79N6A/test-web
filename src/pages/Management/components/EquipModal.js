@@ -57,10 +57,6 @@ class EquipModal extends Component {
           {getFieldDecorator('remark', {
             rules: [
               {
-                required: true,
-                message: '备注不能为空',
-              },
-              {
                 max: 100,
                 message: '最大长度100',
               },

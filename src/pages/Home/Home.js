@@ -143,7 +143,7 @@ export default class Home extends Component {
               footer={
                 <Field
                   label="使用率"
-                  value={`${Number((resourceNum.liveCount / resourceNum.totalCount) * 100).toFixed(
+                  value={resourceNum.totalCount === 0 ? '0.00%' : `${Number((resourceNum.liveCount / resourceNum.totalCount) * 100).toFixed(
                     2
                   ) || 0}%`}
                 />
@@ -165,7 +165,7 @@ export default class Home extends Component {
               footer={
                 <Field
                   label="当前使用率"
-                  value={userNum.totalCount === 0 ? '0%' : `${Number((userNum.liveCount / userNum.totalCount) * 100).toFixed(2) ||
+                  value={userNum.totalCount === 0 ? '0.00%' : `${Number((userNum.liveCount / userNum.totalCount) * 100).toFixed(2) ||
                     0}%`}
                 />
               }

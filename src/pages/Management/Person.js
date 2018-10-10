@@ -21,8 +21,6 @@ export default class Person extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: '全部', value: 0 },
-      { text: '连接中', value: 1 },
       { text: '未连接', value: 2 },
       { text: '已连接', value: 3 }
     ],
@@ -90,10 +88,10 @@ export default class Person extends Component {
         key: 'status',
         sorter: true,
         filters: filterStatus,
-        render: (text, record, index) => {
+        render: text => {
           return (
             <Fragment>
-              <font>{filterStatus[(text.status || 1) - 1].text}</font>
+              <font>{filterStatus[text.status - 2].text}</font>
             </Fragment>
           );
         },

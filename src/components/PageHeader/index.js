@@ -73,12 +73,12 @@ export default class PageHeader extends PureComponent {
             <Breadcrumb.Item key={item.title}>
               {item.href
                 ? createElement(
-                    linkElement,
-                    {
-                      [linkElement === 'a' ? 'href' : 'to']: item.href,
-                    },
-                    title
-                  )
+                  linkElement,
+                  {
+                    [linkElement === 'a' ? 'href' : 'to']: item.href,
+                  },
+                  title
+                )
                 : title}
             </Breadcrumb.Item>
           );
@@ -167,15 +167,15 @@ export default class PageHeader extends PureComponent {
     return last || !route.component ? (
       <span>{route.breadcrumbName}</span>
     ) : (
-      createElement(
-        linkElement,
-        {
-          href: paths.join('/') || '/',
-          to: paths.join('/') || '/',
-        },
-        route.breadcrumbName
-      )
-    );
+        createElement(
+          linkElement,
+          {
+            href: paths.join('/') || '/',
+            to: paths.join('/') || '/',
+          },
+          route.breadcrumbName
+        )
+      );
   };
 
   render() {

@@ -21,10 +21,10 @@ export default class Device extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: '全部', value: 1 },
-      { text: '使用中', value: 2 },
-      { text: '空闲', value: 3 },
-      { text: '离线', value: 4 },
+      { text: '未绑定', value: 1 },
+      { text: '离线', value: 2 },
+      { text: '使用中', value: 3 },
+      { text: '空闲', value: 4 },
     ],
   };
 

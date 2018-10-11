@@ -87,8 +87,8 @@ export default class Device extends Component {
       },
       {
         title: currentAuthority === 'admin' ? '所属客户' : '用户',
-        dataIndex: 'user_name',
-        key: 'user_name',
+        dataIndex: currentAuthority === 'admin' ? 'companyName' : 'user_name',
+        key: currentAuthority === 'admin' ? 'companyName' : 'user_name',
       },
       {
         title: '备注',

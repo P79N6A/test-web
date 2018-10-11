@@ -28,12 +28,12 @@ export default {
         polyfills: ['ie11'],
         ...(!process.env.TEST && os.platform() === 'darwin'
           ? {
-              dll: {
-                include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch'],
-                exclude: ['@babel/runtime'],
-              },
-              hardSource: true,
-            }
+            dll: {
+              include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch'],
+              exclude: ['@babel/runtime'],
+            },
+            hardSource: true,
+          }
           : {}),
       },
     ],

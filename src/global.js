@@ -9,15 +9,17 @@ const env = process.BUILD_ENV;
 
 let API_URL = '';
 if (env === '') {
-  API_URL = '/space';
+  API_URL = '/space/api';
 } else {
-  API_URL = process.PROXY_URL;
+  API_URL = `${process.PROXY_URL}/api`;
 }
 
 const picUrl = 'http://pflmzpr9l.bkt.clouddn.com/image/';
 message.config({
   maxCount: 3,
 });
+
+const htmlUrl = process.PROXY_URL;
 
 export default {
   API_URL,
@@ -27,4 +29,5 @@ export default {
   axios,
   picUrl,
   message,
+  htmlUrl,
 };

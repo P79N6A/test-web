@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react';
+import G from '@/global'
 
 class DshowLogin extends Component {
   state = {
-    screenHeight: document.body.scrollHeight
+    screenHeight: document.body.scrollHeight,
+    iframeUrl: ''
   };
 
   // 获取 url 参数
@@ -13,14 +15,18 @@ class DshowLogin extends Component {
   }
 
   componentDidMount() {
+    const htmlPath = `${G.htmlUrl.split(":")[0]}:${G.htmlUrl.split(":")[1]}`;
     window.sessionStorage.setItem('deskScreenId', this.getUrlParam('deskScreenId'));
+    this.setState({
+      iframeUrl: G.env ? `${htmlPath}/dshow.html` : require('@/static/dshow.html')
+    })
   }
 
   render() {
-    const { screenHeight } = this.state;
+    const { screenHeight, iframeUrl } = this.state;
     return (
       <iframe
-        src={require(`./dshow.html`)}
+        src={iframeUrl}
         width='100%'
         height={screenHeight}
         frameBorder='0'

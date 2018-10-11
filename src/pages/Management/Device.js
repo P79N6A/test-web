@@ -6,8 +6,9 @@ import G from '@/global';
 import styles from './Person.less';
 import EquipModal from './components/EquipModal.js';
 
-@connect(({ manaEquip, manaCustomer, loading }) => ({
+@connect(({ manaEquip, user, manaCustomer, loading }) => ({
   manaEquip,
+  user,
   manaCustomer,
   loading: loading.effects['manaEquip/fetch'],
 }))
@@ -55,7 +56,7 @@ export default class Device extends Component {
     });
   }
 
-  getColumns(current, filterStatus) {
+  getColumns(current, filterStatus, currentAuthority) {
     const columns = [
       {
         title: '序号',
@@ -85,7 +86,7 @@ export default class Device extends Component {
         },
       },
       {
-        title: '用户',
+        title: currentAuthority === 'admin' ? '所属客户' : '用户',
         dataIndex: 'user_name',
         key: 'user_name',
       },
@@ -97,24 +98,40 @@ export default class Device extends Component {
       },
       {
         title: '最后使用时间',
-        dataIndex: 'createdAt',
-        key: 'createdAt',
+        dataIndex: 'lastOperationTime',
+        key: 'lastOperationTime',
+        render: text => {
+          return text ? <span>{G.moment(text).format('YYYY-MM-DD hh:mm:ss')}</span> : ''
+        },
       },
       {
         title: '操作',
         key: 'setting',
         render: (text, record, index) => (
           <Fragment>
-            <Popconfirm
-              placement="left"
-              title="解除绑定后，该用户将被强制退出该设备，导致用户无法正常使用（可重新登录使用）"
-              onConfirm={this.untiedConfirm.bind(this, text)}
-              okText="解绑"
-              cancelText="取消"
-            >
-              <a>解绑</a>
-            </Popconfirm>
-            <Divider type="vertical" />
+            {currentAuthority === 'admin' ? (
+              text.user_name ? '' : <Popconfirm
+                placement="left"
+                title="移除后该设备将从企业中移除，确定要移除吗？"
+                onConfirm={this.untiedRemove.bind(this, text)}
+                okText="移除"
+                cancelText="取消"
+              >
+                <a>移除</a>
+              </Popconfirm>
+            ) : (
+                <Popconfirm
+                  placement="left"
+                  title="解除绑定后，该用户将被强制退出该设备，导致用户无法正常使用（可重新登录使用）"
+                  onConfirm={this.untiedConfirm.bind(this, text)}
+                  okText="解绑"
+                  cancelText="取消"
+                >
+                  <a>解绑</a>
+                </Popconfirm>)}
+            {currentAuthority === 'admin' ? (
+              text.user_name ? '' :
+                <Divider type="vertical" />) : (<Divider type="vertical" />)}
             <a
               onClick={() => {
                 this.onMark(text, record, index);
@@ -208,6 +225,14 @@ export default class Device extends Component {
     });
   }
 
+  untiedRemove(value) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'manaEquip/remove',
+      payload: { id: value.id, callback: this.fetchDataList.bind(this) },
+    });
+  }
+
   fetchDataList(value) {
     const { dispatch, manaEquip, manaCustomer } = this.props;
     const { companyId } = manaCustomer;
@@ -227,10 +252,10 @@ export default class Device extends Component {
   }
 
   render() {
-    const { manaEquip, loading } = this.props;
+    const { manaEquip, loading, user } = this.props;
     const { visible, modalLoading, editValue, query, filterStatus } = this.state;
     const { limit, current, count } = manaEquip.data;
-    const columns = this.getColumns(current, filterStatus);
+    const columns = this.getColumns(current, filterStatus, user.user.currentAuthority);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>

@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getResourceList, addRemark, releaseDevice } from '../services/api';
+import { getResourceList, addRemark, releaseDevice, removeDevice } from '../services/api';
 
 export default {
   namespace: 'manaEquip',
@@ -46,6 +46,15 @@ export default {
         message.error(response.message || '解绑失败');
       }
     },
+    *remove({ payload }, { call }) {
+      const response = yield call(removeDevice, payload);
+      payload.callback();
+      if (response && response.status === 'success') {
+        message.success('移除成功');
+      } else {
+        message.error(response.message || '移除失败');
+      }
+    }
   },
 
   reducers: {

@@ -169,6 +169,12 @@ export async function releaseDevice(payload) {
   return request(`${G.API_URL}/resources/${id}/release`, { method: 'POST', body });
 }
 
+// 移除设备
+export async function removeDevice(payload) {
+  const { id } = payload;
+  return request(`${G.API_URL}/resources/${id}/remove`, { method: 'POST', body: { token: getToken() } });
+}
+
 // 获去通知列表
 export async function getNoticeList(payload) {
   const body = filterBody({ ...payload, token: getToken() });

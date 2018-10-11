@@ -46,6 +46,7 @@ export default {
     APP_TYPE: process.env.APP_TYPE || '',
     'process.API_URL': process.env.API_URL,
     'process.SERVER_URL': process.env.SERVER_URL,
+    'process.BUILD_ENV': process.env.BUILD_ENV
   },
   proxy: {
     '/api': {

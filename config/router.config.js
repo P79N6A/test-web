@@ -13,6 +13,8 @@ export default [
     path: '/user',
     component: '../layouts/UserLayout',
     routes: [
+      // dashboard
+      { path: '/', redirect: '/user/login' },
       { path: '/user', redirect: '/user/login' },
       { path: '/user/login', component: './User/Login' },
     ],
@@ -32,8 +34,6 @@ export default [
     component: '../layouts/BasicLayout',
     Routes: ['src/pages/Authorized'],
     routes: [
-      // dashboard
-      { path: '/', redirect: './home' },
       {
         name: 'changePassword',
         path: './changePassword',

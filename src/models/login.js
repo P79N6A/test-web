@@ -30,7 +30,7 @@ export default {
           payload: response.data,
         });
         reloadAuthorized();
-        yield put(routerRedux.replace('/'));
+        yield put(routerRedux.replace('/home'));
       } else if (typeof response.message === 'object') {
         message.error('登录失败！');
       } else {

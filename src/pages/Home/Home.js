@@ -61,8 +61,8 @@ export default class Home extends Component {
         .add(1, 'month')
         .subtract(1, 'day'),
     ];
-    this.setState({ rangePickerValue, type: 'DAILY' });
-    this.getHomeStand({ date: rangePickerValue[0], type2: 'DAILY' });
+    this.setState({ rangePickerValue, type: 'MONTHLY' });
+    this.getHomeStand({ date: rangePickerValue[0], type2: 'MONTHLY' });
   };
 
   selectDate = type => {

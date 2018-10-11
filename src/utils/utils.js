@@ -235,16 +235,16 @@ export function filterBody(body) {
 // 根据时间类型返回对应时间和单位
 export function getTimeByType(date, type) {
   if (type === 'DAILY') {
-    return G.moment.unix(date).format('DD号');
+    return G.moment.unix(date).format('HH时');
   }
   if (type === 'WEEKLY') {
     return G.moment.unix(date).format('dddd');
   }
   if (type === 'MONTHLY') {
-    return G.moment.unix(date).format('MM月');
+    return G.moment.unix(date).format('DD号');
   }
-  if (type === 'HOURLY') {
-    return G.moment.unix(date).format('HH时');
+  if (type === 'YEARLY') {
+    return G.moment.unix(date).format('MM月');
   }
 }
 

@@ -5,10 +5,10 @@
   "private": true,
   "scripts": {
     "presite": "npm run generate-mock && cd functions && npm install",
-    "start": "cross-env SERVER_URL=http://localhost:8000 PROXY_URL=http://47.95.219.105:9200 APP_TYPE=site umi dev",
+    "start": "cross-env SERVER_URL=http://localhost:8000 API_URL=http://47.95.219.105:9200 APP_TYPE=site umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
-    "build:dev": "cross-env PACK_URL=http://cdn.space.9amtech.com/dev/ PROXY_URL=http://39.108.86.241:9201 BUILD_ENV=dev umi build",
-    "build:pro": "cross-env PACK_URL=http://cdn.space.9amtech.com/dist/ PROXY_URL=http://47.95.219.105:9200 BUILD_ENV=pro umi build",
+    "build:dev": "cross-env SERVER_URL=http://space.9amtech.com CDN_URL=http://cdn.space.9amtech.com/dev/ API_URL=http://39.108.86.241:9201 BUILD_ENV=dev umi build",
+    "build:pro": "cross-env SERVER_URL=http://space.9amtech.com CDN_URL=http://cdn.space.9amtech.com/dist/ API_URL=http://47.95.219.105:9200 BUILD_ENV=pro umi build",
     "site": "npm run presite && cross-env APP_TYPE=site npm run build && firebase deploy",
     "analyze": "cross-env ANALYZE=1 umi build",
     "lint:style": "stylelint \"src/**/*.less\" --syntax less",

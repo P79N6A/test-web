@@ -15,10 +15,9 @@ class DshowLogin extends Component {
   }
 
   componentDidMount() {
-    const htmlPath = `${G.htmlUrl.split(":")[0]}:${G.htmlUrl.split(":")[1]}`;
     window.sessionStorage.setItem('deskScreenId', this.getUrlParam('deskScreenId'));
     this.setState({
-      iframeUrl: G.env ? `${htmlPath}/dshow.html` : require('@/static/dshow.html')
+      iframeUrl: G.env ? `${G.htmlUrl}/static/dshow.html` : require('@/static/dshow.html')
     })
   }
 

@@ -11,7 +11,7 @@ let API_URL = '';
 if (env === '') {
   API_URL = '/space/api';
 } else {
-  API_URL = `${process.PROXY_URL}/api`;
+  API_URL = `${process.API_URL}/api`;
 }
 
 const picUrl = 'http://pflmzpr9l.bkt.clouddn.com/image/';
@@ -19,7 +19,7 @@ message.config({
   maxCount: 3,
 });
 
-const htmlUrl = process.PROXY_URL;
+const htmlUrl = process.SERVER_URL;
 
 export default {
   API_URL,

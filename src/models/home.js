@@ -89,8 +89,8 @@ export default {
     },
     saveHomeStand(state, { payload }) {
       const homeStand = payload.map(item => {
-        const x = getTimeByType(item.date, item.type);
-        const y = item.data.sit;
+        const x = getTimeByType(item.datetime, item.type);
+        const y = item.stand;
         return { x, y };
       });
       return { ...state, homeStand };

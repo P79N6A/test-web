@@ -234,14 +234,17 @@ export function filterBody(body) {
 
 // 根据时间类型返回对应时间和单位
 export function getTimeByType(date, type) {
-  if (type === 'DAILY' || type === 'WEEKLY') {
-    return G.moment(date).format('D号');
+  if (type === 'DAILY') {
+    return G.moment.unix(date).format('DD号');
+  }
+  if (type === 'WEEKLY') {
+    return G.moment.unix(date).format('dddd');
   }
   if (type === 'MONTHLY') {
-    return G.moment(date).format('M月');
+    return G.moment.unix(date).format('MM月');
   }
   if (type === 'HOURLY') {
-    return G.moment(date).format('H时');
+    return G.moment.unix(date).format('HH时');
   }
 }
 

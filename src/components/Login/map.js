@@ -28,6 +28,10 @@ export default {
         required: true,
         message: '请输入密码!',
       },
+      {
+        min: 8,
+        message: '最小长度不能小于8',
+      },
     ],
   },
   Mobile: {

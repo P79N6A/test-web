@@ -100,7 +100,7 @@ export default class Person extends Component {
         title: '备注',
         dataIndex: 'remark',
         key: 'remark',
-        width: 260,
+        width: 160,
       },
       {
         title: '操作',

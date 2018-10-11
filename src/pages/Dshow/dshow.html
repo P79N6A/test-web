@@ -148,7 +148,7 @@
         checkOut();
         if (obCode === true) {
           $.ajax({
-            url: urls + '/users/sendSms',
+            url: urls + '/users/sendSms/api',
             type: "PUT",
             data: {
               phone: $('#phone').val(),
@@ -185,7 +185,7 @@
         // return
         if (obLogin === true && obCode === true) {
           $.ajax({
-            url: urls + '/users/dshow/login',
+            url: urls + '/users/dshow/login/api',
             headers: {
               "Content-type": "application/json; charset=utf-8"
             },

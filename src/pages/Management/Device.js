@@ -94,7 +94,7 @@ export default class Device extends Component {
         title: '备注',
         dataIndex: 'remark',
         key: 'remark',
-        width: 260,
+        width: 150,
       },
       {
         title: '最后使用时间',
@@ -103,6 +103,7 @@ export default class Device extends Component {
         render: text => {
           return text ? <span>{G.moment(text).format('YYYY-MM-DD hh:mm:ss')}</span> : ''
         },
+        width: 170,
       },
       {
         title: '操作',

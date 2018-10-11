@@ -38,7 +38,7 @@ export default {
       const response = yield call(updatePerson, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.message || '修改成功');
+        message.success(response.data || '修改成功');
       } else {
         message.error(response.message || '修改失败');
       }

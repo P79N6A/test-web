@@ -5,8 +5,9 @@ import { routerRedux } from '../../../../node_modules/dva/router';
 
 const FormItem = Form.Item;
 
-@connect(({ changePass }) => ({
+@connect(({ changePass, user }) => ({
   changePass,
+  user
 }))
 class ModalChange extends Component {
   compareToFirstPassword = (rule, value, callback) => {
@@ -21,9 +22,9 @@ class ModalChange extends Component {
   handleConfirmBlur = () => { };
 
   // 修改成功或者失败的回调函数(判断角色返回不同页面)
-  release(res) {
-    const { form } = this.props;
-    const currentAuthority = this.props.currentUser.currentAuthority;
+  release = res => {
+    const { form, user } = this.props;
+    const currentAuthority = user.user.currentAuthority;
     if (res.status === 'success') {
       message.success(res.message || '修改成功！');
       form.setFieldsValue({

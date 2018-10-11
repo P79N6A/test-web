@@ -250,7 +250,7 @@ export default class Home extends Component {
                             const hours = G.moment.duration(duration, 'm').hours();
                             const minutes = G.moment.duration(duration, 'm').minutes();
                             return (
-                              <li>
+                              <li key={`standRank${i}`}>
                                 <div>
                                   <span className={i < 3 ? styles.active : ''}>{i + 1}</span>
                                   <span>{username}</span>

@@ -111,7 +111,7 @@ export default class Device extends Component {
         render: (text, record, index) => (
           <Fragment>
             {currentAuthority === 'admin' ? (
-              text.user_name ? '' : <Popconfirm
+              text.companyId ? <Popconfirm
                 placement="left"
                 title="移除后该设备将从企业中移除，确定要移除吗？"
                 onConfirm={this.untiedRemove.bind(this, text)}
@@ -119,20 +119,19 @@ export default class Device extends Component {
                 cancelText="取消"
               >
                 <a>移除</a>
-              </Popconfirm>
+              </Popconfirm> : <span style={{ color: '#CCCCCC' }}>移除</span>
             ) : (
-                <Popconfirm
-                  placement="left"
-                  title="解除绑定后，该用户将被强制退出该设备，导致用户无法正常使用（可重新登录使用）"
-                  onConfirm={this.untiedConfirm.bind(this, text)}
-                  okText="解绑"
-                  cancelText="取消"
-                >
-                  <a>解绑</a>
-                </Popconfirm>)}
-            {currentAuthority === 'admin' ? (
-              text.user_name ? '' :
-                <Divider type="vertical" />) : (<Divider type="vertical" />)}
+                text.userUid ?
+                  <Popconfirm
+                    placement="left"
+                    title="解除绑定后，该用户将被强制退出该设备，导致用户无法正常使用（可重新登录使用）"
+                    onConfirm={this.untiedConfirm.bind(this, text)}
+                    okText="解绑"
+                    cancelText="取消"
+                  >
+                    <a>解绑</a>
+                  </Popconfirm> : <span style={{ color: '#CCCCCC' }}>解绑</span>)}
+            <Divider type="vertical" />
             <a
               onClick={() => {
                 this.onMark(text, record, index);

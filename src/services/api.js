@@ -124,18 +124,20 @@ export async function getPersonnelList(payload) {
 // 添加人员
 export async function addPerson(payload) {
   const url = `${G.API_URL}/users`;
+  const body = filterBody({ ...payload, token: getToken() });
   return request(url, {
     method: 'PUT',
-    body: { ...payload, token: getToken() },
+    body,
   });
 }
 
 // 修改或删除人员
 export async function updatePerson(payload) {
   const url = `${G.API_URL}/users/update`;
+  const body = filterBody({ ...payload, token: getToken() });
   return request(url, {
     method: 'POST',
-    body: { ...payload, token: getToken() },
+    body,
   });
 }
 
@@ -216,17 +218,19 @@ export async function getCustomerList(payload) {
 // 添加客户
 export async function addCustomer(payload) {
   const url = `${G.API_URL}/company/add`;
+  const body = filterBody({ ...payload, token: getToken() });
   return request(url, {
     method: 'PUT',
-    body: { ...payload, token: getToken() },
+    body,
   });
 }
 // 编辑客户
 export async function editCustomer(payload) {
   const url = `${G.API_URL}/company/update`;
+  const body = filterBody({ ...payload, token: getToken() });
   return request(url, {
     method: 'PUT',
-    body: { ...payload, token: getToken() },
+    body,
   });
 }
 // 重置密码

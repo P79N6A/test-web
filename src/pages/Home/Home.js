@@ -231,7 +231,7 @@ export default class Home extends Component {
                   <Col xl={16} lg={16} md={16} sm={24} xs={24} className={styles.scalesTab}>
                     <div className={styles.salesBar}>
                       {homeStand.length > 0 ? (
-                        <Bar padding={0} height={400} title="单位（min）" data={homeStand} color="#A6D6D0" autoLabel={false} />
+                        <Bar padding={0} height={400} title="单位（h）" data={homeStand} color="#A6D6D0" autoLabel={false} />
                       ) : (
                           <div className={styles.emptyBar}>
                             <img src={`${G.picUrl}stand_time_trend_none.png`} />

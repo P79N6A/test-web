@@ -90,7 +90,7 @@ export default {
     saveHomeStand(state, { payload }) {
       const homeStand = payload.datalist.map(item => {
         const x = getTimeByType(item.datetime, payload.type);
-        const y = item.stand;
+        const y = Number((item.stand / 60).toFixed(2));
         return { x, y };
       });
       return { ...state, homeStand };

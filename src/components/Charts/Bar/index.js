@@ -101,7 +101,8 @@ class Bar extends Component {
               tickLine={autoHideXLabels ? false : {}}
             />
             <Axis name="y" min={0} />
-            <Tooltip showTitle={false} crosshairs={false} />
+            <Tooltip showTitle={false} crosshairs={false}
+              itemTpl='<div><p>{name}</p><p>{value}小时</p><div>' />
             <Geom type="interval" position="x*y" color={color} tooltip={tooltip} />
           </Chart>
         </div>

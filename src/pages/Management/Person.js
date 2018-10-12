@@ -86,7 +86,6 @@ export default class Person extends Component {
       {
         title: '使用状态',
         key: 'status',
-        sorter: true,
         filters: filterStatus,
         render: text => {
           return (
@@ -182,10 +181,10 @@ export default class Person extends Component {
     let filterParam = {};
     let sortParam = {};
     if (!G._.isEmpty(filters && filters.status)) {
-      filterParam = { status: filters.status };
+      filterParam = { userStatus: filters.status };
     }
     if (!G._.isEmpty(sorter)) {
-      sortParam = { status: sorter.order === 'descend' ? 'desc' : 'asc' };
+      sortParam = { userRank: sorter.order === 'descend' ? 'desc' : 'asc' };
     }
     this.setState({
       filterParam,

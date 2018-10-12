@@ -206,7 +206,7 @@ export default class Wework extends Component {
               新增
             </Button>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
             <Button
               className={styles.rights}
               icon="search"

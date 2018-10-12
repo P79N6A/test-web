@@ -102,13 +102,13 @@ export default class Home extends Component {
             今日
           </a>
           <a className={this.isActive('WEEKLY')} onClick={() => this.selectDate('WEEKLY')}>
-            近7天
+            本周
           </a>
           <a className={this.isActive('MONTHLY')} onClick={() => this.selectDate('MONTHLY')}>
-            近30天
+            本月
           </a>
           <a className={this.isActive('YEARLY')} onClick={() => this.selectDate('YEARLY')}>
-            近1年
+            全年
           </a>
         </div>
         <MonthPicker

@@ -277,7 +277,7 @@ export default class Device extends Component {
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder="设备编号 / 使用者 / 备注"
+              placeholder={user.user.currentAuthority === 'user' ? "设备编号 / 使用者 / 备注" : "设备编号 / 所属客户 / 备注"}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

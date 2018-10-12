@@ -228,10 +228,10 @@ export default class Home extends Component {
             <Tabs tabBarExtraContent={salesExtra} size="large" tabBarStyle={{ marginBottom: 24 }}>
               <TabPane tab="站立时间趋势" key="views">
                 <Row>
-                  <Col xl={16} lg={16} md={16} sm={30} xs={30} className={styles.scalesTab}>
+                  <Col xl={16} lg={16} md={16} sm={24} xs={24} className={styles.scalesTab}>
                     <div className={styles.salesBar}>
                       {homeStand.length > 0 ? (
-                        <Bar height={400} title="" data={homeStand} color="#A6D6D0" />
+                        <Bar padding={0} height={400} title="单位（min）" data={homeStand} color="#A6D6D0" autoLabel={false} />
                       ) : (
                           <div className={styles.emptyBar}>
                             <img src={`${G.picUrl}stand_time_trend_none.png`} />
@@ -239,7 +239,7 @@ export default class Home extends Component {
                         )}
                     </div>
                   </Col>
-                  <Col xl={8} lg={12} md={12} sm={24} xs={24}>
+                  <Col xl={8} lg={8} md={8} sm={24} xs={24}>
                     <div className={styles.salesRank}>
                       <h4 className={styles.rankingTitle}>人员站立时间排行</h4>
                       {homeRank && homeRank.length > 0 ? (
@@ -260,7 +260,7 @@ export default class Home extends Component {
                                     {hours || null}
                                     {hours ? <i>小时</i> : null}
                                     {minutes || null}
-                                    {minutes ? <i>分钟</i> : null}
+                                    {minutes ? <i>分钟</i> : <i style={{ fontSize: 14 }}>0<i>分钟</i></i>}
                                   </span>
                                 </div>
                               </li>

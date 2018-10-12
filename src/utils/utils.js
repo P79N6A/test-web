@@ -235,7 +235,7 @@ export function filterBody(body) {
 // 根据时间类型返回对应时间和单位
 export function getTimeByType(date, type) {
   if (type === 'DAILY') {
-    return G.moment.unix(date).format('HH时');
+    return G.moment.unix(date).format('HH') + ':00';
   }
   if (type === 'WEEKLY') {
     return G.moment.unix(date).format('dddd');

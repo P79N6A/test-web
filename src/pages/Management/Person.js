@@ -21,8 +21,8 @@ export default class Person extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: '未连接', value: 2 },
-      { text: '已连接', value: 3 }
+      { text: '未连接', value: 1 },
+      { text: '已连接', value: 2 }
     ],
   };
 
@@ -181,19 +181,14 @@ export default class Person extends Component {
   };
 
   handleChange = (pagination, filters, sorter) => {
-    let filterParam = {};
-    let sortParam = {};
+    let filterParam = '';
     if (!G._.isEmpty(filters && filters.status)) {
-      filterParam = { userStatus: filters.status };
-    }
-    if (!G._.isEmpty(sorter)) {
-      sortParam = { userRank: sorter.order === 'descend' ? 'desc' : 'asc' };
+      filterParam = Number(filters.status[0]);
     }
     this.setState({
       filterParam,
-      sortParam,
     });
-    this.fetchDataList({ filterParam, sortParam });
+    this.fetchDataList({ filterParam });
   };
 
   pageChange = current => {
@@ -210,7 +205,7 @@ export default class Person extends Component {
         limit: (value && value.limit) || personData.limit,
         offset: (value && (value.current - 1) * 15),
         query: (value && value.query) || query,
-        filterParam: (value && value.filterParam) || filterParam,
+        userStatus: (value && value.filterParam) || filterParam,
         sortParam: (value && value.sortParam) || sortParam,
       },
     });

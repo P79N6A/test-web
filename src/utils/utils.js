@@ -24,14 +24,14 @@ export function getTimeDistance(type) {
   const now = new Date();
   const oneDay = 1000 * 60 * 60 * 24;
 
-  if (type === 'DAILY') {
+  if (type === 'CURRENT_DAY') {
     now.setHours(0);
     now.setMinutes(0);
     now.setSeconds(0);
     return [moment(now), moment(now.getTime() + (oneDay - 1000))];
   }
 
-  if (type === 'WEEKLY') {
+  if (type === 'LAST_7DAYS') {
     let day = now.getDay();
     now.setHours(0);
     now.setMinutes(0);
@@ -48,7 +48,7 @@ export function getTimeDistance(type) {
     return [moment(beginTime), moment(beginTime + (7 * oneDay - 1000))];
   }
 
-  if (type === 'MONTHLY') {
+  if (type === 'LAST_30DAYS') {
     const year = now.getFullYear();
     const month = now.getMonth();
     const nextDate = moment(now).add(1, 'months');
@@ -234,16 +234,16 @@ export function filterBody(body) {
 
 // 根据时间类型返回对应时间和单位
 export function getTimeByType(date, type) {
-  if (type === 'DAILY') {
-    return G.moment.unix(date).format('HH') + ':00';
+  if (type === 'CURRENT_DAY') {
+    return date + ':00';
   }
-  if (type === 'WEEKLY') {
+  if (type === 'LAST_7DAYS') {
     return G.moment.unix(date).format('dddd');
   }
-  if (type === 'MONTHLY') {
+  if (type === 'LAST_30DAYS') {
     return G.moment.unix(date).format('DD号');
   }
-  if (type === 'YEARLY') {
+  if (type === 'LAST_YEAR') {
     return G.moment.unix(date).format('MM月');
   }
 }

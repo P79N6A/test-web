@@ -89,8 +89,8 @@ export default {
     },
     saveHomeStand(state, { payload }) {
       const homeStand = payload.datalist.map(item => {
-        const x = getTimeByType(item.datetime, payload.type);
-        const y = Number((item.stand / 60).toFixed(2));
+        const x = getTimeByType(item.datetime || item.index, payload.type);
+        const y = Number((item.duration / 60).toFixed(2));
         return { x, y };
       });
       return { ...state, homeStand };

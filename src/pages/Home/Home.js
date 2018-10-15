@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col, Icon, Card, Tabs, DatePicker, Tooltip } from 'antd';
+import { Row, Col, Card, Tabs } from 'antd';
 import numeral from 'numeral';
 import { ChartCard, Field, Bar } from '@/components/Charts';
 import G from '@/global';
@@ -9,7 +9,6 @@ import { getTimeDistance } from '../../utils/utils';
 import styles from './Home.less';
 
 const { TabPane } = Tabs;
-const { MonthPicker } = DatePicker;
 
 @connect(({ home, loading }) => ({
   home,
@@ -17,8 +16,8 @@ const { MonthPicker } = DatePicker;
 }))
 export default class Home extends Component {
   state = {
-    rangePickerValue: getTimeDistance('DAILY'),
-    type: 'DAILY'
+    rangePickerValue: getTimeDistance('CURRENT_DAY'),
+    type: 'CURRENT_DAY'
   };
 
   componentDidMount() {
@@ -37,7 +36,7 @@ export default class Home extends Component {
       type: 'home/getHomeStand',
       payload: {
         date:
-          G.moment(date).format('YYYY-MM-DD') || G.moment(rangePickerValue[0]).format('YYYY-MM-DD'),
+          G.moment().format('YYYY-MM-DD'),
         type: type2 || type,
       },
     });
@@ -45,25 +44,11 @@ export default class Home extends Component {
       type: 'home/getHomeRank',
       payload: {
         date:
-          G.moment(date).format('YYYY-MM-DD') || G.moment(rangePickerValue[0]).format('YYYY-MM-DD'),
+          G.moment().format('YYYY-MM-DD'),
         type: type2 || type,
       },
     });
   }
-
-  handleMonthPickerChange = monthPickerValue => {
-    const unix = monthPickerValue.unix();
-    const rangePickerValue = [
-      G.moment.unix(unix).startOf('month'),
-      G.moment
-        .unix(unix)
-        .startOf('month')
-        .add(1, 'month')
-        .subtract(1, 'day'),
-    ];
-    this.setState({ rangePickerValue, type: 'MONTHLY' });
-    this.getHomeStand({ date: rangePickerValue[0], type2: 'MONTHLY' });
-  };
 
   selectDate = type => {
     const rangePickerValue = getTimeDistance(type);
@@ -98,27 +83,19 @@ export default class Home extends Component {
     const salesExtra = (
       <div className={styles.salesExtraWrap}>
         <div className={styles.salesExtra}>
-          <a className={this.isActive('DAILY')} onClick={() => this.selectDate('DAILY')}>
+          <a className={this.isActive('CURRENT_DAY')} onClick={() => this.selectDate('CURRENT_DAY')}>
             今日
           </a>
-          <a className={this.isActive('WEEKLY')} onClick={() => this.selectDate('WEEKLY')}>
-            本周
+          <a className={this.isActive('LAST_7DAYS')} onClick={() => this.selectDate('LAST_7DAYS')}>
+            近7天
           </a>
-          <a className={this.isActive('MONTHLY')} onClick={() => this.selectDate('MONTHLY')}>
-            本月
+          <a className={this.isActive('LAST_30DAYS')} onClick={() => this.selectDate('LAST_30DAYS')}>
+            近30天
           </a>
-          <a className={this.isActive('YEARLY')} onClick={() => this.selectDate('YEARLY')}>
-            全年
+          <a className={this.isActive('LAST_YEAR')} onClick={() => this.selectDate('LAST_YEAR')}>
+            近1年
           </a>
         </div>
-        <MonthPicker
-          allowClear={false}
-          value={rangePickerValue[0]}
-          onChange={this.handleMonthPickerChange}
-          style={{ width: 100 }}
-          locale={'zh-cn'}
-          disabledDate={this.disabledDate}
-        />
       </div>
     );
 

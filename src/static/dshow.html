@@ -8,13 +8,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
   />
   <title></title>
-  <script src="https://cdn.9amtech.com/jq/jquery-3.3.1.min.js"></script>
+  <script src="http://cdn.space.9amtech.com/jq/jquery-3.3.1.min.js"></script>
   <script>
     var obCode = false;
     var obLogin = false;
     var countdown = 60;
     var countdowns = 5;
     var urls = 'http://47.94.253.27:9200';
+    var cdnUrl = 'http://cdn.space.9amtech.com/'
     // 尺寸
     function getRem(pwidth, prem) {
       var html = document.getElementsByTagName("html")[0];
@@ -155,7 +156,9 @@
             },
             async: true,
             error: function (data) {
-              tipsfun(data.responseJSON.message);
+              $('#model').show();
+              $('#model_text').text(data.responseJSON.message || '当前网络不可用');
+              data.responseJSON.message ? $('#error_online_img').attr("src", cdnUrl + 'dshow/dshow_network.png') : $('#error_online_img').attr("src", cdnUrl + 'dshow/dshow_error.png')
               countdown = 0;
             },
             success: function (data) {
@@ -176,7 +179,8 @@
       // 关闭弹窗
       $('#certain').on('click', function () {
         $('#model').hide();
-        $('#model_text').text('');
+        $('#model_text').text('当前网络不可用');
+        $('#error_online_img').attr("src", cdnUrl + 'dshow/dshow_error.png');
       })
       // 登录
       $('#login_btn').on('click', function () {
@@ -199,13 +203,13 @@
             async: true,
             error: function (data) {
               $('#model').show();
-              $('#model_text').text(data.responseJSON.message);
+              $('#model_text').text(data.responseJSON.message || '当前网络不可用');
+              data.responseJSON.message ? $('#error_online_img').attr("src", cdnUrl + 'dshow/dshow_network.png') : $('#error_online_img').attr("src", cdnUrl + 'dshow/dshow_error.png')
             },
             success: function (data) {
               if (data.status === 'success') {
                 $('#phone').val('');
                 $('#codeNum').val('');
-                tipsfun(data.data.message);
                 setTimeout(function () {
                   $('#success_model').css('display', 'block');
                   countdown = 0;
@@ -494,7 +498,7 @@
     <!-- 错误在线弹窗 -->
     <div class="error_online" id="model">
       <div class="error_online_box">
-        <img class="error_online_img" src="http://cdn.space.9amtech.com/dshow/dshow_network.png" />
+        <img class="error_online_img" id="error_online_img" src="http://cdn.space.9amtech.com/dshow/dshow_error.png" />
         <p class="error_online_text" id="model_text">当前网络不可用</p>
         <input class="error_online_btn" type="button" value="确定" id="certain" />
       </div>

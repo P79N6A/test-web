@@ -107,7 +107,7 @@ export default class SiderMenu extends PureComponent {
         className={siderClassName}
       >
         <div className={styles.logo} id="logo">
-          <Link to="/">
+          <Link to="/home">
             <img src={logo} alt="logo" />
             <h1 style={{ lineHeight: '54px', paddingTop: '10px' }}>{currentUser.currentAuthority === 'admin' ? 'System Manager' : 'Smart Space'}</h1>
           </Link>

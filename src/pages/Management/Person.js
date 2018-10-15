@@ -87,6 +87,7 @@ export default class Person extends Component {
         title: '使用状态',
         key: 'status',
         filters: filterStatus,
+        filterMultiple: false,
         render: text => {
           return (
             <Fragment>

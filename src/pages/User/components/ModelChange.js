@@ -78,8 +78,8 @@ class ModalChange extends Component {
                       message: '最大长度20',
                     },
                     {
-                      pattern: /^\w+$/,
-                      message: '仅支持半角英文数字和下划线',
+                      pattern: /^[a-z_A-Z0-9-\.!@#\$%\\\^&\*\)\(\+=\{\}\[\]\/",'<>~\·`\?:;|]+$/,
+                      message: '密码格式错误',
                     },
                   ],
                 })(<Input placeholder="请输入原始密码" type="password" size="large" />)}
@@ -97,8 +97,8 @@ class ModalChange extends Component {
                       message: '最大长度20',
                     },
                     {
-                      pattern: /^\w+$/,
-                      message: '仅支持半角英文数字和下划线',
+                      pattern: /^[a-z_A-Z0-9-\.!@#\$%\\\^&\*\)\(\+=\{\}\[\]\/",'<>~\·`\?:;|]+$/,
+                      message: '密码格式错误',
                     },
                   ],
                 })(<Input placeholder="请输入新密码" type="password" size="large" />)}

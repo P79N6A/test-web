@@ -88,11 +88,13 @@ export default class Person extends Component {
         key: 'status',
         filters: filterStatus,
         filterMultiple: false,
-        render: text => {
+        render: (text, record, index) => {
           return (
-            <Fragment>
+            text.resource ? (<Fragment>
+              <font>{text.resource.serialNumber}</font>
+            </Fragment>) : (<Fragment>
               <font>{filterStatus[text.status - 2].text}</font>
-            </Fragment>
+            </Fragment>)
           );
         },
       },

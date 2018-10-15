@@ -180,6 +180,7 @@ export default class BaseMenu extends PureComponent {
         selectedKeys={selectedKeys}
         style={style}
         {...props}
+        openKeys={["/management"]}
       >
         {this.getNavMenuItems(menuData)}
       </Menu>

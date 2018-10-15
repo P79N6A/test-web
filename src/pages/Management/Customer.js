@@ -39,7 +39,7 @@ export default class Wework extends Component {
     this.newCustomer();
   }
 
-  getColumns(current) {
+  getColumns(current, sortOrder) {
     const columns = [
       {
         title: '序号',
@@ -65,6 +65,7 @@ export default class Wework extends Component {
         dataIndex: 'resourceTotal',
         key: 'resourceTotal',
         sorter: true,
+        sortOrder: `${sortOrder}end` || '',
         render: (text, record) => (
           <a
             onClick={() => {
@@ -134,14 +135,12 @@ export default class Wework extends Component {
 
   // 排序筛选
   handleChange = (pagination, filters, sorter) => {
-    let sortParam = {};
-    if (!G._.isEmpty(sorter)) {
-      sortParam = { resourceOffline: sorter.column.order === 'descend' ? 'desc' : 'asc' };
-    }
+    const { sortParam } = this.state;
+    let sortParams = G._.isEmpty(sortParam) ? 'desc' : sortParam === 'desc' ? 'asc' : {};
     this.setState({
-      sortParam,
+      sortParam: sortParams,
     });
-    this.fetchDataList({ sortParam });
+    this.fetchDataList({ sortParams });
   };
 
   pageChange = pageNumber => {
@@ -183,16 +182,16 @@ export default class Wework extends Component {
         offset: (value && (value.current - 1) * 15),
         limit: (value && value.limit) || equipData.limit,
         query: (value && value.query) || query,
-        sortParam: (value && value.sortParam) || sortParam,
+        sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { resourceOffline: (value && value.sortParams) || sortParam },
       },
     });
   }
 
   render() {
     const { manaCustomer, loading } = this.props;
-    const { query } = this.state;
+    const { query, sortParam } = this.state;
     const { limit, current, count } = manaCustomer.data;
-    const columns = this.getColumns(current);
+    const columns = this.getColumns(current, sortParam);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
@@ -201,12 +200,12 @@ export default class Wework extends Component {
         <Row className={styles.lageBox}>
           <p>客户列表</p>
           {/* 查询 */}
-          <Col span={12}>
+          <Col span={6}>
             <Button icon="plus" type="primary" size='small' onClick={this.newCustomer.bind(this)}>
               新增
             </Button>
           </Col>
-          <Col span={12}>
+          <Col span={18}>
             <Button
               className={styles.rights}
               icon="search"

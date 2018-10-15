@@ -56,7 +56,7 @@ export default class Device extends Component {
     });
   }
 
-  getColumns(current, filterStatus, currentAuthority) {
+  getColumns(current, filterStatus, currentAuthority, sortOrder) {
     const columns = [
       {
         title: '序号',
@@ -72,6 +72,7 @@ export default class Device extends Component {
         dataIndex: 'serialNumber',
         key: 'serialNumber',
         sorter: true,
+        sortOrder: `${sortOrder}end` || ''
       },
       {
         title: '状态',
@@ -189,19 +190,16 @@ export default class Device extends Component {
 
   // 排序筛选
   handleChange = (pagination, filters, sorter) => {
-    let filterParam = {};
-    let sortParam = {};
-    if (!G._.isEmpty(filters && filters.status)) {
-      filterParam = { status: filters.status };
-    }
-    if (!G._.isEmpty(sorter)) {
-      sortParam = { serialNumber: sorter.order === 'descend' ? 'desc' : 'asc' };
-    }
+    const { sortParam } = this.state;
+    let filterParam;
+    let sortParams;
+    sortParams = G._.isEmpty(sortParam) ? 'desc' : sortParam === 'desc' ? 'asc' : {};
+    filterParam = !G._.isEmpty(filters && filters.status) ? { status: filters.status } : {};
     this.setState({
       filterParam,
-      sortParam,
+      sortParam: sortParams,
     });
-    this.fetchDataList({ filterParam, sortParam });
+    this.fetchDataList({ filterParam, sortParams });
   };
 
   pageChange = pageNumber => {
@@ -245,7 +243,7 @@ export default class Device extends Component {
         limit: (value && value.limit) || equipData.limit,
         query: (value && value.query) || query,
         filterParam: (value && value.filterParam) || filterParam,
-        sortParam: (value && value.sortParam) || sortParam,
+        sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { serialNumber: (value && value.sortParams) || sortParam },
         companyId,
       },
     });
@@ -253,9 +251,9 @@ export default class Device extends Component {
 
   render() {
     const { manaEquip, loading, user } = this.props;
-    const { visible, modalLoading, editValue, query, filterStatus } = this.state;
+    const { visible, modalLoading, editValue, query, filterStatus, sortParam } = this.state;
     const { limit, current, count } = manaEquip.data;
-    const columns = this.getColumns(current, filterStatus, user.user.currentAuthority);
+    const columns = this.getColumns(current, filterStatus, user.user.currentAuthority, sortParam);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>

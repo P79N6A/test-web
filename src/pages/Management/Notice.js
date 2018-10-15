@@ -255,12 +255,12 @@ export default class Notice extends Component {
         <Row className={styles.lageBox}>
           <p>通知列表</p>
           {/* 查询 */}
-          <Col span={12}>
+          <Col span={6}>
             <Button icon="plus" type="primary" size='small' onClick={this.newNotice.bind(this)}>
               新建
             </Button>
           </Col>
-          <Col span={12}>
+          <Col span={18}>
             <Button
               className={styles.rights}
               size='small'

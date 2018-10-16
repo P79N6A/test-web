@@ -181,7 +181,7 @@ export default class Person extends Component {
   };
 
   handleChange = (pagination, filters, sorter) => {
-    let filterParam = '';
+    let filterParam = {};
     if (!G._.isEmpty(filters && filters.status)) {
       filterParam = Number(filters.status[0]);
     }

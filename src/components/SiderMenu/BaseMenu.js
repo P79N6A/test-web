@@ -164,12 +164,6 @@ export default class BaseMenu extends PureComponent {
     if (!selectedKeys.length && openKeys) {
       selectedKeys = [openKeys[openKeys.length - 1]];
     }
-    let props = {};
-    if (openKeys) {
-      props = {
-        openKeys,
-      };
-    }
     const { handleOpenChange, style, menuData } = this.props;
     return (
       <Menu
@@ -179,8 +173,7 @@ export default class BaseMenu extends PureComponent {
         onOpenChange={handleOpenChange}
         selectedKeys={selectedKeys}
         style={style}
-        {...props}
-        openKeys={["/management"]}
+        defaultOpenKeys={["/management"]}
       >
         {this.getNavMenuItems(menuData)}
       </Menu>

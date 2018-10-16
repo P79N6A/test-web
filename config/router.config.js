@@ -91,9 +91,7 @@ export default [
             component: './Management/NewNotice',
             authority: ['user'],
           },
-          {
-            component: '404',
-          }
+          { redirect: '/exception/404' },
         ],
       },
       {
@@ -124,11 +122,10 @@ export default [
             hideInMenu: true,
             component: './Exception/TriggerException',
           },
+          { redirect: '/exception/404' },
         ],
       },
-      {
-        component: '404',
-      },
+      { redirect: '/exception/404' }
     ],
   },
 ];

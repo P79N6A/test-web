@@ -104,6 +104,7 @@ export default class Notice extends Component {
       {
         title: '序号',
         key: 'id',
+        width: '100px',
         render: (text, record, index) => (
           <Fragment>
             <font>{(current - 1) * 15 + index + 1}</font>
@@ -113,7 +114,6 @@ export default class Notice extends Component {
       {
         title: '标题',
         dataIndex: 'title',
-        width: '200px',
         key: 'title',
         render: text => {
           return <span className={styles.colSql}>{text}</span>;
@@ -122,6 +122,7 @@ export default class Notice extends Component {
       {
         title: '接收人',
         key: 'unreadCount',
+        width: '150px',
         render: (text, record, index) => {
           return (
             <Fragment>
@@ -141,6 +142,7 @@ export default class Notice extends Component {
         title: '发布时间',
         dataIndex: 'createdAt',
         key: 'createdAt',
+        width: '200px',
         render: text => {
           return <span>{G.moment(text).format('YYYY-MM-DD hh:mm:ss')}</span>;
         },

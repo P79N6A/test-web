@@ -22,7 +22,6 @@ export default class Device extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: '未绑定', value: 1 },
       { text: '离线', value: 2 },
       { text: '使用中', value: 3 },
       { text: '空闲', value: 4 },
@@ -81,7 +80,7 @@ export default class Device extends Component {
         render: text => {
           return (
             <Fragment>
-              <font>{filterStatus[text.status - 1].text}</font>
+              <font>{filterStatus[text.status - 2].text}</font>
             </Fragment>
           );
         },

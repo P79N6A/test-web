@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getPersonnelList, addPerson, updatePerson, getqiniuToken } from '../services/api';
+import { getPersonnelList, addPerson, updatePerson, getQiniuToken } from '../services/api';
 
 export default {
   namespace: 'manaPerson',
@@ -43,8 +43,8 @@ export default {
         message.error(response.message || '修改失败');
       }
     },
-    *getqiniuToken({ payload }, { call }) {
-      const response = yield call(getqiniuToken, payload);
+    *getQiniuToken({ payload }, { call }) {
+      const response = yield call(getQiniuToken, payload);
       payload.callback(response);
     },
   },

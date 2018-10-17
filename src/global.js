@@ -15,6 +15,7 @@ if (env === '') {
 }
 
 const picUrl = 'http://pflmzpr9l.bkt.clouddn.com/image/';
+const uploadPicUrl = 'http://cdn.space.9amtech.com/';
 message.config({
   maxCount: 3,
 });
@@ -28,6 +29,7 @@ export default {
   moment,
   axios,
   picUrl,
+  uploadPicUrl,
   message,
   htmlUrl,
 };

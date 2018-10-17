@@ -70,6 +70,7 @@ export default class Device extends Component {
         title: '桌子编号',
         dataIndex: 'serialNumber',
         key: 'serialNumber',
+        width: 100,
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`
       },
@@ -108,6 +109,7 @@ export default class Device extends Component {
       {
         title: '操作',
         key: 'setting',
+        width: 110,
         render: (text, record, index) => (
           <Fragment>
             {currentAuthority === 'admin' ? (

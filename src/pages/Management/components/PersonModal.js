@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as qiniu from 'qiniu-js';
-// import * as qiniuNode from 'qiniu';
 import { Modal, Button, Input, Form, Icon, Upload } from 'antd';
 import G from '@/global';
 import styles from './PersonModal.less';
@@ -114,14 +113,14 @@ class PersonModal extends Component {
   complete(response) {
     this.setState({
       avatarLoading: false,
-      imageUrl: `http://pflmzpr9l.bkt.clouddn.com/${response.key}`,
+      imageUrl: G.uploadPicUrl + response.key,
     });
   }
 
   beforeUpload(file) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaPerson/getqiniuToken',
+      type: 'manaPerson/getQiniuToken',
       payload: {
         callback: (res) => {
           if (res.status === 'success') {

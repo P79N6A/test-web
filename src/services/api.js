@@ -141,8 +141,8 @@ export async function updatePerson(payload) {
   });
 }
 
-//获取青牛云上传的token
-export async function getqiniuToken() {
+// 获取七牛云上传的 token
+export async function getQiniuToken() {
   return request(`${API_URL}/users/qiniuToken?token=${getToken()}`, {
     method: 'GET',
   });

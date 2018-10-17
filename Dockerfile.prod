@@ -1,0 +1,17 @@
+FROM node:slim
+
+EXPOSE 80
+
+RUN mkdir -p /root
+WORKDIR /root
+ADD ./package.json /root/
+RUN npm --registry https://registry.npm.taobao.org install
+
+ADD . /root
+RUN npm run build:pro
+RUN rm -rf node_modules
+
+FROM node:slim
+COPY --from=0 /root /root
+
+CMD ["sh", "/root/scripts/start.sh"]

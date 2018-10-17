@@ -137,8 +137,8 @@ class NewNoticeForm extends Component {
             rules: [
               { required: true, message: '请输入标题' },
               {
-                max: 20,
-                message: '最大长度20',
+                max: 100,
+                message: '最大长度100',
               },
             ],
           })(<Input placeholder="请输入标题" size="large" />)}

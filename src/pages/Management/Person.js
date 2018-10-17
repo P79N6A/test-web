@@ -62,6 +62,7 @@ export default class Person extends Component {
       {
         title: '序号',
         key: 'uid',
+        width: 100,
         render: (text, record, index) => (
           <Fragment>
             <font>{(current - 1) * 15 + index + 1}</font>

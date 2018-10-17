@@ -60,6 +60,7 @@ export default class Device extends Component {
       {
         title: '序号',
         key: 'id',
+        width: 100,
         render: (text, record, index) => (
           <Fragment>
             <font>{(current - 1) * 15 + index + 1}</font>
@@ -70,7 +71,6 @@ export default class Device extends Component {
         title: '桌子编号',
         dataIndex: 'serialNumber',
         key: 'serialNumber',
-        width: 100,
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`
       },
@@ -95,7 +95,7 @@ export default class Device extends Component {
         title: '备注',
         dataIndex: 'remark',
         key: 'remark',
-        width: 150,
+        width: 180,
       },
       {
         title: '最后使用时间',
@@ -104,7 +104,7 @@ export default class Device extends Component {
         render: text => {
           return text ? <span>{G.moment(text).format('YYYY-MM-DD hh:mm:ss')}</span> : ''
         },
-        width: 170,
+        width: 200,
       },
       {
         title: '操作',

@@ -44,7 +44,7 @@ export default class Wework extends Component {
       {
         title: '序号',
         key: 'id',
-        width: 70,
+        width: 100,
         render: (text, record, index) => (
           <Fragment>
             <font>{(current - 1) * 15 + index + 1}</font>
@@ -66,7 +66,7 @@ export default class Wework extends Component {
         title: '设备数',
         dataIndex: 'resourceTotal',
         key: 'resourceTotal',
-        width: 70,
+        width: 90,
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
         render: (text, record) => (

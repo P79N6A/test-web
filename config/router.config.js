@@ -19,6 +19,8 @@ export default [
       { path: '/user/login', component: './User/Login' },
     ],
   },
+  // 重定向
+  { path: '/', redirect: '/user/login' },
   // admin_user
   {
     path: '/admin_user',

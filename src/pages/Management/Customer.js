@@ -44,6 +44,7 @@ export default class Wework extends Component {
       {
         title: '序号',
         key: 'id',
+        width: 70,
         render: (text, record, index) => (
           <Fragment>
             <font>{(current - 1) * 15 + index + 1}</font>
@@ -59,11 +60,13 @@ export default class Wework extends Component {
         title: '账号',
         dataIndex: 'company.account',
         key: 'company.account',
+        width: 200,
       },
       {
         title: '设备数',
         dataIndex: 'resourceTotal',
         key: 'resourceTotal',
+        width: 70,
         sorter: true,
         sortOrder: `${sortOrder}end` || '',
         render: (text, record) => (
@@ -90,7 +93,7 @@ export default class Wework extends Component {
         title: '备注',
         dataIndex: 'company.remark',
         key: 'company.remark',
-        width: 260,
+        width: 200,
       },
       {
         title: '操作',
@@ -182,7 +185,7 @@ export default class Wework extends Component {
         offset: (value && (value.current - 1) * 15),
         limit: (value && value.limit) || equipData.limit,
         query: (value && value.query) || query,
-        sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { resourceOffline: (value && value.sortParams) || sortParam },
+        sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { resourceTotal: (value && value.sortParams) || sortParam },
       },
     });
   }

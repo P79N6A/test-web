@@ -68,7 +68,7 @@ export default class Wework extends Component {
         key: 'resourceTotal',
         width: 70,
         sorter: true,
-        sortOrder: `${sortOrder}end` || '',
+        sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
         render: (text, record) => (
           <a
             onClick={() => {

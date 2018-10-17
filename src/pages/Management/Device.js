@@ -71,7 +71,7 @@ export default class Device extends Component {
         dataIndex: 'serialNumber',
         key: 'serialNumber',
         sorter: true,
-        sortOrder: `${sortOrder}end` || ''
+        sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`
       },
       {
         title: '状态',

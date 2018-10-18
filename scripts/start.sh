@@ -10,6 +10,8 @@ cp -rf /root/src/static/* /root/dist/static/
 # Upload all files to qiniu
 chmod +x /root/scripts/qshell
 /root/scripts/qshell account h07mPP3LHfjO8BHJfCyIRsiichflVYIHtyNkXNoM 6keig4uqFJFLjs80aLAPfjb3rnaMaiPOgRNJ9uik
+/root/scripts/qshell listbucket 9am-space dist fileList
+/root/scripts/qshell batchdelete -force 9am-space fileList
 /root/scripts/qshell qupload /root/scripts/upload.config
 # Start server
 cd /root/server

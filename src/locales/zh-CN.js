@@ -117,6 +117,7 @@ export default {
   'notice.input.title': '请输入标题',
   'notice.select.receiver': '请选择接收人',
   'notice.publish': '发布',
+  'notice.refresh': '请刷新页面再试',
   // 客户管理
   'customer.name': '客户名称',
   'customer.account.number': '账号',

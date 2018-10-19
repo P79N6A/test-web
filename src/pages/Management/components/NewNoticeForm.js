@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Form, Input, Select, Row, Col, Button, message } from 'antd';
+import * as qiniu from 'qiniu-js';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
@@ -126,6 +127,39 @@ class NewNoticeForm extends Component {
       callback();
     }
   }
+  // editor
+  next() { }
+
+  error() { }
+
+  complete(resolve, response) {
+    const data = {
+      link: G.uploadPicUrl + response.key
+    }
+    resolve({ data })
+  }
+
+  uploadImageCallBack(file) {
+    return new Promise((resolve) => {
+      const { dispatch } = this.props;
+      dispatch({
+        type: 'manaPerson/getQiniuToken',
+        payload: {
+          callback: (res) => {
+            if (res.status === 'success') {
+              const config = { useCdnDomain: true };
+              const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
+              const avatarUrl = `text_${G.moment().unix()}.png`;
+              const observable = qiniu.upload(file, avatarUrl, res.data, putExtra, config);
+              observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this, resolve));
+            } else {
+              message.error(formatMessage({ id: 'notice.refresh' }));
+            }
+          }
+        },
+      });
+    })
+  }
 
   render() {
     const { form } = this.props;
@@ -173,11 +207,12 @@ class NewNoticeForm extends Component {
                 textAlign: { inDropdown: true },
                 link: { inDropdown: true },
                 history: { inDropdown: true },
+                image: { uploadCallback: this.uploadImageCallBack.bind(this), previewImage: true },
               }}
               toolbarClassName="toolbarClassName"
               wrapperClassName="wrapperClassName"
               editorClassName="editorClassName"
-              editorStyle={{ width: '100%', height: 350, backgroundColor: '#ffffff' }}
+              editorStyle={{ width: '100%', height: 350, backgroundColor: '#ffffff', borderRadius: '0 0 8px 8px', border: '1px solid #d9d9d9', borderTop: 'none' }}
               onEditorStateChange={this.onEditorStateChange.bind(this)}
             />
           )}

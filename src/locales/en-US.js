@@ -116,6 +116,7 @@ export default {
   'notice.input.title': 'Please enter a title',
   'notice.select.receiver': 'Please select recipient',
   'notice.publish': 'Publish',
+  'notice.refresh': 'Please refresh the page and try again',
   // 客户管理
   'customer.name': "Client's Name",
   'customer.account.number': 'AccountNumber',

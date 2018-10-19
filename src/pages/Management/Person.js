@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import { Row, Col, Table, Button, Input, Divider, Pagination, Icon, Popconfirm } from 'antd';
 
@@ -21,8 +22,8 @@ export default class Person extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: '未连接', value: 1 },
-      { text: '已连接', value: 2 }
+      { text: formatMessage({ id: 'person.status.unconnect' }), value: 1 },
+      { text: formatMessage({ id: 'person.status.connected' }), value: 2 }
     ],
   };
 
@@ -57,10 +58,10 @@ export default class Person extends Component {
     this.updatePerson({ uid: text.uid, isDel: true, callback: this.update.bind(this) });
   }
 
-  getColumns(current, filterStatus) {
+  getColumns(current, filterStatus, listTitle) {
     const columns = [
       {
-        title: '序号',
+        title: listTitle.serialNumber,
         key: 'uid',
         width: 100,
         render: (text, record, index) => (
@@ -70,22 +71,22 @@ export default class Person extends Component {
         ),
       },
       {
-        title: '姓名',
+        title: listTitle.name,
         dataIndex: 'name',
         key: 'name',
       },
       {
-        title: '手机',
+        title: listTitle.phone,
         dataIndex: 'phone',
         key: 'phone',
       },
       {
-        title: '职务',
+        title: listTitle.position,
         dataIndex: 'position',
         key: 'position',
       },
       {
-        title: '使用状态',
+        title: listTitle.status,
         key: 'status',
         filters: filterStatus,
         filterMultiple: false,
@@ -100,13 +101,13 @@ export default class Person extends Component {
         },
       },
       {
-        title: '备注',
+        title: listTitle.remarks,
         dataIndex: 'remark',
         key: 'remark',
         width: 160,
       },
       {
-        title: '操作',
+        title: listTitle.operate,
         render: (text, record, index) => (
           <Fragment>
             <a
@@ -114,17 +115,17 @@ export default class Person extends Component {
                 this.onEdit(text, record, index);
               }}
             >
-              编辑
+              {listTitle.edit}
             </a>
             <Divider type="vertical" />
             <Popconfirm
               placement="left"
-              title="确定要删除此条信息吗？"
+              title={formatMessage({ id: 'person.delete.tip' })}
               onConfirm={this.onDelete.bind(this, text)}
-              okText="确定"
-              cancelText="取消"
+              okText={formatMessage({ id: 'all.certain' })}
+              cancelText={formatMessage({ id: 'all.cancel' })}
             >
-              <a>删除</a>
+              <a>{listTitle.delete}</a>
             </Popconfirm>
           </Fragment>
         ),
@@ -232,17 +233,28 @@ export default class Person extends Component {
     const { manaPerson, user, loading, dispatch } = this.props;
     const { modalLoading, visible, editValue, query, filterStatus } = this.state;
     const { limit, count, current } = manaPerson.data;
-    const columns = this.getColumns(current, filterStatus);
+    const listTitle = {
+      serialNumber: formatMessage({ id: 'all.serial.number' }),
+      name: formatMessage({ id: 'person.name' }),
+      phone: formatMessage({ id: 'person.phone' }),
+      position: formatMessage({ id: 'person.position' }),
+      status: formatMessage({ id: 'person.use.status' }),
+      remarks: formatMessage({ id: 'all.remarks' }),
+      operate: formatMessage({ id: 'all.operating' }),
+      edit: formatMessage({ id: 'all.edit' }),
+      delete: formatMessage({ id: 'all.delete' }),
+    }
+    const columns = this.getColumns(current, filterStatus, listTitle);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
-        <h3>用户管理</h3>
+        <h3><FormattedMessage id="menu.management.person" /></h3>
         <br />
         <Row className={styles.lageBox}>
-          <p>用户列表</p>
+          <p><FormattedMessage id="person.list" /></p>
           <Col span={12}>
             <Button icon="plus" type="primary" size='small' onClick={this.showModal}>
-              添加
+              <FormattedMessage id="all.add" />
             </Button>
           </Col>
           <Col span={12}>
@@ -253,12 +265,12 @@ export default class Person extends Component {
               type="primary"
               onClick={this.onSearch.bind(this)}
             >
-              搜索
+              <FormattedMessage id="all.search" />
             </Button>
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder="姓名 / 手机 / 备注"
+              placeholder={formatMessage({ id: 'person.search.text' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

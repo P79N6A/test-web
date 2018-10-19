@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import { Row, Col, Card, Tabs } from 'antd';
 import numeral from 'numeral';
@@ -79,21 +80,20 @@ export default class Home extends Component {
     const { rangePickerValue } = this.state;
     const { home } = this.props;
     const { resourceNum, userNum, notificationNum, standNum, homeStand, homeRank } = home;
-    // return null;
     const salesExtra = (
       <div className={styles.salesExtraWrap}>
         <div className={styles.salesExtra}>
           <a className={this.isActive('CURRENT_DAY')} onClick={() => this.selectDate('CURRENT_DAY')}>
-            今日
+            <FormattedMessage id="home.today" />
           </a>
           <a className={this.isActive('LAST_7DAYS')} onClick={() => this.selectDate('LAST_7DAYS')}>
-            近7天
+            <FormattedMessage id="home.nearly.seven.day" />
           </a>
           <a className={this.isActive('LAST_30DAYS')} onClick={() => this.selectDate('LAST_30DAYS')}>
-            近30天
+            <FormattedMessage id="home.nearly.thirty.day" />
           </a>
           <a className={this.isActive('LAST_YEAR')} onClick={() => this.selectDate('LAST_YEAR')}>
-            近1年
+            <FormattedMessage id="home.nearly.one.year" />
           </a>
         </div>
       </div>
@@ -115,11 +115,11 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               style={{ borderRadius: '4px' }}
-              title="设备数"
+              title={formatMessage({ id: 'home.device.number' })}
               total={() => <h4>{numeral(resourceNum.totalCount).format('0,0')}</h4>}
               footer={
                 <Field
-                  label="使用率"
+                  label={formatMessage({ id: 'home.inuse.rate' })}
                   value={resourceNum.totalCount === 0 ? '0.00%' : `${Number((resourceNum.liveCount / resourceNum.totalCount) * 100).toFixed(
                     2
                   ) || 0}%`}
@@ -128,7 +128,7 @@ export default class Home extends Component {
               contentHeight={46}
             >
               <font style={{ marginRight: 16 }}>
-                使用数
+                <FormattedMessage id="home.inuse.number" />
                 <span className={styles.trendText}>{resourceNum.liveCount}</span>
               </font>
             </ChartCard>
@@ -137,11 +137,11 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               style={{ borderRadius: '4px' }}
-              title="用户数"
+              title={formatMessage({ id: 'home.users.number' })}
               total={numeral(userNum.totalCount).format('0,0')}
               footer={
                 <Field
-                  label="当前使用率"
+                  label={formatMessage({ id: 'home.inuse.rate' })}
                   value={userNum.totalCount === 0 ? '0.00%' : `${Number((userNum.liveCount / userNum.totalCount) * 100).toFixed(2) ||
                     0}%`}
                 />
@@ -149,7 +149,7 @@ export default class Home extends Component {
               contentHeight={46}
             >
               <font style={{ marginRight: 16 }}>
-                使用数
+                <FormattedMessage id="home.inuse.number" />
                 <span className={styles.trendText}>{userNum.liveCount}</span>
               </font>
             </ChartCard>
@@ -158,11 +158,11 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               style={{ borderRadius: '4px' }}
-              title="通知数"
+              title={formatMessage({ id: 'home.notice.number' })}
               total={numeral(notificationNum.total).format('0,0')}
               footer={
                 <Field
-                  label="阅读率"
+                  label={formatMessage({ id: 'home.reading.rate' })}
                   value={notificationNum.viewTotal === 0 ? '0.00%' : `${Number(
                     (notificationNum.viewTotal /
                       (notificationNum.viewTotal + notificationNum.unreadTotal)) *
@@ -173,7 +173,7 @@ export default class Home extends Component {
               contentHeight={46}
             >
               <font style={{ marginRight: 16 }}>
-                阅读量
+                <FormattedMessage id="home.reading.volume" />
                 <span className={styles.trendText}>{notificationNum.viewTotal}</span>
               </font>
             </ChartCard>
@@ -182,18 +182,18 @@ export default class Home extends Component {
             <ChartCard
               bordered={false}
               style={{ borderRadius: '4px' }}
-              title="站立时长"
-              total={`${parseInt(standNum.duration)}天`}
+              title={formatMessage({ id: 'home.standing.time' })}
+              total={`${parseInt(standNum.duration)}${formatMessage({ id: 'home.day' })}`}
               footer={
                 <Field
-                  label="站坐时间比例"
+                  label={formatMessage({ id: 'home.standing.time.ratio' })}
                   value={`${Number(standNum.rate * 100).toFixed(2) || 0}%`}
                 />
               }
               contentHeight={46}
             >
               <font style={{ marginRight: 16 }}>
-                平均次数
+                <FormattedMessage id="home.average.number" />
                 <span className={styles.trendText}>{standNum.count}</span>
               </font>
             </ChartCard>
@@ -203,12 +203,12 @@ export default class Home extends Component {
         <Card bordered={false} bodyStyle={{ padding: 0 }} style={{ borderRadius: '4px' }}>
           <div className={styles.salesCard}>
             <Tabs tabBarExtraContent={salesExtra} size="large" tabBarStyle={{ marginBottom: 24 }}>
-              <TabPane tab="站立时间趋势" key="views">
+              <TabPane tab={formatMessage({ id: 'home.standing.time.trend' })} key="views">
                 <Row>
                   <Col xl={16} lg={16} md={16} sm={24} xs={24} className={styles.scalesTab}>
                     <div className={styles.salesBar}>
                       {homeStand.length > 0 ? (
-                        <Bar padding={0} height={400} title="单位（小时）" data={homeStand} color="#A6D6D0" autoLabel={false} />
+                        <Bar padding={0} height={400} title={`${formatMessage({ id: 'home.unit' })}(${formatMessage({ id: 'home.hour' })})`} data={homeStand} color="#A6D6D0" autoLabel={false} />
                       ) : (
                           <div className={styles.emptyBar}>
                             <img src={`${G.picUrl}stand_time_trend_none.png`} />
@@ -218,7 +218,7 @@ export default class Home extends Component {
                   </Col>
                   <Col xl={8} lg={8} md={8} sm={24} xs={24}>
                     <div className={styles.salesRank}>
-                      <h4 className={styles.rankingTitle}>人员站立时间排行</h4>
+                      <h4 className={styles.rankingTitle}><FormattedMessage id="home.person.standing.time.ranking" /></h4>
                       {homeRank && homeRank.length > 0 ? (
                         <ul className={styles.rankingList}>
                           {homeRank.map((item, i) => {

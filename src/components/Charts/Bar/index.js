@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage } from 'umi/locale';
 import { Chart, Axis, Tooltip, Geom } from 'bizcharts';
 import Debounce from 'lodash-decorators/debounce';
 import Bind from 'lodash-decorators/bind';
@@ -83,6 +84,8 @@ class Bar extends Component {
       }),
     ];
 
+    const unit = formatMessage({ id: 'home.hour' });
+
     return (
       <div className={styles.chart} style={{ height }} ref={this.handleRoot}>
         <div ref={this.handleRef}>
@@ -102,7 +105,7 @@ class Bar extends Component {
             />
             <Axis name="y" min={0} />
             <Tooltip showTitle={false} crosshairs={false}
-              itemTpl='<div><p>{name}</p><p>{value}小时</p><div>' />
+              itemTpl={`<li data-index={index}><span style="background-color:{color};width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;"></span>{name}<span style="margin-left:16px;"></span>{value}${unit}</li>`} />
             <Geom type="interval" position="x*y" color={color} tooltip={tooltip} />
           </Chart>
         </div>

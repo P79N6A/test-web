@@ -241,10 +241,10 @@ export function getTimeByType(date, type) {
     return G.moment.unix(date).format('dddd');
   }
   if (type === 'LAST_30DAYS') {
-    return G.moment.unix(date).format('DD号');
+    return G.moment.unix(date).format('Do');
   }
   if (type === 'LAST_YEAR') {
-    return G.moment.unix(date).format('MM月');
+    return G.moment.unix(date).format('MMM');
   }
 }
 

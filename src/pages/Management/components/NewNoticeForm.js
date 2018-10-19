@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Form, Input, Select, Row, Col, Button, message } from 'antd';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
@@ -68,7 +69,7 @@ class NewNoticeForm extends Component {
       this.children.push(<SelectOption key={user[i].uid}>{user[i].name}</SelectOption>);
       this.valueOfAll.push(user[i].uid);
     }
-    this.children.unshift(<SelectOption key="all">全部</SelectOption>);
+    this.children.unshift(<SelectOption key="all"><FormattedMessage id='notice.all' /></SelectOption>);
   }
 
   selectAll() {
@@ -110,17 +111,17 @@ class NewNoticeForm extends Component {
 
   sendResponse(res) {
     if (res.status === 'success') {
-      message.success('发送成功');
+      message.success(formatMessage({ id: 'notice.sent.successfully' }));
       history.back(-1);
     } else {
-      message.error('发送失败');
+      message.error(formatMessage({ id: 'notice.failed.to.send' }));
     }
   }
 
   checkEditor(rule, value, callback) {
     const { editorState } = this.state;
     if (editorState === '' || editorState.length === 8) {
-      callback('请填写内容');
+      callback(formatMessage({ id: 'notice.send.message' }));
     } else {
       callback();
     }
@@ -135,23 +136,23 @@ class NewNoticeForm extends Component {
         <FormItem>
           {getFieldDecorator('title', {
             rules: [
-              { required: true, message: '请输入标题' },
+              { required: true, message: formatMessage({ id: 'notice.input.title' }) },
               {
                 max: 100,
-                message: '最大长度100',
+                message: formatMessage({ id: 'text.max.long.one.hundred' }),
               },
             ],
-          })(<Input placeholder="请输入标题" size="large" />)}
+          })(<Input placeholder={formatMessage({ id: 'notice.input.title' })} size="large" />)}
         </FormItem>
         <FormItem>
           {getFieldDecorator('person', {
-            rules: [{ required: true, message: '请选择接收人' }],
+            rules: [{ required: true, message: formatMessage({ id: 'notice.select.receiver' }) }],
           })(
             <Select
               mode="multiple"
               allowClear
               size="large"
-              placeholder="请选择接收人"
+              placeholder={formatMessage({ id: 'notice.select.receiver' })}
               onChange={this.handleChange.bind(this)}
               style={{ width: '100%' }}
               filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -177,7 +178,6 @@ class NewNoticeForm extends Component {
               wrapperClassName="wrapperClassName"
               editorClassName="editorClassName"
               editorStyle={{ width: '100%', height: 350, backgroundColor: '#ffffff' }}
-              // toolbarStyle={{ color: '#000', opacity: '0.65' }}
               onEditorStateChange={this.onEditorStateChange.bind(this)}
             />
           )}
@@ -185,7 +185,7 @@ class NewNoticeForm extends Component {
         <Row>
           <Col span={24} style={{ textAlign: 'left' }}>
             <Button type="primary" size='small' htmlType="submit" onClick={this.handleCommit.bind(this)}>
-              发布
+              <FormattedMessage id='notice.publish' />
             </Button>
             <Button
               style={{ marginLeft: 8 }}
@@ -194,7 +194,7 @@ class NewNoticeForm extends Component {
                 history.back(-1);
               }}
             >
-              取消
+              <FormattedMessage id='all.cancel' />
             </Button>
           </Col>
         </Row>

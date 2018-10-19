@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import { Alert } from 'antd';
 import Login from '@/components/Login';
@@ -79,14 +80,14 @@ class LoginPage extends Component {
               login.type === 'account' &&
               !submitting &&
               this.renderMessage('账户或密码错误（admin/888888）')}
-            <UserName name="userName" placeholder="账户" />
+            <UserName name="userName" placeholder={formatMessage({ id: 'login.account' })} />
             <Password
               name="password"
-              placeholder="密码"
+              placeholder={formatMessage({ id: 'customer.password' })}
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
           </Tab>
-          <Submit loading={submitting} path={match.path}>登录</Submit>
+          <Submit loading={submitting} path={match.path}><FormattedMessage id='menu.user.login' /></Submit>
         </Login>
       </div>
     );

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon } from 'antd';
 
@@ -22,9 +23,9 @@ export default class Device extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: '离线', value: 2 },
-      { text: '使用中', value: 3 },
-      { text: '空闲', value: 4 },
+      { text: formatMessage({ id: 'device.offline' }), value: 2 },
+      { text: formatMessage({ id: 'device.using' }), value: 3 },
+      { text: formatMessage({ id: 'device.leisure' }), value: 4 },
     ],
   };
 
@@ -58,7 +59,7 @@ export default class Device extends Component {
   getColumns(current, filterStatus, currentAuthority, sortOrder) {
     const columns = [
       {
-        title: '序号',
+        title: formatMessage({ id: 'all.serial.number' }),
         key: 'id',
         width: 100,
         render: (text, record, index) => (
@@ -68,14 +69,14 @@ export default class Device extends Component {
         ),
       },
       {
-        title: '桌子编号',
+        title: formatMessage({ id: 'device.desk.id' }),
         dataIndex: 'serialNumber',
         key: 'serialNumber',
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`
       },
       {
-        title: '状态',
+        title: formatMessage({ id: 'device.status' }),
         key: 'status',
         filters: filterStatus,
         render: text => {
@@ -87,59 +88,58 @@ export default class Device extends Component {
         },
       },
       {
-        title: currentAuthority === 'admin' ? '所属客户' : '用户',
+        title: currentAuthority === 'admin' ? formatMessage({ id: 'device.customer' }) : formatMessage({ id: 'device.user' }),
         dataIndex: currentAuthority === 'admin' ? 'companyName' : 'user_name',
         key: currentAuthority === 'admin' ? 'companyName' : 'user_name',
       },
       {
-        title: '备注',
+        title: formatMessage({ id: 'all.remarks' }),
         dataIndex: 'remark',
         key: 'remark',
         width: 180,
       },
       {
-        title: '最后使用时间',
+        title: formatMessage({ id: 'device.use.time' }),
         dataIndex: 'lastOperationTime',
         key: 'lastOperationTime',
         render: text => {
           return text ? <span>{G.moment(text).format('YYYY-MM-DD hh:mm:ss')}</span> : ''
         },
-        width: 200,
       },
       {
-        title: '操作',
+        title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
-        width: 110,
+        width: 170,
         render: (text, record, index) => (
           <Fragment>
             {currentAuthority === 'admin' ? (
               text.companyId ? <Popconfirm
                 placement="left"
-                title="移除后该设备将从企业中移除，确定要移除吗？"
+                title={formatMessage({ id: 'device.remove.message' })}
                 onConfirm={this.untiedRemove.bind(this, text)}
-                okText="移除"
-                cancelText="取消"
+                okText={formatMessage({ id: 'all.remove' })}
+                cancelText={formatMessage({ id: 'all.cancel' })}
               >
-                <a>移除</a>
-              </Popconfirm> : <span style={{ color: '#CCCCCC' }}>移除</span>
+                <a><FormattedMessage id='all.remove' /></a>
+              </Popconfirm> : <span style={{ color: '#CCCCCC' }}><FormattedMessage id='all.remove' /></span>
             ) : (
                 text.userUid ?
                   <Popconfirm
                     placement="left"
-                    title="解除绑定后，该用户将被强制退出该设备，导致用户无法正常使用（可重新登录使用）"
+                    title={formatMessage({ id: 'device.untied.message' })}
                     onConfirm={this.untiedConfirm.bind(this, text)}
-                    okText="解绑"
-                    cancelText="取消"
+                    okText={formatMessage({ id: 'device.untied' })}
+                    cancelText={formatMessage({ id: 'all.cancel' })}
                   >
-                    <a>解绑</a>
-                  </Popconfirm> : <span style={{ color: '#CCCCCC' }}>解绑</span>)}
+                    <a><FormattedMessage id="device.untied" /></a>
+                  </Popconfirm> : <span style={{ color: '#CCCCCC' }}><FormattedMessage id="device.untied" /></span>)}
             <Divider type="vertical" />
             <a
               onClick={() => {
                 this.onMark(text, record, index);
               }}
             >
-              备注
+              <FormattedMessage id="all.remarks" />
             </a>
           </Fragment>
         ),
@@ -258,10 +258,10 @@ export default class Device extends Component {
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
-        <h3>设备管理</h3>
+        <h3><FormattedMessage id="menu.management.device" /></h3>
         <br />
         <Row className={styles.lageBox}>
-          <p>设备列表</p>
+          <p><FormattedMessage id="device.list" /></p>
           {/* 查询 */}
           <Col span={24}>
             <Button
@@ -271,12 +271,12 @@ export default class Device extends Component {
               type="primary"
               onClick={this.onSearch.bind(this)}
             >
-              搜索
+              <FormattedMessage id="all.search" />
             </Button>
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder={user.user.currentAuthority === 'user' ? "设备编号 / 使用者 / 备注" : "设备编号 / 所属客户 / 备注"}
+              placeholder={user.user.currentAuthority === 'user' ? formatMessage({ id: 'device.search.user.text' }) : formatMessage({ id: 'device.search.admin.text' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

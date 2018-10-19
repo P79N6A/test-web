@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import NewNoticeForm from './components/NewNoticeForm';
 import styles from './NewNotice.less';
@@ -12,7 +13,7 @@ export default class NewNotice extends Component {
     const { dispatch, manaNotice, manaPerson } = this.props;
     return (
       <div className={styles.main}>
-        <h3>新建通知</h3>
+        <h3><FormattedMessage id='menu.management.newNotice' /></h3>
         <br />
         <NewNoticeForm
           dispatch={dispatch}

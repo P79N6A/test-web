@@ -1,5 +1,6 @@
 /* eslint-disable react/no-danger */
 import React, { Component, Fragment } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import {
   Row,
@@ -31,13 +32,13 @@ export default class Notice extends Component {
     query: '',
     visible: false,
     detail: {
-      title: '标题',
+      title: 'Title',
       lookNum: 20,
       lastTime: '2018-04',
       content: '<p>Hello World</p>',
     },
     noticeState: [],
-    state: ['空', '已发送', '已接收', '待办', '已读']
+    state: [formatMessage({ id: 'notice.empty' }), formatMessage({ id: 'notice.send' }), formatMessage({ id: 'notice.revice' }), formatMessage({ id: 'notice.upcoming' }), formatMessage({ id: 'notice.read' })]
   };
 
   componentDidMount() {
@@ -96,13 +97,13 @@ export default class Notice extends Component {
     const contest = (
       <div>
         {noticeState.map((comment) => (
-          <p key={comment._id}><span>{comment.username || '暂无昵称'}</span><span style={{ float: 'right' }}>{state[comment.readingState]}</span></p>
+          <p key={comment._id}><span>{comment.username || formatMessage({ id: 'notice.no.nickname' })}</span><span style={{ float: 'right' }}>{state[comment.readingState]}</span></p>
         ))}
       </div>
     );
     const columns = [
       {
-        title: '序号',
+        title: formatMessage({ id: 'all.serial.number' }),
         key: 'id',
         width: 100,
         render: (text, record, index) => (
@@ -112,7 +113,7 @@ export default class Notice extends Component {
         ),
       },
       {
-        title: '标题',
+        title: formatMessage({ id: 'notice.title' }),
         dataIndex: 'title',
         key: 'title',
         render: text => {
@@ -120,7 +121,7 @@ export default class Notice extends Component {
         },
       },
       {
-        title: '接收人',
+        title: formatMessage({ id: 'notice.receiver' }),
         key: 'unreadCount',
         width: 150,
         render: (text, record, index) => {
@@ -129,7 +130,7 @@ export default class Notice extends Component {
               <Popover
                 placement="rightTop"
                 content={contest}
-                title="已送达人员"
+                title={formatMessage({ id: 'notice.delivered' })}
                 trigger="click"
                 onClick={this.handleClickChange.bind(this, text.noticeId)}>
                 <font style={{ cursor: 'pointer' }}>{`${text.viewCount}/${text.unreadCount + text.viewCount}`}</font>
@@ -139,7 +140,7 @@ export default class Notice extends Component {
         },
       },
       {
-        title: '发布时间',
+        title: formatMessage({ id: 'notice.release.time' }),
         dataIndex: 'createdAt',
         key: 'createdAt',
         width: 200,
@@ -148,28 +149,28 @@ export default class Notice extends Component {
         },
       },
       {
-        title: '操作',
+        title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
         render: (text, record, index) => (
           <Fragment>
             <Popconfirm
               placement="left"
-              title={text.topStatus ? '确定要取消置顶此条通知吗？' : '确定要置顶此条通知吗？'}
+              title={text.topStatus ? formatMessage({ id: 'notice.down.message' }) : formatMessage({ id: 'notice.top.message' })}
               onConfirm={this.untiedConfirm.bind(this, text)}
-              okText="确定"
-              cancelText="取消"
+              okText={formatMessage({ id: 'all.certain' })}
+              cancelText={formatMessage({ id: 'all.cancel' })}
             >
-              <a>{text.topStatus ? '取消置顶' : '置顶'}</a>
+              <a>{text.topStatus ? formatMessage({ id: 'notice.unpin' }) : formatMessage({ id: 'notice.topping' })}</a>
             </Popconfirm>
             <Divider type="vertical" />
-            <a onClick={this.copyPush.bind(this, text)}>复制</a>
+            <a onClick={this.copyPush.bind(this, text)}><FormattedMessage id='notice.copy' /></a>
             <Divider type="vertical" />
             <a
               onClick={() => {
                 this.onDetail(text, record, index);
               }}
             >
-              详情
+              <FormattedMessage id='notice.detail' />
             </a>
           </Fragment>
         ),
@@ -252,14 +253,14 @@ export default class Notice extends Component {
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
-        <h3>通知管理</h3>
+        <h3><FormattedMessage id='menu.management.notice' /></h3>
         <br />
         <Row className={styles.lageBox}>
-          <p>通知列表</p>
+          <p><FormattedMessage id='notice.list' /></p>
           {/* 查询 */}
           <Col span={6}>
             <Button icon="plus" type="primary" size='small' onClick={this.newNotice.bind(this)}>
-              新建
+              <FormattedMessage id='all.add' />
             </Button>
           </Col>
           <Col span={18}>
@@ -270,12 +271,12 @@ export default class Notice extends Component {
               type="primary"
               onClick={this.onSearch.bind(this)}
             >
-              搜索
+              <FormattedMessage id='all.search' />
             </Button>
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder="标题"
+              placeholder={formatMessage({ id: 'notice.title' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

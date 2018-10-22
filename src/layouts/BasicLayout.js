@@ -263,19 +263,22 @@ class BasicLayout extends React.PureComponent {
     const isTop = PropsLayout === 'topmenu';
     const menuData = this.getMenuData();
     const routerConfig = this.matchParamsPath(pathname);
+    const slideMenuShow = routerConfig.name === 'not-find' || routerConfig.name === 'not-permission' || routerConfig.name === 'server-error' || routerConfig.name === 'trigger';
     const layout = (
       <Layout>
-        {isTop && !isMobile ? null : (
-          <SiderMenu
-            logo={`${G.picUrl}logoGreen.png`}
-            Authorized={Authorized}
-            theme={navTheme}
-            onCollapse={this.handleMenuCollapse}
-            menuData={menuData}
-            isMobile={isMobile}
-            {...myProps}
-          />
-        )}
+        {slideMenuShow ? null :
+          isTop && !isMobile ? null : (
+            <SiderMenu
+              logo={`${G.picUrl}logoGreen.png`}
+              Authorized={Authorized}
+              theme={navTheme}
+              onCollapse={this.handleMenuCollapse}
+              menuData={menuData}
+              isMobile={isMobile}
+              {...myProps}
+            />
+          )
+        }
         <Layout
           style={{
             ...this.getLayoutStyle(),
@@ -283,6 +286,7 @@ class BasicLayout extends React.PureComponent {
           }}
         >
           <Header
+            slideMenuShow={slideMenuShow}
             currentUser={currentUser}
             menuData={menuData}
             handleMenuCollapse={this.handleMenuCollapse}

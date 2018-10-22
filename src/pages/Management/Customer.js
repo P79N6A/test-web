@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon } from 'antd';
+import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon, Tooltip } from 'antd';
 
 import G from '@/global';
 import styles from './Person.less';
@@ -54,14 +54,30 @@ export default class Wework extends Component {
       },
       {
         title: formatMessage({ id: 'customer.name' }),
-        dataIndex: 'companyName',
         key: 'companyName',
+        render: text => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.companyName}>
+                <font>{text.companyName}</font>
+              </Tooltip>
+            </Fragment>
+          );
+        }
       },
       {
         title: formatMessage({ id: 'customer.account.number' }),
-        dataIndex: 'company.account',
         key: 'company.account',
         width: 200,
+        render: text => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.company.account}>
+                <font>{text.company.account}</font>
+              </Tooltip>
+            </Fragment>
+          );
+        }
       },
       {
         title: formatMessage({ id: 'home.device.number' }),
@@ -86,15 +102,23 @@ export default class Wework extends Component {
         key: 'resourceOffline',
       },
       {
-        title: formatMessage({ id: 'app.analysis.table.users' }),
+        title: formatMessage({ id: 'home.users.number' }),
         dataIndex: 'userTotal',
         key: 'userTotal',
       },
       {
         title: formatMessage({ id: 'all.remarks' }),
-        dataIndex: 'company.remark',
         key: 'company.remark',
         width: 200,
+        render: text => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.company.remark}>
+                <font>{text.company.remark}</font>
+              </Tooltip>
+            </Fragment>
+          );
+        }
       },
       {
         title: formatMessage({ id: 'all.operating' }),

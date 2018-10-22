@@ -13,7 +13,8 @@ import {
   Icon,
   Pagination,
   Popconfirm,
-  Popover
+  Popover,
+  Tooltip
 } from 'antd';
 
 import G from '@/global';
@@ -114,11 +115,16 @@ export default class Notice extends Component {
       },
       {
         title: formatMessage({ id: 'notice.title' }),
-        dataIndex: 'title',
         key: 'title',
-        render: text => {
-          return <span className={styles.colSql}>{text}</span>;
-        },
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.title}>
+                <span className={styles.colSql}>{text.title}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
         title: formatMessage({ id: 'notice.receiver' }),
@@ -141,12 +147,16 @@ export default class Notice extends Component {
       },
       {
         title: formatMessage({ id: 'notice.release.time' }),
-        dataIndex: 'createdAt',
         key: 'createdAt',
-        width: 200,
-        render: text => {
-          return <span>{G.moment(text).format('YYYY-MM-DD hh:mm:ss')}</span>;
-        },
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={G.moment(text.createdAt).format('YYYY-MM-DD hh:mm:ss')}>
+                <span>{G.moment(text.createdAt).format('YYYY-MM-DD hh:mm:ss')}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
         title: formatMessage({ id: 'all.operating' }),

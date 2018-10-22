@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Table, Button, Input, Divider, Pagination, Icon, Popconfirm } from 'antd';
+import { Row, Col, Table, Button, Input, Divider, Pagination, Icon, Popconfirm, Tooltip } from 'antd';
 
 import G from '@/global';
 import styles from './Person.less';
@@ -72,18 +72,42 @@ export default class Person extends Component {
       },
       {
         title: listTitle.name,
-        dataIndex: 'name',
         key: 'name',
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.name}>
+                <span>{text.name}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
         title: listTitle.phone,
-        dataIndex: 'phone',
         key: 'phone',
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.phone}>
+                <span>{text.phone}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
         title: listTitle.position,
-        dataIndex: 'position',
         key: 'position',
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.position}>
+                <span>{text.position}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
         title: listTitle.status,
@@ -92,19 +116,35 @@ export default class Person extends Component {
         filterMultiple: false,
         render: (text, record, index) => {
           return (
-            text.resource ? (<Fragment>
-              <font>{text.resource.serialNumber}</font>
-            </Fragment>) : (<Fragment>
-              <font>{filterStatus[text.status - 2].text}</font>
-            </Fragment>)
+            text.resource ? (
+              <Fragment>
+                <Tooltip placement="topLeft" title={text.resource.serialNumber}>
+                  <font>{text.resource.serialNumber}</font>
+                </Tooltip>
+              </Fragment>
+            ) : (
+                <Fragment>
+                  <Tooltip placement="topLeft" title={filterStatus[text.status - 2].text}>
+                    <font>{filterStatus[text.status - 2].text}</font>
+                  </Tooltip>
+                </Fragment>
+              )
           );
         },
       },
       {
         title: listTitle.remarks,
-        dataIndex: 'remark',
         key: 'remark',
         width: 160,
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.remark}>
+                <span>{text.remark}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
         title: listTitle.operate,

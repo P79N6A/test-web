@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon } from 'antd';
+import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon, Tooltip } from 'antd';
 
 import G from '@/global';
 import styles from './Person.less';
@@ -70,10 +70,18 @@ export default class Device extends Component {
       },
       {
         title: formatMessage({ id: 'device.desk.id' }),
-        dataIndex: 'serialNumber',
         key: 'serialNumber',
         sorter: true,
-        sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`
+        sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.serialNumber}>
+                <span>{text.serialNumber}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
         title: formatMessage({ id: 'device.status' }),
@@ -82,29 +90,52 @@ export default class Device extends Component {
         render: text => {
           return (
             <Fragment>
-              <font>{filterStatus[text.status - 2].text}</font>
+              <Tooltip placement="topLeft" title={filterStatus[text.status - 2].text}>
+                <font>{filterStatus[text.status - 2].text}</font>
+              </Tooltip>
             </Fragment>
           );
-        },
+        }
       },
       {
         title: currentAuthority === 'admin' ? formatMessage({ id: 'device.customer' }) : formatMessage({ id: 'device.user' }),
-        dataIndex: currentAuthority === 'admin' ? 'companyName' : 'user_name',
         key: currentAuthority === 'admin' ? 'companyName' : 'user_name',
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text[currentAuthority === 'admin' ? 'companyName' : 'user_name']}>
+                <span>{text[currentAuthority === 'admin' ? 'companyName' : 'user_name']}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
         title: formatMessage({ id: 'all.remarks' }),
-        dataIndex: 'remark',
         key: 'remark',
         width: 180,
+        render: text => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.remark}>
+                <font>{text.remark}</font>
+              </Tooltip>
+            </Fragment>
+          );
+        }
       },
       {
         title: formatMessage({ id: 'device.use.time' }),
-        dataIndex: 'lastOperationTime',
         key: 'lastOperationTime',
-        render: text => {
-          return text ? <span>{G.moment(text).format('YYYY-MM-DD hh:mm:ss')}</span> : ''
-        },
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.lastOperationTime ? G.moment(text.lastOperationTime).format('YYYY-MM-DD hh:mm:ss') : ''}>
+                <span>{text.lastOperationTime ? G.moment(text.lastOperationTime).format('YYYY-MM-DD hh:mm:ss') : ''}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
         title: formatMessage({ id: 'all.operating' }),
@@ -142,8 +173,8 @@ export default class Device extends Component {
               <FormattedMessage id="all.remarks" />
             </a>
           </Fragment>
-        ),
-      },
+        )
+      }
     ];
     return columns;
   }

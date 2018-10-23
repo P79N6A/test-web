@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { getResourceList, addRemark, releaseDevice, removeDevice } from '../services/api';
 
 export default {
-  namespace: 'manaEquip',
+  namespace: 'ManagementDevice',
   state: {
     data: {
       rows: [],
@@ -17,12 +17,12 @@ export default {
       const response = yield call(getResourceList, payload);
       if (response && response.status === 'success') {
         yield put({
-          type: 'equipSave',
+          type: 'deviceSave',
           payload: response.data,
         });
       } else {
         yield put({
-          type: 'equipdel',
+          type: 'deviceDel',
           payload: '',
         });
         message.error(response.message || '暂无数据');
@@ -58,7 +58,7 @@ export default {
   },
 
   reducers: {
-    equipSave(state, action) {
+    deviceSave(state, action) {
       const { offset } = action.payload;
       return {
         ...state,
@@ -70,7 +70,7 @@ export default {
         },
       };
     },
-    equipdel(state) {
+    deviceDel(state) {
       return {
         ...state,
         data: {

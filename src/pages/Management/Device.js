@@ -7,11 +7,11 @@ import G from '@/global';
 import styles from './Person.less';
 import EquipModal from './components/EquipModal.js';
 
-@connect(({ manaEquip, user, manaCustomer, loading }) => ({
-  manaEquip,
+@connect(({ ManagementDevice, user, ManagementCustomer, loading }) => ({
+  ManagementDevice,
   user,
-  manaCustomer,
-  loading: loading.effects['manaEquip/fetch'],
+  ManagementCustomer,
+  loading: loading.effects['ManagementDevice/fetch'],
 }))
 export default class Device extends Component {
   // 表单以及分页
@@ -36,7 +36,7 @@ export default class Device extends Component {
   componentWillUnmount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaCustomer/setcompanyId',
+      type: 'ManagementCustomer/setcompanyId',
       payload: '',
     });
   }
@@ -242,7 +242,7 @@ export default class Device extends Component {
   addRemark(data) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaEquip/addRemark',
+      type: 'ManagementDevice/addRemark',
       payload: data,
     });
   }
@@ -250,7 +250,7 @@ export default class Device extends Component {
   untiedConfirm(value) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaEquip/release',
+      type: 'ManagementDevice/release',
       payload: { id: value.id, callback: this.fetchDataList.bind(this) },
     });
   }
@@ -258,18 +258,18 @@ export default class Device extends Component {
   untiedRemove(value) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaEquip/remove',
+      type: 'ManagementDevice/remove',
       payload: { id: value.id, callback: this.fetchDataList.bind(this) },
     });
   }
 
   fetchDataList(value) {
-    const { dispatch, manaEquip, manaCustomer } = this.props;
-    const { companyId } = manaCustomer;
-    const equipData = manaEquip.data;
+    const { dispatch, ManagementDevice, ManagementCustomer } = this.props;
+    const { companyId } = ManagementCustomer;
+    const equipData = ManagementDevice.data;
     const { query, filterParam, sortParam } = this.state;
     dispatch({
-      type: 'manaEquip/fetch',
+      type: 'ManagementDevice/fetch',
       payload: {
         offset: (value && (value.current - 1) * 15),
         limit: (value && value.limit) || equipData.limit,
@@ -282,9 +282,9 @@ export default class Device extends Component {
   }
 
   render() {
-    const { manaEquip, loading, user } = this.props;
+    const { ManagementDevice, loading, user } = this.props;
     const { visible, modalLoading, editValue, query, filterStatus, sortParam } = this.state;
-    const { limit, current, count } = manaEquip.data;
+    const { limit, current, count } = ManagementDevice.data;
     const columns = this.getColumns(current, filterStatus, user.user.currentAuthority, sortParam);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
@@ -324,7 +324,7 @@ export default class Device extends Component {
             <Table
               rowKey="id"
               loading={loading}
-              dataSource={manaEquip.data.rows}
+              dataSource={ManagementDevice.data.rows}
               columns={columns}
               onChange={this.handleChange.bind(this)}
               pagination={false}

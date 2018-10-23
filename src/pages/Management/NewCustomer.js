@@ -3,15 +3,15 @@ import { connect } from 'dva';
 import CustomerModal from '@/pages/Management/components/CustomerModal';
 import styles from './Person.less';
 
-@connect(({ manaCustomer }) => ({
-  manaCustomer,
+@connect(({ ManagementCustomer }) => ({
+  ManagementCustomer,
 }))
 export default class NewNotice extends Component {
   render() {
-    const { dispatch, manaCustomer } = this.props;
+    const { dispatch, ManagementCustomer } = this.props;
     return (
       <div className={styles.main}>
-        <CustomerModal dispatch={dispatch} copyValue={manaCustomer.copyValue} />
+        <CustomerModal dispatch={dispatch} copyValue={ManagementCustomer.copyValue} />
       </div>
     );
   }

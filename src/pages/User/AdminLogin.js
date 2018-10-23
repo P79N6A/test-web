@@ -3,7 +3,7 @@ import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import { Alert } from 'antd';
 import Login from 'components/Login';
-import styles from './adminLogin.less';
+import styles from './AdminLogin.less';
 
 const { UserName, Password, Submit } = Login;
 

@@ -1,7 +1,7 @@
 import { changePassword } from '../services/api';
 
 export default {
-  namespace: 'changePass',
+  namespace: 'ChangePass',
   state: {
     oldPassword: '',
     newPassword: '',

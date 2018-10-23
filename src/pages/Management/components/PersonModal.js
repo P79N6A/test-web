@@ -121,7 +121,7 @@ class PersonModal extends Component {
   beforeUpload(file) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaPerson/getQiniuToken',
+      type: 'ManagementPerson/getQiniuToken',
       payload: {
         callback: (res) => {
           if (res.status === 'success') {

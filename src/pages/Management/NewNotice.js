@@ -4,21 +4,21 @@ import { connect } from 'dva';
 import NewNoticeForm from './components/NewNoticeForm';
 import styles from './NewNotice.less';
 
-@connect(({ manaNotice, manaPerson }) => ({
-  manaNotice,
-  manaPerson,
+@connect(({ ManagementNotice, ManagementPerson }) => ({
+  ManagementNotice,
+  ManagementPerson,
 }))
 export default class NewNotice extends Component {
   render() {
-    const { dispatch, manaNotice, manaPerson } = this.props;
+    const { dispatch, ManagementNotice, ManagementPerson } = this.props;
     return (
       <div className={styles.main}>
         <h3><FormattedMessage id='menu.management.newNotice' /></h3>
         <br />
         <NewNoticeForm
           dispatch={dispatch}
-          copyValue={manaNotice.copyValue}
-          user={manaPerson.data.rows}
+          copyValue={ManagementNotice.copyValue}
+          user={ManagementPerson.data.rows}
         />
       </div>
     );

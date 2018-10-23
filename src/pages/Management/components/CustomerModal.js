@@ -6,8 +6,8 @@ import { routerRedux } from '../../../../node_modules/dva/router';
 
 const FormItem = Form.Item;
 
-@connect(({ manaCustomer }) => ({
-  manaCustomer,
+@connect(({ ManagementCustomer }) => ({
+  ManagementCustomer,
 }))
 class NewCustomer extends Component {
   state = {
@@ -15,8 +15,8 @@ class NewCustomer extends Component {
   };
 
   componentDidMount() {
-    const { manaCustomer } = this.props;
-    const { editValue } = manaCustomer;
+    const { ManagementCustomer } = this.props;
+    const { editValue } = ManagementCustomer;
     const { form } = this.props;
     if (editValue !== '') {
       form.setFieldsValue({
@@ -39,7 +39,7 @@ class NewCustomer extends Component {
   componentWillUnmount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaCustomer/setEditValue',
+      type: 'ManagementCustomer/setEditValue',
       payload: '',
     });
   }
@@ -72,8 +72,8 @@ class NewCustomer extends Component {
   }
   // 添加
   handleCommit() {
-    const { form, dispatch, manaCustomer } = this.props;
-    const { editValue } = manaCustomer;
+    const { form, dispatch, ManagementCustomer } = this.props;
+    const { editValue } = ManagementCustomer;
     form.validateFields(err => {
       if (err) return;
       if (editValue !== '') {
@@ -83,7 +83,7 @@ class NewCustomer extends Component {
         delete all.companyName;
         // 编辑
         dispatch({
-          type: 'manaCustomer/editCustomer',
+          type: 'ManagementCustomer/editCustomer',
           payload: {
             companyId: editValue.companyId,
             ...all,
@@ -93,7 +93,7 @@ class NewCustomer extends Component {
       } else {
         // 添加
         dispatch({
-          type: 'manaCustomer/addCustomer',
+          type: 'ManagementCustomer/addCustomer',
           payload: {
             ...form.getFieldsValue(),
             callback: this.release.bind(this),
@@ -107,17 +107,17 @@ class NewCustomer extends Component {
   goBack() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaCustomer/setEditValue',
+      type: 'ManagementCustomer/setEditValue',
       payload: '',
     });
     this.props.dispatch(routerRedux.push('/management/customer'))
   }
 
   render() {
-    const { form, manaCustomer } = this.props;
+    const { form, ManagementCustomer } = this.props;
     const { title } = this.state;
     const { getFieldDecorator } = form;
-    const { editValue } = manaCustomer;
+    const { editValue } = ManagementCustomer;
     return (
       <div>
         <h3>{title}</h3>

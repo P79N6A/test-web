@@ -7,9 +7,9 @@ import G from '@/global';
 import styles from './Person.less';
 import { routerRedux } from '../../../node_modules/dva/router';
 
-@connect(({ manaCustomer, loading }) => ({
-  manaCustomer,
-  loading: loading.effects['manaCustomer/fetch'],
+@connect(({ ManagementCustomer, loading }) => ({
+  ManagementCustomer,
+  loading: loading.effects['ManagementCustomer/fetch'],
 }))
 export default class Wework extends Component {
   // 表单以及分页
@@ -34,7 +34,7 @@ export default class Wework extends Component {
   onMark(text) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaCustomer/setEditValue',
+      type: 'ManagementCustomer/setEditValue',
       payload: text,
     });
     this.newCustomer();
@@ -180,7 +180,7 @@ export default class Wework extends Component {
     const { dispatch } = this.props;
     const { companyId } = record;
     dispatch({
-      type: 'manaCustomer/setcompanyId',
+      type: 'ManagementCustomer/setcompanyId',
       payload: companyId,
     });
     this.props.dispatch(routerRedux.push('/management/device'))
@@ -195,17 +195,17 @@ export default class Wework extends Component {
   untiedConfirm(value) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaCustomer/resetPassword',
+      type: 'ManagementCustomer/resetPassword',
       payload: { account: value.company.account, callback: this.fetchDataList.bind(this) },
     });
   }
 
   fetchDataList(value) {
-    const { dispatch, manaCustomer } = this.props;
-    const equipData = manaCustomer.data;
+    const { dispatch, ManagementCustomer } = this.props;
+    const equipData = ManagementCustomer.data;
     const { query, sortParam } = this.state;
     dispatch({
-      type: 'manaCustomer/fetch',
+      type: 'ManagementCustomer/fetch',
       payload: {
         offset: (value && (value.current - 1) * 15),
         limit: (value && value.limit) || equipData.limit,
@@ -216,9 +216,9 @@ export default class Wework extends Component {
   }
 
   render() {
-    const { manaCustomer, loading } = this.props;
+    const { ManagementCustomer, loading } = this.props;
     const { query, sortParam } = this.state;
-    const { limit, current, count } = manaCustomer.data;
+    const { limit, current, count } = ManagementCustomer.data;
     const columns = this.getColumns(current, sortParam);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
@@ -263,7 +263,7 @@ export default class Wework extends Component {
             <Table
               rowKey="companyId"
               loading={loading}
-              dataSource={manaCustomer.data.rows}
+              dataSource={ManagementCustomer.data.rows}
               columns={columns}
               onChange={this.handleChange.bind(this)}
               pagination={false}

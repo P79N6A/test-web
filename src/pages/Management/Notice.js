@@ -21,10 +21,10 @@ import G from '@/global';
 import styles from './Notice.less';
 import { routerRedux } from '../../../node_modules/dva/router';
 
-@connect(({ manaNotice, loading, manaPerson }) => ({
-  manaPerson,
-  manaNotice,
-  loading: loading.effects['manaNotice/fetch'],
+@connect(({ ManagementNotice, loading, ManagementPerson }) => ({
+  ManagementPerson,
+  ManagementNotice,
+  loading: loading.effects['ManagementNotice/fetch'],
 }))
 
 export default class Notice extends Component {
@@ -43,11 +43,11 @@ export default class Notice extends Component {
   };
 
   componentDidMount() {
-    const { dispatch, manaNotice } = this.props;
-    const { current } = manaNotice.data;
+    const { dispatch, ManagementNotice } = this.props;
+    const { current } = ManagementNotice.data;
     this.fetchDataList(current);
     dispatch({
-      type: 'manaNotice/setCopyValue',
+      type: 'ManagementNotice/setCopyValue',
       payload: '',
     });
   }
@@ -82,7 +82,7 @@ export default class Notice extends Component {
   handleClickChange = (noticeId) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaNotice/getNoticeStat',
+      type: 'ManagementNotice/getNoticeStat',
       payload: {
         noticeId,
         callback: (res) => {
@@ -212,7 +212,7 @@ export default class Notice extends Component {
   copyPush = (value) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaNotice/setCopyValue',
+      type: 'ManagementNotice/setCopyValue',
       payload: value,
     });
     this.newNotice();
@@ -230,7 +230,7 @@ export default class Notice extends Component {
   untiedConfirm(value) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaNotice/topNotice',
+      type: 'ManagementNotice/topNotice',
       payload: {
         status: !value.topStatus,
         noticeId: value.noticeId,
@@ -240,11 +240,11 @@ export default class Notice extends Component {
   }
 
   fetchDataList(current) {
-    const { manaNotice, dispatch } = this.props;
-    const { limit } = manaNotice.data;
+    const { ManagementNotice, dispatch } = this.props;
+    const { limit } = ManagementNotice.data;
     const { query } = this.state;
     dispatch({
-      type: 'manaNotice/fetch',
+      type: 'ManagementNotice/fetch',
       payload: {
         offset: (current - 1) * 15, limit, query
       },
@@ -256,9 +256,9 @@ export default class Notice extends Component {
   }
 
   render() {
-    const { manaNotice, loading } = this.props;
+    const { ManagementNotice, loading } = this.props;
     const { query, detail, visible, noticeState, state } = this.state;
-    const { limit, current, count } = manaNotice.data;
+    const { limit, current, count } = ManagementNotice.data;
     const columns = this.getColumns(current, noticeState, state);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
@@ -303,7 +303,7 @@ export default class Notice extends Component {
             <Table
               rowKey="_id"
               loading={loading}
-              dataSource={manaNotice.data.row}
+              dataSource={ManagementNotice.data.row}
               columns={columns}
               onChange={this.handleChange.bind(this)}
               pagination={false}

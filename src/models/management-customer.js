@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { getCustomerList, addCustomer, editCustomer, resetPassword } from '../services/api';
 
 export default {
-  namespace: 'manaCustomer',
+  namespace: 'ManagementCustomer',
   state: {
     data: {
       rows: [],

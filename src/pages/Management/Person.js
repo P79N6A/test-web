@@ -7,10 +7,10 @@ import G from '@/global';
 import styles from './Person.less';
 import PersonModal from './components/PersonModal';
 
-@connect(({ manaPerson, user, loading }) => ({
-  manaPerson,
+@connect(({ ManagementPerson, user, loading }) => ({
+  ManagementPerson,
   user,
-  loading: loading.effects['manaPerson/fetch'],
+  loading: loading.effects['ManagementPerson/fetch'],
 }))
 export default class Person extends Component {
   // 表单以及分页
@@ -28,8 +28,8 @@ export default class Person extends Component {
   };
 
   componentDidMount() {
-    const { manaPerson } = this.props;
-    const { current } = manaPerson.data;
+    const { ManagementPerson } = this.props;
+    const { current } = ManagementPerson.data;
     this.fetchDataList({ current });
   }
 
@@ -238,11 +238,11 @@ export default class Person extends Component {
   };
 
   fetchDataList(value) {
-    const { dispatch, manaPerson } = this.props;
-    const personData = manaPerson.data;
+    const { dispatch, ManagementPerson } = this.props;
+    const personData = ManagementPerson.data;
     const { query, filterParam, sortParam } = this.state;
     dispatch({
-      type: 'manaPerson/fetch',
+      type: 'ManagementPerson/fetch',
       payload: {
         limit: (value && value.limit) || personData.limit,
         offset: (value && (value.current - 1) * 15),
@@ -256,7 +256,7 @@ export default class Person extends Component {
   addPerson(data) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaPerson/addPerson',
+      type: 'ManagementPerson/addPerson',
       payload: data,
     });
   }
@@ -264,15 +264,15 @@ export default class Person extends Component {
   updatePerson(data) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaPerson/updatePerson',
+      type: 'ManagementPerson/updatePerson',
       payload: data,
     });
   }
 
   render() {
-    const { manaPerson, user, loading, dispatch } = this.props;
+    const { ManagementPerson, user, loading, dispatch } = this.props;
     const { modalLoading, visible, editValue, query, filterStatus } = this.state;
-    const { limit, count, current } = manaPerson.data;
+    const { limit, count, current } = ManagementPerson.data;
     const listTitle = {
       serialNumber: formatMessage({ id: 'all.serial.number' }),
       name: formatMessage({ id: 'person.name' }),
@@ -327,7 +327,7 @@ export default class Person extends Component {
             <Table
               rowKey="uid"
               loading={loading}
-              dataSource={manaPerson.data.rows}
+              dataSource={ManagementPerson.data.rows}
               columns={columns}
               onChange={this.handleChange.bind(this)}
               pagination={false}

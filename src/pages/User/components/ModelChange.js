@@ -6,8 +6,8 @@ import { routerRedux } from '../../../../node_modules/dva/router';
 
 const FormItem = Form.Item;
 
-@connect(({ changePass, user }) => ({
-  changePass,
+@connect(({ ChangePass, user }) => ({
+  ChangePass,
   user
 }))
 class ModalChange extends Component {
@@ -54,7 +54,7 @@ class ModalChange extends Component {
       delete all.newsPassword;
       // 修改密码
       dispatch({
-        type: 'changePass/changePassword',
+        type: 'ChangePass/changePassword',
         payload: { ...all, callback: this.release.bind(this) },
       });
     });

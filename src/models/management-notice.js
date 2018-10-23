@@ -3,7 +3,7 @@ import { getNoticeList, getNoticeState, sendNotice, topNotice } from '../service
 import G from '@/global';
 
 export default {
-  namespace: 'manaNotice',
+  namespace: 'ManagementNotice',
 
   state: {
     data: {

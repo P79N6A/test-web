@@ -24,7 +24,7 @@ class NewNoticeForm extends Component {
     const { dispatch } = this.props;
     // 请求全部人员
     dispatch({
-      type: 'manaPerson/fetch',
+      type: 'ManagementPerson/fetch',
       payload: {
         offset: 0,
         limit: 100000,
@@ -99,7 +99,7 @@ class NewNoticeForm extends Component {
         return;
       }
       dispatch({
-        type: 'manaNotice/sendNotice',
+        type: 'ManagementNotice/sendNotice',
         payload: {
           title: values.title,
           receivers: values.person,
@@ -143,7 +143,7 @@ class NewNoticeForm extends Component {
     return new Promise((resolve) => {
       const { dispatch } = this.props;
       dispatch({
-        type: 'manaPerson/getQiniuToken',
+        type: 'ManagementPerson/getQiniuToken',
         payload: {
           callback: (res) => {
             if (res.status === 'success') {

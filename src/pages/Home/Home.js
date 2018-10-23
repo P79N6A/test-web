@@ -183,7 +183,7 @@ export default class Home extends Component {
               bordered={false}
               style={{ borderRadius: '4px' }}
               title={formatMessage({ id: 'home.standing.time' })}
-              total={`${parseInt(standNum.duration)}${formatMessage({ id: 'home.day' })}`}
+              total={standNum.duration ? `${parseInt(standNum.duration)}${formatMessage({ id: 'home.day' })}` : 0}
               footer={
                 <Field
                   label={formatMessage({ id: 'home.standing.time.ratio' })}
@@ -194,7 +194,7 @@ export default class Home extends Component {
             >
               <font style={{ marginRight: 16 }}>
                 <FormattedMessage id="home.average.number" />
-                <span className={styles.trendText}>{standNum.count}</span>
+                <span className={styles.trendText}>{standNum.count ? standNum.count : 0}</span>
               </font>
             </ChartCard>
           </Col>

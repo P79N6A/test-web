@@ -1,7 +1,7 @@
 export default {
   "navbar.lang": "语言",
-  "lang.simplified-chinese": "🇨🇳 简体中文",
-  "lang.english": "🇬🇧 English",
+  "lang.simplified-chinese": "简体中文",
+  "lang.english": "English",
   // 导航栏
   "menu.home": "Home",
   "menu.management": "Management",
@@ -81,8 +81,8 @@ export default {
   "person.refresh.page": "Please reload this page",
   // 设备管理
   "device.list": "Device List",
-  "device.search.user.text": "DeviceID/Users/Remarks",
-  "device.search.admin.text": "DeviceID/AffiliatedCustomers/Remarks",
+  "device.search.user.text": "Device ID/Users/Remarks",
+  "device.search.admin.text": "Device ID/AffiliatedCustomers/Remarks",
   "device.desk.id": "Desk ID",
   "device.status": "Status",
   "device.user": "Users",

@@ -27,7 +27,6 @@ export default class SelectLang extends PureComponent {
         <Icon
           type="global"
           className={classNames(styles.dropDown, className)}
-          title={formatMessage({ id: 'navBar.lang' })}
         />
       </Dropdown>
     );

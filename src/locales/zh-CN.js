@@ -1,7 +1,7 @@
 export default {
   "navbar.lang": "Languages",
-  "lang.simplified-chinese": "🇨🇳 简体中文",
-  "lang.english": "🇬🇧 English",
+  "lang.simplified-chinese": "简体中文",
+  "lang.english": "English",
   // 导航栏
   "menu.home": "首页",
   "menu.management": "管理",

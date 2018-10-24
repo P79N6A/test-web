@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import G from '@/global';
-import { filterUrl, filterBody, getToken } from '@/utils/utils';
+import { filterUrl, filterBody, getToken, filterEdit } from '@/utils/utils';
 
 const { API_URL } = G;
 // 登录
@@ -134,7 +134,7 @@ export async function addPerson(payload) {
 // 修改或删除人员
 export async function updatePerson(payload) {
   const url = `${G.API_URL}/users/update`;
-  const body = filterBody({ ...payload, token: getToken() });
+  const body = filterEdit({ ...payload, token: getToken() });
   return request(url, {
     method: 'POST',
     body,
@@ -227,7 +227,7 @@ export async function addCustomer(payload) {
 // 编辑客户
 export async function editCustomer(payload) {
   const url = `${G.API_URL}/company/update`;
-  const body = filterBody({ ...payload, token: getToken() });
+  const body = filterEdit({ ...payload, token: getToken() });
   return request(url, {
     method: 'PUT',
     body,

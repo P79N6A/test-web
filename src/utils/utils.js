@@ -195,7 +195,7 @@ export function isAntdPro() {
   return window.location.hostname === 'preview.pro.ant.design';
 }
 
-// 过滤url
+// 过滤 url
 export function filterUrl(url) {
   let newUrl = '';
   let count = 0;
@@ -212,7 +212,7 @@ export function filterUrl(url) {
   return newUrl;
 }
 
-// 过滤body
+// 过滤 body
 export function filterBody(body) {
   const filter = G._.mapKeys(body, (value, key) => {
     if (typeof value !== 'object' && (value || typeof value === 'boolean')) {
@@ -229,6 +229,17 @@ export function filterBody(body) {
     }
   });
   delete filter.undefined;
+  return filter;
+}
+
+// 过滤编辑 body
+export function filterEdit(body) {
+  const filter = G._.mapValues(body, o => {
+    if (o) {
+      return o;
+    }
+    return '';
+  });
   return filter;
 }
 

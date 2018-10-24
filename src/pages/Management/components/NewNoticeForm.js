@@ -173,7 +173,7 @@ class NewNoticeForm extends Component {
               { required: true, message: formatMessage({ id: 'notice.input.title' }) },
               {
                 max: 100,
-                message: formatMessage({ id: 'text.max.long.one.hundred' }),
+                message: formatMessage({ id: 'test.max.long.one.hundred' }),
               },
             ],
           })(<Input placeholder={formatMessage({ id: 'notice.input.title' })} size="large" />)}

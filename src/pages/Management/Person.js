@@ -97,6 +97,19 @@ export default class Person extends Component {
         }
       },
       {
+        title: listTitle.email,
+        key: 'email',
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.email}>
+                <span>{text.email}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
+      },
+      {
         title: listTitle.position,
         key: 'position',
         render: (text) => {
@@ -188,6 +201,7 @@ export default class Person extends Component {
 
   handleOk = (fieldsValue, avatar, uid) => {
     const fieldsValues = fieldsValue;
+    delete fieldsValues.isDel;
     this.setState({ modalLoading: true });
     delete fieldsValues.upload;
     const { editValue } = this.state;
@@ -196,7 +210,6 @@ export default class Person extends Component {
       return;
     }
     fieldsValues.uid = uid;
-    fieldsValues.isDel = false;
     this.updatePerson({ ...fieldsValues, avatar, callback: this.update.bind(this) });
   };
 
@@ -277,6 +290,7 @@ export default class Person extends Component {
       serialNumber: formatMessage({ id: 'all.serial.number' }),
       name: formatMessage({ id: 'person.name' }),
       phone: formatMessage({ id: 'person.phone' }),
+      email: formatMessage({ id: 'app.settings.basic.email' }),
       position: formatMessage({ id: 'person.position' }),
       status: formatMessage({ id: 'person.use.status' }),
       remarks: formatMessage({ id: 'all.remarks' }),

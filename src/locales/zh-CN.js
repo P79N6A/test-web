@@ -57,7 +57,7 @@ export default {
   "test.max.long.eleven": "最大长度11",
   "test.max.long.twenty": "最大长度20",
   "test.max.long.fifty": "最大长度50",
-  "text.max.long.one.hundred": "最大长度100",
+  "test.max.long.one.hundred": "最大长度100",
   // 用户管理
   "person.status.connected": "已连接",
   "person.status.unconnect": "未连接",
@@ -171,7 +171,7 @@ export default {
   "login.user.name": "请输入用户名",
   // 备用
   "app.settings.basic.email": "邮箱",
-  "app.settings.basic.email-message": "请输入您的邮箱!",
+  "app.settings.basic.email-message": "请输入邮箱",
   // 错误页面
   "app.exception.back": "返回首页",
   "app.exception.title.403": "无权限访问该页面",

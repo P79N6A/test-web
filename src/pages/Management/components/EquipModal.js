@@ -59,7 +59,7 @@ class EquipModal extends Component {
             rules: [
               {
                 max: 100,
-                message: formatMessage({ id: 'text.max.long.one.hundred' }),
+                message: formatMessage({ id: 'test.max.long.one.hundred' }),
               },
             ],
           })(<Input placeholder={formatMessage({ id: 'device.remark.text' })} />)}

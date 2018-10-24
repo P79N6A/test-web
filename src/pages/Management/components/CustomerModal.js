@@ -180,7 +180,7 @@ class NewCustomer extends Component {
                   rules: [
                     {
                       max: 100,
-                      message: formatMessage({ id: 'text.max.long.one.hundred' }),
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
                 })(<Input placeholder={formatMessage({ id: 'customer.detailed.address.text' })} size="large" />)}
@@ -214,7 +214,7 @@ class NewCustomer extends Component {
                   rules: [
                     {
                       max: 100,
-                      message: formatMessage({ id: 'text.max.long.one.hundred' }),
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
                 })(<Input placeholder={formatMessage({ id: 'customer.website.link.text' })} size="large" />)}
@@ -241,7 +241,7 @@ class NewCustomer extends Component {
                   rules: [
                     {
                       max: 100,
-                      message: formatMessage({ id: 'text.max.long.one.hundred' }),
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
                 })(<Input placeholder={formatMessage({ id: 'customer.contract.no.text' })} size="large" />)}
@@ -268,7 +268,7 @@ class NewCustomer extends Component {
                   rules: [
                     {
                       max: 100,
-                      message: formatMessage({ id: 'text.max.long.one.hundred' }),
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
                 })(<Input placeholder={formatMessage({ id: 'person.remarks.input' })} size="large" />)}
@@ -283,7 +283,7 @@ class NewCustomer extends Component {
                     { required: true, message: formatMessage({ id: 'customer.administrator.mobile.text' }) },
                     {
                       max: 11,
-                      message: formatMessage({ id: 'text.max.long.eleven' }),
+                      message: formatMessage({ id: 'test.max.long.eleven' }),
                     },
                     {
                       pattern: /^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\d{8}$/,

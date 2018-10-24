@@ -57,7 +57,7 @@ export default {
   "test.max.long.eleven": "Max Length：11",
   "test.max.long.twenty": "Max Length：20",
   "test.max.long.fifty": "Max Length：50",
-  "text.max.long.one.hundred": "Max Length：100",
+  "test.max.long.one.hundred": "Max Length：100",
   // 用户管理
   "person.status.connected": "Connected",
   "person.status.unconnect": "Not Connected",
@@ -171,7 +171,7 @@ export default {
   "login.user.name": "Please type in user's name",
   // 备用
   "app.settings.basic.email": "Email Address",
-  "app.settings.basic.email-message": "Please type in your email address",
+  "app.settings.basic.email-message": "Please type in email address",
   // 错误页面
   "app.exception.back": "Back Homepage",
   "app.exception.title.403": "No permission to access this page",

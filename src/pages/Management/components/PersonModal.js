@@ -35,6 +35,7 @@ class PersonModal extends Component {
         nextProps.form.setFieldsValue({
           name: editValue.name,
           phone: editValue.phone,
+          email: editValue.email,
           position: editValue.position,
           remark: editValue.remark
         });
@@ -43,6 +44,7 @@ class PersonModal extends Component {
         nextProps.form.setFieldsValue({
           name: '',
           phone: '',
+          email: '',
           position: '',
           remark: '',
         });
@@ -221,6 +223,17 @@ class PersonModal extends Component {
             ],
           })(<Input placeholder={formatMessage({ id: 'person.phone.input' })} />)}
         </FormItem>
+        {/* 邮箱 */}
+        <FormItem {...formItemLayout} label={formatMessage({ id: 'app.settings.basic.email' })}>
+          {getFieldDecorator('email', {
+            rules: [
+              {
+                pattern: /^\w[-+.\w]*@\w[-\w]*(\.\w[-\w]*)+$/,
+                message: formatMessage({ id: 'customer.email.message' }),
+              },
+            ],
+          })(<Input placeholder={formatMessage({ id: 'app.settings.basic.email-message' })} />)}
+        </FormItem>
         <FormItem {...formItemLayout} label={formatMessage({ id: 'person.position' })}>
           {getFieldDecorator('position', {
             rules: [
@@ -236,7 +249,7 @@ class PersonModal extends Component {
             rules: [
               {
                 max: 100,
-                message: formatMessage({ id: 'text.max.long.one.hundred' }),
+                message: formatMessage({ id: 'test.max.long.one.hundred' }),
               },
             ],
           })(<Input placeholder={formatMessage({ id: 'person.remarks.input' })} />)}

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { formatMessage, FormattedMessage, setLocale, getLocale } from 'umi/locale';
+import { FormattedMessage, setLocale, getLocale } from 'umi/locale';
 import { Menu, Icon, Dropdown } from 'antd';
 import classNames from 'classnames';
 import styles from './index.less';

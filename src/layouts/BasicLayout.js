@@ -76,6 +76,11 @@ const query = {
   },
 };
 
+
+@connect(({ sliderMenu, loading }) => ({
+  sliderMenu,
+  loading: loading.effects['sliderMenu/fetch'],
+}))
 class BasicLayout extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -144,6 +149,10 @@ class BasicLayout extends React.PureComponent {
           isMobile: mobile,
         });
       }
+    });
+    // 获取侧边栏列表
+    dispatch({
+      type: 'sliderMenu/fetch'
     });
   }
 
@@ -252,6 +261,8 @@ class BasicLayout extends React.PureComponent {
     }
     // this.props.navTheme = color;
     const myProps = { ...this.props, navTheme: color };
+    const { sliderMenu } = this.props;
+    const { menuLists } = sliderMenu;
     const {
       currentUser,
       navTheme,
@@ -274,6 +285,7 @@ class BasicLayout extends React.PureComponent {
               theme={navTheme}
               onCollapse={this.handleMenuCollapse}
               menuData={menuData}
+              menuLists={menuLists}
               isMobile={isMobile}
               {...myProps}
             />

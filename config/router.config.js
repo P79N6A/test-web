@@ -107,6 +107,12 @@ export default [
             component: './Statistics/SpaceState/SpaceState',
             authority: ['user'],
           },
+          {
+            path: '/statistics/spaceUsage',
+            name: 'spaceUsage',
+            component: './Statistics/spaceUsage',
+            authority: ['user'],
+          },
           { redirect: '/exception/404' }
         ]
       },

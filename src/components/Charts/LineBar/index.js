@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import { formatMessage } from 'umi/locale';
-import { Chart, Axis, Tooltip, Geom } from 'bizcharts';
+import { Chart, Axis, Tooltip, Geom, Coord } from 'bizcharts';
 import Debounce from 'lodash-decorators/debounce';
 import Bind from 'lodash-decorators/bind';
 import autoHeight from '../autoHeight';
 import styles from '../index.less';
 
 @autoHeight()
-class Bar extends Component {
+class LineBar extends Component {
   state = {
     autoHideXLabels: false,
   };
 
   componentDidMount() {
-    window.addEventListener('resize', this.resize, { passive: true });
+    window.addEventListener('resize', this.resize);
   }
 
   componentWillUnmount() {
@@ -80,12 +79,9 @@ class Bar extends Component {
       'x*y',
       (x, y) => ({
         name: x,
-        value: y,
+        value: `${y}h`,
       }),
     ];
-
-    const unit = formatMessage({ id: 'home.hour' });
-
     return (
       <div className={styles.chart} style={{ height }} ref={this.handleRoot}>
         <div ref={this.handleRef}>
@@ -100,12 +96,38 @@ class Bar extends Component {
             <Axis
               name="x"
               title={false}
-              label={autoHideXLabels ? false : {}}
+              textStyle={{
+                textAlign: 'left',
+                textBaseline: 'middle' // 文本基准线，可取 top middle bottom，默认为middle
+              }}
+              label={{
+                htmlTemplate(text, data, index) {
+                  let bgcolor = '';
+                  if (index < 7) {
+                    bgcolor = 'rgba(53, 83, 108, 0.4)'
+                  } else {
+                    bgcolor = 'rgba(53, 83, 108, 1)'
+                  }
+                  return `<span style="color:#fff;background:${bgcolor};padding:0 2px;border-radius:4px;">${(10 - index) == 10 ? 10 : '0' + (10 - index)}</span>&nbsp;&nbsp;<span>${text}</span>`
+                },
+              }}
               tickLine={autoHideXLabels ? false : {}}
             />
-            <Axis name="y" min={0} />
-            <Tooltip showTitle={false} crosshairs={false}
-              itemTpl={`<li data-index={index}><span style="background-color:{color};width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px;"></span>{name}<span style="margin-left:16px;"></span>{value}${unit}</li>`} />
+            <Axis
+              name="y"
+              color={color}
+              min={0}
+              label={{
+                formatter(text) {
+                  return `${text}h`;
+                },
+                textStyle: {
+                  fill: '#9AA9B5',
+                }
+              }}
+            />
+            <Coord transpose />
+            <Tooltip showTitle={false} crosshairs={false} />
             <Geom type="interval" position="x*y" color={color} tooltip={tooltip} />
           </Chart>
         </div>
@@ -114,4 +136,4 @@ class Bar extends Component {
   }
 }
 
-export default Bar;
+export default LineBar;

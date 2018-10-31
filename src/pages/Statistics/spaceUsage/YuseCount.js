@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Icon } from 'antd';
 import { ChartCard } from '@/components/Charts';
 
@@ -11,8 +12,8 @@ class YuseCount extends Component {
     return (
       <ChartCard
         bordered={false}
-        title="昨日使用数"
-        subtitle="（个）"
+        title={formatMessage({ id: "spaceUsage.yesterday.use" })}
+        subtitle={formatMessage({ id: "spaceUsage.one" })}
         action={
           <Icon
             type="ellipsis"
@@ -29,7 +30,7 @@ class YuseCount extends Component {
         contentHeight={60}
       >
         <font style={{ marginRight: 50 }}>
-          周同比
+          <FormattedMessage id="spaceUsage.week.rate" />
           <span
             className={
               yesterdayUseCount.useWeekState === 'up'
@@ -45,7 +46,7 @@ class YuseCount extends Component {
           </span>
         </font>
         <font>
-          日环比
+          <FormattedMessage id="spaceUsage.day.rate" />
           <span
             className={
               yesterdayUseCount.useDayState === 'up' ? styles.trendTextUp : styles.trendTextDown

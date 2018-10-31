@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Row, Col, Card, Radio, Spin } from 'antd';
 import { Bar } from '@/components/Charts';
 import G from '@/global';
@@ -10,12 +11,12 @@ class DeskDuration extends Component {
     loading: false,
     number: 0,
     avg_dur: {
-      WEEKLY: [{ title: '近1年', value: 'NEARLY_YEAR' }, { title: '近4周', value: 'NEARLY_4WEEK' }],
+      WEEKLY: [{ title: formatMessage({ id: 'home.nearly.one.year' }), value: 'NEARLY_YEAR' }, { title: formatMessage({id:'spaceUsage.nearly.four.week'}), value: 'NEARLY_4WEEK' }],
       HOURLY: [
-        { title: '今年', value: 'CURRENT_YEAR' },
-        { title: '近30天', value: 'NEARLY_30DAY' },
-        { title: '近7天', value: 'NEARLY_7DAY' },
-        { title: '昨日', value: 'NEARLY_DAY' },
+        { title: formatMessage({id:'spaceUsage.year'}), value: 'CURRENT_YEAR' },
+        { title: formatMessage({id:'home.nearly.thirty.day'}), value: 'NEARLY_30DAY' },
+        { title: formatMessage({id:'home.nearly.seven.day'}), value: 'NEARLY_7DAY' },
+        { title: formatMessage({id:'spaceUsage.yesterday'}), value: 'NEARLY_DAY' },
       ],
     },
   };
@@ -97,12 +98,12 @@ class DeskDuration extends Component {
           <Card bordered={false} bodyStyle={{ padding: '20px 24px 8px 24px' }}>
             <Row gutter={24}>
               <Col {...deskuseRatePropsO}>
-                <h3 className={styles.deskDduration}>工位使用时长分布</h3>
+                <h3 className={styles.deskDduration}><FormattedMessage id="spaceUsage.station.use.time" /></h3>
               </Col>
               <Col {...deskuseRateProps}>
                 <Radio.Group value={condition_type} onChange={this.onChange}>
-                  <Radio.Button value="HOURLY">按时分布</Radio.Button>
-                  <Radio.Button value="WEEKLY">按周分布</Radio.Button>
+                  <Radio.Button value="HOURLY"><FormattedMessage id="spaceUsage.distribution.hour" /></Radio.Button>
+                  <Radio.Button value="WEEKLY"><FormattedMessage id="spaceUsage.distribution.week" /></Radio.Button>
                 </Radio.Group>
               </Col>
               <Col xl={8} lg={8} md={8} sm={24} xs={24}>

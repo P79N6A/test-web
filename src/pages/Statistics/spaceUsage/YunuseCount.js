@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Icon } from 'antd';
 import { ChartCard } from '@/components/Charts';
 
@@ -11,8 +12,8 @@ class YunuseCount extends Component {
     return (
       <ChartCard
         bordered={false}
-        title="昨日未使用数"
-        subtitle="（个）"
+        title={formatMessage({ id: "spaceUsage.yesterday.unuse" })}
+        subtitle={formatMessage({ id: "spaceUsage.one" })}
         action={
           <Icon
             type="ellipsis"
@@ -29,7 +30,7 @@ class YunuseCount extends Component {
         contentHeight={60}
       >
         <font style={{ marginRight: 50 }}>
-          周同比
+          <FormattedMessage id="spaceUsage.week.rate" />
           <span
             className={
               yesterdayUseCount.unuseWeekState === 'up'
@@ -45,7 +46,7 @@ class YunuseCount extends Component {
           </span>
         </font>
         <font>
-          日环比
+          <FormattedMessage id="spaceUsage.day.rate" />
           <span
             className={
               yesterdayUseCount.unuseDayState === 'up'

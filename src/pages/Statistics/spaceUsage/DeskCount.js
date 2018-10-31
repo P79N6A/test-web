@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Icon } from 'antd';
 import { ChartCard } from '@/components/Charts';
 
@@ -11,8 +12,8 @@ class DeskCount extends Component {
     return (
       <ChartCard
         bordered={false}
-        title="工位总数"
-        subtitle="（个）"
+        title={formatMessage({ id: "spaceState.total.workstations" })}
+        subtitle={formatMessage({ id: "spaceUsage.one" })}
         action={
           <Icon
             type="ellipsis"
@@ -29,11 +30,11 @@ class DeskCount extends Component {
         contentHeight={60}
       >
         <font style={{ marginRight: 50 }}>
-          在线
+          <FormattedMessage id="spaceUsage.online" />
           <span className={styles.trendText}>{daskTotalCount.online_count}</span>
         </font>
         <font>
-          离线
+          <FormattedMessage id="device.offline" />
           <span className={styles.trendText}>{daskTotalCount.offline_count}</span>
         </font>
       </ChartCard>

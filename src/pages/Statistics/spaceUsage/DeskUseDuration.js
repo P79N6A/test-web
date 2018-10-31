@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Row, Col, Card, Icon, Popover, Radio, Spin } from 'antd';
 import { LineBar } from '@/components/Charts';
 import G from '@/global';
@@ -11,10 +12,10 @@ class DeskUseDuration extends Component {
   state = {
     loading: false,
     rank_list: [
-      { title: '今年', value: 'NEARLY_YEAR' },
-      { title: '近30天', value: 'NEARLY_30DAY' },
-      { title: '近7天', value: 'NEARLY_7DAY' },
-      { title: '昨日', value: 'NEARLY_DAY' },
+      { title: formatMessage({ id: 'spaceUsage.year' }), value: 'NEARLY_YEAR' },
+      { title: formatMessage({ id: 'home.nearly.thirty.day' }), value: 'NEARLY_30DAY' },
+      { title: formatMessage({ id: 'home.nearly.seven.day' }), value: 'NEARLY_7DAY' },
+      { title: formatMessage({ id: 'spaceUsage.yesterday' }), value: 'NEARLY_DAY' },
     ],
   };
 
@@ -109,17 +110,17 @@ class DeskUseDuration extends Component {
     const { status_type, condition_type, date_type } = deskUseRank;
     const text = (
       <div>
-        <p>注：</p>
-        <p>9&nbsp;小&nbsp;时：仅统计工作时间内的时长</p>
+        <p><FormattedMessage id="spaceUsage.note" /></p>
+        <p><FormattedMessage id="spaceUsage.nine.hour.note" /></p>
         <p className={styles.time_solt}>（9:00~18:00）</p>
-        <p>24小时：统计一天24小时内的时长</p>
+        <p><FormattedMessage id="spaceUsage.twenty.four.hour.note" /></p>
         <p className={styles.time_solt}>（0:00~24:00）</p>
       </div>
     );
     const content = (
       <RadioGroup onChange={this.onChange} value={condition_type}>
-        <Radio value="9">9小时</Radio>
-        <Radio value="24">24小时</Radio>
+        <Radio value="9"><FormattedMessage id="spaceUsage.nine.hour" /></Radio>
+        <Radio value="24"><FormattedMessage id="spaceUsage.twenty.four.hour" /></Radio>
       </RadioGroup>
     );
     return (
@@ -127,7 +128,7 @@ class DeskUseDuration extends Component {
         <Row gutter={24}>
           <Col {...deskuseRateProps}>
             <h3 className={styles.deskDduration}>
-              {status_type === 'HOT' ? '热门工位排行' : '空闲工位排行'}
+              {status_type === 'HOT' ? formatMessage({ id: 'spaceUsage.hot.station.rank' }) : formatMessage({ id: 'spaceUsage.free.station.rank' })}
             </h3>
           </Col>
           <Col {...deskuseRatePropsO}>

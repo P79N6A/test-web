@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Card, Spin } from 'antd';
 import * as charts from 'bizcharts';
 import DataSet from '@antv/data-set';
@@ -65,21 +66,21 @@ class StationRate extends Component {
     return (
       <Card bordered={false} bodyStyle={{ padding: '20px 24px 8px 24px' }}>
         <div>
-          <span className={styles.deskDduration}>工位使用趋势</span>
+          <span className={styles.deskDduration}><FormattedMessage id="spaceUsage.station.usage.trend" /></span>
           <ul className={styles.selector}>
             <a
               className={type === 'WEEKLY' ? '' : styles.active}
               onClick={this.getUseRate.bind(this, 'WEEKLY')}
             >
               {' '}
-              本周
+              <FormattedMessage id="spaceUsage.week" />
             </a>
             <a
               className={type === 'MONTHLY' ? '' : styles.active}
               onClick={this.getUseRate.bind(this, 'MONTHLY')}
             >
               {' '}
-              本月
+              <FormattedMessage id="spaceUsage.month" />
             </a>
           </ul>
           {data.length > 0 ? (
@@ -93,9 +94,9 @@ class StationRate extends Component {
                         return G.moment(G.moment().day(text)._d).format('dddd');
                       }
                       if (type === 'YEARLY') {
-                        return `${text}月`;
+                        return `${text}${formatMessage({id:"spaceUsage.months"})}`;
                       }
-                      return `${text}号`;
+                      return `${text}${formatMessage({id:"spaceUsage.days"})}`;
                     },
                     textStyle: {
                       fill: '#9AA9B5',
@@ -137,7 +138,7 @@ class StationRate extends Component {
             </div>
           ) : (
               <div className={styles.emptyBar}>
-                <font className={styles.emptyText}>暂无数据</font>
+                <font className={styles.emptyText}><FormattedMessage id="spaceUsage.none" /></font>
               </div>
             )}
         </div>

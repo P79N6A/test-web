@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'umi/locale';
 import { Progress } from 'antd';
 import styles from './ProgressLine.less';
 
@@ -13,9 +14,9 @@ class ProgressLine extends Component {
           <div style={{ flex: 1 }} />
           <font className={styles.textnumber}>
             {day}
-            <font className={styles.textStatus}>天</font>
+            <font className={styles.textStatus}><FormattedMessage id="home.day" /></font>
             {hour}
-            <font className={styles.textStatus}>小时</font>
+            <font className={styles.textStatus}><FormattedMessage id="home.hour" /></font>
           </font>
         </div>
         <Progress

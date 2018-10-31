@@ -188,6 +188,12 @@ export default {
   "app.exception.description.500": "【500】Coming back soon",
   "menu.account.edit": "Change Password",
   "menu.account.logout": "Log Out",
+  // 空间实时状态
+  "spaceState.real.time.statistics": "实时数据",
+  "spaceState.used.workstations": "使用工位数",
+  "spaceState.total.workstations": "工位总数",
+  "spaceState.free.workstations": "空闲工位数",
+  "spaceState.rate.workstations": "工位使用率",
   // ant
   "app.setting.pagestyle": "Page style setting",
   "app.setting.pagestyle.dark": "Dark style",

@@ -5,6 +5,15 @@ body,
   width: 100%;
 }
 
+@font-face{
+  font-family: 'DINProRegular';
+  src:url('https://cdn.urwork.partner.9amtech.com/fonts/DINPro-Regular.otf');
+}
+
+div, span, p, i, a, font{
+  font-family: 'DINProRegular'!important;
+}
+
 .ant-layout {
   min-height: 100%;
 }
@@ -212,4 +221,8 @@ td {
 .ant-table-thead > tr:hover > td,
 .ant-table-tbody > tr:hover > td {
   background: #f0fffb !important;
+}
+// 圆环
+.ant-progress-circle-path{
+  stroke: #FCB0B1 !important;
 }

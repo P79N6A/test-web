@@ -97,6 +97,20 @@ export default [
         ],
       },
       {
+        name: 'statistics',
+        icon: 'pie-chart',
+        path: './statistics',
+        routes: [
+          {
+            path: '/statistics/spaceState',
+            name: 'spaceState',
+            component: './Statistics/SpaceState/SpaceState',
+            authority: ['user'],
+          },
+          { redirect: '/exception/404' }
+        ]
+      },
+      {
         name: 'exception',
         icon: 'warning',
         path: '/exception',

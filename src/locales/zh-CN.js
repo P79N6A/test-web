@@ -188,6 +188,12 @@ export default {
   "app.exception.description.500": "【500】 别着急，马上回来",
   "menu.account.edit": "修改密码",
   "menu.account.logout": "退出登录",
+  // 空间实时状态
+  "spaceState.real.time.statistics": "实时数据",
+  "spaceState.used.workstations": "使用工位数",
+  "spaceState.total.workstations": "工位总数",
+  "spaceState.free.workstations": "空闲工位数",
+  "spaceState.rate.workstations": "工位使用率",
   // ant
   "app.setting.pagestyle": "整体风格设置",
   "app.setting.pagestyle.dark": "暗色菜单风格",

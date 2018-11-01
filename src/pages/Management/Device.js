@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon, Tooltip } from 'antd';
 
 import G from '@/global';
-import styles from './Person.less';
+import styles from './Device.less';
 import EquipModal from './components/EquipModal.js';
 
 @connect(({ ManagementDevice, user, ManagementCustomer, loading }) => ({

@@ -93,6 +93,13 @@ export default [
             component: './Management/NewNotice',
             authority: ['user'],
           },
+          {
+            path: '/management/detailNotice',
+            name: 'detailNotice',
+            hideInMenu: true,
+            component: './Management/DetailNotice',
+            authority: ['user'],
+          },
           { redirect: '/exception/404' },
         ],
       },

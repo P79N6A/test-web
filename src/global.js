@@ -14,7 +14,7 @@ if (env === '') {
   API_URL = `${process.API_URL}/api`;
 }
 
-const picUrl = 'http://pflmzpr9l.bkt.clouddn.com/image/';
+const picUrl = 'http://cdn.space.9amtech.com/image/';
 const uploadPicUrl = 'http://cdn.space.9amtech.com/';
 message.config({
   maxCount: 3,

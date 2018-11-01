@@ -16,6 +16,7 @@ export default {
   "menu.management.device": "设备管理",
   "menu.management.notice": "通知管理",
   "menu.management.newNotice": "新建通知",
+  "menu.management.detailNotice": "通知详情",
   "menu.management.banner": "Banner管理",
   "menu.exception.not-find": "404 Not Found",
   "menu.exception.not-permission": "403 Forbidden",

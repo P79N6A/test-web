@@ -19,7 +19,7 @@ import {
 
 import G from '@/global';
 import styles from './Notice.less';
-import { routerRedux } from '../../../node_modules/dva/router';
+import { routerRedux } from '@/../node_modules/dva/router';
 
 @connect(({ ManagementNotice, loading, ManagementPerson }) => ({
   ManagementPerson,
@@ -31,7 +31,6 @@ export default class Notice extends Component {
   // 表单以及分页
   state = {
     query: '',
-    visible: false,
     detail: {
       title: 'Title',
       lookNum: 20,
@@ -52,12 +51,6 @@ export default class Notice extends Component {
     });
   }
 
-  onClose = () => {
-    this.setState({
-      visible: false,
-    });
-  };
-
   onSearch() {
     this.fetchDataList(1);
   }
@@ -65,19 +58,6 @@ export default class Notice extends Component {
   onChangeSearchInfo = e => {
     this.setState({ query: e.target.value });
   };
-
-  // 详情
-  onDetail(text) {
-    this.setState({
-      detail: {
-        title: text.title,
-        lookNum: text.viewCount,
-        lastTime: text.createdAt,
-        content: text.content,
-      },
-    });
-    this.showDrawer();
-  }
 
   handleClickChange = (noticeId) => {
     const { dispatch } = this.props;
@@ -120,7 +100,7 @@ export default class Notice extends Component {
           return (
             <Fragment>
               <Tooltip placement="topLeft" title={text.title}>
-                <span className={styles.colSql}>{text.title}</span>
+                <span onClick={this.goDetail.bind(this, text)} className={styles.colSql}>{text.title}</span>
               </Tooltip>
             </Fragment>
           )
@@ -174,14 +154,6 @@ export default class Notice extends Component {
             </Popconfirm>
             <Divider type="vertical" />
             <a onClick={this.copyPush.bind(this, text)}><FormattedMessage id='notice.copy' /></a>
-            <Divider type="vertical" />
-            <a
-              onClick={() => {
-                this.onDetail(text, record, index);
-              }}
-            >
-              <FormattedMessage id='notice.detail' />
-            </a>
           </Fragment>
         ),
       },
@@ -198,13 +170,6 @@ export default class Notice extends Component {
   emitEmpty = () => {
     this.userNameInput.focus();
     this.setState({ query: '' });
-  };
-
-  // 详情
-  showDrawer = () => {
-    this.setState({
-      visible: true,
-    });
   };
 
   handleChange = () => { };
@@ -255,9 +220,18 @@ export default class Notice extends Component {
     this.props.dispatch(routerRedux.push('/management/newNotice'))
   }
 
+  goDetail(text) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ManagementNotice/setCopyValue',
+      payload: text,
+    });
+    this.props.dispatch(routerRedux.push('/management/detailNotice'))
+  }
+
   render() {
     const { ManagementNotice, loading } = this.props;
-    const { query, detail, visible, noticeState, state } = this.state;
+    const { query, noticeState, state } = this.state;
     const { limit, current, count } = ManagementNotice.data;
     const columns = this.getColumns(current, noticeState, state);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
@@ -318,24 +292,6 @@ export default class Notice extends Component {
             />
           </Col>
         </Row>
-        <Drawer
-          width={512}
-          closable={true}
-          title={detail.title}
-          placement="right"
-          onClose={this.onClose}
-          visible={visible}
-        >
-          <p>
-            <Icon type="eye-o" style={{ marginRight: '6px' }} />
-            {detail.lookNum}
-            <Icon type="clock-circle-o" style={{ marginLeft: '18px', marginRight: '6px' }} />
-            {G.moment(detail.lastTime).format('YYYY-MM-DD hh:mm:s')}
-          </p>
-          <br />
-          <br />
-          <div dangerouslySetInnerHTML={{ __html: detail.content }} />
-        </Drawer>
       </div>
     );
   }

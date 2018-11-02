@@ -149,11 +149,7 @@ class PersonModal extends Component {
     const { visible, loading, handleCancel, form } = this.props;
     const { imageUrl, avatarLoading, title } = this.state;
     const { getFieldDecorator } = form;
-    const uploadButton = (
-      <div className="avatar-uploader2">
-        <Icon type={avatarLoading ? 'loading' : 'plus'} />
-      </div>
-    );
+    const uploadButton = (<Icon type={avatarLoading ? 'loading' : 'plus'} style={{ fontSize: '70px', lineHeight: '70px', paddingTop: '6px' }} />);
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },

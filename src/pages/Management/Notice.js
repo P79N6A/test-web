@@ -19,7 +19,7 @@ import {
 
 import G from '@/global';
 import styles from './Notice.less';
-import { routerRedux } from '@/../node_modules/dva/router';
+import { routerRedux } from 'dva/router';
 
 @connect(({ ManagementNotice, loading, ManagementPerson }) => ({
   ManagementPerson,
@@ -100,7 +100,10 @@ export default class Notice extends Component {
           return (
             <Fragment>
               <Tooltip placement="topLeft" title={text.title}>
-                <span onClick={this.goDetail.bind(this, text)} className={styles.colSql}>{text.title}</span>
+                <span onClick={this.goDetail.bind(this, text)} className={styles.colSql}>
+                  <span className={styles.titleTop} style={{ opacity: text.topStatus ? '1' : '0' }}>置顶</span>
+                  {text.title}
+                </span>
               </Tooltip>
             </Fragment>
           )

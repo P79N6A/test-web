@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
-import { routerRedux } from '../../../../node_modules/dva/router';
+import { routerRedux } from 'dva/router';
 
 const FormItem = Form.Item;
 

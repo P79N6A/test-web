@@ -165,7 +165,7 @@ class NewNoticeForm extends Component {
             if (res.status === 'success') {
               const config = { useCdnDomain: true };
               const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
-              const avatarUrl = `text_${G.moment().unix()}.png`;
+              const avatarUrl = `${JSON.parse(window.sessionStorage.getItem('userInfo')).uid}_${G.moment().unix()}.png`;
               const observable = qiniu.upload(file, avatarUrl, res.data, putExtra, config);
               observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this, resolve));
             } else {
@@ -249,7 +249,7 @@ class NewNoticeForm extends Component {
           if (res.status === 'success') {
             const config = { useCdnDomain: true };
             const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
-            const avatarUrl = `haibao-${G.moment().unix()}.png`;
+            const avatarUrl = `${JSON.parse(window.sessionStorage.getItem('userInfo')).uid}_${G.moment().unix()}.png`;
             this.setState({ avatarLoading: true });
             const observable = qiniu.upload(file, avatarUrl, res.data, putExtra, config);
             observable.subscribe(this.nexts.bind(this), this.errors.bind(this), this.completes.bind(this));

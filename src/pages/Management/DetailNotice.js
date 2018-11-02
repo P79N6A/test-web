@@ -4,7 +4,7 @@ import { Icon, Row, Col, Button } from 'antd';
 import G from '@/global';
 import { connect } from 'dva';
 import styles from './components/NewNoticeForm.less';
-import { routerRedux } from '@/../node_modules/dva/router';
+import { routerRedux } from 'dva/router';
 
 @connect(({ ManagementNotice }) => ({
   ManagementNotice,

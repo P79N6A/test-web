@@ -9,6 +9,23 @@
   <title>9AM</title>
   <link rel="icon" href="http://cdn.space.9amtech.com/image/favicon.png" type="image/x-icon">
   <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.data-set-0.9.6/dist/data-set.min.js"></script>
+  <script>
+    (function () {
+      const normalWidth = 1366;
+      const normalHeight = 768;
+      const newRem = function () {
+        const html = document.documentElement;
+        const { clientWidth, clientHeight } = html;
+        let scale = Math.min((clientWidth / normalWidth).toFixed(3), (clientHeight / normalHeight).toFixed(3))
+        if (scale < 0.9) {
+          scale = 0.9;
+        }
+        html.style.fontSize = 1 * scale + 'px';
+      };
+      window.addEventListener('resize', newRem, false);
+      newRem();
+    })();
+  </script>
 </head>
 
 <body>

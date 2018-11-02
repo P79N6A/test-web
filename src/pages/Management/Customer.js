@@ -5,7 +5,7 @@ import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon, 
 
 import G from '@/global';
 import styles from './Person.less';
-import { routerRedux } from '../../../node_modules/dva/router';
+import { routerRedux } from 'dva/router';
 
 @connect(({ ManagementCustomer, loading }) => ({
   ManagementCustomer,

@@ -100,6 +100,13 @@ export default [
             component: './Management/DetailNotice',
             authority: ['user'],
           },
+          {
+            path: '/management/banner',
+            name: 'banner',
+            hideInMenu: true,
+            component: './Management/Banner',
+            authority: ['user'],
+          },
           { redirect: '/exception/404' },
         ],
       },

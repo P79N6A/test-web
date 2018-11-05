@@ -2,19 +2,27 @@ import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import { Row, Col, Carousel, Button, Icon } from 'antd';
+import BannerModal from './components/BannerModal'
 import styles from './Banner.less'
 
 import G from '@/global';
 
-@connect(({ ManagementPerson, user, loading }) => ({
-  ManagementPerson,
-  user,
-  loading: loading.effects['ManagementPerson/fetch'],
+@connect(({ Banner, loading }) => ({
+  Banner,
+  loading: loading.effects['Banner/fetch'],
 }))
 export default class Banner extends Component {
   state = {
     // 鼠标 hover 事件
-    hoverStatus: false
+    hoverStatus: false,
+    modalLoading: false
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Banner/getBanner'
+    });
   }
 
   // 鼠标移入事件
@@ -24,14 +32,72 @@ export default class Banner extends Component {
     })
   }
 
+  // 鼠标移出
   bannerMouseLeave() {
     this.setState({
       hoverStatus: false
     })
   }
 
+  // 添加图片弹窗显示
+  addBanner = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Banner/changeVisible',
+      payload: {
+        visible: true
+      }
+    });
+  }
+
+  // 添加 Banner
+  addBanners() {
+    const { dispatch, Banner } = this.props;
+    const { bannerSrc, type, bannerUrl } = Banner.bannerAdd;
+    dispatch({
+      type: 'Banner/addBanner',
+      payload: {
+        bannerSrc,
+        type,
+        bannerUrl,
+        callback: this.addBannerBack.bind(this),
+      },
+    });
+  }
+
+  addBannerBack(res) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Banner/changeVisible',
+      payload: {
+        visible: false,
+        bannerSrc: '',
+        type: 0,
+        bannerUrl: '',
+        title: ''
+      }
+    });
+    if (res.status === 'success') {
+      dispatch({
+        type: 'Banner/getBanner'
+      });
+    } else {
+      message.error(response.message || 'error');
+    }
+  }
+
+  // 发布 Banner
+  bannerPublish() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Banner/bannerPublish'
+    });
+  }
+
   render() {
-    const { hoverStatus } = this.state;
+    const { hoverStatus, modalLoading } = this.state;
+    const { Banner, dispatch } = this.props;
+    const { bannerAdd, bannerList } = Banner;
     return (
       <div className={styles.main}>
         <h3><FormattedMessage id='menu.management.banner' /></h3>
@@ -44,9 +110,8 @@ export default class Banner extends Component {
                 <p className={styles.notice}>Banner在DShow上的展示效果预览</p>
                 {/* 轮播图 */}
                 <Carousel autoplay className={styles.carousel}>
-                  <div><img src='http://cdn.space.9amtech.com/image/dshow_banner_notice.png' /></div>
-                  <div><img src='http://cdn.space.9amtech.com/image/dshow_banner_active.png' /></div>
-                  <div><img src='http://cdn.space.9amtech.com/image/dshow_banner_notify.png' /></div>
+                  {bannerList && bannerList.length > 0 ? bannerList.map((item, i) => (<div key={`carousel_${item.bannerId}`}><img src={item.src} /></div>))
+                    : (<img className={styles.bannerNone} src={`${G.picUrl}banner_none_add.png`} />)}
                 </Carousel>
               </div>
             </Col>
@@ -58,28 +123,44 @@ export default class Banner extends Component {
                 <img className={styles.bannerPic} src='http://cdn.space.9amtech.com/image/dshow_banner_notice.png' />
               </div>
               {/* banner小列表展示 */}
-              <ul className={styles.bannerListBox}>
-                <li className={styles.bannerList} >
-                  <div className={styles.bannerImgBox}
-                    onMouseEnter={this.bannerMouseEnter.bind(this)}
-                    onMouseLeave={this.bannerMouseLeave.bind(this)}
-                  >
-                    <img src={`${G.picUrl}dshow_banner_notify.png`} />
-                    <div className={styles.bannerModel} style={{ display: hoverStatus ? 'block' : 'none' }}>
-                      <Icon type="caret-left" theme="outlined" />
-                      <Icon type="caret-right" theme="outlined" />
-                      <Icon type="delete" theme="outlined" style={{ float: 'right', lineHeight: '24px', marginRight: '4px' }} />
-                    </div>
-                  </div>
-                  <p className={styles.bannerText}><span className={styles.bannerCircle}></span>已发布</p>
-                </li>
-                <li className={styles.bannerList}>
-                  <img src={`${G.picUrl}banner_add.png`} />
-                </li>
-              </ul>
+              {bannerList && bannerList.length > 0 ?
+                (
+                  <ul className={styles.bannerListBox}>
+                    {bannerList.map((item, i) => (
+                      <li className={styles.bannerList} key={`banner_${item.bannerId}`}>
+                        <div className={styles.bannerImgBox}
+                          onMouseEnter={this.bannerMouseEnter.bind(this)}
+                          onMouseLeave={this.bannerMouseLeave.bind(this)}
+                        >
+                          <img src={item.src} />
+                          <div className={styles.bannerModel} style={{ display: hoverStatus ? 'block' : 'none' }}>
+                            <Icon type="caret-left" theme="outlined" />
+                            <Icon type="caret-right" theme="outlined" />
+                            <Icon type="delete" theme="outlined" style={{ float: 'right', lineHeight: '24px', marginRight: '4px' }} />
+                          </div>
+                        </div>
+                        <p className={styles.bannerText}><span className={styles.bannerCircle}></span>已发布</p>
+                      </li>
+                    ))}
+                    {/* 添加图片 */}
+                    {bannerList.length >= 5 ? '' : (
+                      <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>
+                        <img className={styles.addBanner} src={`${G.picUrl}banner_add.png`} />
+                      </li>
+                    )}
+
+                  </ul>) : (
+                  <ul className={styles.bannerListBox}>
+                    <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>
+                      <img className={styles.addBanner} src={`${G.picUrl}banner_add.png`} />
+                    </li>
+                  </ul>
+                )}
               {/* 发布 */}
               <Row gutter={24}>
-                <Col span={24}><Button type="primary" className={styles.btn}>发布到 DShow</Button></Col>
+                <Col span={24}>
+                  <Button onClick={this.bannerPublish.bind(this)} type="primary" size='small' className={styles.btn}>发布到 DShow</Button>
+                </Col>
                 <Col span={24}>
                   <p className={styles.lastTest}>设置完成并点击按钮【发布到 DShow】后系统将最新的Banner同步到DShow端</p>
                   <p className={styles.lastTest}>* 未点击【发布到DShow】时Banner将不会被同步到DShow端 </p>
@@ -88,6 +169,13 @@ export default class Banner extends Component {
             </Col>
           </Row>
         </div>
+        {/* model */}
+        <BannerModal
+          dispatch={dispatch}
+          loading={modalLoading}
+          Banner={Banner}
+          addBanners={this.addBanners.bind(this)}
+          bannerAdd={bannerAdd} />
       </div>
     );
   }

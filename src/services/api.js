@@ -3072,3 +3072,35 @@ export async function getDeskUseRank(payload) {
     method: 'GET',
   });
 }
+
+// 获取 banner 列表
+export async function getBannerList() {
+  return request(`${API_URL}/banner/list?token=${getToken()}`, {
+    method: 'GET',
+  });
+}
+
+// 获取系统默认列表
+export async function getDefaultBannerList() {
+  return request(`${API_URL}/banner/defaultBannerPictureList?token=${getToken()}`, {
+    method: 'GET',
+  });
+}
+
+// 添加 Banner
+export async function addBanner(payload) {
+  const url = `${G.API_URL}/banner/add`;
+  const body = filterEdit({ ...payload, token: getToken() });
+  return request(url, {
+    method: 'PUT',
+    body,
+  });
+}
+
+// 发布 Banner
+export async function bannerPublish() {
+  return request(`${API_URL}/banner/publish`, {
+    method: 'POST',
+    body: { token: getToken() }
+  });
+}

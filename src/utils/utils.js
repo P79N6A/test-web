@@ -235,7 +235,7 @@ export function filterBody(body) {
 // 过滤编辑 body
 export function filterEdit(body) {
   const filter = G._.mapValues(body, o => {
-    if (o) {
+    if (o || typeof (o) === 'number') {
       return o;
     }
     return '';

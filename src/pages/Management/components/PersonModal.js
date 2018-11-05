@@ -130,7 +130,7 @@ class PersonModal extends Component {
             const { editValue } = this.props;
             const config = { useCdnDomain: true };
             const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
-            const avatarUrl = `${editValue.uid}-${G.moment().unix()}.png`;
+            const avatarUrl = `${editValue.uid}_header_${G.moment().unix()}.png`;
             this.setState({ avatarLoading: true });
             const observable = qiniu.upload(file, avatarUrl, res.data, putExtra, config);
             observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this));

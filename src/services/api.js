@@ -3104,3 +3104,12 @@ export async function bannerPublish() {
     body: { token: getToken() }
   });
 }
+
+// 删除 Banner
+export async function delBanner(payload) {
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/banner/delete`, {
+    method: 'POST',
+    body,
+  });
+}

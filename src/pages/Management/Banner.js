@@ -1,11 +1,11 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Carousel, Button, Icon } from 'antd';
+import { Row, Col, Carousel, Button, Icon, Modal } from 'antd';
 import BannerModal from './components/BannerModal'
 import styles from './Banner.less'
-
 import G from '@/global';
+const confirm = Modal.confirm;
 
 @connect(({ Banner, loading }) => ({
   Banner,
@@ -14,29 +14,75 @@ import G from '@/global';
 export default class Banner extends Component {
   state = {
     // 鼠标 hover 事件
-    hoverStatus: false,
-    modalLoading: false
+    modalLoading: false,
+    bannerId: '',
+    bannerUrl: {
+      src: '',
+      id: ''
+    },
+    delBanner: ''
   }
 
   componentDidMount() {
+    this.getBannerList();
+  }
+
+  // 获取 banner 列表
+  getBannerList() {
     const { dispatch } = this.props;
     dispatch({
       type: 'Banner/getBanner'
     });
   }
 
-  // 鼠标移入事件
-  bannerMouseEnter() {
+  // 属性改变时
+  componentWillReceiveProps(nextProps) {
+    const { Banner } = nextProps;
+    const { bannerList } = Banner;
+    if (bannerList && bannerList.length > 0) {
+      this.setState({
+        bannerUrl: {
+          src: bannerList[0].src,
+          id: bannerList[0].bannerId
+        }
+      })
+    }
+  }
+
+  // banner 点击事件
+  changeBannerShow(src, id) {
     this.setState({
-      hoverStatus: true
+      bannerUrl: {
+        src,
+        id
+      }
+    })
+  }
+
+  // 鼠标移入事件
+  bannerMouseEnter(bannerId) {
+    this.setState({
+      bannerId
     })
   }
 
   // 鼠标移出
   bannerMouseLeave() {
     this.setState({
-      hoverStatus: false
+      bannerId: ''
     })
+  }
+
+  // 删除 banner
+  bannerDel(bannerId) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Banner/delBanner',
+      payload: {
+        bannerId,
+        callback: this.getBannerList.bind(this)
+      }
+    });
   }
 
   // 添加图片弹窗显示
@@ -78,9 +124,7 @@ export default class Banner extends Component {
       }
     });
     if (res.status === 'success') {
-      dispatch({
-        type: 'Banner/getBanner'
-      });
+      this.getBannerList();
     } else {
       message.error(response.message || 'error');
     }
@@ -94,8 +138,31 @@ export default class Banner extends Component {
     });
   }
 
+  // 删除确认
+  delConfirm(bannerId) {
+    let _this = this;
+    confirm({
+      title: '确认提示',
+      content: '删除后将不再DShow端显示，确定要删除此Banner吗？',
+      okText: '确定',
+      cancelText: '取消',
+      okButtonProps: {
+        size: 'small'
+      },
+      cancelButtonProps: {
+        size: 'small'
+      },
+      onOk() {
+        _this.bannerDel(bannerId);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+
   render() {
-    const { hoverStatus, modalLoading } = this.state;
+    const { modalLoading, bannerId, bannerUrl } = this.state;
     const { Banner, dispatch } = this.props;
     const { bannerAdd, bannerList } = Banner;
     return (
@@ -120,7 +187,7 @@ export default class Banner extends Component {
               <p className={styles.bannerTitle}>Banner</p>
               <p className={styles.bannerNotice}>至少保留一个Banner, 最多设置5个Banner，Banner对所有用户可见</p>
               <div className={styles.bannerPicBox}>
-                <img className={styles.bannerPic} src='http://cdn.space.9amtech.com/image/dshow_banner_notice.png' />
+                <img className={styles.bannerPic} src={bannerUrl.src} />
               </div>
               {/* banner小列表展示 */}
               {bannerList && bannerList.length > 0 ?
@@ -129,17 +196,28 @@ export default class Banner extends Component {
                     {bannerList.map((item, i) => (
                       <li className={styles.bannerList} key={`banner_${item.bannerId}`}>
                         <div className={styles.bannerImgBox}
-                          onMouseEnter={this.bannerMouseEnter.bind(this)}
+                          onMouseEnter={this.bannerMouseEnter.bind(this, item.bannerId)}
                           onMouseLeave={this.bannerMouseLeave.bind(this)}
                         >
-                          <img src={item.src} />
-                          <div className={styles.bannerModel} style={{ display: hoverStatus ? 'block' : 'none' }}>
+                          <img
+                            onClick={this.changeBannerShow.bind(this, item.src, item.bannerId)}
+                            src={item.src}
+                            style={{ borderBottom: bannerUrl.id === item.bannerId ? '3px solid #A6D6D0' : '3px solid #FFF' }} />
+                          <div className={styles.bannerModel} style={{ display: bannerId === item.bannerId ? 'block' : 'none' }}>
                             <Icon type="caret-left" theme="outlined" />
                             <Icon type="caret-right" theme="outlined" />
-                            <Icon type="delete" theme="outlined" style={{ float: 'right', lineHeight: '24px', marginRight: '4px' }} />
+                            <Icon onClick={this.delConfirm.bind(this, item.bannerId)} type="delete" theme="outlined" style={{ float: 'right', lineHeight: '24px', marginRight: '4px' }} />
                           </div>
                         </div>
-                        <p className={styles.bannerText}><span className={styles.bannerCircle}></span>已发布</p>
+                        {item.status === 1 ?
+                          <p className={styles.bannerText}>
+                            <span className={styles.bannerCircle} style={{ backgroundColor: '#A6D6D0' }}></span>已发布
+                        </p> :
+                          <p className={styles.bannerText}>
+                            <span className={styles.bannerCircle} style={{ backgroundColor: '#FCB0B1' }}></span>未发布
+                      </p>
+                        }
+
                       </li>
                     ))}
                     {/* 添加图片 */}

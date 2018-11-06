@@ -1,4 +1,4 @@
-import { getNoticeList, getBannerList, getDefaultBannerList, addBanner, bannerPublish } from '@/services/api';
+import { getNoticeList, getBannerList, getDefaultBannerList, addBanner, bannerPublish, delBanner } from '@/services/api';
 import { message } from 'antd';
 
 export default {
@@ -57,6 +57,15 @@ export default {
       const response = yield call(bannerPublish);
       if (response && response.status === 'success') {
         message.success('发布成功');
+      } else {
+        message.error(response.message || 'error');
+      }
+    },
+    *delBanner({ payload }, { call }) {
+      const response = yield call(delBanner, payload);
+      payload.callback(response);
+      if (response && response.status === 'success') {
+        message.success('删除成功');
       } else {
         message.error(response.message || 'error');
       }

@@ -107,7 +107,7 @@ class NewNoticeForm extends Component {
   handleCommit() {
     const { form, dispatch } = this.props;
     form.validateFields((err, values) => {
-      const { editorState } = this.state;
+      const { editorState, type, messages } = this.state;
       if (err) {
         return;
       }

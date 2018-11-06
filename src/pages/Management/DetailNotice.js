@@ -21,7 +21,7 @@ export default class DetailNotice extends Component {
   }
 
   render() {
-    const { dispatch, ManagementNotice } = this.props;
+    const { ManagementNotice } = this.props;
     const { copyValue } = ManagementNotice;
     return (
       <div style={{ width: '100%', height: '100%', padding: '2%', borderRadius: '4px', backgroundColor: '#fff' }}>
@@ -44,12 +44,11 @@ export default class DetailNotice extends Component {
           <div className={styles.mobile}>
             {/* 内容展示区 */}
             <div className={styles.mobileText}>
-              {copyValue.type === 0 ? <p>{copyValue.messages}</p> : <img src={copyValue.messages} />}
+              {copyValue.type === 0 ? <p>{copyValue.message}</p> : <img src={copyValue.message} />}
             </div>
             <Icon type="close-circle" theme="filled" style={{ fontSize: '24px', marginTop: '15px', color: '#F3F5F7' }} />
           </div>
         </div>
-
         <Row style={{ paddingTop: '20px', borderTop: '1px solid #F2F2F2', marginTop: '20px' }}>
           <Col span={24} style={{ textAlign: 'right' }}>
             <Button type="primary" size='small' onClick={this.goList.bind(this)}>返回</Button>

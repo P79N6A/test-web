@@ -77,9 +77,8 @@ const query = {
 };
 
 
-@connect(({ sliderMenu, loading }) => ({
-  sliderMenu,
-  loading: loading.effects['sliderMenu/fetch'],
+@connect(({ user }) => ({
+  user,
 }))
 class BasicLayout extends React.PureComponent {
   constructor(props) {
@@ -149,10 +148,6 @@ class BasicLayout extends React.PureComponent {
           isMobile: mobile,
         });
       }
-    });
-    // 获取侧边栏列表
-    dispatch({
-      type: 'sliderMenu/fetch'
     });
   }
 
@@ -259,10 +254,12 @@ class BasicLayout extends React.PureComponent {
     if (Authority[0] === 'admin') {
       color = 'dark'
     }
-    // this.props.navTheme = color;
+    const { user } = this.props.user;
+    let menuLists = [];
+    if (user && user.sidebar) {
+      menuLists = user.sidebar.data;
+    }
     const myProps = { ...this.props, navTheme: color };
-    const { sliderMenu } = this.props;
-    const { menuLists } = sliderMenu;
     const {
       currentUser,
       navTheme,

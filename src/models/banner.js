@@ -52,6 +52,11 @@ export default {
     *addBanner({ payload }, { call }) {
       const response = yield call(addBanner, payload);
       payload.callback(response);
+      if (response && response.status === 'success') {
+        message.success('添加成功');
+      } else {
+        message.error(response.message || 'error');
+      }
     },
     *bannerPublish({ payload }, { call }) {
       const response = yield call(bannerPublish, payload);

@@ -81,26 +81,23 @@ class BannerModel extends Component {
     const { bannerSrc, type, bannerUrl } = Banner.bannerAdd;
     const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
     if (modal.type === 0) {
-      if (bannerSrc) {
-        if (bannerUrl) {
-          if (type === 1) {
-            if (!reg.test(bannerUrl)) {
-              message.error('请正确输入外部链接');
-              return
-            }
-          }
-          addBanners();
-        } else {
-          if (type === 0) {
-            message.error('请选择通知');
-          } else {
-            message.error('请输入外部链接')
-          }
-        }
-      } else {
+      if (!bannerSrc) {
         message.error('请上传 Banner');
+        return
       }
-
+      if (type === 0 && !bannerUrl) {
+        message.error('请选择通知');
+        return
+      }
+      if (type === 1 && !bannerUrl) {
+        message.error('请输入外部链接');
+        return
+      }
+      if (type === 1 && !reg.test(bannerUrl)) {
+        message.error('请正确输入外部链接');
+        return
+      }
+      addBanners();
     } else {
       if (modal.type === 1) {
         this.changeAddText({

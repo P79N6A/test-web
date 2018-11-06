@@ -23,7 +23,7 @@ export default class SpaceSvg extends Component {
 
   constructor(props) {
     super(props);
-    this.svgUrl = '';
+    this.svgName = '';
     this.token = '';
     this.defaultTable = defaultTable;
     this.defaultTwins = defaultTwins;
@@ -39,8 +39,8 @@ export default class SpaceSvg extends Component {
   // 待 svg 加载完成之后绑定监听函数
   componentDidUpdate(newProps, newState) {
     const newestSvg = newProps.spaceState.svg;
-    if (newestSvg && newestSvg.svgUrl) {
-      if (!this.svgUrl && this.svgUrl !== newestSvg.svgUrl) {
+    if (newestSvg && newestSvg.svgName) {
+      if (!this.svgName && this.svgName !== newestSvg.svgName) {
         this.bindClick(newestSvg.svgId);
       }
     }
@@ -167,10 +167,10 @@ export default class SpaceSvg extends Component {
     const { svg } = spaceState;
     return (
       <div className={styles.svgRight}>
-        {svg.svgUrl &&
+        {svg.svgName &&
           <iframe
             className={styles.svgPic}
-            src={G.env ? `${G.htmlUrl}${svg.svgUrl}` : require('@/static/svg/test.svg')}
+            src={G.env ? `${G.htmlUrl}/static/svg/${svg.svgName}` : require('@/static/svg/urwork.svg')}
             width="100%"
             height="100%"
             id={svg.svgId}

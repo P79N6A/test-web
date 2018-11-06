@@ -16,7 +16,7 @@ export default {
         message.error(response.message || 'error');
       };
     },
-    *getDeskState({ payload }, { call, put }) {
+    *getDeskState({ payload }, { call }) {
       const response = yield call(getDeskState, payload);
       payload.callback(response.data);
       if (response && response.status === 'success') {

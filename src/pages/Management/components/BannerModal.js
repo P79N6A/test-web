@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import * as qiniu from 'qiniu-js';
-import { Modal, Button, Input, Form, Table, Pagination, Row, Col, Radio, Upload, Icon } from 'antd';
+import { Modal, Button, Input, Form, Table, Pagination, Row, Col, Radio, Upload, Icon, message } from 'antd';
 import G from '@/global';
 import styles from './BannerModal.less';
 
@@ -77,9 +77,30 @@ class BannerModel extends Component {
   // 保存
   okHandle = () => {
     const { modal, imageUrl } = this.state;
-    const { addBanners } = this.props;
+    const { addBanners, Banner } = this.props;
+    const { bannerSrc, type, bannerUrl } = Banner.bannerAdd;
+    const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
     if (modal.type === 0) {
-      addBanners();
+      if (bannerSrc) {
+        if (bannerUrl) {
+          if (type === 1) {
+            if (!reg.test(bannerUrl)) {
+              message.error('请正确输入外部链接');
+              return
+            }
+          }
+          addBanners();
+        } else {
+          if (type === 0) {
+            message.error('请选择通知');
+          } else {
+            message.error('请输入外部链接')
+          }
+        }
+      } else {
+        message.error('请上传 Banner');
+      }
+
     } else {
       if (modal.type === 1) {
         this.changeAddText({

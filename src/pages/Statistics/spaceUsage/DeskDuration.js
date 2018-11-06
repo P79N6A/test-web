@@ -11,11 +11,11 @@ class DeskDuration extends Component {
     loading: false,
     number: 0,
     avg_dur: {
-      WEEKLY: [{ title: formatMessage({ id: 'home.nearly.one.year' }), value: 'LAST_YEAR' }, { title: formatMessage({ id: 'spaceUsage.nearly.four.week' }), value: 'LAST_4WEEK' }],
+      WEEKLY: [{ title: formatMessage({ id: 'home.nearly.one.year' }), value: 'LAST_YEAR' }, { title: formatMessage({ id: 'spaceUsage.nearly.four.week' }), value: 'LAST_4WEEKS' }],
       HOURLY: [
         { title: formatMessage({ id: 'spaceUsage.year' }), value: 'CURRENT_YEAR' },
-        { title: formatMessage({ id: 'home.nearly.thirty.day' }), value: 'LAST_30DAY' },
-        { title: formatMessage({ id: 'home.nearly.seven.day' }), value: 'LAST_7DAY' },
+        { title: formatMessage({ id: 'home.nearly.thirty.day' }), value: 'LAST_30DAYS' },
+        { title: formatMessage({ id: 'home.nearly.seven.day' }), value: 'LAST_7DAYS' },
         { title: formatMessage({ id: 'spaceUsage.yesterday' }), value: 'LAST_DAY' },
       ],
     },

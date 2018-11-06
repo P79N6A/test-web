@@ -234,7 +234,7 @@ export default class Banner extends Component {
                             onClick={this.changeBannerShow.bind(this, item.src, item.bannerId)}
                             src={item.src}
                             style={{ borderBottom: bannerUrl.id === item.bannerId ? '3px solid #A6D6D0' : '3px solid #FFF' }} />
-                          <div className={styles.bannerModel} style={{ display: bannerId === item.bannerId ? 'block' : 'none' }}>
+                          <div className={styles.bannerModel} style={{ display: bannerList.length > 1 ? bannerId === item.bannerId ? 'block' : 'none' : 'none' }}>
                             <Icon onClick={this.moveBanner.bind(this, i, 'left')} type="caret-left" theme="outlined" />
                             <Icon onClick={this.moveBanner.bind(this, i, 'right')} type="caret-right" theme="outlined" />
                             <Icon onClick={this.delConfirm.bind(this, item.bannerId)} type="delete" theme="outlined" style={{ float: 'right', lineHeight: '24px', marginRight: '4px' }} />
@@ -246,9 +246,7 @@ export default class Banner extends Component {
                         </p> :
                           <p className={styles.bannerText}>
                             <span className={styles.bannerCircle} style={{ backgroundColor: '#FCB0B1' }}></span>未发布
-                      </p>
-                        }
-
+                      </p>}
                       </li>
                     ))}
                     {/* 添加图片 */}
@@ -257,7 +255,6 @@ export default class Banner extends Component {
                         <img className={styles.addBanner} src={`${G.picUrl}banner_add.png`} />
                       </li>
                     )}
-
                   </ul>) : (
                   <ul className={styles.bannerListBox}>
                     <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>

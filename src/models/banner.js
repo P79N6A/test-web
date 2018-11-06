@@ -1,4 +1,4 @@
-import { getNoticeList, getBannerList, getDefaultBannerList, addBanner, bannerPublish, delBanner } from '@/services/api';
+import { getNoticeList, getBannerList, getDefaultBannerList, addBanner, bannerPublish, delBanner, sortBanner } from '@/services/api';
 import { message } from 'antd';
 
 export default {
@@ -53,8 +53,9 @@ export default {
       const response = yield call(addBanner, payload);
       payload.callback(response);
     },
-    *bannerPublish(_, { call, put }) {
-      const response = yield call(bannerPublish);
+    *bannerPublish({ payload }, { call }) {
+      const response = yield call(bannerPublish, payload);
+      payload.callback(response);
       if (response && response.status === 'success') {
         message.success('发布成功');
       } else {
@@ -66,6 +67,15 @@ export default {
       payload.callback(response);
       if (response && response.status === 'success') {
         message.success('删除成功');
+      } else {
+        message.error(response.message || 'error');
+      }
+    },
+    *sortBanner({ payload }, { call }) {
+      const response = yield call(sortBanner, payload);
+      payload.callback(response);
+      if (response && response.status === 'success') {
+        message.success('移动成功');
       } else {
         message.error(response.message || 'error');
       }

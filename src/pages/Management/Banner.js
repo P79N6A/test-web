@@ -20,7 +20,8 @@ export default class Banner extends Component {
       src: '',
       id: ''
     },
-    delBanner: ''
+    delBanner: '',
+    sortBanner: []
   }
 
   componentDidMount() {
@@ -40,11 +41,16 @@ export default class Banner extends Component {
     const { Banner } = nextProps;
     const { bannerList } = Banner;
     if (bannerList && bannerList.length > 0) {
+      const newBannerList = [];
+      bannerList.map((item, i) => {
+        newBannerList.push(item.bannerId)
+      })
       this.setState({
         bannerUrl: {
           src: bannerList[0].src,
           id: bannerList[0].bannerId
-        }
+        },
+        sortBanner: newBannerList
       })
     }
   }
@@ -134,7 +140,10 @@ export default class Banner extends Component {
   bannerPublish() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'Banner/bannerPublish'
+      type: 'Banner/bannerPublish',
+      payload: {
+        callback: this.getBannerList.bind(this)
+      }
     });
   }
 
@@ -158,6 +167,28 @@ export default class Banner extends Component {
       onCancel() {
         console.log('Cancel');
       },
+    });
+  }
+
+  // 移动banner
+  moveBanner(index, direction) {
+    let x = 0, y = 0;
+    const { sortBanner } = this.state;
+    const { dispatch } = this.props;
+    if (direction === 'left') {
+      y = index + 1;
+      x = index;
+    } else {
+      y = index + 2;
+      x = index + 1;
+    }
+    sortBanner.splice(x - 1, 1, ...sortBanner.splice(y - 1, 1, sortBanner[x - 1]));
+    dispatch({
+      type: 'Banner/sortBanner',
+      payload: {
+        bannerList: sortBanner,
+        callback: this.getBannerList.bind(this)
+      }
     });
   }
 
@@ -204,8 +235,8 @@ export default class Banner extends Component {
                             src={item.src}
                             style={{ borderBottom: bannerUrl.id === item.bannerId ? '3px solid #A6D6D0' : '3px solid #FFF' }} />
                           <div className={styles.bannerModel} style={{ display: bannerId === item.bannerId ? 'block' : 'none' }}>
-                            <Icon type="caret-left" theme="outlined" />
-                            <Icon type="caret-right" theme="outlined" />
+                            <Icon onClick={this.moveBanner.bind(this, i, 'left')} type="caret-left" theme="outlined" />
+                            <Icon onClick={this.moveBanner.bind(this, i, 'right')} type="caret-right" theme="outlined" />
                             <Icon onClick={this.delConfirm.bind(this, item.bannerId)} type="delete" theme="outlined" style={{ float: 'right', lineHeight: '24px', marginRight: '4px' }} />
                           </div>
                         </div>

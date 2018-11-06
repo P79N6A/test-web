@@ -3113,3 +3113,12 @@ export async function delBanner(payload) {
     body,
   });
 }
+
+// 排序 Banner
+export async function sortBanner(payload) {
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/banner/edit`, {
+    method: 'POST',
+    body,
+  });
+}

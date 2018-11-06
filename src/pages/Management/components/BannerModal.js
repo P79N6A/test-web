@@ -20,6 +20,11 @@ class BannerModel extends Component {
     },
     // 选择默认图片
     defaultBanner: '',
+    error: {
+      bannerPic: '',
+      bannerNotice: '',
+      bannerUrl: ''
+    }
   };
 
   componentDidMount() {

@@ -50,7 +50,7 @@ export default {
     // 工位使用时长
     deskAvgDuration: {
       condition_type: 'HOURLY',
-      date_type: 'NEARLY_DAY',
+      date_type: 'LAST_DAY',
       date: '2018-09-03T00:00:00.000Z',
       dataList: [],
     },
@@ -58,7 +58,7 @@ export default {
     deskUseRank_hot: {
       status_type: 'HOT',
       condition_type: 9,
-      date_type: 'NEARLY_DAY',
+      date_type: 'LAST_DAY',
       date: '2018-09-03T00:00:00.000Z',
       dataList: [],
     },
@@ -66,7 +66,7 @@ export default {
     deskUseRank_free: {
       status_type: 'FREE',
       condition_type: 9,
-      date_type: 'NEARLY_DAY',
+      date_type: 'LAST_DAY',
       date: '2018-09-03T00:00:00.000Z',
       dataList: [],
     },

@@ -2918,7 +2918,6 @@ export async function getDeskState(payload) {
 
 // 工位总数
 export async function getDeskCount() {
-  return
   return request(`${API_URL}/desk/count?token=${getToken()}`, {
     method: 'GET',
   });
@@ -2926,7 +2925,6 @@ export async function getDeskCount() {
 
 // 昨日使用个数
 export async function getYuseCount() {
-  return
   return request(`${API_URL}/desk/yesterday_count?token=${getToken()}`, {
     method: 'GET',
   });
@@ -2934,7 +2932,6 @@ export async function getYuseCount() {
 
 // 工位使用时长分布
 export async function getAvgDuration(payload) {
-  return
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/duration?${url}`, {
     method: 'GET',
@@ -2943,7 +2940,6 @@ export async function getAvgDuration(payload) {
 
 // 工位使用趋势
 export async function getUseRate(payload) {
-  return
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/use_rate?${url}`, {
     method: 'GET',
@@ -2952,7 +2948,6 @@ export async function getUseRate(payload) {
 
 // 服务时长统计
 export async function getServiceDuration() {
-  return
   const url = filterUrl({ token: getToken() });
   return request(`${API_URL}/desk/service_duration?${url}`, {
     method: 'GET',
@@ -2961,7 +2956,6 @@ export async function getServiceDuration() {
 
 // 工位使用率排行
 export async function getDeskUseRank(payload) {
-  return
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/rate_usage_rank?${url}`, {
     method: 'GET',

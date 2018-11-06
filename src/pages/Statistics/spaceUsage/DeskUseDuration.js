@@ -12,10 +12,10 @@ class DeskUseDuration extends Component {
   state = {
     loading: false,
     rank_list: [
-      { title: formatMessage({ id: 'spaceUsage.year' }), value: 'NEARLY_YEAR' },
-      { title: formatMessage({ id: 'home.nearly.thirty.day' }), value: 'NEARLY_30DAY' },
-      { title: formatMessage({ id: 'home.nearly.seven.day' }), value: 'NEARLY_7DAY' },
-      { title: formatMessage({ id: 'spaceUsage.yesterday' }), value: 'NEARLY_DAY' },
+      { title: formatMessage({ id: 'spaceUsage.year' }), value: 'LAST_YEAR' },
+      { title: formatMessage({ id: 'home.nearly.thirty.day' }), value: 'LAST_30DAY' },
+      { title: formatMessage({ id: 'home.nearly.seven.day' }), value: 'LAST_7DAY' },
+      { title: formatMessage({ id: 'spaceUsage.yesterday' }), value: 'LAST_DAY' },
     ],
   };
 

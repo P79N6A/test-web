@@ -13,7 +13,7 @@ const FooterView = () => (
           title: (
             <span>
               <img
-                src={`${G.picUrl}favicon.png`}
+                src={`${G.picUrl}image/favicon.png`}
                 alt="pic"
                 align="absmiddle"
                 style={{ width: '20px', height: '20px' }}

@@ -108,7 +108,7 @@ class BasicLayout extends React.PureComponent {
       token: window.location.href.substr(index + 7),
       name: 'guest',
       nickName: '优客工场',
-      avatar: `${G.picUrl}urwork_head.png`,
+      avatar: `${G.picUrl}image/urwork_head.png`,
     };
     if (index > -1 && payload.token === CTOKEN) {
       setUserInfo({ ...payload, autoLogin: true });
@@ -277,7 +277,7 @@ class BasicLayout extends React.PureComponent {
         {slideMenuShow ? null :
           isTop && !isMobile ? null : (
             <SiderMenu
-              logo={`${G.picUrl}logoGreen.png`}
+              logo={`${G.picUrl}image/logoGreen.png`}
               Authorized={Authorized}
               theme={navTheme}
               onCollapse={this.handleMenuCollapse}
@@ -299,7 +299,7 @@ class BasicLayout extends React.PureComponent {
             currentUser={currentUser}
             menuData={menuData}
             handleMenuCollapse={this.handleMenuCollapse}
-            logo={`${G.picUrl}logoGreen.png`}
+            logo={`${G.picUrl}image/logoGreen.png`}
             isMobile={isMobile}
             {...this.props}
           />

@@ -116,7 +116,7 @@ class PersonModal extends Component {
   complete(response) {
     this.setState({
       avatarLoading: false,
-      imageUrl: G.uploadPicUrl + response.key,
+      imageUrl: G.picUrl + response.key,
     });
   }
 

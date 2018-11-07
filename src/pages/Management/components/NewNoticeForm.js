@@ -149,7 +149,7 @@ class NewNoticeForm extends Component {
 
   complete(resolve, response) {
     const data = {
-      link: G.uploadPicUrl + response.key
+      link: G.picUrl + response.key
     }
     resolve({ data })
   }
@@ -235,7 +235,7 @@ class NewNoticeForm extends Component {
   completes(response) {
     this.setState({
       avatarLoading: false,
-      messages: G.uploadPicUrl + response.key,
+      messages: G.picUrl + response.key,
     });
   }
 

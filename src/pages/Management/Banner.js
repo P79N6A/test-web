@@ -204,12 +204,12 @@ export default class Banner extends Component {
             {/* 展示 */}
             <Col span={8}>
               <div className={styles.bannerBox}>
-                <img src={`${G.picUrl}banner_background.png`} />
+                <img src={`${G.picUrl}image/banner_background.png`} />
                 <p className={styles.notice}>Banner在DShow上的展示效果预览</p>
                 {/* 轮播图 */}
                 <Carousel autoplay className={styles.carousel}>
                   {bannerList && bannerList.length > 0 ? bannerList.map((item, i) => (<div key={`carousel_${item.bannerId}`}><img src={item.src} /></div>))
-                    : (<img className={styles.bannerNone} src={`${G.picUrl}banner_none_add.png`} />)}
+                    : (<img className={styles.bannerNone} src={`${G.picUrl}image/banner_none_add.png`} />)}
                 </Carousel>
               </div>
             </Col>
@@ -252,13 +252,13 @@ export default class Banner extends Component {
                     {/* 添加图片 */}
                     {bannerList.length >= 5 ? '' : (
                       <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>
-                        <img className={styles.addBanner} src={`${G.picUrl}banner_add.png`} />
+                        <img className={styles.addBanner} src={`${G.picUrl}image/banner_add.png`} />
                       </li>
                     )}
                   </ul>) : (
                   <ul className={styles.bannerListBox}>
                     <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>
-                      <img className={styles.addBanner} src={`${G.picUrl}banner_add.png`} />
+                      <img className={styles.addBanner} src={`${G.picUrl}image/banner_add.png`} />
                     </li>
                   </ul>
                 )}

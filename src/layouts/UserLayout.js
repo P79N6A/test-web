@@ -12,13 +12,13 @@ class UserLayout extends React.PureComponent {
         <div className={styles.container}>
           <div className={styles.containers}>
             <div className={styles.contents}>
-              <img alt="背景图片" src={`${G.picUrl}backchart.png`} />
+              <img alt="背景图片" src={`${G.picUrl}image/backchart.png`} />
             </div>
             <div className={styles.content}>
               <div className={styles.top}>
                 <div className={styles.header}>
                   <Link to="/">
-                    <img alt="logo" className={styles.logo} src={`${G.picUrl}logoGreen.png`} />
+                    <img alt="logo" className={styles.logo} src={`${G.picUrl}image/logoGreen.png`} />
                   </Link>
                 </div>
                 <div className={styles.desc}>Create Healthier & Smarter Workplace</div>

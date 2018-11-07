@@ -223,10 +223,10 @@ class BannerModel extends Component {
   complete(response) {
     this.setState({
       avatarLoading: false,
-      imageUrl: G.uploadPicUrl + response.key,
+      imageUrl: G.picUrl + response.key,
     });
     this.changeAddText({
-      bannerSrc: G.uploadPicUrl + response.key
+      bannerSrc: G.picUrl + response.key
     })
   }
 
@@ -332,7 +332,7 @@ class BannerModel extends Component {
               <Col {...leftImg}>
                 {bannerAdd.bannerSrc ?
                   <img className={styles.bannerNone} src={bannerAdd.bannerSrc} /> :
-                  <img className={styles.bannerNone} src={`${G.picUrl}banner_none_add.png`} />
+                  <img className={styles.bannerNone} src={`${G.picUrl}image/banner_none_add.png`} />
                 }
               </Col>
               <Col {...rightText}>

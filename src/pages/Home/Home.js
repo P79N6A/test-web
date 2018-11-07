@@ -211,7 +211,7 @@ export default class Home extends Component {
                         <Bar padding={0} height={400} title={`${formatMessage({ id: 'home.unit' })}(${formatMessage({ id: 'home.hour' })})`} data={homeStand} color="#A6D6D0" autoLabel={false} />
                       ) : (
                           <div className={styles.emptyBar}>
-                            <img src={`${G.picUrl}stand_time_trend_none.png`} />
+                            <img src={`${G.picUrl}image/stand_time_trend_none.png`} />
                           </div>
                         )}
                     </div>
@@ -246,7 +246,7 @@ export default class Home extends Component {
                         </ul>
                       ) : (
                           <div className={styles.emptyRand}>
-                            <img src={`${G.picUrl}stand_time_rank_none.png`} />
+                            <img src={`${G.picUrl}image/stand_time_rank_none.png`} />
                           </div>
                         )}
                     </div>

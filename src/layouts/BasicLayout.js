@@ -277,7 +277,7 @@ class BasicLayout extends React.PureComponent {
         {slideMenuShow ? null :
           isTop && !isMobile ? null : (
             <SiderMenu
-              logo={`${G.picUrl}image/logoGreen.png`}
+              logo={currentUser.currentAuthority === 'admin' ? `${G.picUrl}image/admin_logo.png` : `${G.picUrl}image/space_logo.png`}
               Authorized={Authorized}
               theme={navTheme}
               onCollapse={this.handleMenuCollapse}

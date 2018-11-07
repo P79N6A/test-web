@@ -12,7 +12,7 @@ class BannerModel extends Component {
     imageUrl: '',
     avatarLoading: false,
     modal: {
-      title: '选择封面',
+      title: '添加Banner',
       certain: '保存',
       cancel: '取消',
       // 0 是首页，1 是选择默认图片，2 是选择通知页面
@@ -50,7 +50,6 @@ class BannerModel extends Component {
   // 取消
   onCancel = () => {
     const { modal } = this.state;
-    const { dispatch } = this.props;
     if (modal.type === 0) {
       this.changeAddText({
         visible: false,
@@ -350,7 +349,7 @@ class BannerModel extends Component {
                 <Button className={styles.btnDefault}
                   key="choose"
                   size='small'
-                  onClick={this.changeModal.bind(this, { title: '选择封面', type: 1, certain: '确定' })}>选择系统默认图片</Button>
+                  onClick={this.changeModal.bind(this, { title: '添加Banner', type: 1, certain: '确定' })}>选择系统默认图片</Button>
               </Col>
             </Row>
             <p className={styles.bannerAddTitle}>跳转到</p>
@@ -393,7 +392,9 @@ class BannerModel extends Component {
                   onMouseLeave={this.defaultBannerMouseLeave.bind(this)}>
                   <img src={item.url} />
                   <div className={styles.bannerIconBox} style={{ opacity: item.url === imageUrl ? 1 : (item.id === defaultBanner ? 1 : 0) }}>
-                    <Icon className={styles.bannerIcon} type="check-circle" theme="outlined" />
+                    <Icon className={styles.bannerIcon}
+                      style={{ opacity: item.url === imageUrl ? 1 : 0 }}
+                      type="check-circle" theme="outlined" />
                   </div>
                 </div>
               )) : ""}

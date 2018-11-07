@@ -11,6 +11,7 @@ export default class SpaceTotal extends Component {
     const { offlineCount, vacantCount, occupiedCount } = data;
     const total = vacantCount + offlineCount + occupiedCount;
     const onlineCount = vacantCount + occupiedCount;
+    const scale = parseFloat(document.documentElement.style.fontSize);
     return (
       <div className={styles.svgLeft}>
         <div className={styles.top}>
@@ -21,9 +22,9 @@ export default class SpaceTotal extends Component {
           </div>
           <p className={styles.useCount + " " + styles.sizeFour}>{occupiedCount}</p>
           <div className={styles.rowView}>
-            <Count title={formatMessage({ id: 'spaceState.total.workstations' })} lineColor="#9AA9B5" count={total} />
+            <Count className={styles.sizeOne} title={formatMessage({ id: 'spaceState.total.workstations' })} lineColor="#9AA9B5" count={total} />
             <div className={styles.lineView} />
-            <Count title={formatMessage({ id: 'spaceState.free.workstations' })} lineColor="#A6D6D0" count={vacantCount} />
+            <Count className={styles.sizeOne} title={formatMessage({ id: 'spaceState.free.workstations' })} lineColor="#A6D6D0" count={vacantCount} />
           </div>
         </div>
         {/* bottom */}
@@ -35,8 +36,8 @@ export default class SpaceTotal extends Component {
               strokeLinecap="square"
               type="circle"
               percent={parseInt((occupiedCount / onlineCount) * 100, 10) || 0}
-              width={100}
-              strokeWidth={10}
+              width={100 * scale}
+              strokeWidth={10 * scale}
               strokeColor="#FCB0B1"
               showInfo={false}
             />

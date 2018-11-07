@@ -8,14 +8,14 @@ class Count extends Component {
   }
 
   render() {
-    const { title, lineColor, count } = this.props;
+    const { title, lineColor, count, className } = this.props;
     return (
       <div className={styles.container}>
         <div className={styles.rowView}>
           <div className={styles.line} style={{ backgroundColor: lineColor }} />
-          <font className={styles.useCountDes}>{title}</font>
+          <font className={styles.useCountDes + " " + className}>{title}</font>
         </div>
-        <font className={styles.useCount}>{count}</font>
+        <font className={styles.useCount + " " + className}>{count}</font>
       </div>
     );
   }

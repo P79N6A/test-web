@@ -193,6 +193,10 @@ class BannerModel extends Component {
 
   // 上传图片
   handleChange = info => {
+    if (info.file.size > 5120000) {
+      message.error('仅支持5Mb及以下的图片上传');
+      return;
+    }
     if (info.file.status === 'uploading') {
       this.setState({ avatarLoading: true });
       return;

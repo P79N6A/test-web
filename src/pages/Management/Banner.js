@@ -152,7 +152,7 @@ export default class Banner extends Component {
     let _this = this;
     confirm({
       title: '确认提示',
-      content: '删除后将不再DShow端显示，确定要删除此Banner吗？',
+      content: '删除后将从DShow端下架，确定要删除此Banner吗？',
       okText: '确定',
       cancelText: '取消',
       okButtonProps: {

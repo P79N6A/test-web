@@ -180,23 +180,39 @@ class NewNoticeForm extends Component {
   // 选择文本或者海报
   onChangeType = e => {
     const a = e.target.value;
+    const { messages } = this.state;
     this.contentTypeCopy = Number(a);
     if (a === 0) {
-      this.setState({
-        prompt: {
-          visible: true,
-          title: '确认提示',
-          content: '切换到文本后，图片将会被清空，确定切换为文本吗？'
-        }
-      });
+      if (!messages) {
+        this.setState({
+          prompt: {
+            visible: false
+          },
+          type: 0
+        });
+      } else {
+        this.setState({
+          prompt: {
+            visible: true,
+            title: '确认提示',
+            content: '切换到文本后，图片将会被清空，确定切换为文本吗？'
+          }
+        });
+      }
     } else {
-      this.setState({
-        prompt: {
-          visible: true,
-          title: '确认提示',
-          content: '切换到海报后，文本信息将会被清空，确定切换为海报吗？'
-        }
-      });
+      if (!messages) {
+        this.setState({
+          type: 1
+        });
+      } else {
+        this.setState({
+          prompt: {
+            visible: true,
+            title: '确认提示',
+            content: '切换到海报后，文本信息将会被清空，确定切换为海报吗？'
+          }
+        });
+      }
     }
   };
 
@@ -239,26 +255,72 @@ class NewNoticeForm extends Component {
     });
   }
 
+  checkImageWH(file, width, height) {
+    return new Promise(function (resolve, reject) {
+      let filereader = new FileReader();
+      if (file.size > 1024000) {
+        reject({ title: '仅支持2Mb及以下的图片上传' });
+      }
+      const imgType = file.name.split('.')[file.name.split('.').length - 1];
+      if ('png,jpeg,jpg'.indexOf(imgType) < 0) {
+        reject({ title: '图片格式不正确' });
+      }
+      filereader.onload = e => {
+        let src = e.target.result;
+        const image = new Image();
+        image.onload = function () {
+          const rate = Number((this.height / this.width).toFixed(4));
+          const myRate = Number((height / width).toFixed(4));
+          if (512 > this.width > width) {
+            reject({
+              title: '请上传宽小于' + width + '大于512的图片'
+            });
+          } else if (569 > this.height > height) {
+            reject({
+              title: '请上传高小于' + height + '大于569的图片',
+            });
+          } else if (rate !== myRate) {
+            reject({
+              title: '图片比例为1024/1138'
+            });
+          } else {
+            resolve();
+          }
+        };
+        image.onerror = reject;
+        image.src = src;
+      };
+      filereader.readAsDataURL(file);
+    });
+  }
+
   // 上传海报
   beforeUpload(file) {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'ManagementPerson/getQiniuToken',
-      payload: {
-        callback: (res) => {
-          if (res.status === 'success') {
-            const config = { useCdnDomain: true };
-            const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
-            const avatarUrl = `${JSON.parse(window.sessionStorage.getItem('userInfo')).uid}_poster_${G.moment().unix()}.png`;
-            this.setState({ avatarLoading: true });
-            const observable = qiniu.upload(file, avatarUrl, res.data, putExtra, config);
-            observable.subscribe(this.nexts.bind(this), this.errors.bind(this), this.completes.bind(this));
-            return false;
-          } else {
-            message.error(formatMessage({ id: 'person.refresh.page' }));
+    this.checkImageWH(file, 1024, 1138).then((res) => {
+      const { dispatch } = this.props;
+      dispatch({
+        type: 'ManagementPerson/getQiniuToken',
+        payload: {
+          callback: (res) => {
+            if (res.status === 'success') {
+              const config = { useCdnDomain: true };
+              const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
+              const avatarUrl = `${JSON.parse(window.sessionStorage.getItem('userInfo')).uid}_poster_${G.moment().unix()}.png`;
+              this.setState({ avatarLoading: true });
+              let options = { maxWidth: 1024, maxHeight: 1138 };
+              qiniu.compressImage(file, options).then(data => {
+                const observable = qiniu.upload(data.dist, avatarUrl, res.data, putExtra, config)
+                observable.subscribe(this.nexts.bind(this), this.errors.bind(this), this.completes.bind(this));
+              })
+              return false;
+            } else {
+              message.error(formatMessage({ id: 'person.refresh.page' }));
+            }
           }
         }
-      },
+      });
+    }).catch((err) => {
+      Modal.error(err)
     });
   }
 
@@ -268,21 +330,6 @@ class NewNoticeForm extends Component {
     }
     const { fileList } = e;
     return fileList;
-  };
-
-  handleChangePic = info => {
-    if (info.file.status === 'uploading') {
-      this.setState({ avatarLoading: true });
-      return;
-    }
-    if (info.file.status === 'error') {
-      getBase64(info.file.originFileObj, messages => {
-        this.setState({
-          messages,
-          avatarLoading: false,
-        });
-      });
-    }
   };
 
   render() {
@@ -416,7 +463,6 @@ class NewNoticeForm extends Component {
                         listType="picture-card"
                         accept="image/*"
                         showUploadList={false}
-                        onChange={this.handleChangePic.bind(this)}
                         beforeUpload={this.beforeUpload.bind(this)}
                       >
                         {!messages ? (

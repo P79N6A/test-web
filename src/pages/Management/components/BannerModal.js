@@ -191,29 +191,6 @@ class BannerModel extends Component {
     })
   }
 
-  // 上传图片
-  handleChange = info => {
-    if (info.file.size > 5120000) {
-      message.error('仅支持5Mb及以下的图片上传');
-      return;
-    }
-    if (info.file.status === 'uploading') {
-      this.setState({ avatarLoading: true });
-      return;
-    }
-    if (info.file.status === 'error') {
-      getBase64(info.file.originFileObj, imageUrl => {
-        this.setState({
-          imageUrl,
-          avatarLoading: false,
-        });
-        this.changeAddText({
-          bannerSrc: imageUrl
-        })
-      });
-    }
-  };
-
   next() { }
 
   error() {
@@ -230,25 +207,71 @@ class BannerModel extends Component {
     })
   }
 
-  beforeUpload(file) {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'ManagementPerson/getQiniuToken',
-      payload: {
-        callback: (res) => {
-          if (res.status === 'success') {
-            const config = { useCdnDomain: true };
-            const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
-            const avatarUrl = `${JSON.parse(window.sessionStorage.getItem('userInfo')).uid}_banner_${G.moment().unix()}.png`;
-            this.setState({ avatarLoading: true });
-            const observable = qiniu.upload(file, avatarUrl, res.data, putExtra, config);
-            observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this));
-            return false;
+  checkImageWH(file, width, height) {
+    return new Promise(function (resolve, reject) {
+      let filereader = new FileReader();
+      if (file.size > 1024000) {
+        reject({ title: '仅支持2Mb及以下的图片上传' });
+      }
+      const imgType = file.name.split('.')[file.name.split('.').length - 1];
+      if ('png,jpeg,jpg'.indexOf(imgType) < 0) {
+        reject({ title: '图片格式不正确' });
+      }
+      filereader.onload = e => {
+        let src = e.target.result;
+        const image = new Image();
+        image.onload = function () {
+          const rate = Number((this.height / this.width).toFixed(4));
+          if (width && this.width > width) {
+            reject({
+              title: '请上传宽小于' + width + '的图片'
+            });
+          } else if (height && this.height > height) {
+            reject({
+              title: '请上传高小于' + height + '的图片',
+            });
+          } else if (rate !== (height / width)) {
+            reject({
+              title: '图片比例为16/9'
+            });
           } else {
-            message.error(formatMessage({ id: 'person.refresh.page' }));
+            resolve();
+          }
+        };
+        image.onerror = reject;
+        image.src = src;
+      };
+      filereader.readAsDataURL(file);
+    });
+  }
+
+
+  beforeUpload(file) {
+    this.checkImageWH(file, 1024, 576).then((res) => {
+      const { dispatch } = this.props;
+      dispatch({
+        type: 'ManagementPerson/getQiniuToken',
+        payload: {
+          callback: (res) => {
+            if (res.status === 'success') {
+              const config = { useCdnDomain: true };
+              const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
+              const avatarUrl = `${JSON.parse(window.sessionStorage.getItem('userInfo')).uid}_banner_${G.moment().unix()}.png`;
+              this.setState({ avatarLoading: true });
+              let options = { maxWidth: 1024, maxHeight: 576 };
+              qiniu.compressImage(file, options).then(data => {
+                const observable = qiniu.upload(data.dist, avatarUrl, res.data, putExtra, config)
+                observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this));
+              })
+              return false;
+            } else {
+              message.error(formatMessage({ id: 'person.refresh.page' }));
+            }
           }
         }
-      }
+      });
+    }).catch((err) => {
+      Modal.error(err)
     });
   }
 
@@ -343,7 +366,6 @@ class BannerModel extends Component {
                   name="avatar"
                   accept="image/*"
                   showUploadList={false}
-                  onChange={this.handleChange.bind(this)}
                   beforeUpload={this.beforeUpload.bind(this)} >
                   <Button className={styles.btn} key="local" size='small' type="primary">
                     <Icon type={avatarLoading ? 'loading' : 'plus'} />

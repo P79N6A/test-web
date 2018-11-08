@@ -235,8 +235,8 @@ export default class Banner extends Component {
                             src={item.src}
                             style={{ borderBottom: bannerUrl.id === item.bannerId ? '3px solid #A6D6D0' : '3px solid #FFF' }} />
                           <div className={styles.bannerModel} style={{ display: bannerList.length > 1 ? bannerId === item.bannerId ? 'block' : 'none' : 'none' }}>
-                            <Icon onClick={this.moveBanner.bind(this, i, 'left')} type="caret-left" theme="outlined" />
-                            <Icon onClick={this.moveBanner.bind(this, i, 'right')} type="caret-right" theme="outlined" />
+                            <Icon style={{ display: i === 0 ? 'none' : '' }} onClick={this.moveBanner.bind(this, i, 'left')} type="caret-left" theme="outlined" />
+                            <Icon style={{ display: i === (bannerList.length - 1) ? 'none' : '' }} onClick={this.moveBanner.bind(this, i, 'right')} type="caret-right" theme="outlined" />
                             <Icon onClick={this.delConfirm.bind(this, item.bannerId)} type="delete" theme="outlined" style={{ float: 'right', lineHeight: '24px', marginRight: '4px' }} />
                           </div>
                         </div>

@@ -146,16 +146,6 @@ class BannerModel extends Component {
   getColumnes(current) {
     const columns = [
       {
-        title: formatMessage({ id: 'all.serial.number' }),
-        key: 'id',
-        width: 100,
-        render: (text, record, index) => (
-          <Fragment>
-            <font>{(current - 1) * 6 + index + 1}</font>
-          </Fragment>
-        ),
-      },
-      {
         title: formatMessage({ id: 'notice.title' }),
         key: 'title',
         render: (text) => {
@@ -167,6 +157,17 @@ class BannerModel extends Component {
             </Fragment>
           )
         }
+      },
+      {
+        title: formatMessage({ id: 'notice.receiver' }),
+        key: 'unreadCount',
+        render: (text, record, index) => {
+          return (
+            <Fragment>
+              <font style={{ cursor: 'pointer' }}>{`${text.viewCount}/${text.unreadCount + text.viewCount}`}</font>
+            </Fragment>
+          )
+        },
       },
       {
         title: formatMessage({ id: 'notice.release.time' }),
@@ -328,6 +329,7 @@ class BannerModel extends Component {
       style: { marginBottom: 24 },
     };
     const rowSelection = {
+      columnTitle: "选择",
       type: 'radio',
       onChange: this.onSelectChange,
     }

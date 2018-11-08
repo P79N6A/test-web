@@ -41,6 +41,19 @@ export default class Notice extends Component {
     state: [formatMessage({ id: 'notice.empty' }), formatMessage({ id: 'notice.send' }), formatMessage({ id: 'notice.revice' }), formatMessage({ id: 'notice.upcoming' }), formatMessage({ id: 'notice.read' })]
   };
 
+  componentDidUpdate(nextProps) {
+    const { ManagementNotice } = nextProps;
+    const dataLists = ManagementNotice.data.row;
+    if (dataLists.length > 0) {
+      for (let i = 0; i < dataLists.length; i++) {
+        const titleTdWidth = document.getElementById(`titleTd_${dataLists[i].noticeId}`).offsetWidth;
+        const titleTextWidth = document.getElementById(`titleText_${dataLists[i].noticeId}`).offsetWidth;
+        document.getElementById(`titleText_${dataLists[i].noticeId}`).style.width = titleTextWidth < titleTdWidth - 25 ? 'auto' : titleTdWidth - 25 + 'px';
+      }
+    }
+  }
+
+
   componentDidMount() {
     const { dispatch, ManagementNotice } = this.props;
     const { current } = ManagementNotice.data;
@@ -98,14 +111,14 @@ export default class Notice extends Component {
         key: 'title',
         render: (text) => {
           return (
-            <Fragment>
+            <Fragment >
               <Tooltip placement="topLeft" title={text.title}>
-                <span onClick={this.goDetail.bind(this, text)} className={styles.colSql}>
+                <div id={`titleTd_${text.noticeId}`} style={{ display: 'flex', flexDirection: 'row' }}>
+                  <span id={`titleText_${text.noticeId}`} onClick={this.goDetail.bind(this, text)} className={styles.colSql}>{text.title}</span>
                   <span className={styles.titleTop} style={{ opacity: text.topStatus ? '1' : '0' }}>置顶</span>
-                  {text.title}
-                </span>
+                </div>
               </Tooltip>
-            </Fragment>
+            </Fragment >
           )
         }
       },

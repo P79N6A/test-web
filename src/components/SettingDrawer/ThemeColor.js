@@ -40,7 +40,7 @@ const ThemeColor = ({ colors, title, value, onChange }) => {
       },
       {
         key: 'daybreak',
-        color: '#1890FF',
+        color: '#A6D6D0',
       },
       {
         key: 'geekblue',

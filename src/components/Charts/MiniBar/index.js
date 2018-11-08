@@ -6,7 +6,7 @@ import styles from '../index.less';
 @autoHeight()
 class MiniBar extends React.Component {
   render() {
-    const { height, forceFit = true, color = '#1890FF', data = [] } = this.props;
+    const { height, forceFit = true, color = '#A6D6D0', data = [] } = this.props;
 
     const scale = {
       x: {

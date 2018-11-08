@@ -363,7 +363,7 @@ class BannerModel extends Component {
               <Col {...rightText}>
                 <p className={styles.bannerAddTitle}>上传图片</p>
                 <p className={styles.bannerAddText}>建议图片宽度1024px，高度576px，</p>
-                <p className={styles.bannerAddText}>支持小于5Mb的jpg/png格式图片上传。</p>
+                <p className={styles.bannerAddText}>支持小于2Mb的jpg/png格式图片上传。</p>
                 <Upload
                   name="avatar"
                   accept="image/*"

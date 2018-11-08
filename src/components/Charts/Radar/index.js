@@ -76,7 +76,7 @@ export default class Radar extends Component {
 
   render() {
     const defaultColors = [
-      '#1890FF',
+      '#A6D6D0',
       '#FACC14',
       '#2FC25B',
       '#8543E0',

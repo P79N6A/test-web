@@ -45,7 +45,6 @@ class NewNoticeForm extends Component {
 
   componentDidMount() {
     const { copyValue, form } = this.props;
-
     if (copyValue) {
       form.setFieldsValue({
         person: copyValue.receivers || [],
@@ -57,7 +56,12 @@ class NewNoticeForm extends Component {
       if (contentBlock) {
         const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
         const editorState = EditorState.createWithContent(contentState);
-        this.setState({ editor: editorState, editorState: copyValue.content });
+        this.setState({
+          editor: editorState,
+          editorState: copyValue.content,
+          type: copyValue.type,
+          messages: copyValue.message
+        });
       }
     }
   }
@@ -107,7 +111,7 @@ class NewNoticeForm extends Component {
   handleCommit() {
     const { form, dispatch } = this.props;
     form.validateFields((err, values) => {
-      const { editorState, type, messages } = this.state;
+      const { editorState, type } = this.state;
       if (err) {
         return;
       }
@@ -118,7 +122,7 @@ class NewNoticeForm extends Component {
           receivers: values.person,
           content: editorState,
           type: type,
-          message: messages,
+          message: values.messages,
           callback: this.sendResponse,
         },
       });
@@ -450,7 +454,7 @@ class NewNoticeForm extends Component {
                     padding: '20px',
                     textAlign: 'center'
                   }}>
-                    {getFieldDecorator('message', {
+                    {getFieldDecorator('messages', {
                       valuePropName: 'fileList',
                       getValueFromEvent: this.normFile,
                       rules: [

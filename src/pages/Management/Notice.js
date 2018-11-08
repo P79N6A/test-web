@@ -46,9 +46,13 @@ export default class Notice extends Component {
     const dataLists = ManagementNotice.data.row;
     if (dataLists.length > 0) {
       for (let i = 0; i < dataLists.length; i++) {
-        const titleTdWidth = document.getElementById(`titleTd_${dataLists[i].noticeId}`).offsetWidth;
-        const titleTextWidth = document.getElementById(`titleText_${dataLists[i].noticeId}`).offsetWidth;
-        document.getElementById(`titleText_${dataLists[i].noticeId}`).style.width = titleTextWidth < titleTdWidth - 25 ? 'auto' : titleTdWidth - 25 + 'px';
+        const titleTd = document.getElementById(`titleTd_${dataLists[i].noticeId}`);
+        if (titleTd) {
+          const titleTdWidth = titleTd.offsetWidth;
+          const titleTextWidth = document.getElementById(`titleText_${dataLists[i].noticeId}`).offsetWidth;
+          document.getElementById(`titleText_${dataLists[i].noticeId}`).style.width = titleTextWidth < titleTdWidth - 25 ? 'auto' : titleTdWidth - 25 + 'px';
+        }
+
       }
     }
   }

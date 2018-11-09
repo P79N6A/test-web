@@ -196,6 +196,7 @@ export default class Device extends Component {
     } else {
       this.setState({ modalLoading: false });
     }
+    this.setState({ visible: false, editValue: {} });
   };
 
   // 备注

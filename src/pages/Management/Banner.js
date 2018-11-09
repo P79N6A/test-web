@@ -196,13 +196,21 @@ export default class Banner extends Component {
     const { modalLoading, bannerId, bannerUrl } = this.state;
     const { Banner, dispatch } = this.props;
     const { bannerAdd, bannerList } = Banner;
+    const leftImg = {
+      xs: 7,
+      sm: 7,
+      md: 7,
+      lg: 7,
+      xl: 7,
+      xxl: 6
+    };
     return (
       <div className={styles.main}>
         <h3><FormattedMessage id='menu.management.banner' /></h3>
         <div className={styles.box}>
           <Row gutter={24}>
             {/* 展示 */}
-            <Col span={8}>
+            <Col {...leftImg}>
               <div className={styles.bannerBox}>
                 <img src={`${G.picUrl}image/banner_background.png`} />
                 <p className={styles.notice}>Banner在DShow上的展示效果预览</p>
@@ -214,7 +222,7 @@ export default class Banner extends Component {
               </div>
             </Col>
             {/* 列表 */}
-            <Col span={16}>
+            <Col span={12}>
               <p className={styles.bannerTitle}>Banner</p>
               <p className={styles.bannerNotice}>至少保留一个Banner, 最多设置5个Banner，Banner对所有用户可见</p>
               <div className={styles.bannerPicBox}>

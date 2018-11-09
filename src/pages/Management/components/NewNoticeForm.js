@@ -20,7 +20,8 @@ class NewNoticeForm extends Component {
     editorState: '',
     editor: EditorState.createEmpty(),
     type: 0,
-    messages: '',
+    poster: '',
+    posterMessage: '',
     avatarLoading: false,
     // 切换为海报提示的显示隐藏
     prompt: {
@@ -45,25 +46,24 @@ class NewNoticeForm extends Component {
 
   componentDidMount() {
     const { copyValue, form } = this.props;
-    if (copyValue) {
-      form.setFieldsValue({
-        person: copyValue.receivers || [],
-        title: copyValue.title || '',
-        type: copyValue.type || 0,
-        messages: copyValue.message || '',
-      });
-      const contentBlock = htmlToDraft(copyValue.content);
-      if (contentBlock) {
-        const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
-        const editorState = EditorState.createWithContent(contentState);
-        this.setState({
-          editor: editorState,
-          editorState: copyValue.content,
-          type: copyValue.type,
-          messages: copyValue.message
-        });
-      }
-    }
+    if (!copyValue) return;
+    let fieldsValue = {
+      person: copyValue.receivers || [],
+      title: copyValue.title || '',
+      type: copyValue.type,
+      text: copyValue.message || ''
+    };
+    form.setFieldsValue(fieldsValue);
+    const contentBlock = htmlToDraft(copyValue.content);
+    if (!contentBlock) return;
+    const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+    const editorState = EditorState.createWithContent(contentState);
+    this.setState({
+      editor: editorState,
+      editorState: copyValue.content,
+      type: copyValue.type,
+      poster: copyValue.message
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -111,9 +111,9 @@ class NewNoticeForm extends Component {
   handleCommit() {
     const { form, dispatch } = this.props;
     form.validateFields((err, values) => {
-      const { editorState, type } = this.state;
-      if (err) {
-        return;
+      const { editorState, type, poster } = this.state;
+      if ((type === 1 && !this.checkPoster()) || err) {
+        return
       }
       dispatch({
         type: 'ManagementNotice/sendNotice',
@@ -122,7 +122,7 @@ class NewNoticeForm extends Component {
           receivers: values.person,
           content: editorState,
           type: type,
-          message: values.messages,
+          message: type === 0 ? values.text : poster,
           callback: this.sendResponse,
         },
       });
@@ -146,6 +146,7 @@ class NewNoticeForm extends Component {
       callback();
     }
   }
+
   // editor
   next() { }
 
@@ -184,10 +185,10 @@ class NewNoticeForm extends Component {
   // 选择文本或者海报
   onChangeType = e => {
     const a = e.target.value;
-    const { messages } = this.state;
+    const { poster } = this.state;
     this.contentTypeCopy = Number(a);
     if (a === 0) {
-      if (!messages) {
+      if (!poster) {
         this.setState({
           prompt: {
             visible: false
@@ -204,7 +205,7 @@ class NewNoticeForm extends Component {
         });
       }
     } else {
-      if (!messages) {
+      if (!poster) {
         this.setState({
           type: 1
         });
@@ -223,7 +224,8 @@ class NewNoticeForm extends Component {
   // 弹窗回调
   handleOk = (e) => {
     this.setState({
-      messages: '',
+      poster: '',
+      posterMessage: '',
       prompt: {
         visible: false
       },
@@ -242,8 +244,20 @@ class NewNoticeForm extends Component {
   // 获取文本内容
   onChangeTextArea = (e) => {
     this.setState({
-      messages: e.target.value
+      poster: e.target.value
     })
+  }
+
+  // 校验海报是否存在
+  checkPoster() {
+    const { poster } = this.state;
+    if (!poster) {
+      this.setState({
+        posterMessage: '请上传海报'
+      });
+      return false;
+    }
+    return true;
   }
 
   nexts() { }
@@ -255,7 +269,8 @@ class NewNoticeForm extends Component {
   completes(response) {
     this.setState({
       avatarLoading: false,
-      messages: G.picUrl + response.key,
+      poster: G.picUrl + response.key,
+      posterMessage: ''
     });
   }
 
@@ -339,7 +354,7 @@ class NewNoticeForm extends Component {
   render() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
-    const { editor, type, messages, avatarLoading } = this.state;
+    const { editor, type, poster, posterMessage, avatarLoading } = this.state;
     const uploadButton = (
       <div className={styles.posterAdd}>
         <Icon className={styles.posterIcon} style={{ paddingRight: '16px', fontSize: '24px', fontWeight: '800' }} type={avatarLoading ? 'loading' : 'plus'} />添加海报
@@ -408,11 +423,11 @@ class NewNoticeForm extends Component {
                 <div className={styles.mobile}>
                   {/* 内容展示区 */}
                   <div className={styles.mobileText}>
-                    {!messages ? (<div className={styles.mobileNone}>
+                    {!poster ? (<div className={styles.mobileNone}>
                       <h3>暂无内容</h3>
                       <p className={styles.mobileNoneText}>请在右侧设置推送内容 </p>
                     </div>)
-                      : (type === 0 ? <p>{messages}</p> : <img src={messages} />)
+                      : (type === 0 ? <p>{poster}</p> : <img src={poster} />)
                     }
                   </div>
                   <Icon type="close-circle" theme="filled" style={{ fontSize: '24px', marginTop: '15px', color: '#F3F5F7' }} />
@@ -427,9 +442,9 @@ class NewNoticeForm extends Component {
               <div className={styles.textContent}>
                 {type === 0 ?
                   <FormItem style={{ width: '100%', height: '100%', paddingTop: '10px' }}>
-                    {getFieldDecorator('messages', {
+                    {getFieldDecorator('text', {
                       rules: [
-                        { required: true, message: '请输入摘要信息' },
+                        { required: type === 0 ? true : false, message: '请输入摘要信息' },
                         {
                           max: 50,
                           message: '最大长度50',
@@ -454,37 +469,27 @@ class NewNoticeForm extends Component {
                     padding: '20px',
                     textAlign: 'center'
                   }}>
-                    {getFieldDecorator('messages', {
-                      valuePropName: 'fileList',
-                      getValueFromEvent: this.normFile,
-                      rules: [
-                        { required: true, message: '请上传海报' }
-                      ],
-                    })(
-                      <Upload
-                        className={styles.avatarUploader}
-                        name="poster"
-                        listType="picture-card"
-                        accept="image/*"
-                        showUploadList={false}
-                        beforeUpload={this.beforeUpload.bind(this)}
-                      >
-                        {!messages ? (
-                          uploadButton
-                        ) : (
-                            <img className={styles.avatar} src={messages} alt="poster" />
-                          )}
-                      </Upload>
-                    )}
-                    {!messages ? (
+                    <Upload
+                      className={styles.avatarUploader}
+                      name="poster"
+                      listType="picture-card"
+                      accept="image/*"
+                      showUploadList={false}
+                      beforeUpload={this.beforeUpload.bind(this)}
+                    >
+                      {!poster ? (
+                        uploadButton
+                      ) : (
+                          <img className={styles.avatar} src={poster} alt="poster" />
+                        )}
+                    </Upload>
+                    {!poster ? (
                       <font className={styles.avatarTest}>建议图片宽度1024px，高度1138px。<br />（最小宽度512px，高度569px支持类型jpg、png）</font>
                     ) : ''}
+                    <p style={{ color: 'red', textAlign: 'left', fontSize: '14px' }}>{posterMessage}</p>
                   </FormItem>
                 }
-
-
               </div>
-
             </Col>
           </Row>
           {/* 切换为海报的提示 */}

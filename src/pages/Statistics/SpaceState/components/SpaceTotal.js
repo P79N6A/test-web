@@ -11,7 +11,7 @@ export default class SpaceTotal extends Component {
     const { offlineCount, vacantCount, occupiedCount } = data;
     const total = vacantCount + offlineCount + occupiedCount;
     const onlineCount = vacantCount + occupiedCount;
-    const scale = parseFloat(document.documentElement.style.fontSize);
+    const scale = parseFloat(document.documentElement.style.fontSize) / 10;
     return (
       <div className={styles.svgLeft}>
         <div className={styles.top}>

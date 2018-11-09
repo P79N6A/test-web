@@ -17,7 +17,7 @@
         const html = document.documentElement;
         const { clientWidth, clientHeight } = html;
         let scale = Math.min((clientWidth / normalWidth).toFixed(3), (clientHeight / normalHeight).toFixed(3))
-        html.style.fontSize = 1 * scale + 'px';
+        html.style.fontSize = 10 * scale + 'px';
       };
       window.addEventListener('resize', newRem, false);
       newRem();

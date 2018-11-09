@@ -130,8 +130,8 @@ export default class Device extends Component {
         render: (text) => {
           return (
             <Fragment>
-              <Tooltip placement="topLeft" title={text.lastOperationTime ? G.moment(text.lastOperationTime).format('YYYY-MM-DD hh:mm:ss') : ''}>
-                <span>{text.lastOperationTime ? G.moment(text.lastOperationTime).format('YYYY-MM-DD hh:mm:ss') : ''}</span>
+              <Tooltip placement="topLeft" title={text.lastOperationTime ? G.moment(text.lastOperationTime).format('YYYY-MM-DD HH:mm:ss') : ''}>
+                <span>{text.lastOperationTime ? G.moment(text.lastOperationTime).format('YYYY-MM-DD HH:mm:ss') : ''}</span>
               </Tooltip>
             </Fragment>
           )

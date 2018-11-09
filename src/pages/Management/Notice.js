@@ -151,8 +151,8 @@ export default class Notice extends Component {
         render: (text) => {
           return (
             <Fragment>
-              <Tooltip placement="topLeft" title={G.moment(text.createdAt).format('YYYY-MM-DD hh:mm:ss')}>
-                <span>{G.moment(text.createdAt).format('YYYY-MM-DD hh:mm:ss')}</span>
+              <Tooltip placement="topLeft" title={G.moment(text.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
+                <span>{G.moment(text.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
               </Tooltip>
             </Fragment>
           )

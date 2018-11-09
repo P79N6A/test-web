@@ -32,7 +32,7 @@ export default class DetailNotice extends Component {
             <Icon type="eye-o" style={{ marginRight: '6px' }} />
             {copyValue.viewCount || 0}
             <Icon type="clock-circle-o" style={{ marginLeft: '18px', marginRight: '6px' }} />
-            {G.moment(copyValue.lastTime).format('YYYY-MM-DD hh:mm:s')}
+            {G.moment(copyValue.lastTime).format('YYYY-MM-DD HH:mm:ss')}
           </p>
           <br />
           <br />

@@ -113,22 +113,6 @@
       $('#login_btn').addClass('bg_color');
     }
 
-    // 倒计时插件
-    function settime(obj) {
-      if (countdowns == 0) {
-        obj.text("");
-        countdowns = 5;
-        $('#success_model').css('display', 'none');
-        return;
-      } else {
-        obj.text("页面将自动关闭 " + countdowns + "s");
-        countdowns--;
-      }
-      setTimeout(function () {
-        settime(obj)
-      }, 1000)
-    }
-
     $(document).ready(function () {
       getRem(750, 100);
     });
@@ -218,7 +202,6 @@
                   } else {
                     $('#next').text('');
                   }
-                  settime($('#times'));
                 }, 1000)
               } else {
                 $('#model').show();
@@ -229,13 +212,7 @@
         } else {
           tipsfun('请刷新页面重试');
         }
-
       })
-      // 关闭页面
-      $('#close').on('click', function () {
-        $('#success_model').css('display', 'none');
-      })
-
     };
   </script>
   <style>
@@ -448,13 +425,6 @@
       display: none;
     }
 
-    .success_close {
-      font-size: 0.34rem;
-      padding: 0.2rem 0 0 0.64rem;
-      line-height: 0.48rem;
-      display: inline-block;
-    }
-
     .success_pic {
       width: 6.4rem;
       height: 6.5rem;
@@ -494,7 +464,7 @@
     </ul>
     <input type="button" class="login_btn" value="登 录" id="login_btn" />
     <input type="button" class="error_little_text" id="tips" value="" />
-    <img class="login_footer" src="http://cdn.space.9amtech.com/dshow/dshow_footer.png" />
+    <img class="login_footer" src="http://cdn.space.9amtech.com/dshow/dshow_footer_pic.png" />
     <!-- 错误在线弹窗 -->
     <div class="error_online" id="model">
       <div class="error_online_box">
@@ -505,13 +475,11 @@
     </div>
     <!-- 成功的弹窗 -->
     <div class="success_model" id="success_model">
-      <a class="success_close" id="close">关闭</a>
       <img class="success_pic" src="http://cdn.space.9amtech.com/dshow/dshow_login_success.png" />
       <h3 class="success_title">登录成功</h3>
-      <p class="success_text" id="times">页面将自动关闭 5s</p>
       <p class="success_text">当前帐号已成功登录</p>
       <p class="success_text" id="next"></p>
-      <img class="login_footer" src="http://cdn.space.9amtech.com/dshow/dshow_footer.png" />
+      <img class="login_footer" src="http://cdn.space.9amtech.com/dshow/dshow_footer_pic.png" />
     </div>
   </div>
 </body>

@@ -224,7 +224,7 @@ export default class Banner extends Component {
             {/* 列表 */}
             <Col span={12}>
               <p className={styles.bannerTitle}>Banner</p>
-              <p className={styles.bannerNotice}>至少保留一个Banner, 最多设置5个Banner，Banner对所有用户可见</p>
+              <p className={styles.bannerNotice}>至少保留一个Banner，最多设置5个Banner，Banner对所有用户可见</p>
               <div className={styles.bannerPicBox}>
                 <img className={styles.bannerPic} src={bannerUrl.src} />
               </div>
@@ -277,7 +277,7 @@ export default class Banner extends Component {
                 </Col>
                 <Col span={24}>
                   <p className={styles.lastTest}>设置完成并点击按钮【发布到 DShow】后系统将最新的Banner同步到DShow端</p>
-                  <p className={styles.lastTest}>* 未点击【发布到DShow】时Banner将不会被同步到DShow端 </p>
+                  <p className={styles.lastTest}>* 未点击【发布到 DShow】时Banner将不会被同步到DShow端 </p>
                 </Col>
               </Row>
             </Col>

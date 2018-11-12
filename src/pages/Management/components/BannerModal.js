@@ -103,7 +103,7 @@ class BannerModel extends Component {
           bannerSrc: imageUrl
         })
       }
-      this.changeModal({ title: '设置Banner', certain: '保存', type: 0 })
+      this.changeModal({ title: '添加Banner', certain: '保存', type: 0 })
     }
   };
 
@@ -305,7 +305,7 @@ class BannerModel extends Component {
   }
 
   render() {
-    const { modal, avatarLoading, imageUrl, defaultBanner } = this.state;
+    const { modal, avatarLoading, imageUrl, defaultBanner, bannerUrl } = this.state;
     const { bannerAdd, loading, Banner } = this.props;
     const { limit, current, count } = Banner.noticeData;
     const { defaultBannerList } = Banner;
@@ -404,7 +404,7 @@ class BannerModel extends Component {
                   <Radio value={1}>打开外部链接</Radio>
                 </Col>
                 <Col span={20}>
-                  <Input placeholder="请输入网址" onChange={this.onChangeTextArea} disabled={bannerAdd.type === 1 ? false : true} />
+                  <Input placeholder="请输入网址" value={bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type === 1 ? false : true} />
                 </Col>
               </Row>
             </RadioGroup>

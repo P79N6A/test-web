@@ -353,3 +353,28 @@ export async function sortBanner(payload) {
     body,
   });
 }
+
+// 获取网关列表
+export async function gatewayList(payload) {
+  return {
+    "status": "success",
+    "message": "请求列表成功！",
+    "data": {
+      "offset": 0,
+      "limit": 15,
+      "count": 500,
+      "rows": [
+        { "gatewayId": "ac1", "companyId": "bdhf001", "companyName": "9am", "position": "一层", "status": "1", "remark": "备注" },
+        { "gatewayId": "ac2", "companyId": "bdhf002", "companyName": "9ams", "position": "三层", "status": "0", "remark": "备注" },
+        { "gatewayId": "ac3", "companyId": "bdhf003", "companyName": "9vbm", "position": "四层", "status": "1", "remark": "备注" },
+        { "gatewayId": "ac3", "companyId": "bdhf003", "companyName": "9vbm", "position": "一层", "status": "1", "remark": "备注" },
+      ]
+    }
+  }
+
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/gateway/list`, {
+    method: 'POST',
+    body,
+  });
+}

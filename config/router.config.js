@@ -131,6 +131,20 @@ export default [
         ]
       },
       {
+        name: 'settings',
+        icon: 'setting',
+        path: './setting',
+        routes: [
+          {
+            path: '/setting/gateway',
+            name: 'gateway',
+            component: './Setting/Gateway',
+            authority: ['admin'],
+          },
+          { redirect: '/exception/404' }
+        ]
+      },
+      {
         name: 'exception',
         icon: 'warning',
         path: '/exception',

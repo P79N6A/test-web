@@ -169,7 +169,7 @@ export default class BaseMenu extends PureComponent {
         mode={mode}
         theme={theme}
         defaultSelectedKeys={selectedKeys}
-        defaultOpenKeys={['/management', '/statistics', '/dshow']}
+        defaultOpenKeys={['/management', '/statistics', '/dshow', '/setting']}
         style={style}
       >
         {this.getNavMenuItems(menuLists)}

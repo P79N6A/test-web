@@ -484,7 +484,7 @@ class NewNoticeForm extends Component {
                         )}
                     </Upload>
                     {!poster ? (
-                      <font className={styles.avatarTest}>建议图片宽度1024px，高度1138px。<br />（最小宽度512px，高度569px支持类型jpg、png）</font>
+                      <font className={styles.avatarTest}>建议图片宽度1024px，高度1138px。<br />（最小宽度512px，高度569px，支持小于2Mb的jpg/png格式图片上传）</font>
                     ) : ''}
                     <p style={{ color: 'red', textAlign: 'left', fontSize: '14px' }}>{posterMessage}</p>
                   </FormItem>

@@ -24,6 +24,8 @@ export default {
   "menu.statistics": "数据",
   "menu.statistics.spaceState": "空间实时状态",
   "menu.statistics.spaceUsage": "空间使用情况",
+  "menu.setting": "设置",
+  "menu.setting.gateway": "网关配置",
   // 首页
   "home.today": "今日",
   "home.nearly.seven.day": "近7天",

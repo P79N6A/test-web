@@ -233,7 +233,7 @@ class BannerModel extends Component {
             });
           } else if (rate !== (height / width)) {
             reject({
-              title: '图片比例为16/9'
+              title: '图片比例为1024/576'
             });
           } else {
             resolve();

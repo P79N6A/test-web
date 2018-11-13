@@ -175,7 +175,7 @@ class BannerModel extends Component {
         render: (text) => {
           return (
             <Fragment>
-              <span>{G.moment(text.createdAt).format('YYYY-MM-DD hh:mm:ss')}</span>
+              <span>{G.moment(text.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
             </Fragment>
           )
         }

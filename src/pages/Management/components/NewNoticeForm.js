@@ -397,9 +397,27 @@ class NewNoticeForm extends Component {
             <Editor
               editorState={editor}
               toolbar={{
+                options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'emoji', 'image', 'history'],
+                fontSize: {
+                  options: [28, 24, 20, 18, 14]
+                },
+                colorPicker: {
+                  colors: [
+                    'rgb(53, 83, 108)', 'rgb(166, 214, 208)', 'rgb(113, 175, 168)', 'rgb(154, 169, 181)', 'rgb(252, 176, 177)',
+                    'rgb(97,189,109)', 'rgb(26,188,156)', 'rgb(84,172,210)', 'rgb(44,130,201)',
+                    'rgb(147,101,184)', 'rgb(71,85,119)', 'rgb(204,204,204)', 'rgb(65,168,95)', 'rgb(0,168,133)',
+                    'rgb(61,142,185)', 'rgb(41,105,176)', 'rgb(85,57,130)', 'rgb(40,50,78)', 'rgb(0,0,0)',
+                    'rgb(247,218,100)', 'rgb(251,160,38)', 'rgb(235,107,86)', 'rgb(226,80,65)', 'rgb(163,143,132)',
+                    'rgb(239,239,239)', 'rgb(255,255,255)', 'rgb(250,197,28)', 'rgb(243,121,52)', 'rgb(209,72,65)',
+                    'rgb(184,49,47)', 'rgb(124,112,107)', 'rgb(209,213,216)'],
+                },
+                fontFamily: {
+                  options: ["苹方", "微软雅黑", "DINPro", "Helvetica", "SF UI Text", "Arial"]
+                },
                 inline: { inDropdown: true },
                 list: { inDropdown: true },
                 textAlign: { inDropdown: true },
+                embedded: { display: false },
                 link: { inDropdown: true },
                 history: { inDropdown: true },
                 image: { uploadCallback: this.uploadImageCallBack.bind(this), previewImage: true },
@@ -418,7 +436,9 @@ class NewNoticeForm extends Component {
           <p className={styles.content}>必填，推送消息将以弹框形式显示，可选择推送文本信息或海报</p>
           <Row gutter={24}>
             <Col xl={8} lg={8} md={8} sm={8} xs={8}>
-              <p className={styles.modelShow}>展示模版</p>
+              <div className={styles.titleBox}>
+                <p className={styles.modelShow}>展示模版</p>
+              </div>
               <div className={styles.mobileShow}>
                 <div className={styles.mobile}>
                   {/* 内容展示区 */}
@@ -441,7 +461,7 @@ class NewNoticeForm extends Component {
               </Radio.Group>
               <div className={styles.textContent}>
                 {type === 0 ?
-                  <FormItem style={{ width: '100%', height: '100%', paddingTop: '10px' }}>
+                  <FormItem style={{ width: '100%', height: '100%', paddingTop: '18px' }}>
                     {getFieldDecorator('text', {
                       rules: [
                         { required: type === 0 ? true : false, message: '请输入摘要信息' },
@@ -453,15 +473,15 @@ class NewNoticeForm extends Component {
                     })(<TextArea
                       rows={14}
                       placeholder={'摘要信息将在推送的弹框中显示'}
-                      style={{ resize: 'none', width: '100%' }}
+                      style={{ resize: 'none', width: '100%', padding: '18px 20px', height: '320px' }}
                       onChange={this.onChangeTextArea} />)}
                   </FormItem> :
                   <FormItem style={{
                     width: '100%',
-                    height: '100%',
-                    marginTop: '20px',
+                    height: '93%',
                     border: '1px solid #ccc',
                     borderRadius: '8px',
+                    marginTop: '13px',
                     display: 'flex',
                     flexDirection: 'row',
                     justifyContent: 'center',

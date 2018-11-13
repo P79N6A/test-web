@@ -1,4 +1,4 @@
-import { gatewayList } from '@/services/api';
+import { gatewayList, gatewayRemark, gatewayCommand } from '@/services/api';
 import { message } from 'antd';
 import G from '@/global'
 
@@ -11,8 +11,14 @@ export default {
       current: 1,
       limit: 15,
     },
+    // 客户列表
     customerList: [],
-    positionList: []
+    // 位置列表
+    positionList: [],
+    // 配置弹窗
+    configureVisible: false,
+    // 要配置的网关列表
+    configureList: [],
   },
 
   effects: {
@@ -26,7 +32,25 @@ export default {
       } else {
         message.error(response.message || 'error');
       }
-    }
+    },
+    *gatewayRemark({ payload }, { call }) {
+      const response = yield call(gatewayRemark, payload);
+      payload.callback(response);
+      if (response && response.status === 'success') {
+        message.success(response.data);
+      } else {
+        message.error(response.message || '备注失败');
+      }
+    },
+    *gatewayCommand({ payload }, { call }) {
+      const response = yield call(gatewayCommand, payload);
+      payload.callback(response);
+      if (response && response.status === 'success') {
+        message.success(response.data);
+      } else {
+        message.error(response.message || '配置失败');
+      }
+    },
   },
 
   reducers: {
@@ -51,6 +75,14 @@ export default {
         },
         customerList,
         positionList
+      };
+    },
+    // 修改配置列表
+    changeConfigureModel(state, action) {
+      const { offset } = action.payload;
+      return {
+        ...state,
+        ...action.payload
       };
     }
   }

@@ -1,31 +1,42 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Icon, Button, Input, Tooltip, Table, Pagination, Divider } from 'antd';
+import { Row, Col, Icon, Button, Input, Tooltip, Table, Pagination, Divider, message } from 'antd';
 import G from '@/global';
 import styles from './index.less';
+import RemarkModal from './components/RemarkModel'
+import ConfigureModel from './components/ConfigureModel'
 
-@connect(({ Gateway, loading }) => ({
+@connect(({ Gateway, gatewayRemark, changeConfigureModel, gatewayCommand, loading }) => ({
   Gateway,
+  gatewayRemark,
+  changeConfigureModel,
+  gatewayCommand,
   loading: loading.effects['Gateway/gatewayList'],
 }))
 export default class Gateway extends Component {
   state = {
-    // 多选
-    selectedRowKeys: [],
     query: '',
     filterParam: {},
     sortParam: {},
     visible: false,
-    remarks: '',
+    editValue: {},
   }
 
   componentDidMount() {
     this.fetchDataList();
   }
 
-  // 批量配置
-  configuration() { }
+  // 配置网关
+  configuration() {
+    const { Gateway } = this.props;
+    const { configureList } = Gateway;
+    if (G._.isEmpty(configureList)) {
+      message.error('请选择网关');
+    } else {
+      this.changeConfigure({ configureVisible: true });
+    }
+  }
 
   // 清空搜索框内容
   emitEmpty = () => {
@@ -178,7 +189,9 @@ export default class Gateway extends Component {
           <Fragment>
             <a
               onClick={() => {
-                this.onMark(text, record, index);
+                let array = [];
+                array.push(text.gatewayId)
+                this.changeConfigure({ configureList: array, configureVisible: true });
               }}
             >
               配置
@@ -206,22 +219,68 @@ export default class Gateway extends Component {
         array.push(item.gatewayId)
       })
     }
+    this.changeConfigure({ configureList: array });
+  }
+
+  // 修改配置弹窗显示隐藏以及配置列表数据
+  changeConfigure(value) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Gateway/changeConfigureModel',
+      payload: { ...value },
+    });
+  }
+  // 备注弹窗
+  onMark(text) {
     this.setState({
-      selectedRowKeys: array
+      visible: true,
+      editValue: text,
     });
   }
 
-  // 备注弹窗
-  onMark(text) { }
+  // 确定备注
+  handleOk = (fieldsValue, id) => {
+    const { editValue } = this.state;
+    if (G._.isEmpty(editValue)) {
+      return;
+    }
+    this.addRemark({ ...fieldsValue, id, callback: this.upload.bind(this) });
+  };
+
+  // 调用备注的接口
+  addRemark(data) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Gateway/gatewayRemark',
+      payload: data,
+    });
+  }
+
+  upload = res => {
+    this.setState({ visible: false, editValue: {} });
+    this.fetchDataList();
+  };
+
+  // 关闭备注弹窗
+  handleCancel = () => {
+    this.setState({ visible: false, remarks: '' });
+  };
+
+  // 关闭设置弹窗
+  handClose = () => {
+    this.changeConfigure({ configureList: [], configureVisible: false });
+    this.fetchDataList({ current: 1 });
+  }
 
   render() {
-    const { selectedRowKeys, query, sortParam } = this.state;
-    const { loading, Gateway } = this.props;
+    const { query, sortParam, editValue, visible } = this.state;
+    const { loading, Gateway, dispatch } = this.props;
+    const { configureList, configureVisible } = Gateway;
     const { rows, limit, current, count } = Gateway.gatewayData;
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     const columns = this.getColumns(sortParam, Gateway.customerList, Gateway.positionList);
     const rowSelection = {
-      selectedRowKeys,
+      configureList,
       onChange: this.onSelectChange,
     }
     return (
@@ -282,6 +341,19 @@ export default class Gateway extends Component {
             />
           </Col>
         </Row>
+        {/* 弹窗 */}
+        <RemarkModal
+          visible={visible}
+          editValue={editValue}
+          handleOk={this.handleOk.bind(this)}
+          handleCancel={this.handleCancel.bind(this)}
+        />
+        <ConfigureModel
+          configureVisible={configureVisible}
+          configureList={configureList}
+          dispatch={dispatch}
+          handClose={this.handClose.bind(this)}
+        />
       </div>
     );
   }

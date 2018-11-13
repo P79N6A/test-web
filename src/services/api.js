@@ -378,3 +378,34 @@ export async function gatewayList(payload) {
     body,
   });
 }
+
+// 网关添加备注
+export async function gatewayRemark(payload) {
+  return {
+    "status": "success",
+    "data": "备注成功！"
+  }
+  const { id } = payload;
+  const url = `${G.API_URL}/gateway/${id}`;
+  return request(url, {
+    method: 'POST',
+    body: { remark: payload.remark, token: getToken() },
+  });
+}
+
+// 配置网关
+export async function gatewayCommand(payload) {
+  return {
+    "status": "success",
+    "data": {
+      id: '01',
+      result: 'abbabababab'
+    }
+  }
+  const { id } = payload;
+  const url = `${G.API_URL}/gateway/runScript/${id}`;
+  return request(url, {
+    method: 'POST',
+    body: { remark: payload.remark, token: getToken() },
+  });
+}

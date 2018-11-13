@@ -22,8 +22,7 @@ export default class Person extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: formatMessage({ id: 'person.status.unconnect' }), value: 1 },
-      { text: formatMessage({ id: 'person.status.connected' }), value: 2 }
+      { text: formatMessage({ id: 'person.status.unconnect' }), value: 1 }
     ],
   };
 
@@ -137,8 +136,8 @@ export default class Person extends Component {
               </Fragment>
             ) : (
                 <Fragment>
-                  <Tooltip placement="topLeft" title={filterStatus[text.status - 2].text}>
-                    <font>{filterStatus[text.status - 2].text}</font>
+                  <Tooltip placement="topLeft" title={filterStatus[0].text}>
+                    <font>{filterStatus[0].text}</font>
                   </Tooltip>
                 </Fragment>
               )

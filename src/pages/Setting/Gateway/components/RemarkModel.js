@@ -28,12 +28,12 @@ class RemarkModel extends Component {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
-      handleOk({ ...fieldsValue, remark: fieldsValue.remark || '' }, editValue.id);
+      handleOk({ ...fieldsValue, remark: fieldsValue.remark || '' }, editValue.gatewayId);
     });
   };
 
   render() {
-    const { visible, loading, handleCancel, form } = this.props;
+    const { visible, handleCancel, form } = this.props;
     const { getFieldDecorator } = form;
     const formItemLayout = {
       labelCol: { span: 6 },
@@ -49,7 +49,7 @@ class RemarkModel extends Component {
           <Button key="back" size='small' onClick={handleCancel}>
             <FormattedMessage id='all.cancel' />
           </Button>,
-          <Button key="submit" size='small' type="primary" loading={loading} onClick={this.okHandle}>
+          <Button key="submit" size='small' type="primary" onClick={this.okHandle}>
             <FormattedMessage id='all.save' />
           </Button>,
         ]}

@@ -356,22 +356,6 @@ export async function sortBanner(payload) {
 
 // 获取网关列表
 export async function gatewayList(payload) {
-  return {
-    "status": "success",
-    "message": "请求列表成功！",
-    "data": {
-      "offset": 0,
-      "limit": 15,
-      "count": 500,
-      "rows": [
-        { "gatewayId": "ac1", "companyId": "bdhf001", "companyName": "9am", "position": "一层", "status": "1", "remark": "备注" },
-        { "gatewayId": "ac2", "companyId": "bdhf002", "companyName": "9ams", "position": "三层", "status": "0", "remark": "备注" },
-        { "gatewayId": "ac3", "companyId": "bdhf003", "companyName": "9vbm", "position": "四层", "status": "1", "remark": "备注" },
-        { "gatewayId": "ac3", "companyId": "bdhf003", "companyName": "9vbm", "position": "一层", "status": "1", "remark": "备注" },
-      ]
-    }
-  }
-
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/gateway/list`, {
     method: 'POST',
@@ -381,10 +365,6 @@ export async function gatewayList(payload) {
 
 // 网关添加备注
 export async function gatewayRemark(payload) {
-  return {
-    "status": "success",
-    "data": "备注成功！"
-  }
   const { id } = payload;
   const url = `${G.API_URL}/gateway/${id}`;
   return request(url, {
@@ -395,17 +375,10 @@ export async function gatewayRemark(payload) {
 
 // 配置网关
 export async function gatewayCommand(payload) {
-  return {
-    "status": "success",
-    "data": {
-      id: '01',
-      result: 'abbabababab'
-    }
-  }
   const { id } = payload;
-  const url = `${G.API_URL}/gateway/runScript/${id}`;
+  const url = `${G.API_URL}/gateway/runScripts/${id}`;
   return request(url, {
     method: 'POST',
-    body: { remark: payload.remark, token: getToken() },
+    body: { command: payload.command, token: getToken() },
   });
 }

@@ -166,10 +166,13 @@ class DeskUseDuration extends Component {
           </Col>
         </Row>
         <Row gutter={24} style={{ paddingLeft: '90px', position: 'relative' }}>
-          <div>
+          {deskUseRank.dataList && deskUseRank.dataList.length > 0 ? <div>
             <LineBar height={300} data={deskUseRank.dataList} color={color} />
             <Spin size="large" style={{ display: loading ? 'block' : 'none', position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)' }} />
-          </div>
+          </div> :
+            <div style={{ height: 300, display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: '-90px' }}>
+              暂无数据
+          </div>}
         </Row>
         <br />
       </Card>

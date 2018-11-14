@@ -28,7 +28,7 @@ class RemarkModel extends Component {
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       form.resetFields();
-      handleOk({ ...fieldsValue, remark: fieldsValue.remark || '' }, editValue.gatewayId);
+      handleOk({ ...fieldsValue, remark: fieldsValue.remark || '' }, editValue.id);
     });
   };
 

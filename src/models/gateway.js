@@ -37,7 +37,7 @@ export default {
       const response = yield call(gatewayRemark, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.data);
+        message.success('备注成功');
       } else {
         message.error(response.message || '备注失败');
       }
@@ -46,7 +46,7 @@ export default {
       const response = yield call(gatewayCommand, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.data);
+        message.success('配置成功');
       } else {
         message.error(response.message || '配置失败');
       }

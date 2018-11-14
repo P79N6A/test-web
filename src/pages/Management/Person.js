@@ -22,7 +22,8 @@ export default class Person extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: formatMessage({ id: 'person.status.unconnect' }), value: 1 }
+      { text: formatMessage({ id: 'person.status.unconnect' }), value: 1 },
+      { text: formatMessage({ id: 'person.status.connected' }), value: 2 }
     ],
   };
 

@@ -24,7 +24,7 @@ export default class Gateway extends Component {
   }
 
   componentDidMount() {
-    this.fetchDataList();
+    this.fetchDataList({ current: 1 });
   }
 
   // 配置网关
@@ -58,7 +58,7 @@ export default class Gateway extends Component {
 
   // 搜索
   onSearch() {
-    this.fetchDataList({ current: 1 });
+    this.fetchDataList();
   }
 
   // 获取列表
@@ -85,6 +85,7 @@ export default class Gateway extends Component {
 
   // 表格排序筛选
   handleChange = (pagination, filters, sorter) => {
+    filters.companyId = filters.companyName;
     const { sortParam } = this.state;
     let filterParam;
     let sortParams;
@@ -102,14 +103,14 @@ export default class Gateway extends Component {
     const columns = [
       {
         title: "编号",
-        key: 'gatewayId',
+        key: 'id',
         width: 100,
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
         render: (text, record, index) => (
           <Fragment>
-            <Tooltip placement="topLeft" title={text.gatewayId}>
-              <font>{text.gatewayId}</font>
+            <Tooltip placement="topLeft" title={text.id}>
+              <font>{text.id}</font>
             </Tooltip>
           </Fragment>
         ),
@@ -216,7 +217,7 @@ export default class Gateway extends Component {
     let array = [];
     if (!G._.isEmpty(selectedRows)) {
       selectedRows.map((item, i) => {
-        array.push(item.gatewayId)
+        array.push(item.id)
       })
     }
     this.changeConfigure({ configureList: array });
@@ -285,7 +286,7 @@ export default class Gateway extends Component {
     }
     return (
       <div className={styles.main}>
-        <h3><FormattedMessage id="menu.setting.gateway" /></h3>
+        <h3><FormattedMessage id="menu.settings.gateway" /></h3>
         <br />
         <Row className={styles.lageBox}>
           <p>网关列表</p>

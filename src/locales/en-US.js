@@ -251,6 +251,8 @@ export default {
   "spaceUsage.twenty.four.hour": "24小时",
   "spaceUsage.hot.station.rank": "热门工位排行",
   "spaceUsage.free.station.rank": "空闲工位排行",
+  "spaceUsage.yesterday.use.peak": "昨日使用峰值",
+  "spaceUsage.time": "时间",
   // banner 管理
   "banner.send.success": "发布成功",
   "banner.delete.success": "删除成功",

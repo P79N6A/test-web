@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Icon } from 'antd';
 import { ChartCard } from '@/components/Charts';
 import G from '@/global';
@@ -12,8 +13,8 @@ class YpeakCount extends Component {
     return (
       <ChartCard
         bordered={false}
-        title="昨日使用峰值"
-        subtitle="（个）"
+        title={formatMessage({ id: "spaceUsage.yesterday.use.peak" })}
+        subtitle={formatMessage({ id: "spaceUsage.one" })}
         action={
           <Icon
             type="ellipsis"
@@ -30,7 +31,7 @@ class YpeakCount extends Component {
         contentHeight={60}
       >
         <font style={{ marginRight: 50 }}>
-          时间
+          <FormattedMessage id="spaceUsage.time" />
           <span className={styles.trendText}>
             {G.moment(yesterdayUseCount.peakTime).format('MM月 DD日  hh:mm:ss')}
           </span>

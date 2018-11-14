@@ -171,7 +171,7 @@ class DeskUseDuration extends Component {
             <Spin size="large" style={{ display: loading ? 'block' : 'none', position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)' }} />
           </div> :
             <div style={{ height: 300, display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: '-90px' }}>
-              暂无数据
+              <FormattedMessage id="spaceUsage.none" />
           </div>}
         </Row>
         <br />

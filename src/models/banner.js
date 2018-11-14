@@ -1,5 +1,6 @@
 import { getNoticeList, getBannerList, getDefaultBannerList, addBanner, bannerPublish, delBanner, sortBanner } from '@/services/api';
 import { message } from 'antd';
+import { formatMessage } from 'umi/locale';
 
 export default {
   namespace: 'Banner',
@@ -53,7 +54,7 @@ export default {
       const response = yield call(addBanner, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success('添加成功');
+        message.success(formatMessage({ id: "customer.add.success" }));
       } else {
         message.error(response.message || 'error');
       }
@@ -62,7 +63,7 @@ export default {
       const response = yield call(bannerPublish, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success('发布成功');
+        message.success(formatMessage({ id: "banner.send.success" }));
       } else {
         message.error(response.message || 'error');
       }
@@ -71,7 +72,7 @@ export default {
       const response = yield call(delBanner, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success('删除成功');
+        message.success(formatMessage({ id: "banner.delete.success" }));
       } else {
         message.error(response.message || 'error');
       }
@@ -80,7 +81,7 @@ export default {
       const response = yield call(sortBanner, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success('移动成功');
+        message.success(formatMessage({ id: "banner.move.success" }));
       } else {
         message.error(response.message || 'error');
       }

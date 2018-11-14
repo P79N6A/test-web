@@ -151,10 +151,10 @@ export default class Banner extends Component {
   delConfirm(bannerId) {
     let _this = this;
     confirm({
-      title: '确认提示',
-      content: '删除后将从DShow端下架，确定要删除此Banner吗？',
-      okText: '确定',
-      cancelText: '取消',
+      title: formatMessage({ id: "notice.certain.title" }),
+      content: formatMessage({ id: "banner.delete.message" }),
+      okText: formatMessage({ id: "all.certain" }),
+      cancelText: formatMessage({ id: "all.cancel" }),
       okButtonProps: {
         size: 'small'
       },
@@ -213,7 +213,7 @@ export default class Banner extends Component {
             <Col {...leftImg}>
               <div className={styles.bannerBox}>
                 <img src={`${G.picUrl}image/banner_background.png`} />
-                <p className={styles.notice}>Banner在DShow上的展示效果预览</p>
+                <p className={styles.notice}><FormattedMessage id="banner.dshow.message" /></p>
                 {/* 轮播图 */}
                 <Carousel autoplay className={styles.carousel}>
                   {bannerList && bannerList.length > 0 ? bannerList.map((item, i) => (<div key={`carousel_${item.bannerId}`}><img src={item.src} /></div>))
@@ -224,7 +224,7 @@ export default class Banner extends Component {
             {/* 列表 */}
             <Col span={12}>
               <p className={styles.bannerTitle}>Banner</p>
-              <p className={styles.bannerNotice}>至少保留一个Banner，最多设置5个Banner，Banner对所有用户可见</p>
+              <p className={styles.bannerNotice}><FormattedMessage id="banner.dshow.message.one" /></p>
               <div className={styles.bannerPicBox}>
                 <img className={styles.bannerPic} src={bannerUrl.src} />
               </div>
@@ -250,11 +250,11 @@ export default class Banner extends Component {
                         </div>
                         {item.status === 1 ?
                           <p className={styles.bannerText}>
-                            <span className={styles.bannerCircle} style={{ backgroundColor: '#A6D6D0' }}></span>已发布
-                        </p> :
+                            <span className={styles.bannerCircle} style={{ backgroundColor: '#A6D6D0' }}></span><FormattedMessage id="banner.published" />
+                          </p> :
                           <p className={styles.bannerText}>
-                            <span className={styles.bannerCircle} style={{ backgroundColor: '#FCB0B1' }}></span>未发布
-                      </p>}
+                            <span className={styles.bannerCircle} style={{ backgroundColor: '#FCB0B1' }}></span><FormattedMessage id="banner.unpublished" />
+                          </p>}
                       </li>
                     ))}
                     {/* 添加图片 */}
@@ -273,11 +273,11 @@ export default class Banner extends Component {
               {/* 发布 */}
               <Row gutter={24}>
                 <Col span={24}>
-                  <Button onClick={this.bannerPublish.bind(this)} type="primary" size='small' className={styles.btn}>发布到 DShow</Button>
+                  <Button onClick={this.bannerPublish.bind(this)} type="primary" size='small' className={styles.btn}><FormattedMessage id="banner.publish.dshow" /></Button>
                 </Col>
                 <Col span={24}>
-                  <p className={styles.lastTest}>设置完成并点击按钮【发布到 DShow】后系统将最新的Banner同步到DShow端</p>
-                  <p className={styles.lastTest}>* 未点击【发布到 DShow】时Banner将不会被同步到DShow端 </p>
+                  <p className={styles.lastTest}><FormattedMessage id="banner.publish.dshow.message.one" /></p>
+                  <p className={styles.lastTest}><FormattedMessage id="banner.publish.dshow.message.two" /></p>
                 </Col>
               </Row>
             </Col>

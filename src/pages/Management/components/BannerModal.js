@@ -12,9 +12,9 @@ class BannerModel extends Component {
     imageUrl: '',
     avatarLoading: false,
     modal: {
-      title: '添加Banner',
-      certain: '保存',
-      cancel: '取消',
+      title: formatMessage({ id: "banner.add" }),
+      certain: formatMessage({ id: "all.save" }),
+      cancel: formatMessage({ id: "all.cancel" }),
       // 0 是首页，1 是选择默认图片，2 是选择通知页面
       type: 0
     },
@@ -69,7 +69,7 @@ class BannerModel extends Component {
           bannerUrl: ''
         })
       }
-      this.changeModal({ title: '添加Banner', certain: '保存', type: 0 })
+      this.changeModal({ title: formatMessage({ id: "banner.add" }), certain: formatMessage({ id: "all.save" }), type: 0 })
     }
   }
 
@@ -81,19 +81,19 @@ class BannerModel extends Component {
     const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
     if (modal.type === 0) {
       if (!bannerSrc) {
-        message.error('请上传 Banner');
+        message.error(formatMessage({ id: "banner.upload.banner" }));
         return
       }
       if (type === 0 && !bannerUrl) {
-        message.error('请选择通知');
+        message.error(formatMessage({ id: "banner.choose.notice" }));
         return
       }
       if (type === 1 && !bannerUrl) {
-        message.error('请输入外部链接');
+        message.error(formatMessage({ id: "banner.input.link" }));
         return
       }
       if (type === 1 && !reg.test(bannerUrl)) {
-        message.error('请正确输入外部链接');
+        message.error(formatMessage({ id: "banner.input.link.success" }));
         return
       }
       addBanners();
@@ -103,7 +103,7 @@ class BannerModel extends Component {
           bannerSrc: imageUrl
         })
       }
-      this.changeModal({ title: '添加Banner', certain: '保存', type: 0 })
+      this.changeModal({ title: formatMessage({ id: "banner.add" }), certain: formatMessage({ id: "all.save" }), type: 0 })
     }
   };
 
@@ -212,11 +212,11 @@ class BannerModel extends Component {
     return new Promise(function (resolve, reject) {
       let filereader = new FileReader();
       if (file.size > 1024000) {
-        reject({ title: '仅支持2Mb及以下的图片上传' });
+        reject({ title: formatMessage({ id: "notice.poster.message.two" }) });
       }
       const imgType = file.name.split('.')[file.name.split('.').length - 1];
       if ('png,jpeg,jpg'.indexOf(imgType) < 0) {
-        reject({ title: '图片格式不正确' });
+        reject({ title: formatMessage({ id: "notice.poster.message.error" }) });
       }
       filereader.onload = e => {
         let src = e.target.result;
@@ -225,15 +225,15 @@ class BannerModel extends Component {
           const rate = Number((this.height / this.width).toFixed(4));
           if (width && this.width > width) {
             reject({
-              title: '请上传宽小于' + width + '的图片'
+              title: formatMessage({ id: "notice.poster.message.width.min" }) + width + formatMessage({ id: "banner.image" })
             });
           } else if (height && this.height > height) {
             reject({
-              title: '请上传高小于' + height + '的图片',
+              title: formatMessage({ id: "notice.poster.message.height.min" }) + height + formatMessage({ id: "banner.image" })
             });
           } else if (rate !== (height / width)) {
             reject({
-              title: '图片比例为1024/576'
+              title: formatMessage({ id: "banner.image.rate" })
             });
           } else {
             resolve();
@@ -329,7 +329,7 @@ class BannerModel extends Component {
       style: { marginBottom: 24 },
     };
     const rowSelection = {
-      columnTitle: "选择",
+      columnTitle: formatMessage({ id: "all.choose" }),
       type: 'radio',
       onChange: this.onSelectChange,
     }
@@ -361,9 +361,9 @@ class BannerModel extends Component {
                 }
               </Col>
               <Col {...rightText}>
-                <p className={styles.bannerAddTitle}>上传图片</p>
-                <p className={styles.bannerAddText}>建议图片宽度1024px，高度576px，</p>
-                <p className={styles.bannerAddText}>支持小于2Mb的jpg/png格式图片上传。</p>
+                <p className={styles.bannerAddTitle}><FormattedMessage id="banner.upload.image" /></p>
+                <p className={styles.bannerAddText}><FormattedMessage id="banner.upload.image.message.one" /></p>
+                <p className={styles.bannerAddText}><FormattedMessage id="banner.upload.image.message.two" /></p>
                 <Upload
                   name="avatar"
                   accept="image/*"
@@ -371,23 +371,23 @@ class BannerModel extends Component {
                   beforeUpload={this.beforeUpload.bind(this)} >
                   <Button className={styles.btn} key="local" size='small' type="primary">
                     <Icon type={avatarLoading ? 'loading' : 'plus'} />
-                    本地上传
+                    <FormattedMessage id="banner.upload.local" />
                   </Button>
                 </Upload>
                 <Button className={styles.btnDefault}
                   key="choose"
                   size='small'
-                  onClick={this.changeModal.bind(this, { title: '添加Banner', type: 1, certain: '确定' })}>选择系统默认图片</Button>
+                  onClick={this.changeModal.bind(this, { title: '添加Banner', type: 1, certain: '确定' })}><FormattedMessage id="banner.choose.default" /></Button>
               </Col>
             </Row>
-            <p className={styles.bannerAddTitle}>跳转到</p>
+            <p className={styles.bannerAddTitle}><FormattedMessage id="banner.jump" /></p>
             <RadioGroup onChange={this.onChangeType.bind(this)} className={styles.btnGroup} value={bannerAdd.type}>
               <Row gutter={24}>
                 <Col span={4}>
-                  <Radio value={0}>打开通知</Radio>
+                  <Radio value={0}><FormattedMessage id="banner.open.notice" /></Radio>
                 </Col>
                 <Col span={15}>
-                  <Input placeholder="点击【选择通知】按钮选择需打开的通知" disabled value={bannerAdd.title} />
+                  <Input placeholder={formatMessage({ id: "banner.open.notice.message" })} disabled value={bannerAdd.title} />
                 </Col>
                 <Col span={5}>
                   <Button
@@ -395,22 +395,22 @@ class BannerModel extends Component {
                     size='small'
                     type="primary"
                     disabled={bannerAdd.type === 0 ? false : true}
-                    onClick={this.changeModal.bind(this, { title: '选择通知', type: 2, certain: '确定' })}>选择通知</Button>
+                    onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.choose.notice.title" }), type: 2, certain: formatMessage({ id: "all.certain" }) })}><FormattedMessage id="banner.choose.notice.title" /></Button>
                 </Col>
               </Row>
               <br />
               <Row gutter={24}>
                 <Col span={4}>
-                  <Radio value={1}>打开外部链接</Radio>
+                  <Radio value={1}><FormattedMessage id="banner.open.link" /></Radio>
                 </Col>
                 <Col span={20}>
-                  <Input placeholder="请输入网址" value={bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type === 1 ? false : true} />
+                  <Input placeholder={formatMessage({ id: "customer.website.link.text" })} value={bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type === 1 ? false : true} />
                 </Col>
               </Row>
             </RadioGroup>
           </div> : (modal.type === 1 ? (
             <div className={styles.screenShow}>
-              <p className={styles.bannerAddText}>以下封面由9AM平台提供</p>
+              <p className={styles.bannerAddText}><FormattedMessage id="banner.banner.9am" /></p>
               {defaultBannerList && defaultBannerList.length > 0 ? defaultBannerList.map((item, i) => (
                 <div
                   key={`${item.id}_defaultBanner`}
@@ -429,7 +429,7 @@ class BannerModel extends Component {
             </div>
           ) : (
               <div className={styles.screenShow}>
-                <p className={styles.bannerAddText}>选择一条通知，在DShow中点击Banner后将跳转到该通知详情页面</p>
+                <p className={styles.bannerAddText}><FormattedMessage id="banner.choose.notice.message" /></p>
                 <Table
                   rowKey="_id"
                   loading={loading}

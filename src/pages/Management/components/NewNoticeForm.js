@@ -199,8 +199,8 @@ class NewNoticeForm extends Component {
         this.setState({
           prompt: {
             visible: true,
-            title: '确认提示',
-            content: '切换到文本后，图片将会被清空，确定切换为文本吗？'
+            title: formatMessage({ id: "notice.certain.title" }),
+            content: formatMessage({ id: "notice.certain.text" })
           }
         });
       }
@@ -213,8 +213,8 @@ class NewNoticeForm extends Component {
         this.setState({
           prompt: {
             visible: true,
-            title: '确认提示',
-            content: '切换到海报后，文本信息将会被清空，确定切换为海报吗？'
+            title: formatMessage({ id: "notice.certain.title" }),
+            content: formatMessage({ id: "notice.certain.poster" })
           }
         });
       }
@@ -253,7 +253,7 @@ class NewNoticeForm extends Component {
     const { poster } = this.state;
     if (!poster) {
       this.setState({
-        posterMessage: '请上传海报'
+        posterMessage: formatMessage({ id: "notice.poster.message" })
       });
       return false;
     }
@@ -278,11 +278,11 @@ class NewNoticeForm extends Component {
     return new Promise(function (resolve, reject) {
       let filereader = new FileReader();
       if (file.size > 1024000) {
-        reject({ title: '仅支持2Mb及以下的图片上传' });
+        reject({ title: formatMessage({ id: "notice.poster.message.two" }) });
       }
       const imgType = file.name.split('.')[file.name.split('.').length - 1];
       if ('png,jpeg,jpg'.indexOf(imgType) < 0) {
-        reject({ title: '图片格式不正确' });
+        reject({ title: formatMessage({ id: "notice.poster.message.error" }) });
       }
       filereader.onload = e => {
         let src = e.target.result;
@@ -292,15 +292,15 @@ class NewNoticeForm extends Component {
           const myRate = Number((height / width).toFixed(4));
           if (512 > this.width > width) {
             reject({
-              title: '请上传宽小于' + width + '大于512的图片'
+              title: formatMessage({ id: "notice.poster.message.width.min" }) + width + formatMessage({ id: "notice.poster.message.width.max" })
             });
           } else if (569 > this.height > height) {
             reject({
-              title: '请上传高小于' + height + '大于569的图片',
+              title: formatMessage({ id: "notice.poster.message.height.min" }) + height + formatMessage({ id: "notice.poster.message.height.max" }),
             });
           } else if (rate !== myRate) {
             reject({
-              title: '图片比例为1024/1138'
+              title: formatMessage({ id: 'notice.poster.message.rate' })
             });
           } else {
             resolve();
@@ -432,20 +432,20 @@ class NewNoticeForm extends Component {
         </FormItem>
         {/* 推送设置 */}
         <div>
-          <p className={styles.title}>推送设置</p>
-          <p className={styles.content}>必填，推送消息将以弹框形式显示，可选择推送文本信息或海报</p>
+          <p className={styles.title}><FormattedMessage id="notice.push.setting" /></p>
+          <p className={styles.content}><FormattedMessage id="notice.push.setting.title" /></p>
           <Row gutter={24}>
             <Col xl={8} lg={8} md={8} sm={8} xs={8}>
               <div className={styles.titleBox}>
-                <p className={styles.modelShow}>展示模版</p>
+                <p className={styles.modelShow}><FormattedMessage id="notice.display.template" /></p>
               </div>
               <div className={styles.mobileShow}>
                 <div className={styles.mobile}>
                   {/* 内容展示区 */}
                   <div className={styles.mobileText}>
                     {!poster ? (<div className={styles.mobileNone}>
-                      <h3>暂无内容</h3>
-                      <p className={styles.mobileNoneText}>请在右侧设置推送内容 </p>
+                      <h3><FormattedMessage id="notice.no.content" /></h3>
+                      <p className={styles.mobileNoneText}><FormattedMessage id="notice.right.content" /></p>
                     </div>)
                       : (type === 0 ? <p>{poster}</p> : <img src={poster} />)
                     }
@@ -456,23 +456,23 @@ class NewNoticeForm extends Component {
             </Col>
             <Col xl={16} lg={16} md={16} sm={16} xs={16} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               <Radio.Group value={type} onChange={this.onChangeType}>
-                <Radio.Button value={0}>文本</Radio.Button>
-                <Radio.Button value={1}>海报</Radio.Button>
+                <Radio.Button value={0}><FormattedMessage id="notice.text" /></Radio.Button>
+                <Radio.Button value={1}><FormattedMessage id="notice.poster" /></Radio.Button>
               </Radio.Group>
               <div className={styles.textContent}>
                 {type === 0 ?
                   <FormItem style={{ width: '100%', height: '100%', paddingTop: '18px' }}>
                     {getFieldDecorator('text', {
                       rules: [
-                        { required: type === 0 ? true : false, message: '请输入摘要信息' },
+                        { required: type === 0 ? true : false, message: formatMessage({ id: 'notice.text.message' }) },
                         {
                           max: 50,
-                          message: '最大长度50',
+                          message: formatMessage({ id: "test.max.long.fifty" }),
                         },
                       ],
                     })(<TextArea
                       rows={14}
-                      placeholder={'摘要信息将在推送的弹框中显示'}
+                      placeholder={formatMessage({ id: "notice.text.show" })}
                       style={{ resize: 'none', width: '100%', padding: '18px 20px', height: '320px' }}
                       onChange={this.onChangeTextArea} />)}
                   </FormItem> :
@@ -504,7 +504,7 @@ class NewNoticeForm extends Component {
                         )}
                     </Upload>
                     {!poster ? (
-                      <font className={styles.avatarTest}>建议图片宽度1024px，高度1138px。<br />（最小宽度512px，高度569px，支持小于2Mb的jpg/png格式图片上传）</font>
+                      <font className={styles.avatarTest}><FormattedMessage id="notice.image.message.one" /><br /><FormattedMessage id="notice.image.message.two" /></font>
                     ) : ''}
                     <p style={{ color: 'red', textAlign: 'left', fontSize: '14px' }}>{posterMessage}</p>
                   </FormItem>

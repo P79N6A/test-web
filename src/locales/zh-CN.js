@@ -155,6 +155,8 @@ export default {
   "notice.poster.message.height.min": "请上传高小于",
   "notice.poster.message.height.max": "大于569的图片",
   "notice.poster.message.rate": "图片比例为1024/1138",
+  "notice.poster.message.max.height": "图片最大高度不能超过",
+  "notice.poster.message.max.width": "图片最大宽度不能超过",
   // 客户管理
   "customer.name": "客户名称",
   "customer.account.number": "账号",

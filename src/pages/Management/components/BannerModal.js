@@ -225,11 +225,11 @@ class BannerModel extends Component {
           const rate = Number((this.height / this.width).toFixed(4));
           if (width && this.width > width) {
             reject({
-              title: formatMessage({ id: "notice.poster.message.width.min" }) + width + formatMessage({ id: "banner.image" })
+              title: formatMessage({ id: "notice.poster.message.max.width" }) + width + 'px'
             });
           } else if (height && this.height > height) {
             reject({
-              title: formatMessage({ id: "notice.poster.message.height.min" }) + height + formatMessage({ id: "banner.image" })
+              title: formatMessage({ id: "notice.poster.message.max.height" }) + height + 'px'
             });
           } else if (rate !== (height / width)) {
             reject({
@@ -411,7 +411,7 @@ class BannerModel extends Component {
             </RadioGroup>
           </div> : (modal.type === 1 ? (
             <div className={styles.screenShow}>
-              <p className={styles.bannerAddText}><FormattedMessage id="banner.banner.9am" /></p>
+              <p className={styles.bannerCompanyText}><FormattedMessage id="banner.banner.9am" /></p>
               {defaultBannerList && defaultBannerList.length > 0 ? defaultBannerList.map((item, i) => (
                 <div
                   key={`${item.id}_defaultBanner`}

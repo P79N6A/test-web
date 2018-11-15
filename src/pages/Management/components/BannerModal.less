@@ -14,6 +14,12 @@
   padding: 8px 0;
   font-weight: 600;
 }
+.bannerCompanyText{
+  font-size: 14px;
+  line-height: 14px;
+  color: #9AA9B5;
+  margin-bottom: 0 !important;
+}
 .bannerAddText{
   font-size: 14px;
   line-height: 14px;
@@ -37,11 +43,11 @@
 }
 .defaultBannerList{
   display: block;
-  width: 46%;
+  width: 42%;
   height: auto;
   cursor: pointer;
   float: left;
-  margin:30px 2% 0;
+  margin:26px 2% 0 6%;
   position: relative;
   img{
     width: 100%;
@@ -61,4 +67,7 @@
       font-size: 26px;
     }
   }
+}
+.defaultBannerList:nth-of-type(2n){
+  margin:26px 6% 0 2% !important;
 }

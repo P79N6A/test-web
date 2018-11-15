@@ -152,7 +152,10 @@ export default {
   "notice.poster.message.error": "图片格式不正确",
   "notice.poster.message.width.min": "请上传宽小于",
   "notice.poster.message.width.max": "大于512的图片",
+  "notice.poster.message.height.min": "请上传高小于",
+  "notice.poster.message.height.max": "大于569的图片",
   "notice.poster.message.rate": "图片比例为1024/1138",
+  "notice.poster.message.max.height": "图片最大高度不能超过",
   // 客户管理
   "customer.name": "Customer Name",
   "customer.account.number": "Account Number",

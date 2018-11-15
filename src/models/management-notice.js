@@ -64,6 +64,15 @@ export default {
         },
       };
     },
+    changeCurrent(state, action) {
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          ...action.payload
+        },
+      };
+    },
     add(state, action) {
       // 临时添加
       const newList = state.noticeList;

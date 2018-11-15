@@ -123,15 +123,20 @@ class NewNoticeForm extends Component {
           content: editorState,
           type: type,
           message: type === 0 ? values.text : poster,
-          callback: this.sendResponse,
+          callback: this.sendResponse.bind(this),
         },
       });
     });
   }
 
   sendResponse(res) {
+    const { dispatch } = this.props;
     if (res.status === 'success') {
       message.success(formatMessage({ id: 'notice.sent.successfully' }));
+      dispatch({
+        type: 'ManagementNotice/changeCurrent',
+        payload: { current: 1 },
+      });
       history.back(-1);
     } else {
       message.error(formatMessage({ id: 'notice.failed.to.send' }));

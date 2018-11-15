@@ -434,7 +434,7 @@ class NewNoticeForm extends Component {
         <div>
           <p className={styles.title}><FormattedMessage id="notice.push.setting" /></p>
           <p className={styles.content}><FormattedMessage id="notice.push.setting.title" /></p>
-          <Row gutter={24}>
+          <Row gutter={24} style={{ marginBottom: '20px' }}>
             <Col xl={8} lg={8} md={8} sm={8} xs={8}>
               <div className={styles.titleBox}>
                 <p className={styles.modelShow}><FormattedMessage id="notice.display.template" /></p>
@@ -476,38 +476,40 @@ class NewNoticeForm extends Component {
                       style={{ resize: 'none', width: '100%', padding: '18px 20px', height: '320px' }}
                       onChange={this.onChangeTextArea} />)}
                   </FormItem> :
-                  <FormItem style={{
-                    width: '100%',
-                    height: '93%',
-                    border: '1px solid #ccc',
-                    borderRadius: '8px',
-                    marginTop: '13px',
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    padding: '20px',
-                    textAlign: 'center'
-                  }}>
-                    <Upload
-                      className={styles.avatarUploader}
-                      name="poster"
-                      listType="picture-card"
-                      accept="image/*"
-                      showUploadList={false}
-                      beforeUpload={this.beforeUpload.bind(this)}
-                    >
+                  <div style={{ width: '100%', height: '100%' }}>
+                    <FormItem style={{
+                      width: '100%',
+                      height: '93%',
+                      border: '1px solid #ccc',
+                      borderRadius: '8px',
+                      marginTop: '13px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      padding: '20px',
+                      textAlign: 'center'
+                    }}>
+                      <Upload
+                        className={styles.avatarUploader}
+                        name="poster"
+                        listType="picture-card"
+                        accept="image/*"
+                        showUploadList={false}
+                        beforeUpload={this.beforeUpload.bind(this)}
+                      >
+                        {!poster ? (
+                          uploadButton
+                        ) : (
+                            <img className={styles.avatar} src={poster} alt="poster" />
+                          )}
+                      </Upload>
                       {!poster ? (
-                        uploadButton
-                      ) : (
-                          <img className={styles.avatar} src={poster} alt="poster" />
-                        )}
-                    </Upload>
-                    {!poster ? (
-                      <font className={styles.avatarTest}><FormattedMessage id="notice.image.message.one" /><br /><FormattedMessage id="notice.image.message.two" /></font>
-                    ) : ''}
-                    <p style={{ color: 'red', textAlign: 'left', fontSize: '14px' }}>{posterMessage}</p>
-                  </FormItem>
+                        <font className={styles.avatarTest}><FormattedMessage id="notice.image.message.one" /><br /><FormattedMessage id="notice.image.message.two" /></font>
+                      ) : ''}
+                    </FormItem>
+                    <p style={{ color: 'red', textAlign: 'left', fontSize: '14px', marginTop: '-20px' }}>{posterMessage}</p>
+                  </div>
                 }
               </div>
             </Col>

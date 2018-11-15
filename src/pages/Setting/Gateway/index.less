@@ -44,12 +44,25 @@
   border-radius: 4px;
   border:1px solid #E4E6E6;
   color: #9AA9B5;
-  .resultText{
-    color: #35536C;
-    border-bottom: 1px dotted #E4E6E6;
-    span{
-      color: #46978D;
-      font-weight: 500;
+  .resultTextModel{
+    padding-top: 10px;
+    border-bottom: 2px dotted #E4E6E6;
+    .resultText{
+      color: #35536C;
+      line-height: 24px;
+      .leftName{
+        color: #46978D;
+        font-weight: 600;
+        padding-right: 16px;
+      }
+      .rightName{
+        color: #46978D;
+        font-weight: 600;
+        padding:0 16px 0 35px;
+      }
     }
+  }
+  .resultTextModel:last-of-type{
+    border:none;
   }
 }

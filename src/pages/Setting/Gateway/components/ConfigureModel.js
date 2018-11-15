@@ -37,9 +37,10 @@ class ConfigureModel extends Component {
 
   // 展示结果
   showResult(res) {
-    const { result } = this.state;
+    let newResult = this.state.result;
+    newResult.push(res.data)
     this.setState({
-      result: result.push(res.data),
+      result: newResult,
     })
   }
 
@@ -82,7 +83,26 @@ class ConfigureModel extends Component {
         <div className={styles.resultBox}>
           {
             result && result.length > 0 ? result.map((item, i) => {
-              <p className={styles.resultText}><span>{item.data.id}</span>{item.data.result}</p>
+              return <div key={i} className={styles.resultTextModel}>
+                <p className={styles.resultText}>
+                  <span className={styles.leftName}>ID</span>
+                  <span>{item.id}</span>
+                  <span className={styles.rightName}>Status</span>
+                  <span>{item.result.status}</span>
+                </p>
+                <p className={styles.resultText}>
+                  <span className={styles.leftName}>StdoutResult</span>
+                  <span>{JSON.parse(item.result.payload).stdoutResult}</span>
+                </p>
+                {
+                  G._.isEmpty(JSON.parse(item.result.payload).stderrResult) ? '' :
+                    <p className={styles.resultText}>
+                      <span className={styles.leftName}>StderrResult</span>
+                      <span>{JSON.parse(item.result.payload).stderrResult}</span>
+                    </p>
+                }
+
+              </div>
             }) : '空'
           }
         </div>

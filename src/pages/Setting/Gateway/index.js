@@ -86,6 +86,7 @@ export default class Gateway extends Component {
   // 表格排序筛选
   handleChange = (pagination, filters, sorter) => {
     filters.companyId = filters.companyName;
+    delete filters.companyName;
     const { sortParam } = this.state;
     let filterParam;
     let sortParams;

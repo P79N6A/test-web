@@ -157,8 +157,9 @@ export default {
   "notice.poster.message.width.max": "picture size bigger than 512",
   "notice.poster.message.height.min": "Please upload picture height in",
   "notice.poster.message.height.max": "picture size bigger than 569",
-  "notice.poster.message.rate": "Picture Dimension: 1024/1138",
+  "notice.poster.message.rate": "Picture Dimension: 1024:1138",
   "notice.poster.message.max.height": "Max Height",
+  "notice.poster.message.max.width": "Max Width",
   "notice.poster.add": "Add Poster",
   // 客户管理
   "customer.name": "Customer Name",
@@ -278,7 +279,7 @@ export default {
   "banner.input.link": "Please input external links",
   "banner.input.link.success": "Please input right external links",
   "banner.image": "picture",
-  "banner.image.rate": "Picture Size: 1024/576",
+  "banner.image.rate": "Picture Size: 1024:576",
   "banner.upload.image": "Upload picture",
   "banner.upload.image.message.one": "Recommended Size: Width 1024px, Height  576px",
   "banner.upload.image.message.two": "Only allow jpg/png picture within 2Mb.",
@@ -324,5 +325,5 @@ export default {
   "stand.time.trend.none": "image/stand_time_trend_none_en.png",
   "stand.time.rank.none": "image/stand_time_rank_none_en.png",
   "banner.none.add": "image/banner_none_add_en.png",
-  "banner.add": "image/banner_add_en.png",
+  "banner.add.en": "image/banner_add_en.png",
 };

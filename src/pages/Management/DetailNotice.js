@@ -62,7 +62,7 @@ export default class DetailNotice extends Component {
           />
         </div>
         {/* 推送效果 */}
-        <p style={{ marginTop: '30px' }}>推送效果</p>
+        <p style={{ marginTop: '30px' }}><FormattedMessage id="notice.push.preview" /></p>
         <div style={{ padding: '5% 5% 3%' }}>
           <div className={styles.mobile}>
             {/* 内容展示区 */}

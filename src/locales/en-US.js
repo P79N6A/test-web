@@ -137,6 +137,7 @@ export default {
   "notice.publish": "Publish",
   "notice.refresh": "Please reload the page",
   "notice.push.setting": "Notification Settings",
+  "notice.push.preview": "Preview",
   "notice.push.setting.title": "Required. Notification will pop up and choose to receive messages or posters. ",
   "notice.display.preview": "Preview",
   "notice.no.content": "No content",

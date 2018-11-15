@@ -358,7 +358,7 @@ class BannerModel extends Component {
               <Col {...leftImg}>
                 {bannerAdd.bannerSrc ?
                   <img className={styles.bannerNone} src={bannerAdd.bannerSrc} /> :
-                  <img className={styles.bannerNone} src={`${G.picUrl}image/banner_none_add.png`} />
+                  <img className={styles.bannerNone} src={`${G.picUrl}${formatMessage({ id: "banner.none.add" })}`} />
                 }
               </Col>
               <Col {...rightText}>

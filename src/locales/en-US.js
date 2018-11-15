@@ -318,4 +318,7 @@ export default {
   "app.setting.copyinfo": "copy success，please replace defaultSettings in src/models/setting.js",
   "app.setting.production.hint":
     "Setting panel show in development enviorment only, please mannually modify",
+  "stand.time.trend.none": "image/stand_time_trend_none_en.png",
+  "stand.time.rank.none": "image/stand_time_rank_none_en.png",
+  "banner.none.add": "image/banner_none_add_en.png",
 };

@@ -217,7 +217,7 @@ export default class Banner extends Component {
                 {/* 轮播图 */}
                 <Carousel autoplay className={styles.carousel}>
                   {bannerList && bannerList.length > 0 ? bannerList.map((item, i) => (<div key={`carousel_${item.bannerId}`}><img src={item.src} /></div>))
-                    : (<img className={styles.bannerNone} src={`${G.picUrl}image/banner_none_add.png`} />)}
+                    : (<img className={styles.bannerNone} src={`${G.picUrl}${formatMessage({ id: "banner.none.add" })}`} />)}
                 </Carousel>
               </div>
             </Col>

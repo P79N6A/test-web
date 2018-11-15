@@ -1,9 +1,10 @@
 import { message } from 'antd';
+import { formatMessage } from 'umi/locale';
 import { getNoticeList, getNoticeState, sendNotice, topNotice } from '../services/api';
 import G from '@/global';
 
 export default {
-  namespace: 'manaNotice',
+  namespace: 'ManagementNotice',
 
   state: {
     data: {
@@ -42,9 +43,9 @@ export default {
     *topNotice({ payload }, { call }) {
       const response = yield call(topNotice, payload);
       if (response && response.status === 'success') {
-        message.success(response.message || '操作成功');
+        message.success(response.message || formatMessage({ id: 'all.operate.success' }));
       } else {
-        message.error(response.message || '操作失败');
+        message.error(response.message || formatMessage({ id: 'all.operate.fail' }));
       }
       payload.callback(response);
     },
@@ -60,6 +61,15 @@ export default {
           offset: Number(offset),
           current: Number(offset) / 15 + 1,
           limit: state.data.limit,
+        },
+      };
+    },
+    changeCurrent(state, action) {
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          ...action.payload
         },
       };
     },

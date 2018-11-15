@@ -24,7 +24,7 @@ export function getTimeDistance(type) {
   const now = new Date();
   const oneDay = 1000 * 60 * 60 * 24;
 
-  if (type === 'CURRENT_DAY') {
+  if (type === 'LAST_DAY') {
     now.setHours(0);
     now.setMinutes(0);
     now.setSeconds(0);
@@ -195,7 +195,7 @@ export function isAntdPro() {
   return window.location.hostname === 'preview.pro.ant.design';
 }
 
-// 过滤url
+// 过滤 url
 export function filterUrl(url) {
   let newUrl = '';
   let count = 0;
@@ -212,7 +212,7 @@ export function filterUrl(url) {
   return newUrl;
 }
 
-// 过滤body
+// 过滤 body
 export function filterBody(body) {
   const filter = G._.mapKeys(body, (value, key) => {
     if (typeof value !== 'object' && (value || typeof value === 'boolean')) {
@@ -232,19 +232,30 @@ export function filterBody(body) {
   return filter;
 }
 
+// 过滤编辑 body
+export function filterEdit(body) {
+  const filter = G._.mapValues(body, o => {
+    if (o || typeof (o) === 'number') {
+      return o;
+    }
+    return '';
+  });
+  return filter;
+}
+
 // 根据时间类型返回对应时间和单位
 export function getTimeByType(date, type) {
-  if (type === 'CURRENT_DAY') {
+  if (type === 'LAST_DAY') {
     return date + ':00';
   }
   if (type === 'LAST_7DAYS') {
     return G.moment.unix(date).format('dddd');
   }
   if (type === 'LAST_30DAYS') {
-    return G.moment.unix(date).format('DD号');
+    return G.moment.unix(date).format('Do');
   }
   if (type === 'LAST_YEAR') {
-    return G.moment.unix(date).format('MM月');
+    return G.moment.unix(date).format('MMM');
   }
 }
 

@@ -2,7 +2,6 @@
 import os from 'os';
 import pageRoutes from './router.config';
 import webpackplugin from './plugin.config';
-import defaultSettings from '../src/defaultSettings';
 
 export default {
   // add for transfer to umi
@@ -46,7 +45,8 @@ export default {
     APP_TYPE: process.env.APP_TYPE || '',
     'process.API_URL': process.env.API_URL,
     'process.SERVER_URL': process.env.SERVER_URL,
-    'process.BUILD_ENV': process.env.BUILD_ENV
+    'process.BUILD_ENV': process.env.BUILD_ENV,
+    'process.DSHOW_URL': process.env.DSHOW_URL,
   },
   proxy: {
     '/api': {
@@ -110,8 +110,6 @@ export default {
       },
     ],
   },
-
-  chainWebpack: webpackplugin,
   cssnano: {
     mergeRules: false,
   },

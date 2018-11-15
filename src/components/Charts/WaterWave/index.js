@@ -51,7 +51,7 @@ class WaterWave extends PureComponent {
   };
 
   renderChart(type) {
-    const { percent, color = '#1890FF' } = this.props;
+    const { percent, color = '#A6D6D0' } = this.props;
     const data = percent / 100;
     const self = this;
     cancelAnimationFrame(this.timer);

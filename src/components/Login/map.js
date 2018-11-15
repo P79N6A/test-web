@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Icon } from 'antd';
 import styles from './index.less';
 
@@ -12,7 +13,7 @@ export default {
     rules: [
       {
         required: true,
-        message: '请输入用户名!',
+        message: formatMessage({ id: 'login.user.name' }),
       },
     ],
   },
@@ -26,11 +27,11 @@ export default {
     rules: [
       {
         required: true,
-        message: '请输入密码!',
+        message: formatMessage({ id: 'customer.password.text' }),
       },
       {
         min: 8,
-        message: '最小长度不能小于8',
+        message: formatMessage({ id: 'test.min.long.eight' }),
       },
     ],
   },

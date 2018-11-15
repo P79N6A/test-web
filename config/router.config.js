@@ -93,8 +93,56 @@ export default [
             component: './Management/NewNotice',
             authority: ['user'],
           },
+          {
+            path: '/management/detailNotice',
+            name: 'detailNotice',
+            hideInMenu: true,
+            component: './Management/DetailNotice',
+            authority: ['user'],
+          },
+          {
+            path: '/management/banner',
+            name: 'banner',
+            hideInMenu: true,
+            component: './Management/Banner',
+            authority: ['user'],
+          },
           { redirect: '/exception/404' },
         ],
+      },
+      {
+        name: 'statistics',
+        icon: 'pie-chart',
+        path: './statistics',
+        routes: [
+          {
+            path: '/statistics/spaceState',
+            name: 'spaceState',
+            component: './Statistics/SpaceState/SpaceState',
+            authority: ['user'],
+          },
+          {
+            path: '/statistics/spaceUsage',
+            name: 'spaceUsage',
+            component: './Statistics/spaceUsage',
+            authority: ['user'],
+          },
+          { redirect: '/exception/404' }
+        ]
+      },
+      {
+        name: 'settings',
+        icon: 'setting',
+        path: './setting',
+        routes: [
+          {
+            path: '/setting/gateway',
+            name: 'gateway',
+            component: './Setting/Gateway',
+            authority: ['admin'],
+          },
+          { redirect: '/exception/404' }
+        ]
       },
       {
         name: 'exception',

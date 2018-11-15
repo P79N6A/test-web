@@ -1,14 +1,15 @@
 import React, { Component, Fragment } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon } from 'antd';
+import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon, Tooltip } from 'antd';
 
 import G from '@/global';
 import styles from './Person.less';
-import { routerRedux } from '../../../node_modules/dva/router';
+import { routerRedux } from 'dva/router';
 
-@connect(({ manaCustomer, loading }) => ({
-  manaCustomer,
-  loading: loading.effects['manaCustomer/fetch'],
+@connect(({ ManagementCustomer, loading }) => ({
+  ManagementCustomer,
+  loading: loading.effects['ManagementCustomer/fetch'],
 }))
 export default class Wework extends Component {
   // 表单以及分页
@@ -33,7 +34,7 @@ export default class Wework extends Component {
   onMark(text) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaCustomer/setEditValue',
+      type: 'ManagementCustomer/setEditValue',
       payload: text,
     });
     this.newCustomer();
@@ -42,7 +43,7 @@ export default class Wework extends Component {
   getColumns(current, sortOrder) {
     const columns = [
       {
-        title: '序号',
+        title: formatMessage({ id: 'all.serial.number' }),
         key: 'id',
         width: 100,
         render: (text, record, index) => (
@@ -52,18 +53,34 @@ export default class Wework extends Component {
         ),
       },
       {
-        title: '客户名称',
-        dataIndex: 'companyName',
+        title: formatMessage({ id: 'customer.name' }),
         key: 'companyName',
+        render: text => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.companyName}>
+                <font>{text.companyName}</font>
+              </Tooltip>
+            </Fragment>
+          );
+        }
       },
       {
-        title: '账号',
-        dataIndex: 'company.account',
+        title: formatMessage({ id: 'customer.account.number' }),
         key: 'company.account',
         width: 200,
+        render: text => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.company.account}>
+                <font>{text.company.account}</font>
+              </Tooltip>
+            </Fragment>
+          );
+        }
       },
       {
-        title: '设备数',
+        title: formatMessage({ id: 'home.device.number' }),
         dataIndex: 'resourceTotal',
         key: 'resourceTotal',
         width: 90,
@@ -80,35 +97,43 @@ export default class Wework extends Component {
         ),
       },
       {
-        title: '离线设备数',
+        title: formatMessage({ id: 'customer.offline.devices' }),
         dataIndex: 'resourceOffline',
         key: 'resourceOffline',
       },
       {
-        title: '用户数',
+        title: formatMessage({ id: 'home.users.number' }),
         dataIndex: 'userTotal',
         key: 'userTotal',
       },
       {
-        title: '备注',
-        dataIndex: 'company.remark',
+        title: formatMessage({ id: 'all.remarks' }),
         key: 'company.remark',
         width: 200,
+        render: text => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.company.remark}>
+                <font>{text.company.remark}</font>
+              </Tooltip>
+            </Fragment>
+          );
+        }
       },
       {
-        title: '操作',
+        title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
-        width: 160,
+        width: 180,
         render: (text, record, index) => (
           <Fragment>
             <Popconfirm
               placement="left"
-              title="确定要重置密码吗？"
+              title={formatMessage({ id: 'customer.reset.password.message' })}
               onConfirm={this.untiedConfirm.bind(this, text)}
-              okText="确定"
-              cancelText="取消"
+              okText={formatMessage({ id: 'all.certain' })}
+              cancelText={formatMessage({ id: 'all.cancel' })}
             >
-              <a>重置密码</a>
+              <a><FormattedMessage id='customer.reset.password' /></a>
             </Popconfirm>
             <Divider type="vertical" />
             <a
@@ -116,7 +141,7 @@ export default class Wework extends Component {
                 this.onMark(text, record, index);
               }}
             >
-              编辑
+              <FormattedMessage id='all.edit' />
             </a>
           </Fragment>
         ),
@@ -155,7 +180,7 @@ export default class Wework extends Component {
     const { dispatch } = this.props;
     const { companyId } = record;
     dispatch({
-      type: 'manaCustomer/setcompanyId',
+      type: 'ManagementCustomer/setcompanyId',
       payload: companyId,
     });
     this.props.dispatch(routerRedux.push('/management/device'))
@@ -170,17 +195,17 @@ export default class Wework extends Component {
   untiedConfirm(value) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaCustomer/resetPassword',
+      type: 'ManagementCustomer/resetPassword',
       payload: { account: value.company.account, callback: this.fetchDataList.bind(this) },
     });
   }
 
   fetchDataList(value) {
-    const { dispatch, manaCustomer } = this.props;
-    const equipData = manaCustomer.data;
+    const { dispatch, ManagementCustomer } = this.props;
+    const equipData = ManagementCustomer.data;
     const { query, sortParam } = this.state;
     dispatch({
-      type: 'manaCustomer/fetch',
+      type: 'ManagementCustomer/fetch',
       payload: {
         offset: (value && (value.current - 1) * 15),
         limit: (value && value.limit) || equipData.limit,
@@ -191,21 +216,21 @@ export default class Wework extends Component {
   }
 
   render() {
-    const { manaCustomer, loading } = this.props;
+    const { ManagementCustomer, loading } = this.props;
     const { query, sortParam } = this.state;
-    const { limit, current, count } = manaCustomer.data;
+    const { limit, current, count } = ManagementCustomer.data;
     const columns = this.getColumns(current, sortParam);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
-        <h3>客户管理</h3>
+        <h3><FormattedMessage id='menu.management.customer' /></h3>
         <br />
         <Row className={styles.lageBox}>
-          <p>客户列表</p>
+          <p><FormattedMessage id='customer.list' /></p>
           {/* 查询 */}
           <Col span={6}>
             <Button icon="plus" type="primary" size='small' onClick={this.newCustomer.bind(this)}>
-              新增
+              <FormattedMessage id='all.add' />
             </Button>
           </Col>
           <Col span={18}>
@@ -216,12 +241,12 @@ export default class Wework extends Component {
               type="primary"
               onClick={this.onSearch.bind(this)}
             >
-              搜索
+              <FormattedMessage id='all.search' />
             </Button>
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder="客户名称 / 账号 / 备注"
+              placeholder={formatMessage({ id: 'customer.search.text' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;
@@ -238,7 +263,7 @@ export default class Wework extends Component {
             <Table
               rowKey="companyId"
               loading={loading}
-              dataSource={manaCustomer.data.rows}
+              dataSource={ManagementCustomer.data.rows}
               columns={columns}
               onChange={this.handleChange.bind(this)}
               pagination={false}

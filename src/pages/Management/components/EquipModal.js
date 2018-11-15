@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Modal, Button, Input, Form } from 'antd';
 import G from '@/global';
 
@@ -41,27 +42,27 @@ class EquipModal extends Component {
     return (
       <Modal
         visible={visible}
-        title="备注"
+        title={formatMessage({ id: 'all.remarks' })}
         onOk={this.okHandle}
         onCancel={handleCancel}
         footer={[
           <Button key="back" size='small' onClick={handleCancel}>
-            取消
+            <FormattedMessage id='all.cancel' />
           </Button>,
           <Button key="submit" size='small' type="primary" loading={loading} onClick={this.okHandle}>
-            保存
+            <FormattedMessage id='all.save' />
           </Button>,
         ]}
       >
-        <FormItem {...formItemLayout} label="备注">
+        <FormItem {...formItemLayout} label={formatMessage({ id: 'all.remarks' })}>
           {getFieldDecorator('remark', {
             rules: [
               {
                 max: 100,
-                message: '最大长度100',
+                message: formatMessage({ id: 'test.max.long.one.hundred' }),
               },
             ],
-          })(<Input placeholder="请输入备注信息" />)}
+          })(<Input placeholder={formatMessage({ id: 'device.remark.text' })} />)}
         </FormItem>
       </Modal>
     );

@@ -5,6 +5,21 @@ body,
   width: 100%;
 }
 
+ul,li{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@font-face{
+  font-family: 'DINProRegular';
+  src:url('https://cdn.urwork.partner.9amtech.com/fonts/DINPro-Regular.otf');
+}
+
+div, span, p, i, a, font{
+  font-family: 'DINProRegular'!important;
+}
+
 .ant-layout {
   min-height: 100%;
 }
@@ -52,7 +67,7 @@ body {
   padding: 0 25px !important;
   height: 40px !important;
   line-height: 30px !important;
-  color: #46978d !important;
+  color: #6D86A1 !important;
 }
 .ant-btn-sm{
   height: 32px !important;
@@ -76,9 +91,8 @@ body {
 }
 //图片上传
 .ant-upload {
-  font-size: 70px !important;
-  line-height: 80px !important;
   cursor: pointer;
+  padding: 0 !important;
 }
 .ant-form-explain {
   text-align: left;
@@ -156,6 +170,45 @@ i.antd-pro-components-global-header-index-trigger{
 .ant-select-selection {
   border-radius: 8px !important;
 }
+.rdw-image-modal-btn,.rdw-embedded-modal-btn{
+  line-height: 26px !important;
+  border-radius: 14px !important;
+  border: 1px solid #d9d9d9 !important;
+}
+.rdw-editor-toolbar{
+  margin-bottom: 0 !important;
+  border-radius: 8px 8px 0 0 !important;
+  border: 1px solid #d9d9d9 !important;
+}
+.rdw-dropdown-wrapper,.rdw-option-wrapper{
+  border-radius: 6px !important;
+  height: 30px !important;
+}
+.rdw-embedded-modal-link-input,.rdw-embedded-modal-size-input,.rdw-image-modal-url-input,.rdw-image-modal-size-input,.rdw-image-modal-alt-input{
+  border-radius: 6px !important;
+  padding: 0 5px !important;
+}
+.rdw-image-modal-upload-option-label{
+  padding: 0 !important;
+}
+.rdw-link-modal{
+  height: auto !important;
+}
+.rdw-link-modal-btn{
+  line-height: 26px !important;
+  border-radius: 14px !important;
+  border: 1px solid #d9d9d9 !important;
+}
+.rdw-link-modal-input{
+  border-radius: 6px !important;
+  padding: 0 5px !important;
+}
+.rdw-colorpicker-modal{
+  height: auto !important;
+}
+.rdw-colorpicker-modal-options{
+  overflow: auto !important;
+}
 //输入清除框
 .ant-input-affix-wrapper .ant-input-prefix,
 .ant-input-affix-wrapper .ant-input-suffix {
@@ -191,4 +244,37 @@ td {
 .ant-table-thead > tr:hover > td,
 .ant-table-tbody > tr:hover > td {
   background: #f0fffb !important;
+}
+// 圆环
+.ant-progress-circle-path{
+  stroke: #FCB0B1 !important;
+}
+.ant-upload.ant-upload-select-picture-card{
+  background-color: #fff !important;
+}
+.ant-upload-list{
+  float: left !important;
+}
+.ant-btn-primary.disabled, .ant-btn-primary[disabled], .ant-btn-primary.disabled:hover, .ant-btn-primary[disabled]:hover, .ant-btn-primary.disabled:focus, .ant-btn-primary[disabled]:focus, .ant-btn-primary.disabled:active, .ant-btn-primary[disabled]:active, .ant-btn-primary.disabled.active, .ant-btn-primary[disabled].active{
+  background-color: #A6D6D0 !important;
+}
+.ant-confirm-title{
+  font-weight: 600 !important;
+}
+.g-label {
+  left: -76px !important;
+}
+.ant-form-item{
+  font-size: 14px !important;
+}
+.ant-form-item-with-help{
+  margin-bottom: 0 !important;
+  padding-top: 5px !important;
+}
+.ant-radio-button-wrapper-checked:hover,.ant-radio-button-wrapper-checked{
+  background-color: #A6D6D0 !important;
+  color: #fff !important;
+}
+.antd-pro-components-global-header-index-right{
+  background-color: #35536c !important;
 }

@@ -1,0 +1,291 @@
+.container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+}
+.svgLeft{
+  background-color: #fff;
+  width: 35%;
+  height: auto;
+  margin: 0 1%;
+  padding: 2%;
+  border-radius: 8px;
+  align-items: center;
+  border:1px solid rgba(53, 83, 108, 0.1);
+}
+.svgRight{
+  background-color: #fff;
+  width: 65%;
+  height: auto;
+  margin: 0 1%;
+  padding: 2%;
+  border-radius: 8px;
+  border:1px solid rgba(53, 83, 108, 0.1);
+}
+.svgPic{
+  width: 100%;
+  height: 100%;
+}
+.time{
+  position: absolute;
+  top: 28px;
+  right: 50px;
+  color: #35536C;
+  font-weight: 500;
+  font-size: 20px;
+}
+// 字体
+.sizeOne{
+  font-size: 14px;
+  line-height: 20px;
+}
+.sizeTwo{
+  font-size: 20px;
+  line-height: 28px;
+}
+.sizeThree{
+  font-size: 30px;
+  line-height: 38px
+}
+.sizeFour{
+  font-size: 50px;
+  line-height: 50px
+}
+// 左侧
+.nowText{
+  font-weight: 500;
+}
+.useCountView {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content:center;
+}
+.line {
+  width: 2px;
+  height: 10px;
+  background-color: rgba(252, 176, 177, 1);
+}
+.useCountDes {
+  font-weight: normal;
+  color: rgba(154, 169, 181, 1);
+  margin-left: 8px;
+}
+.useCount {
+  font-weight: 500;
+  color: rgba(53, 83, 108, 1);
+  margin: 10% 0;
+  text-align: center
+}
+.rowView {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 10%;
+}
+.lineView {
+  width: 1px;
+  height: 40px;
+  background-color: rgba(223, 228, 232, 1);
+}
+.lineRow {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(223, 228, 232, 1);
+}
+.top{
+  display: flex;
+  flex-direction: column;
+}
+.bottom {
+  display: flex;
+  flex-direction: column;
+}
+.useRate {
+  font-weight: 500;
+  margin-top: 10%;
+}
+.progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10% 0;
+}
+.useRateView {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 3%;
+}
+.redCircle {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 1);
+  border: 2px solid rgba(252, 176, 177, 1);
+}
+.useRateText {
+  font-weight: normal;
+  color: rgba(154, 169, 181, 1);
+  margin-left: 8px;
+}
+.rateText {
+  font-weight: 600;
+  color: rgba(53, 83, 108, 1);
+}
+@media (max-width: 576px) {
+  // 字体
+  .sizeOne{
+    font-size: 12px;
+    line-height: 16px;
+  }
+  .sizeTwo{
+    font-size: 14px;
+    line-height: 18px;
+  }
+  .sizeThree{
+    font-size: 22px;
+    line-height: 30px
+  }
+  .sizeFour{
+    font-size: 36px;
+    line-height: 36px
+  }
+  .time{
+    font-size: 12px;
+    right: 6px;
+    top: 6px;
+  }
+  .container{
+    flex-direction: column-reverse;
+  }
+  .svgPic{
+    width: 100%;
+    height: 300px;
+  }
+  .svgLeft {
+    width: 100%;
+    height: 100%;
+  }
+  .svgRight {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+  }
+}
+@media screen and (min-width:576px) and (max-width:768px){
+  .time{
+    font-size: 16px;
+    right: 10px;
+    top: 10px;
+  }
+  .container{
+    flex-direction: column-reverse;
+  }
+  .svgPic{
+    width: 100%;
+    height: 540px;
+  }
+  .svgLeft {
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    display: flex;
+  }
+  .svgRight {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+  }
+  .top{
+    width: 50%;
+    height: 100%;
+  }
+  .bottom{
+    width: 50%;
+    height: 100%;
+  }
+  .lineRow {
+    height: 100%;
+    width: 1px;
+    margin-right:10px;
+  }
+  .useRate{
+    margin-top: 2%;
+  }
+}
+@media screen and (min-width:768px) and (max-width:1200px){
+  // 字体
+  .sizeOne{
+    font-size: 16px;
+    line-height: 20px;
+  }
+  .sizeTwo{
+    font-size: 16px;
+    line-height: 22px;
+  }
+  .sizeThree{
+    font-size: 26px;
+    line-height: 34px
+  }
+  .sizeFour{
+    font-size: 44px;
+    line-height: 44px
+  }
+}
+@media screen and (min-width:1200px) and (max-width:1600px){
+  // 字体
+  .sizeOne{
+    font-size: 1.6rem;
+    line-height: 2rem;
+  }
+  .sizeTwo{
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+  }
+  .sizeThree{
+    font-size: 2.8rem;
+    line-height: 3.6rem
+  }
+  .sizeFour{
+    font-size: 4.6rem;
+    line-height: 4.6rem
+  }
+  .svgLeft {
+    width: 30%;
+    height: auto;
+  }
+  .svgRight {
+    width: 70%;
+    height: auto;
+  }
+}
+@media (min-width: 1600px) {
+  .svgLeft{
+    width: 30%;
+  }
+  .svgRight{
+    width: 70%;
+  }
+  // 字体
+  .sizeOne{
+    font-size: 1.6rem;
+    line-height: 2rem;
+  }
+  .sizeTwo{
+    font-size: 2rem;
+    line-height: 2.8rem;
+  }
+  .sizeThree{
+    font-size: 3rem;
+    line-height: 3.8rem
+  }
+  .sizeFour{
+    font-size: 5rem;
+    line-height: 5rem
+  }
+}

@@ -1,6 +1,6 @@
 import request from '@/utils/request';
 import G from '@/global';
-import { filterUrl, filterBody, getToken } from '@/utils/utils';
+import { filterUrl, filterBody, getToken, filterEdit } from '@/utils/utils';
 
 const { API_URL } = G;
 // 登录
@@ -134,7 +134,7 @@ export async function addPerson(payload) {
 // 修改或删除人员
 export async function updatePerson(payload) {
   const url = `${G.API_URL}/users/update`;
-  const body = filterBody({ ...payload, token: getToken() });
+  const body = filterEdit({ ...payload, token: getToken() });
   return request(url, {
     method: 'POST',
     body,
@@ -227,7 +227,7 @@ export async function addCustomer(payload) {
 // 编辑客户
 export async function editCustomer(payload) {
   const url = `${G.API_URL}/company/update`;
-  const body = filterBody({ ...payload, token: getToken() });
+  const body = filterEdit({ ...payload, token: getToken() });
   return request(url, {
     method: 'PUT',
     body,
@@ -240,5 +240,145 @@ export async function resetPassword(payload) {
   return request(`${G.API_URL}/company/${account}/resetPassword`, {
     method: 'POST',
     body,
+  });
+}
+
+// 获取对应的 svg 图
+export async function getSvg() {
+  return request(`${API_URL}/users/svg?token=${getToken()}`, {
+    method: 'GET',
+  });
+}
+
+// 获取 svg 图里面所有桌子的状态
+export async function getDeskState(payload) {
+  const url = filterUrl({ token: getToken() });
+  return request(`${API_URL}/desk/status?${url}`, {
+    method: 'GET',
+  });
+}
+
+// 工位总数
+export async function getDeskCount() {
+  return request(`${API_URL}/desk/count?token=${getToken()}`, {
+    method: 'GET',
+  });
+}
+
+// 昨日使用个数
+export async function getYuseCount() {
+  return request(`${API_URL}/desk/yesterday_count?token=${getToken()}`, {
+    method: 'GET',
+  });
+}
+
+// 工位使用时长分布
+export async function getAvgDuration(payload) {
+  const url = filterUrl({ ...payload, token: getToken() });
+  return request(`${API_URL}/desk/duration?${url}`, {
+    method: 'GET',
+  });
+}
+
+// 工位使用趋势
+export async function getUseRate(payload) {
+  const url = filterUrl({ ...payload, token: getToken() });
+  return request(`${API_URL}/desk/use_rate?${url}`, {
+    method: 'GET',
+  });
+}
+
+// 服务时长统计
+export async function getServiceDuration() {
+  const url = filterUrl({ token: getToken() });
+  return request(`${API_URL}/desk/service_duration?${url}`, {
+    method: 'GET',
+  });
+}
+
+// 工位使用率排行
+export async function getDeskUseRank(payload) {
+  const url = filterUrl({ ...payload, token: getToken() });
+  return request(`${API_URL}/desk/rate_usage_rank?${url}`, {
+    method: 'GET',
+  });
+}
+
+// 获取 banner 列表
+export async function getBannerList() {
+  return request(`${API_URL}/banner/list?token=${getToken()}`, {
+    method: 'GET',
+  });
+}
+
+// 获取系统默认列表
+export async function getDefaultBannerList() {
+  return request(`${API_URL}/banner/defaultBannerPictureList?token=${getToken()}`, {
+    method: 'GET',
+  });
+}
+
+// 添加 Banner
+export async function addBanner(payload) {
+  const url = `${G.API_URL}/banner/add`;
+  const body = filterEdit({ ...payload, token: getToken() });
+  return request(url, {
+    method: 'PUT',
+    body,
+  });
+}
+
+// 发布 Banner
+export async function bannerPublish() {
+  return request(`${API_URL}/banner/publish`, {
+    method: 'POST',
+    body: { token: getToken() }
+  });
+}
+
+// 删除 Banner
+export async function delBanner(payload) {
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/banner/delete`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// 排序 Banner
+export async function sortBanner(payload) {
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/banner/edit`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// 获取网关列表
+export async function gatewayList(payload) {
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/gateway/list`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// 网关添加备注
+export async function gatewayRemark(payload) {
+  const { id } = payload;
+  const url = `${G.API_URL}/gateway/${id}`;
+  return request(url, {
+    method: 'POST',
+    body: { remark: payload.remark, token: getToken() },
+  });
+}
+
+// 配置网关
+export async function gatewayCommand(payload) {
+  const { id } = payload;
+  const url = `${G.API_URL}/gateway/runScripts/${id}`;
+  return request(url, {
+    method: 'POST',
+    body: { command: payload.command, token: getToken() },
   });
 }

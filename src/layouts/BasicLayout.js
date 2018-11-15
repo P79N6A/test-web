@@ -76,6 +76,10 @@ const query = {
   },
 };
 
+
+@connect(({ user }) => ({
+  user,
+}))
 class BasicLayout extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -104,7 +108,7 @@ class BasicLayout extends React.PureComponent {
       token: window.location.href.substr(index + 7),
       name: 'guest',
       nickName: '优客工场',
-      avatar: `${G.picUrl}urwork_head.png`,
+      avatar: `${G.picUrl}image/urwork_head.png`,
     };
     if (index > -1 && payload.token === CTOKEN) {
       setUserInfo({ ...payload, autoLogin: true });
@@ -250,7 +254,11 @@ class BasicLayout extends React.PureComponent {
     if (Authority[0] === 'admin') {
       color = 'dark'
     }
-    // this.props.navTheme = color;
+    const { user } = this.props.user;
+    let menuLists = [];
+    if (user && user.sidebar) {
+      menuLists = user.sidebar.data;
+    }
     const myProps = { ...this.props, navTheme: color };
     const {
       currentUser,
@@ -263,19 +271,23 @@ class BasicLayout extends React.PureComponent {
     const isTop = PropsLayout === 'topmenu';
     const menuData = this.getMenuData();
     const routerConfig = this.matchParamsPath(pathname);
+    const slideMenuShow = routerConfig.name === 'not-find' || routerConfig.name === 'not-permission' || routerConfig.name === 'server-error' || routerConfig.name === 'trigger';
     const layout = (
       <Layout>
-        {isTop && !isMobile ? null : (
-          <SiderMenu
-            logo={`${G.picUrl}logoGreen.png`}
-            Authorized={Authorized}
-            theme={navTheme}
-            onCollapse={this.handleMenuCollapse}
-            menuData={menuData}
-            isMobile={isMobile}
-            {...myProps}
-          />
-        )}
+        {slideMenuShow ? null :
+          isTop && !isMobile ? null : (
+            <SiderMenu
+              logo={currentUser.currentAuthority === 'admin' ? `${G.picUrl}image/admin_logo.png` : `${G.picUrl}image/space_logo.png`}
+              Authorized={Authorized}
+              theme={navTheme}
+              onCollapse={this.handleMenuCollapse}
+              menuData={menuData}
+              menuLists={menuLists}
+              isMobile={isMobile}
+              {...myProps}
+            />
+          )
+        }
         <Layout
           style={{
             ...this.getLayoutStyle(),
@@ -283,10 +295,11 @@ class BasicLayout extends React.PureComponent {
           }}
         >
           <Header
+            slideMenuShow={slideMenuShow}
             currentUser={currentUser}
             menuData={menuData}
             handleMenuCollapse={this.handleMenuCollapse}
-            logo={`${G.picUrl}logoGreen.png`}
+            logo={`${G.picUrl}image/logoGreen.png`}
             isMobile={isMobile}
             {...this.props}
           />

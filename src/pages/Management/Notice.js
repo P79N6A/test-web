@@ -1,5 +1,6 @@
 /* eslint-disable react/no-danger */
 import React, { Component, Fragment } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import {
   Row,
@@ -12,49 +13,60 @@ import {
   Icon,
   Pagination,
   Popconfirm,
-  Popover
+  Popover,
+  Tooltip
 } from 'antd';
 
 import G from '@/global';
 import styles from './Notice.less';
-import { routerRedux } from '../../../node_modules/dva/router';
+import { routerRedux } from 'dva/router';
 
-@connect(({ manaNotice, loading, manaPerson }) => ({
-  manaPerson,
-  manaNotice,
-  loading: loading.effects['manaNotice/fetch'],
+@connect(({ ManagementNotice, loading, ManagementPerson }) => ({
+  ManagementPerson,
+  ManagementNotice,
+  loading: loading.effects['ManagementNotice/fetch'],
 }))
 
 export default class Notice extends Component {
   // 表单以及分页
   state = {
     query: '',
-    visible: false,
     detail: {
-      title: '标题',
+      title: 'Title',
       lookNum: 20,
       lastTime: '2018-04',
       content: '<p>Hello World</p>',
     },
     noticeState: [],
-    state: ['空', '已发送', '已接收', '待办', '已读']
+    state: [formatMessage({ id: 'notice.empty' }), formatMessage({ id: 'notice.send' }), formatMessage({ id: 'notice.revice' }), formatMessage({ id: 'notice.upcoming' }), formatMessage({ id: 'notice.read' })]
   };
 
+  componentDidUpdate(nextProps) {
+    const { ManagementNotice } = nextProps;
+    const dataLists = ManagementNotice.data.row;
+    if (dataLists.length > 0) {
+      for (let i = 0; i < dataLists.length; i++) {
+        const titleTd = document.getElementById(`titleTd_${dataLists[i].noticeId}`);
+        if (titleTd) {
+          const titleTdWidth = titleTd.offsetWidth;
+          const titleTextWidth = document.getElementById(`titleText_${dataLists[i].noticeId}`).offsetWidth;
+          document.getElementById(`titleText_${dataLists[i].noticeId}`).style.width = titleTextWidth < titleTdWidth - 25 ? 'auto' : titleTdWidth - 25 + 'px';
+        }
+
+      }
+    }
+  }
+
+
   componentDidMount() {
-    const { dispatch, manaNotice } = this.props;
-    const { current } = manaNotice.data;
+    const { dispatch, ManagementNotice } = this.props;
+    const { current } = ManagementNotice.data;
     this.fetchDataList(current);
     dispatch({
-      type: 'manaNotice/setCopyValue',
+      type: 'ManagementNotice/setCopyValue',
       payload: '',
     });
   }
-
-  onClose = () => {
-    this.setState({
-      visible: false,
-    });
-  };
 
   onSearch() {
     this.fetchDataList(1);
@@ -64,23 +76,10 @@ export default class Notice extends Component {
     this.setState({ query: e.target.value });
   };
 
-  // 详情
-  onDetail(text) {
-    this.setState({
-      detail: {
-        title: text.title,
-        lookNum: text.viewCount,
-        lastTime: text.createdAt,
-        content: text.content,
-      },
-    });
-    this.showDrawer();
-  }
-
   handleClickChange = (noticeId) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaNotice/getNoticeStat',
+      type: 'ManagementNotice/getNoticeStat',
       payload: {
         noticeId,
         callback: (res) => {
@@ -96,13 +95,13 @@ export default class Notice extends Component {
     const contest = (
       <div>
         {noticeState.map((comment) => (
-          <p key={comment._id}><span>{comment.username || '暂无昵称'}</span><span style={{ float: 'right' }}>{state[comment.readingState]}</span></p>
+          <p key={comment._id}><span>{comment.username || formatMessage({ id: 'notice.no.nickname' })}</span><span style={{ float: 'right' }}>{state[comment.readingState]}</span></p>
         ))}
       </div>
     );
     const columns = [
       {
-        title: '序号',
+        title: formatMessage({ id: 'all.serial.number' }),
         key: 'id',
         width: 100,
         render: (text, record, index) => (
@@ -112,15 +111,23 @@ export default class Notice extends Component {
         ),
       },
       {
-        title: '标题',
-        dataIndex: 'title',
+        title: formatMessage({ id: 'notice.title' }),
         key: 'title',
-        render: text => {
-          return <span className={styles.colSql}>{text}</span>;
-        },
+        render: (text) => {
+          return (
+            <Fragment >
+              <Tooltip placement="topLeft" title={text.title}>
+                <div id={`titleTd_${text.noticeId}`} style={{ display: 'flex', flexDirection: 'row' }}>
+                  <span id={`titleText_${text.noticeId}`} onClick={this.goDetail.bind(this, text)} className={styles.colSql}>{text.title}</span>
+                  <span className={styles.titleTop} style={{ opacity: text.topStatus ? '1' : '0' }}><FormattedMessage id="notice.topping" /></span>
+                </div>
+              </Tooltip>
+            </Fragment >
+          )
+        }
       },
       {
-        title: '接收人',
+        title: formatMessage({ id: 'notice.receiver' }),
         key: 'unreadCount',
         width: 150,
         render: (text, record, index) => {
@@ -129,7 +136,7 @@ export default class Notice extends Component {
               <Popover
                 placement="rightTop"
                 content={contest}
-                title="已送达人员"
+                title={formatMessage({ id: 'notice.delivered' })}
                 trigger="click"
                 onClick={this.handleClickChange.bind(this, text.noticeId)}>
                 <font style={{ cursor: 'pointer' }}>{`${text.viewCount}/${text.unreadCount + text.viewCount}`}</font>
@@ -139,38 +146,34 @@ export default class Notice extends Component {
         },
       },
       {
-        title: '发布时间',
-        dataIndex: 'createdAt',
+        title: formatMessage({ id: 'notice.release.time' }),
         key: 'createdAt',
-        width: 200,
-        render: text => {
-          return <span>{G.moment(text).format('YYYY-MM-DD hh:mm:ss')}</span>;
-        },
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={G.moment(text.createdAt).format('YYYY-MM-DD HH:mm:ss')}>
+                <span>{G.moment(text.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
-        title: '操作',
+        title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
         render: (text, record, index) => (
           <Fragment>
             <Popconfirm
               placement="left"
-              title={text.topStatus ? '确定要取消置顶此条通知吗？' : '确定要置顶此条通知吗？'}
+              title={text.topStatus ? formatMessage({ id: 'notice.down.message' }) : formatMessage({ id: 'notice.top.message' })}
               onConfirm={this.untiedConfirm.bind(this, text)}
-              okText="确定"
-              cancelText="取消"
+              okText={formatMessage({ id: 'all.certain' })}
+              cancelText={formatMessage({ id: 'all.cancel' })}
             >
-              <a>{text.topStatus ? '取消置顶' : '置顶'}</a>
+              <a>{text.topStatus ? formatMessage({ id: 'notice.unpin' }) : formatMessage({ id: 'notice.topping' })}</a>
             </Popconfirm>
             <Divider type="vertical" />
-            <a onClick={this.copyPush.bind(this, text)}>复制</a>
-            <Divider type="vertical" />
-            <a
-              onClick={() => {
-                this.onDetail(text, record, index);
-              }}
-            >
-              详情
-            </a>
+            <a onClick={this.copyPush.bind(this, text)}><FormattedMessage id='notice.copy' /></a>
           </Fragment>
         ),
       },
@@ -189,19 +192,12 @@ export default class Notice extends Component {
     this.setState({ query: '' });
   };
 
-  // 详情
-  showDrawer = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-
   handleChange = () => { };
 
   copyPush = (value) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaNotice/setCopyValue',
+      type: 'ManagementNotice/setCopyValue',
       payload: value,
     });
     this.newNotice();
@@ -219,7 +215,7 @@ export default class Notice extends Component {
   untiedConfirm(value) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaNotice/topNotice',
+      type: 'ManagementNotice/topNotice',
       payload: {
         status: !value.topStatus,
         noticeId: value.noticeId,
@@ -229,11 +225,11 @@ export default class Notice extends Component {
   }
 
   fetchDataList(current) {
-    const { manaNotice, dispatch } = this.props;
-    const { limit } = manaNotice.data;
+    const { ManagementNotice, dispatch } = this.props;
+    const { limit } = ManagementNotice.data;
     const { query } = this.state;
     dispatch({
-      type: 'manaNotice/fetch',
+      type: 'ManagementNotice/fetch',
       payload: {
         offset: (current - 1) * 15, limit, query
       },
@@ -244,22 +240,31 @@ export default class Notice extends Component {
     this.props.dispatch(routerRedux.push('/management/newNotice'))
   }
 
+  goDetail(text) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ManagementNotice/setCopyValue',
+      payload: text,
+    });
+    this.props.dispatch(routerRedux.push('/management/detailNotice'))
+  }
+
   render() {
-    const { manaNotice, loading } = this.props;
-    const { query, detail, visible, noticeState, state } = this.state;
-    const { limit, current, count } = manaNotice.data;
+    const { ManagementNotice, loading } = this.props;
+    const { query, noticeState, state } = this.state;
+    const { limit, current, count } = ManagementNotice.data;
     const columns = this.getColumns(current, noticeState, state);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
-        <h3>通知管理</h3>
+        <h3><FormattedMessage id='menu.management.notice' /></h3>
         <br />
         <Row className={styles.lageBox}>
-          <p>通知列表</p>
+          <p><FormattedMessage id='notice.list' /></p>
           {/* 查询 */}
           <Col span={6}>
             <Button icon="plus" type="primary" size='small' onClick={this.newNotice.bind(this)}>
-              新建
+              <FormattedMessage id='all.add' />
             </Button>
           </Col>
           <Col span={18}>
@@ -270,12 +275,12 @@ export default class Notice extends Component {
               type="primary"
               onClick={this.onSearch.bind(this)}
             >
-              搜索
+              <FormattedMessage id='all.search' />
             </Button>
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder="标题"
+              placeholder={formatMessage({ id: 'notice.title' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;
@@ -292,7 +297,7 @@ export default class Notice extends Component {
             <Table
               rowKey="_id"
               loading={loading}
-              dataSource={manaNotice.data.row}
+              dataSource={ManagementNotice.data.row}
               columns={columns}
               onChange={this.handleChange.bind(this)}
               pagination={false}
@@ -307,24 +312,6 @@ export default class Notice extends Component {
             />
           </Col>
         </Row>
-        <Drawer
-          width={512}
-          closable={true}
-          title={detail.title}
-          placement="right"
-          onClose={this.onClose}
-          visible={visible}
-        >
-          <p>
-            <Icon type="eye-o" style={{ marginRight: '6px' }} />
-            {detail.lookNum}
-            <Icon type="clock-circle-o" style={{ marginLeft: '18px', marginRight: '6px' }} />
-            {G.moment(detail.lastTime).format('YYYY-MM-DD hh:mm:s')}
-          </p>
-          <br />
-          <br />
-          <div dangerouslySetInnerHTML={{ __html: detail.content }} />
-        </Drawer>
       </div>
     );
   }

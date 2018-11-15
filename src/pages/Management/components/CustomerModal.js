@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
-import { routerRedux } from '../../../../node_modules/dva/router';
+import { routerRedux } from 'dva/router';
 
 const FormItem = Form.Item;
 
-@connect(({ manaCustomer }) => ({
-  manaCustomer,
+@connect(({ ManagementCustomer }) => ({
+  ManagementCustomer,
 }))
 class NewCustomer extends Component {
   state = {
-    title: '新增客户',
+    title: formatMessage({ id: 'menu.management.newCustomer' }),
   };
 
   componentDidMount() {
-    const { manaCustomer } = this.props;
-    const { editValue } = manaCustomer;
+    const { ManagementCustomer } = this.props;
+    const { editValue } = ManagementCustomer;
     const { form } = this.props;
     if (editValue !== '') {
       form.setFieldsValue({
@@ -31,14 +32,14 @@ class NewCustomer extends Component {
         contractNo: editValue.company.contractNo,
         remark: editValue.company.remark,
       });
-      this.setState({ title: '编辑客户' });
+      this.setState({ title: formatMessage({ id: 'customer.edit.customer' }) });
     }
   }
 
   componentWillUnmount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaCustomer/setEditValue',
+      type: 'ManagementCustomer/setEditValue',
       payload: '',
     });
   }
@@ -49,30 +50,30 @@ class NewCustomer extends Component {
   // 上传成功或者失败的回调
   release(res) {
     if (res.status === 'success') {
-      message.success(res.message || '添加成功！');
+      message.success(res.message || formatMessage({ id: 'customer.add.success' }));
       setTimeout(() => {
         this.goBack();
       }, 2000);
     } else {
-      message.error(res.message || '创建公司失败');
+      message.error(res.message || formatMessage({ id: 'customer.add.company.fail' }));
     }
   }
 
   // 编辑成功或者失败的回调
   releases(res) {
     if (res.status === 'success') {
-      message.success(res.message || '修改成功！');
+      message.success(res.message || formatMessage({ id: 'customer.successfully.modified' }));
       setTimeout(() => {
         this.goBack();
       }, 2000);
     } else {
-      message.error(res.message || '修改失败');
+      message.error(res.message || formatMessage({ id: 'customer.fail.to.edit' }));
     }
   }
   // 添加
   handleCommit() {
-    const { form, dispatch, manaCustomer } = this.props;
-    const { editValue } = manaCustomer;
+    const { form, dispatch, ManagementCustomer } = this.props;
+    const { editValue } = ManagementCustomer;
     form.validateFields(err => {
       if (err) return;
       if (editValue !== '') {
@@ -82,7 +83,7 @@ class NewCustomer extends Component {
         delete all.companyName;
         // 编辑
         dispatch({
-          type: 'manaCustomer/editCustomer',
+          type: 'ManagementCustomer/editCustomer',
           payload: {
             companyId: editValue.companyId,
             ...all,
@@ -92,7 +93,7 @@ class NewCustomer extends Component {
       } else {
         // 添加
         dispatch({
-          type: 'manaCustomer/addCustomer',
+          type: 'ManagementCustomer/addCustomer',
           payload: {
             ...form.getFieldsValue(),
             callback: this.release.bind(this),
@@ -106,17 +107,17 @@ class NewCustomer extends Component {
   goBack() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaCustomer/setEditValue',
+      type: 'ManagementCustomer/setEditValue',
       payload: '',
     });
     this.props.dispatch(routerRedux.push('/management/customer'))
   }
 
   render() {
-    const { form, manaCustomer } = this.props;
+    const { form, ManagementCustomer } = this.props;
     const { title } = this.state;
     const { getFieldDecorator } = form;
-    const { editValue } = manaCustomer;
+    const { editValue } = ManagementCustomer;
     return (
       <div>
         <h3>{title}</h3>
@@ -124,187 +125,187 @@ class NewCustomer extends Component {
         <Form style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '4px' }}>
           <Row>
             <Col span={12}>
-              <FormItem label="公司全称" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'customer.company.name' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('companyName', {
                   rules:
                     editValue === ''
                       ? [
-                        { required: true, message: '请输入公司全称' },
+                        { required: true, message: formatMessage({ id: 'customer.company.name.message' }) },
                         {
                           max: 50,
-                          message: '最大长度50',
+                          message: formatMessage({ id: 'test.max.long.fifty' }),
                         },
                       ]
                       : [],
-                })(<Input placeholder="请输入公司全称" size="large" disabled={editValue !== ''} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.company.name.message' })} size="large" disabled={editValue !== ''} />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="客户所属行业" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'customer.industry' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('industry', {
                   rules: [
                     {
                       max: 20,
-                      message: '最大长度20',
+                      message: formatMessage({ id: 'test.max.long.twenty' }),
                     },
                   ],
-                })(<Input placeholder="请输入客户所属行业" size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.industry.message' })} size="large" />)}
               </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <FormItem label="账号" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'customer.account.number' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('account', {
                   rules:
                     editValue === ''
                       ? [
-                        { required: true, message: '请输入账号' },
+                        { required: true, message: formatMessage({ id: 'customer.account.number.text' }) },
                         {
                           max: 20,
-                          message: '最大长度20',
+                          message: formatMessage({ id: 'test.max.long.twenty' }),
                         },
                         {
                           pattern: /^\w+$/,
-                          message: '仅支持半角英文数字和下划线',
+                          message: formatMessage({ id: 'customer.account.number.message' }),
                         },
                       ]
                       : [],
-                })(<Input placeholder="请输入账号" size="large" disabled={editValue !== ''} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.account.number.text' })} size="large" disabled={editValue !== ''} />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="客户详细地址" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'customer.detailed.address' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('address', {
                   rules: [
                     {
                       max: 100,
-                      message: '最大长度100',
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
-                })(<Input placeholder="请输入客户详细地址" size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.detailed.address.text' })} size="large" />)}
               </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <FormItem label="密码" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'customer.password' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('password', {
                   rules:
                     editValue === ''
                       ? [
-                        { required: true, message: '请输入密码' },
+                        { required: true, message: formatMessage({ id: 'customer.password.text' }) },
                         {
                           max: 20,
-                          message: '最大长度20',
+                          message: formatMessage({ id: 'test.max.long.twenty' }),
                         },
                         {
                           pattern: /^[a-z_A-Z0-9-\.!@#\$%\\\^&\*\)\(\+=\{\}\[\]\/",'<>~\·`\?:;|]+$/,
-                          message: '密码格式错误',
+                          message: formatMessage({ id: 'customer.password.message' }),
                         },
                       ]
                       : [],
-                })(<Input placeholder="请输入密码" size="large" disabled={editValue !== ''} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.password.text' })} size="large" disabled={editValue !== ''} />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="网址" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'customer.website.link' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('website', {
                   rules: [
                     {
                       max: 100,
-                      message: '最大长度100',
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
-                })(<Input placeholder="请输入网址" size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.website.link.text' })} size="large" />)}
               </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <FormItem label="邮箱" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'app.settings.basic.email' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('email', {
                   rules: [
-                    { required: true, message: '请输入邮箱' },
+                    { required: true, message: formatMessage({ id: 'app.settings.basic.email-message' }) },
                     {
                       pattern: /^\w[-+.\w]*@\w[-\w]*(\.\w[-\w]*)+$/,
-                      message: '邮箱格式错误',
+                      message: formatMessage({ id: 'customer.email.message' }),
                     },
                   ],
-                })(<Input placeholder="请输入邮箱" size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'app.settings.basic.email-message' })} size="large" />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="合同编号" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'customer.contract.no' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('contractNo', {
                   rules: [
                     {
                       max: 100,
-                      message: '最大长度100',
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
-                })(<Input placeholder="请输入合同编号" size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.contract.no.text' })} size="large" />)}
               </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <FormItem label="管理员姓名" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'customer.administrator.name' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('contacts', {
                   rules: [
-                    { required: true, message: '请输入管理员姓名' },
+                    { required: true, message: formatMessage({ id: 'customer.administrator.name.text' }) },
                     {
                       max: 20,
-                      message: '最大长度20',
+                      message: formatMessage({ id: 'test.max.long.twenty' }),
                     },
                   ],
-                })(<Input placeholder="请输入管理员姓名" size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.administrator.name.text' })} size="large" />)}
               </FormItem>
             </Col>
             <Col span={12}>
-              <FormItem label="备注" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'all.remarks' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('remark', {
                   rules: [
                     {
                       max: 100,
-                      message: '最大长度100',
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
-                })(<Input placeholder="请输入备注" size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'person.remarks.input' })} size="large" />)}
               </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span={12}>
-              <FormItem label="管理员手机号码" labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'customer.administrator.mobile' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('telephone', {
                   rules: [
-                    { required: true, message: '请输入管理员手机号码' },
+                    { required: true, message: formatMessage({ id: 'customer.administrator.mobile.text' }) },
                     {
                       max: 11,
-                      message: '最大长度11',
+                      message: formatMessage({ id: 'test.max.long.eleven' }),
                     },
                     {
                       pattern: /^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\d{8}$/,
-                      message: '请正确输入管理员手机号码',
+                      message: formatMessage({ id: 'customer.administrator.mobile.message' }),
                     },
                   ],
-                })(<Input placeholder="请输入管理员手机号码" size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.administrator.mobile.text' })} size="large" />)}
               </FormItem>
             </Col>
           </Row>
           <Row>
             <Col span={24} style={{ textAlign: 'right' }}>
               <Button type="primary" htmlType="submit" size='small' onClick={this.handleCommit.bind(this)}>
-                保存
+                <FormattedMessage id='all.save' />
               </Button>
               <Button style={{ marginLeft: 8 }} size='small' onClick={this.goBack.bind(this)}>
-                取消
+                <FormattedMessage id='all.cancel' />
               </Button>
             </Col>
           </Row>
         </Form>
-      </div>
+      </div >
     );
   }
 }

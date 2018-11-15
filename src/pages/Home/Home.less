@@ -20,12 +20,12 @@
   li {
     .clearfix();
     margin-top: 16px;
-    span {
+    font {
       color: @text-color;
       font-size: 14px;
       line-height: 22px;
     }
-    span:first-child {
+    font:first-child {
       background-color: @background-color-base;
       border-radius: 20px;
       display: inline-block;
@@ -37,15 +37,19 @@
       width: 20px;
       text-align: center;
     }
-    span.active {
+    font.active {
       background-color: #a6d6d0;
       color: #fff;
     }
-    span:last-child {
+    font:last-child {
       float: right;
       i {
         font-size: 10px;
         font-style: normal;
+        span{
+          font-size: 10px;
+          font-style: normal;
+        }
       }
     }
   }

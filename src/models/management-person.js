@@ -2,7 +2,7 @@ import { message } from 'antd';
 import { getPersonnelList, addPerson, updatePerson, getQiniuToken } from '../services/api';
 
 export default {
-  namespace: 'manaPerson',
+  namespace: 'ManagementPerson',
   state: {
     data: {
       rows: [],

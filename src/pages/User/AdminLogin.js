@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import { Alert } from 'antd';
 import Login from 'components/Login';
-import styles from './adminLogin.less';
+import styles from './AdminLogin.less';
 
 const { UserName, Password, Submit } = Login;
 
@@ -45,10 +46,10 @@ export default class LoginPage extends Component {
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
           <div>
             <br />
-            <UserName name="username" placeholder="账户" />
-            <Password name="password" placeholder="密码" />
+            <UserName name="username" placeholder={formatMessage({ id: 'login.account' })} />
+            <Password name="password" placeholder={formatMessage({ id: 'customer.password' })} />
           </div>
-          <Submit loading={submitting}>登录</Submit>
+          <Submit loading={submitting}><FormattedMessage id='menu.admin_user.login' /></Submit>
         </Login>
       </div>
     );

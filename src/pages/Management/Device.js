@@ -1,16 +1,17 @@
 import React, { Component, Fragment } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon } from 'antd';
+import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon, Tooltip } from 'antd';
 
 import G from '@/global';
-import styles from './Person.less';
+import styles from './Device.less';
 import EquipModal from './components/EquipModal.js';
 
-@connect(({ manaEquip, user, manaCustomer, loading }) => ({
-  manaEquip,
+@connect(({ ManagementDevice, user, ManagementCustomer, loading }) => ({
+  ManagementDevice,
   user,
-  manaCustomer,
-  loading: loading.effects['manaEquip/fetch'],
+  ManagementCustomer,
+  loading: loading.effects['ManagementDevice/fetch'],
 }))
 export default class Device extends Component {
   // 表单以及分页
@@ -22,9 +23,9 @@ export default class Device extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: '离线', value: 2 },
-      { text: '使用中', value: 3 },
-      { text: '空闲', value: 4 },
+      { text: formatMessage({ id: 'device.offline' }), value: 2 },
+      { text: formatMessage({ id: 'device.using' }), value: 3 },
+      { text: formatMessage({ id: 'device.leisure' }), value: 4 },
     ],
   };
 
@@ -35,7 +36,7 @@ export default class Device extends Component {
   componentWillUnmount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaCustomer/setcompanyId',
+      type: 'ManagementCustomer/setcompanyId',
       payload: '',
     });
   }
@@ -58,7 +59,7 @@ export default class Device extends Component {
   getColumns(current, filterStatus, currentAuthority, sortOrder) {
     const columns = [
       {
-        title: '序号',
+        title: formatMessage({ id: 'all.serial.number' }),
         key: 'id',
         width: 100,
         render: (text, record, index) => (
@@ -68,82 +69,112 @@ export default class Device extends Component {
         ),
       },
       {
-        title: '桌子编号',
-        dataIndex: 'serialNumber',
+        title: formatMessage({ id: 'device.desk.id' }),
         key: 'serialNumber',
         sorter: true,
-        sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`
+        sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.serialNumber}>
+                <span>{text.serialNumber}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
-        title: '状态',
+        title: formatMessage({ id: 'device.status' }),
         key: 'status',
         filters: filterStatus,
         render: text => {
           return (
             <Fragment>
-              <font>{filterStatus[text.status - 2].text}</font>
+              <Tooltip placement="topLeft" title={filterStatus[text.status - 2].text}>
+                <font>{filterStatus[text.status - 2].text}</font>
+              </Tooltip>
             </Fragment>
           );
-        },
+        }
       },
       {
-        title: currentAuthority === 'admin' ? '所属客户' : '用户',
-        dataIndex: currentAuthority === 'admin' ? 'companyName' : 'user_name',
+        title: currentAuthority === 'admin' ? formatMessage({ id: 'device.customer' }) : formatMessage({ id: 'device.user' }),
         key: currentAuthority === 'admin' ? 'companyName' : 'user_name',
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text[currentAuthority === 'admin' ? 'companyName' : 'user_name']}>
+                <span>{text[currentAuthority === 'admin' ? 'companyName' : 'user_name']}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
       },
       {
-        title: '备注',
-        dataIndex: 'remark',
+        title: formatMessage({ id: 'all.remarks' }),
         key: 'remark',
         width: 180,
-      },
-      {
-        title: '最后使用时间',
-        dataIndex: 'lastOperationTime',
-        key: 'lastOperationTime',
         render: text => {
-          return text ? <span>{G.moment(text).format('YYYY-MM-DD hh:mm:ss')}</span> : ''
-        },
-        width: 200,
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.remark}>
+                <font>{text.remark}</font>
+              </Tooltip>
+            </Fragment>
+          );
+        }
       },
       {
-        title: '操作',
+        title: formatMessage({ id: 'device.use.time' }),
+        key: 'lastOperationTime',
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.lastOperationTime ? G.moment(text.lastOperationTime).format('YYYY-MM-DD HH:mm:ss') : ''}>
+                <span>{text.lastOperationTime ? G.moment(text.lastOperationTime).format('YYYY-MM-DD HH:mm:ss') : ''}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        }
+      },
+      {
+        title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
-        width: 110,
+        width: 170,
         render: (text, record, index) => (
           <Fragment>
             {currentAuthority === 'admin' ? (
               text.companyId ? <Popconfirm
                 placement="left"
-                title="移除后该设备将从企业中移除，确定要移除吗？"
+                title={formatMessage({ id: 'device.remove.message' })}
                 onConfirm={this.untiedRemove.bind(this, text)}
-                okText="移除"
-                cancelText="取消"
+                okText={formatMessage({ id: 'all.remove' })}
+                cancelText={formatMessage({ id: 'all.cancel' })}
               >
-                <a>移除</a>
-              </Popconfirm> : <span style={{ color: '#CCCCCC' }}>移除</span>
+                <a><FormattedMessage id='all.remove' /></a>
+              </Popconfirm> : <span style={{ color: '#CCCCCC' }}><FormattedMessage id='all.remove' /></span>
             ) : (
                 text.userUid ?
                   <Popconfirm
                     placement="left"
-                    title="解除绑定后，该用户将被强制退出该设备，导致用户无法正常使用（可重新登录使用）"
+                    title={formatMessage({ id: 'device.untied.message' })}
                     onConfirm={this.untiedConfirm.bind(this, text)}
-                    okText="解绑"
-                    cancelText="取消"
+                    okText={formatMessage({ id: 'device.untied' })}
+                    cancelText={formatMessage({ id: 'all.cancel' })}
                   >
-                    <a>解绑</a>
-                  </Popconfirm> : <span style={{ color: '#CCCCCC' }}>解绑</span>)}
+                    <a><FormattedMessage id="device.untied" /></a>
+                  </Popconfirm> : <span style={{ color: '#CCCCCC' }}><FormattedMessage id="device.untied" /></span>)}
             <Divider type="vertical" />
             <a
               onClick={() => {
                 this.onMark(text, record, index);
               }}
             >
-              备注
+              <FormattedMessage id="all.remarks" />
             </a>
           </Fragment>
-        ),
-      },
+        )
+      }
     ];
     return columns;
   }
@@ -165,6 +196,7 @@ export default class Device extends Component {
     } else {
       this.setState({ modalLoading: false });
     }
+    this.setState({ visible: false, editValue: {} });
   };
 
   // 备注
@@ -211,7 +243,7 @@ export default class Device extends Component {
   addRemark(data) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaEquip/addRemark',
+      type: 'ManagementDevice/addRemark',
       payload: data,
     });
   }
@@ -219,7 +251,7 @@ export default class Device extends Component {
   untiedConfirm(value) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaEquip/release',
+      type: 'ManagementDevice/release',
       payload: { id: value.id, callback: this.fetchDataList.bind(this) },
     });
   }
@@ -227,18 +259,18 @@ export default class Device extends Component {
   untiedRemove(value) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaEquip/remove',
+      type: 'ManagementDevice/remove',
       payload: { id: value.id, callback: this.fetchDataList.bind(this) },
     });
   }
 
   fetchDataList(value) {
-    const { dispatch, manaEquip, manaCustomer } = this.props;
-    const { companyId } = manaCustomer;
-    const equipData = manaEquip.data;
+    const { dispatch, ManagementDevice, ManagementCustomer } = this.props;
+    const { companyId } = ManagementCustomer;
+    const equipData = ManagementDevice.data;
     const { query, filterParam, sortParam } = this.state;
     dispatch({
-      type: 'manaEquip/fetch',
+      type: 'ManagementDevice/fetch',
       payload: {
         offset: (value && (value.current - 1) * 15),
         limit: (value && value.limit) || equipData.limit,
@@ -251,17 +283,17 @@ export default class Device extends Component {
   }
 
   render() {
-    const { manaEquip, loading, user } = this.props;
+    const { ManagementDevice, loading, user } = this.props;
     const { visible, modalLoading, editValue, query, filterStatus, sortParam } = this.state;
-    const { limit, current, count } = manaEquip.data;
+    const { limit, current, count } = ManagementDevice.data;
     const columns = this.getColumns(current, filterStatus, user.user.currentAuthority, sortParam);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
-        <h3>设备管理</h3>
+        <h3><FormattedMessage id="menu.management.device" /></h3>
         <br />
         <Row className={styles.lageBox}>
-          <p>设备列表</p>
+          <p><FormattedMessage id="device.list" /></p>
           {/* 查询 */}
           <Col span={24}>
             <Button
@@ -271,12 +303,12 @@ export default class Device extends Component {
               type="primary"
               onClick={this.onSearch.bind(this)}
             >
-              搜索
+              <FormattedMessage id="all.search" />
             </Button>
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder={user.user.currentAuthority === 'user' ? "设备编号 / 使用者 / 备注" : "设备编号 / 所属客户 / 备注"}
+              placeholder={user.user.currentAuthority === 'user' ? formatMessage({ id: 'device.search.user.text' }) : formatMessage({ id: 'device.search.admin.text' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;
@@ -293,7 +325,7 @@ export default class Device extends Component {
             <Table
               rowKey="id"
               loading={loading}
-              dataSource={manaEquip.data.rows}
+              dataSource={ManagementDevice.data.rows}
               columns={columns}
               onChange={this.handleChange.bind(this)}
               pagination={false}

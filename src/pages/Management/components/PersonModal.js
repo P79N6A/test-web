@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { formatMessage, FormattedMessage } from 'umi/locale';
 import * as qiniu from 'qiniu-js';
 import { Modal, Button, Input, Form, Icon, Upload } from 'antd';
 import G from '@/global';
@@ -19,7 +20,7 @@ class PersonModal extends Component {
   state = {
     imageUrl: '',
     avatarLoading: false,
-    title: '新增用户',
+    title: formatMessage({ id: 'person.new.users' }),
   };
 
   componentWillReceiveProps(nextProps) {
@@ -34,18 +35,20 @@ class PersonModal extends Component {
         nextProps.form.setFieldsValue({
           name: editValue.name,
           phone: editValue.phone,
+          email: editValue.email,
           position: editValue.position,
           remark: editValue.remark
         });
-        this.setState({ title: '编辑用户' });
+        this.setState({ title: formatMessage({ id: 'person.edit.users' }) });
       } else {
         nextProps.form.setFieldsValue({
           name: '',
           phone: '',
+          email: '',
           position: '',
           remark: '',
         });
-        this.setState({ title: '新增用户' });
+        this.setState({ title: formatMessage({ id: 'person.new.users' }) });
       }
     }
   }
@@ -77,7 +80,7 @@ class PersonModal extends Component {
     if (value.length === 11 && re.test(value)) {
       callback();
     } else {
-      callback('手机号格式有误');
+      callback(formatMessage({ id: 'person.phone.format.message' }));
     }
   };
 
@@ -113,27 +116,27 @@ class PersonModal extends Component {
   complete(response) {
     this.setState({
       avatarLoading: false,
-      imageUrl: G.uploadPicUrl + response.key,
+      imageUrl: G.picUrl + response.key,
     });
   }
 
   beforeUpload(file) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'manaPerson/getQiniuToken',
+      type: 'ManagementPerson/getQiniuToken',
       payload: {
         callback: (res) => {
           if (res.status === 'success') {
             const { editValue } = this.props;
             const config = { useCdnDomain: true };
             const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
-            const avatarUrl = `${editValue.uid}-${G.moment().unix()}.png`;
+            const avatarUrl = `${editValue.uid}_header_${G.moment().unix()}.png`;
             this.setState({ avatarLoading: true });
             const observable = qiniu.upload(file, avatarUrl, res.data, putExtra, config);
             observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this));
             return false;
           } else {
-            message.error('请刷新页面');
+            message.error(formatMessage({ id: 'person.refresh.page' }));
           }
         }
       },
@@ -146,11 +149,7 @@ class PersonModal extends Component {
     const { visible, loading, handleCancel, form } = this.props;
     const { imageUrl, avatarLoading, title } = this.state;
     const { getFieldDecorator } = form;
-    const uploadButton = (
-      <div className="avatar-uploader2">
-        <Icon type={avatarLoading ? 'loading' : 'plus'} />
-      </div>
-    );
+    const uploadButton = (<Icon type={avatarLoading ? 'loading' : 'plus'} style={{ fontSize: '70px', lineHeight: '70px', paddingTop: '6px' }} />);
     const formItemLayout = {
       labelCol: { span: 6 },
       wrapperCol: { span: 14 },
@@ -163,14 +162,14 @@ class PersonModal extends Component {
         onCancel={this.onCancel.bind(this, handleCancel)}
         footer={[
           <Button key="back" size='small' onClick={this.onCancel.bind(this, handleCancel)}>
-            关闭
+            <FormattedMessage id="all.close" />
           </Button>,
           <Button key="submit" size='small' type="primary" loading={loading} onClick={this.okHandle}>
-            提交
-          </Button>,
+            <FormattedMessage id="all.submit" />
+          </Button>
         ]}
       >
-        <FormItem {...formItemLayout} label="头像">
+        <FormItem {...formItemLayout} label={formatMessage({ id: 'person.avatar' })}>
           {getFieldDecorator('upload', {
             valuePropName: 'fileList',
             getValueFromEvent: this.normFile,
@@ -193,52 +192,63 @@ class PersonModal extends Component {
           )}
         </FormItem>
         <br />
-        <FormItem {...formItemLayout} label="姓名">
+        <FormItem {...formItemLayout} label={formatMessage({ id: 'person.name' })}>
           {getFieldDecorator('name', {
             rules: [
               {
                 required: true,
-                message: '姓名不能为空',
+                message: formatMessage({ id: 'person.name.test.message' }),
               },
               {
                 max: 20,
-                message: '最大长度20',
+                message: formatMessage({ id: 'test.max.long.twenty' }),
               },
             ],
-          })(<Input placeholder="请输入姓名" />)}
+          })(<Input placeholder={formatMessage({ id: 'person.name.input' })} />)}
         </FormItem>
-        <FormItem {...formItemLayout} label="手机">
+        <FormItem {...formItemLayout} label={formatMessage({ id: 'person.phone' })}>
           {getFieldDecorator('phone', {
             rules: [
               {
                 required: true,
-                message: '手机号不能为空',
+                message: formatMessage({ id: 'person.phone.test.message' }),
               },
               {
                 validator: this.checkPhone.bind(this),
               },
             ],
-          })(<Input placeholder="请输入手机号" />)}
+          })(<Input placeholder={formatMessage({ id: 'person.phone.input' })} />)}
         </FormItem>
-        <FormItem {...formItemLayout} label="职务">
+        {/* 邮箱 */}
+        <FormItem {...formItemLayout} label={formatMessage({ id: 'app.settings.basic.email' })}>
+          {getFieldDecorator('email', {
+            rules: [
+              {
+                pattern: /^\w[-+.\w]*@\w[-\w]*(\.\w[-\w]*)+$/,
+                message: formatMessage({ id: 'customer.email.message' }),
+              },
+            ],
+          })(<Input placeholder={formatMessage({ id: 'app.settings.basic.email-message' })} />)}
+        </FormItem>
+        <FormItem {...formItemLayout} label={formatMessage({ id: 'person.position' })}>
           {getFieldDecorator('position', {
             rules: [
               {
                 max: 10,
-                message: '最大长度10',
+                message: formatMessage({ id: 'test.max.long.ten' }),
               },
             ],
-          })(<Input placeholder="请输入职务" />)}
+          })(<Input placeholder={formatMessage({ id: 'person.position.input' })} />)}
         </FormItem>
-        <FormItem {...formItemLayout} label="备注">
+        <FormItem {...formItemLayout} label={formatMessage({ id: 'all.remarks' })}>
           {getFieldDecorator('remark', {
             rules: [
               {
                 max: 100,
-                message: '最大长度100',
+                message: formatMessage({ id: 'test.max.long.one.hundred' }),
               },
             ],
-          })(<Input placeholder="请输入备注" />)}
+          })(<Input placeholder={formatMessage({ id: 'person.remarks.input' })} />)}
         </FormItem>
       </Modal>
     );

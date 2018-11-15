@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { FormattedMessage, setLocale, getLocale } from 'umi/locale';
 import { Spin, Tag, Menu, Icon, Dropdown, Avatar } from 'antd';
+import SelectLang from '../SelectLang';
 import moment from 'moment';
 import groupBy from 'lodash/groupBy';
 import styles from './index.less';
@@ -73,7 +74,7 @@ export default class GlobalHeaderRight extends PureComponent {
               <Avatar
                 size="small"
                 className={styles.avatar}
-                src={currentUser.avatar ? currentUser.avatar : `${G.picUrl}header.png`}
+                src={currentUser.avatar ? currentUser.avatar : `${G.picUrl}image/header.png`}
                 alt="avatar"
               />
               <span className={styles.name}>{currentUser.username}</span>
@@ -82,6 +83,7 @@ export default class GlobalHeaderRight extends PureComponent {
         ) : (
             <Spin size="small" style={{ marginLeft: 8, marginRight: 8 }} />
           )}
+        <SelectLang className={styles.action} />
       </div>
     );
   }

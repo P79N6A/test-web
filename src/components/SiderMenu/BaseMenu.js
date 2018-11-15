@@ -158,24 +158,21 @@ export default class BaseMenu extends PureComponent {
   };
 
   render() {
-    const { openKeys, theme, mode } = this.props;
-    // if pathname can't match, use the nearest parent's key
+    const { openKeys, theme, mode, style, menuData, menuLists } = this.props;
     let selectedKeys = this.getSelectedMenuKeys();
     if (!selectedKeys.length && openKeys) {
       selectedKeys = [openKeys[openKeys.length - 1]];
     }
-    const { handleOpenChange, style, menuData } = this.props;
     return (
       <Menu
         key="Menu"
         mode={mode}
         theme={theme}
-        onOpenChange={handleOpenChange}
-        selectedKeys={selectedKeys}
+        defaultSelectedKeys={selectedKeys}
+        defaultOpenKeys={['/management', '/statistics', '/dshow', '/setting']}
         style={style}
-        defaultOpenKeys={["/management"]}
       >
-        {this.getNavMenuItems(menuData)}
+        {this.getNavMenuItems(menuLists)}
       </Menu>
     );
   }

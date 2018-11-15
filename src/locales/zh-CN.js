@@ -325,5 +325,5 @@ export default {
   "stand.time.trend.none": "image/stand_time_trend_none.png",
   "stand.time.rank.none": "image/stand_time_rank_none.png",
   "banner.none.add": "image/banner_none_add.png",
-  "banner.add": "image/banner_add.png",
+  "banner.add.en": "image/banner_add.png",
 };

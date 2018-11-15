@@ -345,7 +345,7 @@ class BannerModel extends Component {
           <Button key="back" size='small' onClick={this.onCancel}>
             {modal.cancel}
           </Button>,
-          <Button key="submit" size='small' type="primary" onClick={this.okHandle}>
+          <Button style={{ marginRight: '12px' }} key="submit" size='small' type="primary" onClick={this.okHandle}>
             {modal.certain}
           </Button>
         ]}
@@ -389,8 +389,9 @@ class BannerModel extends Component {
                 <Col span={15}>
                   <Input placeholder={formatMessage({ id: "banner.open.notice.message" })} disabled value={bannerAdd.title} />
                 </Col>
-                <Col span={5}>
+                <Col span={5} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <Button
+                    style={{ marginRight: '4px' }}
                     key="notice"
                     size='small'
                     type="primary"
@@ -404,7 +405,7 @@ class BannerModel extends Component {
                   <Radio value={1}><FormattedMessage id="banner.open.link" /></Radio>
                 </Col>
                 <Col span={20}>
-                  <Input placeholder={formatMessage({ id: "customer.website.link.text" })} value={bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type === 1 ? false : true} />
+                  <Input style={{ marginRight: '4px !important' }} placeholder={formatMessage({ id: "customer.website.link.text" })} value={bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type === 1 ? false : true} />
                 </Col>
               </Row>
             </RadioGroup>

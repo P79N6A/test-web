@@ -14,7 +14,7 @@ if (env === '') {
 }
 const picUrl = 'http://cdn.space.9amtech.com/';
 message.config({
-  maxCount: 3,
+  maxCount: 1,
 });
 const htmlUrl = process.SERVER_URL;
 

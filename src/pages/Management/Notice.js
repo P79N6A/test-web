@@ -119,7 +119,7 @@ export default class Notice extends Component {
               <Tooltip placement="topLeft" title={text.title}>
                 <div id={`titleTd_${text.noticeId}`} style={{ display: 'flex', flexDirection: 'row' }}>
                   <span id={`titleText_${text.noticeId}`} onClick={this.goDetail.bind(this, text)} className={styles.colSql}>{text.title}</span>
-                  <span className={styles.titleTop} style={{ opacity: text.topStatus ? '1' : '0' }}>置顶</span>
+                  <span className={styles.titleTop} style={{ opacity: text.topStatus ? '1' : '0' }}><FormattedMessage id="notice.topping" /></span>
                 </div>
               </Tooltip>
             </Fragment >

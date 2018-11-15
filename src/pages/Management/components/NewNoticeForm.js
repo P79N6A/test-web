@@ -390,7 +390,7 @@ class NewNoticeForm extends Component {
             </Select>
           )}
         </FormItem>
-        <FormItem>
+        <FormItem style={{ fontSize: '24px' }}>
           {getFieldDecorator('editor', {
             rules: [{ validator: this.checkEditor.bind(this) }],
           })(

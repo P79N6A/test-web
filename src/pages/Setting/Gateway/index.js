@@ -191,7 +191,7 @@ export default class Gateway extends Component {
             <a
               onClick={() => {
                 let array = [];
-                array.push(text.gatewayId)
+                array.push(text.id)
                 this.changeConfigure({ configureList: array, configureVisible: true });
               }}
             >

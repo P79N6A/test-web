@@ -36,7 +36,7 @@ export default class DetailNotice extends Component {
           </p>
           <br />
           <br />
-          <div className={styles.box} dangerouslySetInnerHTML={{ __html: copyValue.content }} />
+          <div className={styles.box} dangerouslySetInnerHTML={{ __html: `<style>.box {font-size: 24px;color: #35536C}.box img {max-width: 100%;}</style><div class="box">${copyValue.content}</div>` }} />
         </div>
         {/* 推送效果 */}
         <p style={{ marginTop: '30px' }}>推送效果</p>

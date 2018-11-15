@@ -46,6 +46,7 @@ export default {
   "home.standing.time.trend": "站立时间趋势",
   "home.unit": "单位",
   "home.hour": "小时",
+  "home.minute": "分钟",
   "home.person.standing.time.ranking": "人员站立时间排行",
   // 模块共用
   "all.serial.number": "序号",
@@ -106,6 +107,7 @@ export default {
   "device.remove.message": "移除后该设备将从企业中移除，确定要移除吗？",
   "device.offline": "离线",
   "device.using": "使用中",
+  "device.use": "使用",
   "device.leisure": "空闲",
   "device.remark.text": "请输入备注信息",
   // 通知管理
@@ -158,6 +160,7 @@ export default {
   "notice.poster.message.rate": "图片比例为1024/1138",
   "notice.poster.message.max.height": "图片最大高度不能超过",
   "notice.poster.message.max.width": "图片最大宽度不能超过",
+  "notice.poster.add": "添加海报",
   // 客户管理
   "customer.name": "客户名称",
   "customer.account.number": "账号",
@@ -321,4 +324,5 @@ export default {
   "stand.time.trend.none": "image/stand_time_trend_none.png",
   "stand.time.rank.none": "image/stand_time_rank_none.png",
   "banner.none.add": "image/banner_none_add.png",
+  "banner.add": "image/banner_add.png",
 };

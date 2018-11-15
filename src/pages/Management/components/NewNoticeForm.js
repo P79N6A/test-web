@@ -362,7 +362,7 @@ class NewNoticeForm extends Component {
     const { editor, type, poster, posterMessage, avatarLoading } = this.state;
     const uploadButton = (
       <div className={styles.posterAdd}>
-        <Icon className={styles.posterIcon} style={{ paddingRight: '16px', fontSize: '24px', fontWeight: '800' }} type={avatarLoading ? 'loading' : 'plus'} />添加海报
+        <Icon className={styles.posterIcon} style={{ paddingRight: '16px', fontSize: '24px', fontWeight: '800' }} type={avatarLoading ? 'loading' : 'plus'} /><FormattedMessage id="notice.poster.add" />
       </div>
     );
     return (

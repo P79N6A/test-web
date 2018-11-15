@@ -229,16 +229,16 @@ export default class Home extends Component {
                             return (
                               <li key={`standRank${i}`}>
                                 <div>
-                                  <span className={i < 3 ? styles.active : ''}>{i + 1}</span>
-                                  <span>{username}</span>
-                                  <span>
+                                  <font className={i < 3 ? styles.active : ''}>{i + 1}</font>
+                                  <font>{username}</font>
+                                  <font>
                                     {days || null}
-                                    {days ? <i>天</i> : null}
+                                    {days ? <i><FormattedMessage id="home.day" /></i> : null}
                                     {hours || null}
-                                    {hours ? <i>小时</i> : null}
+                                    {hours ? <i><FormattedMessage id="home.hour" /></i> : null}
                                     {minutes || null}
-                                    {minutes ? <i>分钟</i> : <i style={{ fontSize: 14 }}>0<i>分钟</i></i>}
-                                  </span>
+                                    {minutes ? <i><FormattedMessage id="home.minute" /></i> : <i style={{ fontSize: 14 }}>0<i><FormattedMessage id="home.minute" /></i></i>}
+                                  </font>
                                 </div>
                               </li>
                             );

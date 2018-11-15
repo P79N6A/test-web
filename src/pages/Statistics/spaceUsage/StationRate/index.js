@@ -13,8 +13,8 @@ class StationRate extends Component {
   }
 
   getColor(status) {
-    if (status === '使用') return '#FCB0B1';
-    if (status === '空闲') return '#BDE4E1';
+    if (status === formatMessage({ id: "device.use" })) return '#FCB0B1';
+    if (status === formatMessage({ id: "device.leisure" })) return '#BDE4E1';
     return '#F3F3F3';
   }
 
@@ -94,9 +94,9 @@ class StationRate extends Component {
                         return G.moment(G.moment().day(text)._d).format('dddd');
                       }
                       if (type === 'YEARLY') {
-                        return `${text}${formatMessage({id:"spaceUsage.months"})}`;
+                        return `${text}${formatMessage({ id: "spaceUsage.months" })}`;
                       }
-                      return `${text}${formatMessage({id:"spaceUsage.days"})}`;
+                      return `${text}${formatMessage({ id: "spaceUsage.days" })}`;
                     },
                     textStyle: {
                       fill: '#9AA9B5',

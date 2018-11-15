@@ -1,4 +1,5 @@
 import { message } from 'antd';
+import { formatMessage } from 'umi/locale';
 import G from '@/global';
 import {
   getDeskCount,
@@ -103,21 +104,21 @@ export default {
         for (let i = 0; i < dataList.length; i += 1) {
           const { time, offline_duration, vacant_duration, occupied_duration } = dataList[i];
           [1, 2, 3].forEach(value => {
-            let status = '离线';
+            let status = formatMessage({ id: "device.offline" });
             let duration = offline_duration;
             if (value === 2) {
-              status = '空闲';
+              status = formatMessage({ id: "device.leisure" });
               duration = vacant_duration;
             }
             if (value === 3) {
-              status = '使用';
+              status = formatMessage({ id: "device.use" });
               duration = occupied_duration;
             }
             filter.push({
               status,
               date: parseInt(G.moment(time).format(types[type]), 10),
               value: duration,
-              time: G.moment(time).format('MM月DD日'),
+              time: G.moment(time).format(`MM-DD`),
             });
           });
         }

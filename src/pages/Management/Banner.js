@@ -260,13 +260,13 @@ export default class Banner extends Component {
                     {/* 添加图片 */}
                     {bannerList.length >= 5 ? '' : (
                       <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>
-                        <img className={styles.addBanner} src={`${G.picUrl}image/banner_add.png`} />
+                        <img className={styles.addBanner} src={`${G.picUrl}${formatMessage({ id: "banner.add" })}`} />
                       </li>
                     )}
                   </ul>) : (
                   <ul className={styles.bannerListBox}>
                     <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>
-                      <img className={styles.addBanner} src={`${G.picUrl}image/banner_add.png`} />
+                      <img className={styles.addBanner} src={`${G.picUrl}${formatMessage({ id: "banner.add" })}`} />
                     </li>
                   </ul>
                 )}

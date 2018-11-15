@@ -378,7 +378,7 @@ class BannerModel extends Component {
                 <Button className={styles.btnDefault}
                   key="choose"
                   size='small'
-                  onClick={this.changeModal.bind(this, { title: '添加Banner', type: 1, certain: '确定' })}><FormattedMessage id="banner.choose.default" /></Button>
+                  onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.add" }), type: 1, certain: formatMessage({ id: "all.certain" }) })}><FormattedMessage id="banner.choose.default" /></Button>
               </Col>
             </Row>
             <p className={styles.bannerAddTitle}><FormattedMessage id="banner.jump" /></p>

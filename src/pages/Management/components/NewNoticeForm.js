@@ -439,10 +439,10 @@ class NewNoticeForm extends Component {
         <div>
           <p className={styles.title}><FormattedMessage id="notice.push.setting" /></p>
           <p className={styles.content}><FormattedMessage id="notice.push.setting.title" /></p>
-          <Row gutter={24} style={{ marginBottom: '20px' }}>
+          <Row gutter={24} style={{ marginBottom: '5px' }}>
             <Col xl={8} lg={8} md={8} sm={8} xs={8}>
               <div className={styles.titleBox}>
-                <p className={styles.modelShow}><FormattedMessage id="notice.display.template" /></p>
+                <p className={styles.modelShow}><FormattedMessage id="notice.display.preview" /></p>
               </div>
               <div className={styles.mobileShow}>
                 <div className={styles.mobile}>
@@ -530,7 +530,7 @@ class NewNoticeForm extends Component {
           </Modal>
         </div>
         {/* 发布 */}
-        <Row style={{ paddingTop: '30px', borderTop: '1px solid #F2F2F2' }}>
+        <Row style={{ paddingTop: '12px', marginBottom: '-18px', borderTop: '1px solid #F2F2F2' }}>
           <Col span={24} style={{ textAlign: 'right' }}>
             <Button
               style={{ marginRight: 8 }}

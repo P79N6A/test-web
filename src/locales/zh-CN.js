@@ -135,7 +135,7 @@ export default {
   "notice.refresh": "请刷新页面再试",
   "notice.push.setting": "推送设置",
   "notice.push.setting.title": "必填，推送消息将以弹框形式显示，可选择推送文本信息或海报",
-  "notice.display.template": "展示模版",
+  "notice.display.preview": "预览",
   "notice.no.content": "暂无内容",
   "notice.right.content": "请在右侧设置推送内容",
   "notice.text": "文本",

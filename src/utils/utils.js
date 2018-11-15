@@ -24,7 +24,7 @@ export function getTimeDistance(type) {
   const now = new Date();
   const oneDay = 1000 * 60 * 60 * 24;
 
-  if (type === 'CURRENT_DAY') {
+  if (type === 'LAST_DAY') {
     now.setHours(0);
     now.setMinutes(0);
     now.setSeconds(0);
@@ -245,7 +245,7 @@ export function filterEdit(body) {
 
 // 根据时间类型返回对应时间和单位
 export function getTimeByType(date, type) {
-  if (type === 'CURRENT_DAY') {
+  if (type === 'LAST_DAY') {
     return date + ':00';
   }
   if (type === 'LAST_7DAYS') {

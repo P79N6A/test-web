@@ -28,6 +28,7 @@ export default {
   "menu.settings.gateway": "Gateway Configuration",
   // 首页
   "home.today": "Today",
+  "home.yesterday": "Yesterday",
   "home.nearly.seven.day": "In 7 Days",
   "home.nearly.thirty.day": "In 30 Days",
   "home.nearly.one.year": "In One Year",

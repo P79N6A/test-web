@@ -17,8 +17,8 @@ const { TabPane } = Tabs;
 }))
 export default class Home extends Component {
   state = {
-    rangePickerValue: getTimeDistance('CURRENT_DAY'),
-    type: 'CURRENT_DAY'
+    rangePickerValue: getTimeDistance('LAST_DAY'),
+    type: 'LAST_DAY'
   };
 
   componentDidMount() {
@@ -83,8 +83,8 @@ export default class Home extends Component {
     const salesExtra = (
       <div className={styles.salesExtraWrap}>
         <div className={styles.salesExtra}>
-          <a className={this.isActive('CURRENT_DAY')} onClick={() => this.selectDate('CURRENT_DAY')}>
-            <FormattedMessage id="home.today" />
+          <a className={this.isActive('LAST_DAY')} onClick={() => this.selectDate('LAST_DAY')}>
+            <FormattedMessage id="home.yesterday" />
           </a>
           <a className={this.isActive('LAST_7DAYS')} onClick={() => this.selectDate('LAST_7DAYS')}>
             <FormattedMessage id="home.nearly.seven.day" />

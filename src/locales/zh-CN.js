@@ -28,6 +28,7 @@ export default {
   "menu.settings.gateway": "网关配置",
   // 首页
   "home.today": "今日",
+  "home.yesterday": "昨日",
   "home.nearly.seven.day": "近7天",
   "home.nearly.thirty.day": "近30天",
   "home.nearly.one.year": "近1年",

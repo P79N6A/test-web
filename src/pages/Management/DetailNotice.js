@@ -10,22 +10,38 @@ import { routerRedux } from 'dva/router';
   ManagementNotice,
 }))
 export default class DetailNotice extends Component {
-
   goList() {
     const { dispatch } = this.props;
     dispatch({
       type: 'ManagementNotice/setCopyValue',
       payload: '',
     });
-    this.props.dispatch(routerRedux.push('/management/notice'))
+    this.props.dispatch(routerRedux.push('/management/notice'));
+  }
+
+  componentWillMount() {
+    const { ManagementNotice } = this.props;
+    if (!ManagementNotice.copyValue) {
+      this.props.dispatch(routerRedux.push('/management/notice'));
+    }
   }
 
   render() {
     const { ManagementNotice } = this.props;
     const { copyValue } = ManagementNotice;
     return (
-      <div style={{ width: '100%', height: '100%', padding: '2%', borderRadius: '4px', backgroundColor: '#fff' }}>
-        <p><FormattedMessage id='menu.management.detailNotice' /></p>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          padding: '2%',
+          borderRadius: '4px',
+          backgroundColor: '#fff',
+        }}
+      >
+        <p>
+          <FormattedMessage id="menu.management.detailNotice" />
+        </p>
         <div style={{ padding: '2% 5%' }}>
           <h3 style={{ fontSize: '28px' }}>{copyValue.title}</h3>
           <p>
@@ -36,7 +52,14 @@ export default class DetailNotice extends Component {
           </p>
           <br />
           <br />
-          <div className={styles.box} dangerouslySetInnerHTML={{ __html: `<style>.box {font-size: 24px;color: #35536C}.box img {max-width: 100%;}</style><div class="box">${copyValue.content}</div>` }} />
+          <div
+            className={styles.box}
+            dangerouslySetInnerHTML={{
+              __html: `<style>.box {font-size: 24px;color: #35536C}.box img {max-width: 100%;}</style><div class="box">${
+                copyValue.content
+              }</div>`,
+            }}
+          />
         </div>
         {/* 推送效果 */}
         <p style={{ marginTop: '30px' }}>推送效果</p>
@@ -46,12 +69,18 @@ export default class DetailNotice extends Component {
             <div className={styles.mobileText}>
               {copyValue.type === 0 ? <p>{copyValue.message}</p> : <img src={copyValue.message} />}
             </div>
-            <Icon type="close-circle" theme="filled" style={{ fontSize: '24px', marginTop: '15px', color: '#F3F5F7' }} />
+            <Icon
+              type="close-circle"
+              theme="filled"
+              style={{ fontSize: '24px', marginTop: '15px', color: '#F3F5F7' }}
+            />
           </div>
         </div>
         <Row style={{ paddingTop: '20px', borderTop: '1px solid #F2F2F2', marginTop: '20px' }}>
           <Col span={24} style={{ textAlign: 'right' }}>
-            <Button type="primary" size='small' onClick={this.goList.bind(this)}>返回</Button>
+            <Button type="primary" size="small" onClick={this.goList.bind(this)}>
+              返回
+            </Button>
           </Col>
         </Row>
       </div>

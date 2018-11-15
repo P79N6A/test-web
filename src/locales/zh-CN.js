@@ -146,7 +146,7 @@ export default {
   "notice.image.message.two": "（最小宽度512px，高度569px，支持小于2Mb的jpg/png格式图片上传）",
   "notice.certain.title": "确认提示",
   "notice.certain.text": "切换到文本后，图片将会被清空，确定切换为文本吗？",
-  "notice.certain.poster": "切换到海报后，文本信息将会被清空，确定切换为海报吗",
+  "notice.certain.poster": "切换到海报后，文本信息将会被清空，确定切换为海报吗？",
   "notice.poster.message": "请上传海报",
   "notice.poster.message.two": "仅支持2Mb及以下的图片上传",
   "notice.poster.message.error": "图片格式不正确",

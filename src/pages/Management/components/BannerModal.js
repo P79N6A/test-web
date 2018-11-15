@@ -55,7 +55,8 @@ class BannerModel extends Component {
         visible: false,
         bannerSrc: '',
         type: 0,
-        bannerUrl: ''
+        bannerUrl: '',
+        title: ''
       })
     } else {
       if (modal.type === 1) {
@@ -384,7 +385,7 @@ class BannerModel extends Component {
             <RadioGroup onChange={this.onChangeType.bind(this)} className={styles.btnGroup} value={bannerAdd.type}>
               <Row gutter={24}>
                 <Col span={4}>
-                  <Radio value={0}><FormattedMessage id="banner.open.notice" /></Radio>
+                  <Radio style={{ paddingTop: '5px' }} value={0}><FormattedMessage id="banner.open.notice" /></Radio>
                 </Col>
                 <Col span={15}>
                   <Input placeholder={formatMessage({ id: "banner.open.notice.message" })} disabled value={bannerAdd.title} />
@@ -396,16 +397,18 @@ class BannerModel extends Component {
                     size='small'
                     type="primary"
                     disabled={bannerAdd.type === 0 ? false : true}
-                    onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.choose.notice.title" }), type: 2, certain: formatMessage({ id: "all.certain" }) })}><FormattedMessage id="banner.choose.notice.title" /></Button>
+                    onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.choose.notice.title" }), type: 2, certain: formatMessage({ id: "all.certain" }) })}>
+                    <FormattedMessage id="banner.choose.notice.title" />
+                  </Button>
                 </Col>
               </Row>
               <br />
               <Row gutter={24}>
                 <Col span={4}>
-                  <Radio value={1}><FormattedMessage id="banner.open.link" /></Radio>
+                  <Radio style={{ paddingTop: '5px' }} value={1}><FormattedMessage id="banner.open.link" /></Radio>
                 </Col>
                 <Col span={20}>
-                  <Input style={{ marginRight: '4px !important' }} placeholder={formatMessage({ id: "customer.website.link.text" })} value={bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type === 1 ? false : true} />
+                  <Input style={{ marginRight: '4px !important' }} placeholder={formatMessage({ id: "customer.website.link.text" })} value={bannerAdd.type === 0 ? '' : bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type === 1 ? false : true} />
                 </Col>
               </Row>
             </RadioGroup>

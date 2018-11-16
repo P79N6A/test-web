@@ -389,7 +389,11 @@ class NewNoticeForm extends Component {
               placeholder={formatMessage({ id: 'notice.select.receiver' })}
               onChange={this.handleChangeTest.bind(this)}
               style={{ width: '100%' }}
-              filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              filterOption={(input, option) => {
+                if (option.props && option.props.children && (typeof option.props.children) === 'string') {
+                  return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                }
+              }}
             >
               {this.children}
             </Select>

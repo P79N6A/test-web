@@ -5,6 +5,7 @@ import { setAuthority, setUserInfo, getUserInfo } from '@/utils/authority';
 import { getPageQuery, isJSON } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
 import { message } from 'antd';
+import { formatMessage } from 'umi/locale';
 
 export default {
   namespace: 'login',
@@ -32,14 +33,14 @@ export default {
         reloadAuthorized();
         yield put(routerRedux.replace('/home'));
       } else if (typeof response.message === 'object') {
-        message.error('登录失败！');
+        message.error(formatMessage({ id: "login.error" }));
       } else {
-        message.error(response.message || '登录失败！');
+        message.error(response.message || formatMessage({ id: "login.error" }));
       }
     },
     *logout({ payload = {} }, { call, put }) {
       if (payload.tokenExpired) {
-        message.error('登录信息过期');
+        message.error(formatMessage({ id: "login.token.lose" }));
         yield put({ type: 'logoutWithoutToken' });
         return;
       }

@@ -1,5 +1,6 @@
 import { message } from 'antd';
 import { getCustomerList, addCustomer, editCustomer, resetPassword } from '../services/api';
+import { formatMessage } from 'umi/locale';
 
 export default {
   namespace: 'ManagementCustomer',
@@ -23,7 +24,7 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error(response.message || '请求失败');
+        message.error(response.message || formatMessage({ id: "customer.quest.error" }));
       }
     },
     *addCustomer({ payload }, { call }) {
@@ -40,7 +41,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(response.data);
       } else {
-        message.error(response.message || '重置密码失败');
+        message.error(response.message || formatMessage({ id: "customer.reset.password.error" }));
       }
     },
   },

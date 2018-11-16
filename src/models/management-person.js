@@ -1,5 +1,6 @@
 import { message } from 'antd';
 import { getPersonnelList, addPerson, updatePerson, getQiniuToken } from '../services/api';
+import { formatMessage } from 'umi/locale';
 
 export default {
   namespace: 'ManagementPerson',
@@ -22,25 +23,25 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error('请求失败');
+        message.error(formatMessage({ id: "customer.quest.error" }));
       }
     },
     *addPerson({ payload }, { call }) {
       const response = yield call(addPerson, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.message || '添加成功');
+        message.success(response.message || formatMessage({ id: "customer.add.success" }));
       } else {
-        message.error(response.message || '添加失败');
+        message.error(response.message || formatMessage({ id: "customer.add.fail" }));
       }
     },
     *updatePerson({ payload }, { call }) {
       const response = yield call(updatePerson, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.data || '修改成功');
+        message.success(response.data || formatMessage({ id: "customer.successfully.modified" }));
       } else {
-        message.error(response.message || '修改失败');
+        message.error(response.message || formatMessage({ id: "customer.fail.to.edit" }));
       }
     },
     *getQiniuToken({ payload }, { call }) {

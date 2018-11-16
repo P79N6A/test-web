@@ -1,6 +1,7 @@
 import { gatewayList, gatewayRemark, gatewayCommand } from '@/services/api';
 import { message } from 'antd';
-import G from '@/global'
+import G from '@/global';
+import { formatMessage } from 'umi/locale';
 
 export default {
   namespace: 'Gateway',
@@ -37,18 +38,18 @@ export default {
       const response = yield call(gatewayRemark, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success('备注成功');
+        message.success(formatMessage({ id: "gateway.remark.success" }));
       } else {
-        message.error(response.message || '备注失败');
+        message.error(response.message || formatMessage({ id: "gateway.remark.fail" }));
       }
     },
     *gatewayCommand({ payload }, { call }) {
       const response = yield call(gatewayCommand, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success('配置成功');
+        message.success(formatMessage({ id: "gateway.configure.success" }));
       } else {
-        message.error(response.message || '配置失败');
+        message.error(response.message || formatMessage({ id: "gateway.configure.fail" }));
       }
     },
   },

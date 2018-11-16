@@ -30,7 +30,7 @@ class ConfigureModel extends Component {
         });
       })
     } else {
-      message.error('请填写所要执行的命令');
+      message.error(formatMessage({ id: "gateway.write.command" }));
     }
 
   }
@@ -58,7 +58,7 @@ class ConfigureModel extends Component {
       <Modal
         width={780}
         visible={configureVisible}
-        title={'网关'}
+        title={formatMessage({ id: "gateway" })}
         onOk={handClose}
         onCancel={handClose}
         footer={[
@@ -70,16 +70,16 @@ class ConfigureModel extends Component {
           </Button>,
         ]}
       >
-        <p className={styles.gatewayNumber}>网关编号：{configureList.toString()}</p>
-        <h3 className={styles.command}>命令行</h3>
+        <p className={styles.gatewayNumber}><FormattedMessage id="gateway.gateway.number" />：{configureList.toString()}</p>
+        <h3 className={styles.command}><FormattedMessage id="gateway.command.line" /></h3>
         <TextArea
           rows={8}
           value={command}
-          placeholder={'网关配置指令'}
+          placeholder={formatMessage({ id: "gateway.configure.command" })}
           style={{ resize: 'none' }}
           onChange={this.onChangeTextArea.bind(this)} />
-        <Button key="implement" type="primary" size="small" onClick={this.implement.bind(this)} style={{ marginTop: '16px' }}>执行</Button>
-        <h3 className={styles.command}>返回结果 <span className={styles.clear} onClick={this.clear.bind(this)}>清空</span></h3>
+        <Button key="implement" type="primary" size="small" onClick={this.implement.bind(this)} style={{ marginTop: '16px' }}><FormattedMessage id="gateway.implement" /></Button>
+        <h3 className={styles.command}><FormattedMessage id="gateway.callback" /><span className={styles.clear} onClick={this.clear.bind(this)}><FormattedMessage id="gateway.clear" /></span></h3>
         <div className={styles.resultBox}>
           {
             result && result.length > 0 ? result.map((item, i) => {

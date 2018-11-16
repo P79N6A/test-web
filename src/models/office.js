@@ -83,7 +83,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveDeskCount', payload: response.data });
       } else {
-        message.error((response && response.message) || '工位总数获取失败');
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.device.total.error" }));
       }
     },
     *getYuseCount(_, { call, put }) {
@@ -91,7 +91,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveYesterdayUseCount', payload: response.data });
       } else {
-        message.error((response && response.message) || '昨日使用数获取失败');
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.yesterday.use.error" }));
       }
     },
     *getUseRate({ payload }, { call, put }) {
@@ -124,7 +124,7 @@ export default {
         }
         yield put({ type: 'saveUseRate', payload: { data: filter, type: payload.type } });
       } else {
-        message.error((response && response.message) || '工位使用趋势');
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.station.usage.error" }));
       }
     },
     // 服务时长统计
@@ -133,7 +133,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveServiceDuration', payload: response.data });
       } else {
-        message.error((response && response.message) || '服务时长统计获取失败');
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.server.time.error" }));
       }
     },
     // 工位使用时长
@@ -164,7 +164,7 @@ export default {
           },
         });
       } else {
-        message.error((response && response.message) || '工位使用时长分布获取失败');
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.device.use.error" }));
       }
     },
     // 工位使用率排行
@@ -201,7 +201,7 @@ export default {
           });
         }
       } else {
-        message.error((response && response.message) || '工位使用时长分布获取失败');
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.device.use.error" }));
       }
     },
   },

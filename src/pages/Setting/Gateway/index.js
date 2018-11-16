@@ -32,7 +32,7 @@ export default class Gateway extends Component {
     const { Gateway } = this.props;
     const { configureList } = Gateway;
     if (G._.isEmpty(configureList)) {
-      message.error('请选择网关');
+      message.error(formatMessage({ id: "gateway.choose" }));
     } else {
       this.changeConfigure({ configureVisible: true });
     }
@@ -103,7 +103,7 @@ export default class Gateway extends Component {
   getColumns(sortOrder, customerList, positionList) {
     const columns = [
       {
-        title: "编号",
+        title: formatMessage({ id: "gateway.number" }),
         key: 'id',
         width: 100,
         sorter: true,
@@ -117,7 +117,7 @@ export default class Gateway extends Component {
         ),
       },
       {
-        title: "所属客户",
+        title: formatMessage({ id: "device.customer" }),
         key: 'companyName',
         filters: customerList,
         render: (text) => {
@@ -144,7 +144,7 @@ export default class Gateway extends Component {
         }
       },
       {
-        title: "位置",
+        title: formatMessage({ id: "gateway.position" }),
         key: "position",
         filters: positionList,
         render: (text) => {
@@ -171,7 +171,7 @@ export default class Gateway extends Component {
         }
       },
       {
-        title: "连接状态",
+        title: formatMessage({ id: "gateway.link.state" }),
         key: 'statuse',
         render: (text) => {
           return (
@@ -196,7 +196,7 @@ export default class Gateway extends Component {
                 this.changeConfigure({ configureList: array, configureVisible: true });
               }}
             >
-              配置
+              <FormattedMessage id="gateway.configure" />
             </a>
             <Divider type="vertical" />
             <a
@@ -290,14 +290,14 @@ export default class Gateway extends Component {
         <h3><FormattedMessage id="menu.settings.gateway" /></h3>
         <br />
         <Row className={styles.lageBox}>
-          <p>网关列表</p>
+          <p><FormattedMessage id="gateway.list" /></p>
           <Col span={24}>
             <Button
               size='small'
               type="primary"
               onClick={this.configuration.bind(this)}
             >
-              批量配置
+              <FormattedMessage id="gateway.batch.configure" />
             </Button>
             <Button
               className={styles.rights}

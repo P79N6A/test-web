@@ -48,8 +48,11 @@ export default {
   "home.hour": "Hour",
   "home.minute": "Min",
   "home.person.standing.time.ranking": "Standing Ranking",
-  "all.operate.fail": "Failed",
-  "all.operate.success": "Success",
+  "home.device.error": "设备数获取失败",
+  "home.user.error": "用户数获取失败",
+  "home.notice.error": "通知数获取失败",
+  "home.stand.error": "站立时长获取失败",
+  "home.stand.rate.error": "站立排行获取失败",
   // 模块共用
   "all.serial.number": "Number",
   "all.operating": "Operation",
@@ -64,6 +67,8 @@ export default {
   "all.submit": "Submit",
   "all.close": "Close",
   "all.remarks": "Remarks",
+  "all.operate.fail": "Failed",
+  "all.operate.success": "Success",
   "all.choose": "Select",
   // 检测语言
   "test.min.long.eight": "Min Length: ≥8",
@@ -110,6 +115,10 @@ export default {
   "device.use": "Use",
   "device.leisure": "Available",
   "device.remark.text": "Please type in remarks",
+  "device.untie.success": "解绑成功",
+  "device.untie.fail": "解绑失败",
+  "device.remove.success": "移除成功",
+  "device.remove.fail": "移除失败",
   // 通知管理
   "notice.empty": "Empty",
   "notice.send": "Sent",
@@ -172,6 +181,7 @@ export default {
   "customer.search.text": "Customer Name/Account Number/Remarks",
   "customer.edit.customer": "Edit Customer Info",
   "customer.add.success": "Successfully Added",
+  "customer.add.fail": "Add Failed",
   "customer.add.company.fail": "Creating new company failed",
   "customer.successfully.modified": "Successfully modified",
   "customer.fail.to.edit": "Modification Failed",
@@ -196,6 +206,8 @@ export default {
   "customer.administrator.mobile": "Admin Mobile Number",
   "customer.administrator.mobile.text": "Please type in admin mobile number",
   "customer.administrator.mobile.message": "Please enter the number in correct format",
+  "customer.quest.error": "请求失败",
+  "customer.reset.password.error": "重置密码失败",
   // 修改密码
   "change.two.message": "Passwords are not matched, please type in again",
   "change.password": "Change Password",
@@ -210,6 +222,10 @@ export default {
   // 登录
   "login.account": "Account",
   "login.user.name": "Please type in user's name",
+  "login.title": "登录-9AM智能办公",
+  "login.image": "背景图片",
+  "login.error": "登录失败！",
+  "login.token.lose": "登录信息过期",
   // 备用
   "app.settings.basic.email": "Email Address",
   "app.settings.basic.email-message": "Please type in email address",
@@ -223,7 +239,6 @@ export default {
   "app.exception.description.500": "【500】Coming back soon",
   "menu.account.edit": "Change Password",
   "menu.account.logout": "Log Out",
-  // TODO: 修改成英语
   // 空间实时状态
   "spaceState.real.time.statistics": "Real-time Data",
   "spaceState.used.workstations": "Workstation in Use",
@@ -262,6 +277,11 @@ export default {
   "spaceUsage.free.station.rank": "Idle Workstation Ranking",
   "spaceUsage.yesterday.use.peak": "Yesterday Peak",
   "spaceUsage.time": "Time",
+  "spaceUsage.device.total.error": "工位总数获取失败",
+  "spaceUsage.yesterday.use.error": "昨日使用数获取失败",
+  "spaceUsage.station.usage.error": "工位使用趋势获取失败",
+  "spaceUsage.server.time.error": "服务时长统计获取失败",
+  "spaceUsage.device.use.error": "工位使用时长分布获取失败",
   // banner 管理
   "banner.send.success": "Released successfully",
   "banner.delete.success": "Deleted successfully",
@@ -293,6 +313,24 @@ export default {
   "banner.open.link": "Website",
   "banner.banner.9am": "Cover Provided by 9AM",
   "banner.choose.notice.message": "Choose one notification, and click banner in Dshow to redirect to this notification page",
+  // 网关
+  "gateway.choose": "请选择网关",
+  "gateway.number": "编号",
+  "gateway.position": "位置",
+  "gateway.link.state": "连接状态",
+  "gateway.configure": "配置",
+  "gateway.list": "网关列表",
+  "gateway.batch.configure": "批量配置",
+  "gateway.write.command": "请填写所要执行的命令",
+  "gateway": "Gateway",
+  "gateway.gateway.number": "网关编号",
+  "gateway.command.line": "命令行",
+  "gateway.configure.command": "网关配置指令",
+  "gateway.callback": "返回结果",
+  "gateway.implement": "执行",
+  "gateway.clear": "清空",
+  "gateway.remark.success": "备注成功",
+  "gateway.remark.fail": "备注失败",
   // ant
   "app.setting.pagestyle": "Page style setting",
   "app.setting.pagestyle.dark": "Dark style",
@@ -323,8 +361,11 @@ export default {
   "app.setting.copyinfo": "copy success，please replace defaultSettings in src/models/setting.js",
   "app.setting.production.hint":
     "Setting panel show in development enviorment only, please mannually modify",
+  // 图片
   "stand.time.trend.none": "image/stand_time_trend_none_en.png",
   "stand.time.rank.none": "image/stand_time_rank_none_en.png",
   "banner.none.add": "image/banner_none_add_en.png",
   "banner.add.en": "image/banner_add_en.png",
+  "banner.backchart": "image/backchart_en.png",
+  "banner.backchart.admin": "image/backcharts_en.png",
 };

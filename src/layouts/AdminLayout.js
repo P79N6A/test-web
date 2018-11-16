@@ -3,16 +3,17 @@ import { Link } from 'dva/router';
 import G from '@/global';
 import styles from './UserLayout.less';
 import DocumentTitle from 'react-document-title';
+import { formatMessage } from 'umi/locale';
 
 class UserLayout extends React.PureComponent {
   render() {
     const { children } = this.props;
     return (
-      <DocumentTitle title='登录-9AM智能办公'>
+      <DocumentTitle title={formatMessage({ id: "login.title" })}>
         <div className={styles.admin_container}>
           <div className={styles.containers}>
             <div className={styles.contents}>
-              <img alt="背景图片" src={`${G.picUrl}image/backcharts.png`} />
+              <img alt={formatMessage({ id: "login.image" })} src={`${G.picUrl}${formatMessage({ id: "banner.backchart.admin" })}`} />
             </div>
             <div className={styles.content}>
               <div className={styles.top}>

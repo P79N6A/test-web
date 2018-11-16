@@ -8,6 +8,7 @@ import {
   getHomeRank,
 } from '../services/api';
 import { getTimeByType } from '../utils/utils.js';
+import { formatMessage } from 'umi/locale';
 
 export default {
   namespace: 'home',
@@ -28,7 +29,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveResourceNum', payload: response.data });
       } else {
-        message.error(response.message || '设备数获取失败');
+        message.error(response.message || formatMessage({ id: "home.device.error" }));
       }
     },
     *getUserNum(_, { call, put }) {
@@ -36,7 +37,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveUserNum', payload: response.data });
       } else {
-        message.error(response.message || '用户数获取失败');
+        message.error(response.message || formatMessage({ id: "home.user.error" }));
       }
     },
     *getNotificationCount(_, { call, put }) {
@@ -44,7 +45,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveNotificationNum', payload: response.data });
       } else {
-        message.error(response.message || '通知数获取失败');
+        message.error(response.message || formatMessage({ id: "home.notice.error" }));
       }
     },
     *getStandNum(_, { call, put }) {
@@ -52,7 +53,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveStandNum', payload: response.data });
       } else {
-        message.error(response.message || '站立时长获取失败');
+        message.error(response.message || formatMessage({ id: "home.stand.error" }));
       }
     },
     *getHomeStand({ payload }, { call, put }) {
@@ -60,7 +61,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveHomeStand', payload: response.data });
       } else {
-        message.error(response.message || '站立时长获取失败');
+        message.error(response.message || formatMessage({ id: "home.stand.error" }));
       }
     },
     *getHomeRank({ payload }, { call, put }) {
@@ -68,7 +69,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveHomeRank', payload: response.data.rank });
       } else {
-        message.error(response.message || '站立排行获取失败');
+        message.error(response.message || formatMessage({ id: "home.stand.rate.error" }));
         yield put({ type: 'saveHomeRank', payload: [] });
       }
     },

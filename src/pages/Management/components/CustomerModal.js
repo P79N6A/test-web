@@ -286,7 +286,7 @@ class NewCustomer extends Component {
                       message: formatMessage({ id: 'test.max.long.eleven' }),
                     },
                     {
-                      pattern: /^((13[0-9])|(14[5,7,9])|(15[^4])|(18[0-9])|(17[0,1,3,5,6,7,8]))\d{8}$/,
+                      pattern: /^1[34578]\d{9}$/,
                       message: formatMessage({ id: 'customer.administrator.mobile.message' }),
                     },
                   ],

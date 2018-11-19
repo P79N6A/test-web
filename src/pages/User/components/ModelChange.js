@@ -3,6 +3,7 @@ import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
+import G from '@/global';
 
 const FormItem = Form.Item;
 
@@ -79,7 +80,7 @@ class ModalChange extends Component {
                       message: formatMessage({ id: 'test.max.long.twenty' }),
                     },
                     {
-                      pattern: /^[a-z_A-Z0-9-\.!@#\$%\\\^&\*\)\(\+=\{\}\[\]\/",'<>~\·`\?:;|]+$/,
+                      pattern: G.passCheck,
                       message: formatMessage({ id: 'change.original.password.message' }),
                     },
                   ],
@@ -98,7 +99,7 @@ class ModalChange extends Component {
                       message: formatMessage({ id: 'test.max.long.twenty' }),
                     },
                     {
-                      pattern: /^[a-z_A-Z0-9-\.!@#\$%\\\^&\*\)\(\+=\{\}\[\]\/",'<>~\·`\?:;|]+$/,
+                      pattern: G.passCheck,
                       message: formatMessage({ id: 'change.original.password.message' }),
                     },
                   ],

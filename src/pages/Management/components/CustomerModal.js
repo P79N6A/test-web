@@ -3,6 +3,7 @@ import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
+import G from '@/global'
 
 const FormItem = Form.Item;
 
@@ -166,7 +167,7 @@ class NewCustomer extends Component {
                           message: formatMessage({ id: 'test.max.long.twenty' }),
                         },
                         {
-                          pattern: /^\w+$/,
+                          pattern: G.accountCheck,
                           message: formatMessage({ id: 'customer.account.number.message' }),
                         },
                       ]
@@ -200,7 +201,7 @@ class NewCustomer extends Component {
                           message: formatMessage({ id: 'test.max.long.twenty' }),
                         },
                         {
-                          pattern: /^[a-z_A-Z0-9-\.!@#\$%\\\^&\*\)\(\+=\{\}\[\]\/",'<>~\·`\?:;|]+$/,
+                          pattern: G.passCheck,
                           message: formatMessage({ id: 'customer.password.message' }),
                         },
                       ]
@@ -228,7 +229,7 @@ class NewCustomer extends Component {
                   rules: [
                     { required: true, message: formatMessage({ id: 'app.settings.basic.email-message' }) },
                     {
-                      pattern: /^\w[-+.\w]*@\w[-\w]*(\.\w[-\w]*)+$/,
+                      pattern: G.emailCheck,
                       message: formatMessage({ id: 'customer.email.message' }),
                     },
                   ],
@@ -286,7 +287,7 @@ class NewCustomer extends Component {
                       message: formatMessage({ id: 'test.max.long.eleven' }),
                     },
                     {
-                      pattern: /^1[34578]\d{9}$/,
+                      pattern: G.phoneCheck,
                       message: formatMessage({ id: 'customer.administrator.mobile.message' }),
                     },
                   ],

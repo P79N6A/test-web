@@ -76,7 +76,7 @@ class PersonModal extends Component {
       callback(' ');
       return;
     }
-    const re = /^1[3|4|5|8][0-9]\d{4,8}$/;
+    const re = G.phoneCheck;
     if (value.length === 11 && re.test(value)) {
       callback();
     } else {
@@ -224,7 +224,7 @@ class PersonModal extends Component {
           {getFieldDecorator('email', {
             rules: [
               {
-                pattern: /^\w[-+.\w]*@\w[-\w]*(\.\w[-\w]*)+$/,
+                pattern: G.emailCheck,
                 message: formatMessage({ id: 'customer.email.message' }),
               },
             ],

@@ -17,6 +17,10 @@ message.config({
   maxCount: 1,
 });
 const htmlUrl = process.SERVER_URL;
+const phoneCheck = /^1[34578]\d{9}$/;
+const emailCheck = /^\w[-+.\w]*@\w[-\w]*(\.\w[-\w]*)+$/;
+const passCheck = /^[a-z_A-Z0-9-\.!@#\$%\\\^&\*\)\(\+=\{\}\[\]\/",'<>~\·`\?:;|]+$/;
+const accountCheck = /^\w+$/;
 
 export default {
   API_URL,
@@ -27,4 +31,8 @@ export default {
   picUrl,
   message,
   htmlUrl,
+  phoneCheck,
+  emailCheck,
+  passCheck,
+  accountCheck,
 };

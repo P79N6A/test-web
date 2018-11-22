@@ -5,7 +5,7 @@ import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon, 
 
 import G from '@/global';
 import styles from './Device.less';
-import EquipModal from './components/EquipModal.js';
+import EquipModal from './components/DeviceModal.js';
 
 @connect(({ ManagementDevice, user, ManagementCustomer, loading }) => ({
   ManagementDevice,

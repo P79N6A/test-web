@@ -5,7 +5,7 @@ import G from '@/global';
 
 const FormItem = Form.Item;
 
-class EquipModal extends Component {
+class DeviceModal extends Component {
   componentWillReceiveProps(nextProps) {
     const { visible, editValue } = nextProps;
     if (this.visible !== visible && !G._.isEqual(this.editValue, editValue)) {
@@ -69,4 +69,4 @@ class EquipModal extends Component {
   }
 }
 
-export default Form.create()(EquipModal);
+export default Form.create()(DeviceModal);

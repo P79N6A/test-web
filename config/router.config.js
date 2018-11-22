@@ -5,7 +5,7 @@ export default [
     component: '../layouts/BlankLayout',
     routes: [
       { path: '/dshow', redirect: '/dshow/login' },
-      { path: '/dshow/login', component: './Dshow/DshowLogin' }
+      { path: '/dshow/login', component: './Dshow/Login/DshowLogin' }
     ],
   },
   // user
@@ -58,53 +58,53 @@ export default [
           {
             path: '/management/customer',
             name: 'customer',
-            component: './Management/Customer',
+            component: './Management/Customer/Customer',
             authority: ['admin'],
           },
           {
             path: '/management/newCustomer',
             name: 'newCustomer',
             hideInMenu: true,
-            component: './Management/NewCustomer',
+            component: './Management/Customer/NewCustomer',
             authority: ['admin', 'user'],
           },
           {
             path: '/management/person',
             name: 'person',
-            component: './Management/Person',
+            component: './Management/Person/Person',
             authority: ['user'],
           },
           {
             path: '/management/device',
             name: 'device',
-            component: './Management/Device',
+            component: './Management/Device/Device',
             authority: ['admin', 'user'],
           },
           {
             path: '/management/notice',
             name: 'notice',
-            component: './Management/Notice',
+            component: './Dshow/Notice/Notice',
             authority: ['user'],
           },
           {
             path: '/management/newNotice',
             name: 'newNotice',
             hideInMenu: true,
-            component: './Management/NewNotice',
+            component: './Dshow/Notice/NewNotice',
             authority: ['user'],
           },
           {
             path: '/management/detailNotice',
             name: 'detailNotice',
             hideInMenu: true,
-            component: './Management/DetailNotice',
+            component: './Dshow/Notice/DetailNotice',
             authority: ['user'],
           },
           {
             path: '/management/banner',
             name: 'banner',
             hideInMenu: true,
-            component: './Management/Banner',
+            component: './Dshow/Banner/Banner',
             authority: ['user'],
           },
           { redirect: '/exception/404' },

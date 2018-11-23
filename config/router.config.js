@@ -30,6 +30,20 @@ export default [
       { path: '/admin_user/login', component: './User/Login' },
     ],
   },
+  // 只有头部没有权限设置的外接页面
+  {
+    path: '/external',
+    component: '../layouts/ExternalLayout',
+    routes: [
+      { path: '/external', redirect: '/external/RetrievePassword' },
+      // 找回密码
+      { path: '/external/RetrievePassword', component: './Password/RetrievePassword' },
+      // 找回密码的邮箱模板
+      { path: '/external/RetrieveMail', component: './Password/RetrieveMail' },
+      { path: '/external/NewPassword', component: './Password/RetrieveMail/NewPassword' },
+      { redirect: '/exception/404' },
+    ],
+  },
   // home
   {
     path: '/',
@@ -39,7 +53,7 @@ export default [
       {
         name: 'changePassword',
         path: './changePassword',
-        component: './User/ChangePassword',
+        component: './Password/ChangePassword/ChangePassword',
         authority: ['admin', 'user'],
         hideInMenu: true,
       },

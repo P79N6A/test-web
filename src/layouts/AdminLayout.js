@@ -5,7 +5,7 @@ import styles from './UserLayout.less';
 import DocumentTitle from 'react-document-title';
 import { formatMessage } from 'umi/locale';
 
-class UserLayout extends React.PureComponent {
+class AdminLayout extends React.PureComponent {
   render() {
     const { children } = this.props;
     return (
@@ -34,4 +34,4 @@ class UserLayout extends React.PureComponent {
   }
 }
 
-export default UserLayout;
+export default AdminLayout;

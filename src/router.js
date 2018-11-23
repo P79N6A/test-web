@@ -14,6 +14,7 @@ function RouterConfig({ history, app }) {
   const UserLayout = routerData['/user'].component;
   const AdminLayout = routerData['/admin_user'].component;
   const BasicLayout = routerData['/'].component;
+  const ExternalLayout = routerData['/external'].component;
   return (
     <LocaleProvider locale={zhCN}>
       <ConnectedRouter history={history}>
@@ -21,6 +22,7 @@ function RouterConfig({ history, app }) {
           <Route path="/user" component={UserLayout} />
           <Route path="/admin_user" component={AdminLayout} />
           <Route path="/dshow" component={BlankLayout} />
+          <Route path="/external" component={ExternalLayout} />
           {/* 判定权限默认全部 */}
           <AuthorizedRoute
             path="/"

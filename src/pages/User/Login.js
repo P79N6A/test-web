@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import { Alert } from 'antd';
 import Login from '@/components/Login';
 import styles from './Login.less';
+import { routerRedux } from 'dva/router';
 
 const { Tab, UserName, Password, Submit } = Login;
 
@@ -62,6 +63,10 @@ class LoginPage extends Component {
     <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
   );
 
+  retrievePassword = () => {
+    this.props.dispatch(routerRedux.push('/external/RetrievePassword'))
+  }
+
   render() {
     const { login, submitting, match } = this.props;
     const { type, autoLogin } = this.state;
@@ -87,6 +92,7 @@ class LoginPage extends Component {
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
           </Tab>
+          <p className={styles.retrievePassword} onClick={this.retrievePassword.bind(this)}>找回密码</p>
           <Submit loading={submitting} path={match.path}><FormattedMessage id='menu.user.login' /></Submit>
         </Login>
       </div>

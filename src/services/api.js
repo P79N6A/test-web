@@ -382,3 +382,54 @@ export async function gatewayCommand(payload) {
     body: { command: payload.command, token: getToken() },
   });
 }
+
+// TODO: 找回密码发送邮箱给后台
+export async function sendEmail(payload) {
+  return {
+    status: "success",
+  }
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/send/email`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// TODO: 根据后台的 Id 获取名字
+export async function getName(payload) {
+  return {
+    status: "success",
+    data: {
+      name: "小Q"
+    }
+  }
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/email/get/name`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// TODO: 进入邮箱点击找回密码
+export async function retrievePassword(payload) {
+  return {
+    status: "success"
+  }
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/retrieve/password`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// TODO: 发送新密码
+export async function sendPassword(payload) {
+  return {
+    status: "success"
+  }
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/send/password`, {
+    method: 'POST',
+    body,
+  });
+}

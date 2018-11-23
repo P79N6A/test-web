@@ -15,6 +15,7 @@
     if (window.sessionStorage.getItem('lang') && window.sessionStorage.getItem('lang') === 'en') {
       lang = 'en';
     }
+    const errorLists = JSON.parse(window.sessionStorage.getItem('errorLists'));
     const messageLists = {
       ch: {
         getVerificationCode: "获取验证码",
@@ -190,7 +191,7 @@
             async: true,
             error: function (data) {
               $('#model').show();
-              $('#model_text').text(data.responseJSON.message || messageLists[lang].networkUnavailable);
+              $('#model_text').text(errorLists[data.responseJSON.code]['message_' + lang] || 'error');
               data.responseJSON.message ? $('#error_online_img').attr("src", cdnUrl + 'dshow/dshow_network.png') : $('#error_online_img').attr("src", cdnUrl + 'dshow/dshow_error.png')
               countdown = 0;
             },
@@ -236,7 +237,7 @@
             async: true,
             error: function (data) {
               $('#model').show();
-              $('#model_text').text(data.responseJSON.message || messageLists[lang].networkUnavailable);
+              $('#model_text').text(errorLists[data.responseJSON.code]['message_' + lang] || 'error');
               data.responseJSON.message ? $('#error_online_img').attr("src", cdnUrl + 'dshow/dshow_network.png') : $('#error_online_img').attr("src", cdnUrl + 'dshow/dshow_error.png')
             },
             success: function (data) {
@@ -471,8 +472,7 @@
     .error_online_text {
       font-size: 0.28rem;
       line-height: 0.4rem;
-      height: 0.4rem;
-      padding: 0.86rem 0;
+      padding: 0.7rem 0.2rem;
       text-align: center;
       color: #35536C;
     }

@@ -17,6 +17,7 @@ class DshowLogin extends Component {
   componentDidMount() {
     window.sessionStorage.setItem('deskScreenId', this.getUrlParam('deskScreenId'));
     window.sessionStorage.setItem('lang', this.getUrlParam('lang'));
+    window.sessionStorage.setItem('errorLists', JSON.stringify(G.errorLists));
     window.sessionStorage.setItem('DshowUrl', process.DSHOW_URL);
     this.setState({
       iframeUrl: G.env ? `${G.htmlUrl}/static/dshow.html` : require('@/static/dshow.html')

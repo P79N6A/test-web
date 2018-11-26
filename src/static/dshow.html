@@ -55,7 +55,7 @@
     var countdown = 60;
     var countdowns = 5;
     var urls = window.sessionStorage.getItem('DshowUrl');
-    var cdnUrl = 'http://cdn.space.9amtech.com/'
+    var cdnUrl = window.sessionStorage.getItem('cdnUrl');
     // 尺寸
     function getRem(pwidth, prem) {
       var html = document.getElementsByTagName("html")[0];
@@ -158,6 +158,7 @@
     });
 
     window.onload = function () {
+
       // 给各个标签初始化值
       $('#code').text(messageLists[lang].getVerificationCode);
       $('#phone').attr('placeholder', messageLists[lang].enterPhone);
@@ -167,6 +168,12 @@
       $('#certain').val(messageLists[lang].ok);
       $('#login_success').text(messageLists[lang].loginSuccess);
       $('#already_login_success').text(messageLists[lang].presentIDLoginSuccess);
+
+      // 各个图片初始化值
+      $('#logo').attr("src", cdnUrl + 'dshow/dshow_logo.png');
+      $('#login_footer').attr("src", cdnUrl + 'dshow/dshow_footer_pic.png');
+      $('#success_pic').attr("src", cdnUrl + 'dshow/dshow_login_success.png');
+      $('#log_success_footer').attr("src", cdnUrl + 'dshow/dshow_footer_pic.png');
 
       getRem(750, 100);
       $('#tips').addClass('error_hide');
@@ -528,7 +535,7 @@
 <body>
   <div class="box">
     <!-- 正文 -->
-    <img class="logo" src="http://cdn.space.9amtech.com/dshow/dshow_logo.png" />
+    <img class="logo" id="logo" />
     <ul class="list">
       <li class="list_demo">
         <input class="log_number" type="number" id="phone" value="" />
@@ -540,22 +547,22 @@
     </ul>
     <input type="button" class="login_btn" id="login_btn" />
     <input type="button" class="error_little_text" id="tips" value="" />
-    <img class="login_footer" src="http://cdn.space.9amtech.com/dshow/dshow_footer_pic.png" />
+    <img class="login_footer" id="login_footer" />
     <!-- 错误在线弹窗 -->
     <div class="error_online" id="model">
       <div class="error_online_box">
-        <img class="error_online_img" id="error_online_img" src="http://cdn.space.9amtech.com/dshow/dshow_error.png" />
+        <img class="error_online_img" id="error_online_img" />
         <p class="error_online_text" id="model_text"></p>
         <input class="error_online_btn" type="button" id="certain" />
       </div>
     </div>
     <!-- 成功的弹窗 -->
     <div class="success_model" id="success_model">
-      <img class="success_pic" src="http://cdn.space.9amtech.com/dshow/dshow_login_success.png" />
+      <img class="success_pic" id="success_pic" />
       <h3 class="success_title" id="login_success"></h3>
       <p class="success_text" id="already_login_success"></p>
       <p class="success_text" id="next"></p>
-      <img class="login_footer" src="http://cdn.space.9amtech.com/dshow/dshow_footer_pic.png" />
+      <img class="login_footer" id="log_success_footer" src="http://cdn.space.9amtech.com/dshow/dshow_footer_pic.png" />
     </div>
   </div>
 </body>

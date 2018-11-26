@@ -370,4 +370,6 @@ export default {
   "banner.add.en": "image/banner_add.png",
   "banner.backchart": "image/backchart.png",
   "banner.backchart.admin": "image/backcharts.png",
+  // TODO: src/static/retrievePassword.html
+  // TODO: src/pages/Password/RetrieveMail/index.js
 };

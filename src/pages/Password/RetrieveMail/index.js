@@ -4,6 +4,7 @@ import { Row, Col, message, Button } from 'antd';
 import CenterHeader from '@/components/SpaceHeader/CenterHeader'
 import styles from './index.less'
 import G from '@/global'
+import { routerRedux } from 'dva/router';
 
 @connect(({ RetrieveMail }) => ({
   RetrieveMail,
@@ -18,6 +19,7 @@ export default class RetrieveMail extends Component {
       id: this.props.location.query.id
     })
     this.observeName(this.props.location.query.id);
+    this.retrievePassword(this.props.location.query.id);
   }
 
   // 根据 Id 获取名字
@@ -31,17 +33,17 @@ export default class RetrieveMail extends Component {
 
   // 跳到找回密码页面
   goNewPassword() {
-    window.open(`${G.htmlUrl}/external/NewPassword?id=${this.props.location.query.id}`, "_blank");
+    this.props.dispatch(routerRedux.push(`/external/NewPassword?id=${this.props.location.query.id}`));
   }
 
-  // 点击邮箱找回密码
-  retrievePassword() {
+  // 链接过没过期
+  retrievePassword(ids) {
     const { dispatch } = this.props;
     const { id } = this.state;
     dispatch({
       type: 'RetrieveMail/retrievePassword',
       payload: {
-        id,
+        id: id || ids,
         callback: this.release.bind(this),
       }
     })
@@ -51,7 +53,6 @@ export default class RetrieveMail extends Component {
   release(res) {
     const { dispatch } = this.props;
     if (res.status === 'success') {
-      // 去新的页面
       this.goNewPassword();
     } else {
       dispatch({
@@ -65,7 +66,7 @@ export default class RetrieveMail extends Component {
 
   // 跳转space登录页面
   goOn() {
-    window.open(`${G.htmlUrl}/user/login`, "_blank");
+    this.props.dispatch(routerRedux.push('/user/login'));
   }
 
 
@@ -90,7 +91,7 @@ export default class RetrieveMail extends Component {
               <Col {...centerContent}>
                 <h3 className={styles.title}>{RetrieveMail.name}，你好！</h3>
                 <h4 className={styles.subtitle}>您刚刚请求了找回空间管理系统的密码，请点击找回密码按钮设置新的密码。</h4>
-                <Button type="primary" className={styles.button} onClick={this.retrievePassword.bind(this)}>找回密码</Button>
+                <Button type="primary" className={styles.button} onClick={this.goNewPassword.bind(this)}>找回密码</Button>
                 <div className={styles.btnNone}>
                   <p>如果按钮无法点击，请直接访问一下链接：<span onClick={this.goNewPassword.bind(this)}>{G.htmlUrl}/external/NewPassword</span>（为保障帐号安全性， 该链接24小时内有效。如果您不想更换密码，无需进行任何操作）</p>
                 </div>

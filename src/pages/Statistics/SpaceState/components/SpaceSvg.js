@@ -36,6 +36,38 @@ export default class SpaceSvg extends Component {
     });
   }
 
+  // 属性改变时
+  componentWillReceiveProps(nextProps) {
+    if (this.filter !== nextProps.filter && (nextProps.filter && nextProps.filter.length > 0)) {
+      // 赋值之前先把之前的定位小按钮隐藏
+      if (this.filter && this.filter.length > 0) {
+        for (let index = 0; index < this.filter.length; index++) {
+          this.svgDoc.getElementById("icon" + this.filter[index].htmlId).setAttribute('width', 0);
+          this.svgDoc.getElementById("icon" + this.filter[index].htmlId).setAttribute('height', 0);
+        }
+      }
+      // 赋值
+      this.filter = nextProps.filter;
+      // 在查找出来的 htmlId 里面添加小图标
+      for (let index = 0; index < nextProps.filter.length; index++) {
+        // 如果存在就设定宽高为 0
+        if (this.svgDoc.getElementById("icon" + nextProps.filter[index].htmlId)) {
+          this.svgDoc.getElementById("icon" + nextProps.filter[index].htmlId).setAttribute('width', 20);
+          this.svgDoc.getElementById("icon" + nextProps.filter[index].htmlId).setAttribute('height', 20);
+        } else {
+          // 如果不存在就向内部添加一个
+          var rectObj = document.createElementNS("http://www.benzhi.co/App_Uploads/Maker/web/d16f06d6-5760-44fc-a761-37dcded2ad84.jpg", "rect");
+          if (rectObj) {
+            rectObj.setAttribute("width", 20);
+            rectObj.setAttribute("height", 20);
+            rectObj.setAttribute("id", "icon" + nextProps.filter[index].htmlId);
+            this.svgDoc.getElementById(nextProps.filter[index].htmlId).appendChild(rectObj);
+          }
+        }
+      }
+    }
+  }
+
   // 待 svg 加载完成之后绑定监听函数
   componentDidUpdate(newProps, newState) {
     const newestSvg = newProps.spaceState.svg;
@@ -58,6 +90,28 @@ export default class SpaceSvg extends Component {
     this.svgDoc = background.contentDocument;
     // 找到所有的小方块
     this.rect = this.svgDoc.getElementsByTagName('rect');
+    // 给所有小方块添加鼠标滑动事件
+    for (let i = 0; i < this.rect.length; i++) {
+      this.rect[i].onmouseover = (ev) => {
+        let x, y;
+        if (!ev) ev = window.event;
+        if (ev.pageX || ev.pageY) {
+          x = ev.pageX, y = ev.pageY;
+        } else {
+          x = ev.clientX + document.documentElement.scrollLeft - document.body.clientLeft;
+          y = ev.clientY + document.documentElement.scrollTop - document.body.clientTop
+        };
+        const model = document.getElementById('modelName');
+        model.innerHTML = this.rect[i].id;
+        model.style.display = "block";
+        model.style.left = x + "px";
+        model.style.top = y + 35 + "px";
+      }
+      this.rect[i].onmouseout = () => {
+        document.getElementById('modelName').style.display = "none";
+      }
+
+    }
     // 首次调用以防延迟
     const { dispatch, spaceState } = this.props;
     const { svg } = spaceState;
@@ -163,7 +217,7 @@ export default class SpaceSvg extends Component {
   }
 
   render() {
-    const { spaceState } = this.props
+    const { spaceState, filter } = this.props;
     const { svg } = spaceState;
     return (
       <div className={styles.svgRight}>
@@ -180,6 +234,7 @@ export default class SpaceSvg extends Component {
             scrolling="yes"
           />}
         <TimeText />
+        <p id="modelName" className={styles.modelP}></p>
       </div>
     );
   }

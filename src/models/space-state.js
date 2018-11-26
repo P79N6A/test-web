@@ -3,7 +3,8 @@ import { getSvg, getDeskState } from '../services/api';
 export default {
   namespace: 'spaceState',
   state: {
-    svg: ''
+    svg: '',
+    data: ""
   },
 
   effects: {
@@ -16,11 +17,14 @@ export default {
         message.error(response.message || 'error');
       };
     },
-    *getDeskState({ payload }, { call }) {
+    *getDeskState({ payload }, { call, put }) {
       const response = yield call(getDeskState, payload);
       payload.callback(response.data);
       if (response && response.status === 'success') {
-
+        yield put({
+          type: 'save',
+          payload: response.data,
+        });
       } else {
         message.error(response.message || 'error');
       }
@@ -32,6 +36,12 @@ export default {
       return {
         ...state,
         svg: action.payload,
+      };
+    },
+    save(state, action) {
+      return {
+        ...state,
+        data: action.payload,
       };
     }
   },

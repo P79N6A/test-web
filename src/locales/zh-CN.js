@@ -372,4 +372,5 @@ export default {
   "banner.backchart.admin": "image/backcharts.png",
   // TODO: src/static/retrievePassword.html
   // TODO: src/pages/Password/RetrieveMail/index.js
+  // TODO: src/pages/Statistics/SpaceState/SpaceState.js
 };

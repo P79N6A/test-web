@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getName, retrievePassword, sendPassword } from '../services/api';
+import { retrievePassword, sendPassword } from '../services/api';
 import { formatMessage } from 'umi/locale';
 
 export default {
@@ -10,17 +10,6 @@ export default {
   },
 
   effects: {
-    *getName({ payload }, { call, put }) {
-      const response = yield call(getName, payload);
-      if (response && response.status === 'success') {
-        yield put({
-          type: 'saveId',
-          payload: response.data,
-        });
-      } else {
-        message.error("请刷新页面重试！");
-      }
-    },
     *retrievePassword({ payload }, { call }) {
       const response = yield call(retrievePassword, payload);
       payload.callback(response);

@@ -88,7 +88,7 @@ export default class Sensor extends Component {
       {
         title: formatMessage({ id: 'all.serial.number' }),
         key: 'id',
-        width: 100,
+        width: 70,
         render: (text, record, index) => (
           <Fragment>
             <font>{(current - 1) * 15 + index + 1}</font>

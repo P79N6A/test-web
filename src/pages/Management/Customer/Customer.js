@@ -45,7 +45,7 @@ export default class Wework extends Component {
       {
         title: formatMessage({ id: 'all.serial.number' }),
         key: 'id',
-        width: 100,
+        width: 70,
         render: (text, record, index) => (
           <Fragment>
             <font>{(current - 1) * 15 + index + 1}</font>
@@ -68,7 +68,6 @@ export default class Wework extends Component {
       {
         title: formatMessage({ id: 'customer.account.number' }),
         key: 'company.account',
-        width: 200,
         render: text => {
           return (
             <Fragment>
@@ -83,7 +82,6 @@ export default class Wework extends Component {
         title: formatMessage({ id: 'home.device.number' }),
         dataIndex: 'resourceTotal',
         key: 'resourceTotal',
-        width: 90,
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
         render: (text, record) => (
@@ -109,7 +107,6 @@ export default class Wework extends Component {
       {
         title: formatMessage({ id: 'all.remarks' }),
         key: 'company.remark',
-        width: 200,
         render: text => {
           return (
             <Fragment>
@@ -123,7 +120,7 @@ export default class Wework extends Component {
       {
         title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
-        width: 180,
+        width: 145,
         render: (text, record, index) => (
           <Fragment>
             <Popconfirm

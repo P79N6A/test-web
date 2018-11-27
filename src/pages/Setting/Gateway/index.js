@@ -105,7 +105,7 @@ export default class Gateway extends Component {
       {
         title: formatMessage({ id: "gateway.number" }),
         key: 'id',
-        width: 100,
+        width: 70,
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
         render: (text, record, index) => (
@@ -186,7 +186,7 @@ export default class Gateway extends Component {
       {
         title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
-        width: 170,
+        width: 115,
         render: (text, record, index) => (
           <Fragment>
             <a

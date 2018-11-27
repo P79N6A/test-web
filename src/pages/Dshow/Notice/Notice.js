@@ -103,7 +103,7 @@ export default class Notice extends Component {
       {
         title: formatMessage({ id: 'all.serial.number' }),
         key: 'id',
-        width: 100,
+        width: 70,
         render: (text, record, index) => (
           <Fragment>
             <font>{(current - 1) * 15 + index + 1}</font>
@@ -129,7 +129,7 @@ export default class Notice extends Component {
       {
         title: formatMessage({ id: 'notice.receiver' }),
         key: 'unreadCount',
-        width: 150,
+        width: 120,
         render: (text, record, index) => {
           return (
             <Fragment>
@@ -161,6 +161,7 @@ export default class Notice extends Component {
       {
         title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
+        width: 150,
         render: (text, record, index) => (
           <Fragment>
             <Popconfirm

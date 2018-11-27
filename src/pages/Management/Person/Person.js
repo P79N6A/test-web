@@ -63,7 +63,7 @@ export default class Person extends Component {
       {
         title: listTitle.serialNumber,
         key: 'uid',
-        width: 100,
+        width: 70,
         render: (text, record, index) => (
           <Fragment>
             <font>{(current - 1) * 15 + index + 1}</font>
@@ -148,7 +148,6 @@ export default class Person extends Component {
       {
         title: listTitle.remarks,
         key: 'remark',
-        width: 160,
         render: (text) => {
           return (
             <Fragment>
@@ -161,6 +160,7 @@ export default class Person extends Component {
       },
       {
         title: listTitle.operate,
+        width: 185,
         render: (text, record, index) => (
           <Fragment>
             <a
@@ -180,6 +180,14 @@ export default class Person extends Component {
             >
               <a>{listTitle.delete}</a>
             </Popconfirm>
+            <Divider type="vertical" />
+            <a
+              onClick={() => {
+                this.onEdit(text, record, index);
+              }}
+            >
+              功能权限
+            </a>
           </Fragment>
         ),
       },
@@ -305,11 +313,11 @@ export default class Person extends Component {
         <h3><FormattedMessage id="menu.management.person" /></h3>
         <br />
         <Row className={styles.lageBox}>
-          <p><FormattedMessage id="person.list" /></p>
           <Col span={12}>
-            <Button icon="plus" type="primary" size='small' onClick={this.showModal}>
+            <Button icon="plus" type="primary" size='small' onClick={this.showModal} style={{ marginRight: '20px' }}>
               <FormattedMessage id="all.add" />
             </Button>
+            <Button type="default" size='small'>批量导入</Button>
           </Col>
           <Col span={12}>
             <Button

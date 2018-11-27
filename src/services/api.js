@@ -112,8 +112,40 @@ export async function getHomeData() {
   });
 }
 
-// 获取人员数组
+// TODO: 获取人员数组
 export async function getPersonnelList(payload) {
+  return {
+    "status": "success",
+    "data": {
+      "count": 5,
+      "rows": [
+        {
+          "uid": "99f89bbb-8042-4a3b-afc5-5f277e34d3af",
+          "name": "haoshuo",
+          "phone": "18811467730",
+          "position": null,
+          "email": "18811467730@163.com",
+          "isDel": false,
+          "remark": "hdiuwcdbxnadsdxnhdiuwcdbxnadsdxnhdiuwcdbxnadsdxnhdiuwcdbxnadsdxn",
+          "status": 2,
+          "role": "角色"
+        },
+        {
+          "uid": "99f89bbb-8042-4a3b-afc5-5f277e34d3af",
+          "name": "haoshuo",
+          "phone": "18811467730",
+          "position": null,
+          "email": "18811467730@163.com",
+          "isDel": false,
+          "remark": null,
+          "status": 2,
+          "role": "角色2"
+        },
+      ],
+      "offset": 0,
+      "limit": 15
+    }
+  }
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/users/list`, {
     method: 'POST',

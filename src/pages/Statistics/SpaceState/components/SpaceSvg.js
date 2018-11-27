@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from './../SpaceState.less';
+import { Icon } from 'antd';
 import G from '@/global'
 import TimeText from './TimeText.js'
 
@@ -102,15 +103,15 @@ export default class SpaceSvg extends Component {
           y = ev.clientY + document.documentElement.scrollTop - document.body.clientTop
         };
         const model = document.getElementById('modelName');
-        model.innerHTML = this.rect[i].id;
+        const modelContent = document.getElementById('modelContent');
+        modelContent.innerHTML = this.rect[i].id;
         model.style.display = "block";
         model.style.left = x + "px";
-        model.style.top = y + 35 + "px";
+        model.style.top = y + 25 + "px";
       }
       this.rect[i].onmouseout = () => {
         document.getElementById('modelName').style.display = "none";
       }
-
     }
     // 首次调用以防延迟
     const { dispatch, spaceState } = this.props;
@@ -216,6 +217,15 @@ export default class SpaceSvg extends Component {
     if (this.interval) clearInterval(this.interval);
   }
 
+  // 弹窗
+  bannerMouseEnter() {
+    document.getElementById('modelName').style.display = "block";
+  }
+
+  bannerMouseLeave() {
+    document.getElementById('modelName').style.display = "none";
+  }
+
   render() {
     const { spaceState, filter } = this.props;
     const { svg } = spaceState;
@@ -234,7 +244,12 @@ export default class SpaceSvg extends Component {
             scrolling="yes"
           />}
         <TimeText />
-        <p id="modelName" className={styles.modelP}></p>
+        <p id="modelName" className={styles.modelP}
+          onMouseEnter={this.bannerMouseEnter.bind(this)}
+          onMouseLeave={this.bannerMouseLeave.bind(this)}>
+          <Icon className={styles.model_font} type="caret-up" theme="filled" />
+          <font id="modelContent"></font>
+        </p>
       </div>
     );
   }

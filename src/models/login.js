@@ -82,6 +82,7 @@ export default {
 
   reducers: {
     changeLoginStatus(state, { payload }) {
+      // 会话存储权限以及登录姓名等
       setAuthority(payload.data.currentAuthority || 'user');
       setUserInfo(payload.data);
       return {

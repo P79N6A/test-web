@@ -159,6 +159,19 @@ export default [
         ]
       },
       {
+        name: 'device',
+        icon: 'setting',
+        path: './device',
+        routes: [
+          {
+            path: '/device/sensor',
+            name: 'sensor',
+            component: './Device/Sensor',
+          },
+          { redirect: '/exception/404' }
+        ]
+      },
+      {
         name: 'exception',
         icon: 'warning',
         path: '/exception',

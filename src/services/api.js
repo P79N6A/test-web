@@ -418,3 +418,63 @@ export async function sendPassword(payload) {
     body,
   });
 }
+
+// TODO: 获取传感器列表
+export async function sensorList(payload) {
+  return {
+    "status": "success",
+    "data": {
+      "rows": [
+        {
+          "id": "dndk001",
+          "number": "A0001",
+          "state": "占用",
+          "remark": "备注的可持续拉克丝拉着",
+          "last_time": "2018-08-01T00:00:00.000Z"
+        },
+        {
+          "id": "dndk002",
+          "number": "A0001",
+          "state": "空闲",
+          "remark": "备注才能代理商可执行",
+          "last_time": "2018-08-01T00:00:00.000Z"
+        },
+        {
+          "id": "dndk003",
+          "number": "A0001",
+          "state": "离线",
+          "remark": "备注哇哇哇哇",
+          "last_time": "2018-08-01T00:00:00.000Z"
+        },
+        {
+          "id": "dndk004",
+          "number": "A0001",
+          "state": "离线",
+          "remark": "备注",
+          "last_time": "2018-08-01T00:00:00.000Z"
+        }
+      ],
+      "count": 86,
+      "offset": 0,
+      "limit": 15
+    }
+  }
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/sensor/list`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// TODO: 传感器添加备注
+export async function sensorRemark(payload) {
+  return {
+    "status": "success"
+  }
+  const { id } = payload;
+  const url = `${G.API_URL}/sensor/${id}`;
+  return request(url, {
+    method: 'POST',
+    body: { remark: payload.remark, token: getToken() },
+  });
+}

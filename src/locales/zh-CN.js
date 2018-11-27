@@ -13,7 +13,7 @@ export default {
   "menu.management.customer": "客户管理",
   "menu.management.newCustomer": "新增客户",
   "menu.management.person": "用户管理",
-  "menu.management.device": "设备管理",
+  "menu.management.device": "云桌",
   "menu.management.notice": "通知管理",
   "menu.management.newNotice": "新建通知",
   "menu.management.detailNotice": "通知详情",
@@ -26,6 +26,8 @@ export default {
   "menu.statistics.spaceUsage": "空间使用情况",
   "menu.settings": "设置",
   "menu.settings.gateway": "网关配置",
+  "menu.device": "设备",
+  "menu.device.sensor": "传感器",
   // 首页
   "home.today": "今日",
   "home.yesterday": "昨日",
@@ -373,4 +375,5 @@ export default {
   // TODO: src/static/retrievePassword.html
   // TODO: src/pages/Password/RetrieveMail/index.js
   // TODO: src/pages/Statistics/SpaceState/SpaceState.js
+  // TODO: src/pages/Device/Sensor/index.js
 };

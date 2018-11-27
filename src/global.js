@@ -51,6 +51,10 @@ const errorLists = {
   3024: { "message_ch": "账号不存在，请联系管理员", "message_en": "" },
   3026: { "message_ch": "推送消息失败", "message_en": "Push message failed" },
   3027: { "message_ch": "获取 SVG 失败", "message_en": "Failed to get SVG" },
+  // 3028,3029,3030
+  3028: { "message_ch": "发送邮件失败", "message_en": "Failed to get SVG" },
+  3029: { "message_ch": "用户不是管理员", "message_en": "Failed to get SVG" },
+  3030: { "message_ch": "密码找回链接无效或已过期", "message_en": "Failed to get SVG" },
   4001: { "message_ch": "账户已存在", "message_en": "Account already exists" },
   4002: { "message_ch": "公司名称已存在", "message_en": "Company name already exists" },
   4003: { "message_ch": "创建公司失败", "message_en": "Failed to add company" },

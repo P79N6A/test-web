@@ -28,12 +28,13 @@ export default class SendSuccess extends Component {
   }
 
   render() {
+    const { RetrievePassword } = this.props;
     return (
       <div className={styles.successBox}>
         <div className={styles.successContent}>
           <div className={styles.successText}>
             <h3>邮箱发送成功</h3>
-            <p>我们已向您的注册邮箱xxxxxx@123.com发送了一封密码找回邮件，请注意查收。</p>
+            <p>我们已向您的注册邮箱{RetrievePassword.email}发送了一封密码找回邮件，请注意查收。</p>
             <Row>
               <Col style={{ textAlign: 'center', margin: '35px 0' }}>
                 <Button style={{ width: '112' }} type="primary" size='small' onClick={this.goLogin.bind(this)}>去登录</Button>

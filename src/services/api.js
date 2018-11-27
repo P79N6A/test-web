@@ -417,10 +417,7 @@ export async function gatewayCommand(payload) {
 
 // TODO: 找回密码发送邮箱给后台
 export async function sendEmail(payload) {
-  return {
-    status: "success",
-  }
-  const body = filterBody({ ...payload, token: getToken() });
+  const body = filterBody({ ...payload });
   return request(`${G.API_URL}/send/email`, {
     method: 'POST',
     body,
@@ -429,10 +426,7 @@ export async function sendEmail(payload) {
 
 // TODO: 进入邮箱点击找回密码
 export async function retrievePassword(payload) {
-  return {
-    status: "successe"
-  }
-  const body = filterBody({ ...payload, token: getToken() });
+  const body = filterBody({ ...payload });
   return request(`${G.API_URL}/retrieve/password`, {
     method: 'POST',
     body,
@@ -441,10 +435,7 @@ export async function retrievePassword(payload) {
 
 // TODO: 发送新密码
 export async function sendPassword(payload) {
-  return {
-    status: "success"
-  }
-  const body = filterBody({ ...payload, token: getToken() });
+  const body = filterBody({ ...payload });
   return request(`${G.API_URL}/send/password`, {
     method: 'POST',
     body,

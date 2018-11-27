@@ -67,7 +67,7 @@ export default function request(url, options) {
     .then(checkStatus)
     .then(response => response.json())
     .catch(err => {
-      const { dispatch } = store;
+      const { dispatch } = window.g_app._store;
       const status = err.name;
       if (status <= 504 && status >= 500) {
         dispatch(routerRedux.push('/exception/500'));

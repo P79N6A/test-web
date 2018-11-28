@@ -5,15 +5,14 @@
   <meta charset="UTF-8">
   <link rel="Shortcut Icon" href="http://cdn.space.9amtech.com/image/favicon.png" />
   <meta name="wap-font-scale" content="no">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title></title>
   <script src="http://cdn.space.9amtech.com/jq/jquery-3.3.1.min.js"></script>
   <script>
     // 取值当前中英文环境
-    var lang = 'ch';
-    if (window.sessionStorage.getItem('lang') && window.sessionStorage.getItem('lang') === 'en') {
-      lang = 'en';
+    var lang = 'zh-CN';
+    if (window.sessionStorage.getItem('lang') && window.sessionStorage.getItem('lang') === 'en-US') {
+      lang = 'en-US';
     }
     const errorLists = JSON.parse(window.sessionStorage.getItem('errorLists'));
     const messageLists = {

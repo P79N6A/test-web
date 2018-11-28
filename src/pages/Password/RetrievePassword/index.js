@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import { message } from 'antd';
-import LeftHeader from '@/components/SpaceHeader/LeftHeader'
-import Footer from '@/layouts/Footer'
-import SendEmail from './components/SendEmail'
-import SendSuccess from './components/SendSuccess'
-import styles from './index.less'
+import { getLocale } from 'umi/locale';
+import LeftHeader from '@/components/SpaceHeader/LeftHeader';
+import Footer from '@/layouts/Footer';
+import SendEmail from './components/SendEmail';
+import SendSuccess from './components/SendSuccess';
+import styles from './index.less';
+import G from '@/global';
 
 @connect(({ RetrievePassword }) => ({
   RetrievePassword,
@@ -20,6 +22,7 @@ export default class RetrievePassword extends Component {
       type: 'RetrievePassword/sendEmail',
       payload: {
         ...form,
+        lang: getLocale(),
         callback: this.release.bind(this),
       },
     });
@@ -36,7 +39,7 @@ export default class RetrievePassword extends Component {
         },
       });
     } else {
-      message('发送失败，请刷新页面重试！')
+      message.error(G.errorLists[res.code][`message_${getLocale()}`])
     }
   }
 

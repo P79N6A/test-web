@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
+import { setLocale } from 'umi/locale';
 import { Row, Col, message, Button } from 'antd';
-import CenterHeader from '@/components/SpaceHeader/CenterHeader'
-import styles from './index.less'
+import CenterHeader from '@/components/SpaceHeader/CenterHeader';
+import styles from './index.less';
 import { routerRedux } from 'dva/router';
 
 @connect(({ RetrieveMail }) => ({
@@ -14,6 +15,7 @@ export default class RetrieveMail extends Component {
   }
 
   componentDidMount() {
+    setLocale(this.props.location.query.lang);
     this.setState({
       id: this.props.location.query.id
     })
@@ -22,7 +24,7 @@ export default class RetrieveMail extends Component {
 
   // 跳到找回密码页面
   goNewPassword() {
-    this.props.dispatch(routerRedux.push(`/external/NewPassword?id=${this.props.location.query.id}`));
+    this.props.dispatch(routerRedux.push(`/external/NewPassword?id=${this.props.location.query.id}&lang=${this.props.location.query.id}`));
   }
 
   // 链接过没过期

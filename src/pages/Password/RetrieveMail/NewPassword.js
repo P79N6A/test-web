@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { formatMessage, FormattedMessage, getLocale } from 'umi/locale';
 import { Row, Col, message, Button, Form, Input } from 'antd';
-import LeftHeader from '@/components/SpaceHeader/LeftHeader'
-import Footer from '@/layouts/Footer'
-import styles from './index.less'
-import G from '@/global'
+import LeftHeader from '@/components/SpaceHeader/LeftHeader';
+import Footer from '@/layouts/Footer';
+import styles from './index.less';
+import G from '@/global';
 import { routerRedux } from 'dva/router';
 
 const FormItem = Form.Item;

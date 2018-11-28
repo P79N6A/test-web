@@ -100,6 +100,10 @@ class SetNewPassword extends Component {
                         rules: [
                           { required: true, message: formatMessage({ id: 'change.new.password.text' }) },
                           {
+                            min: 8,
+                            message: formatMessage({ id: 'test.min.long.eight' }),
+                          },
+                          {
                             max: 20,
                             message: formatMessage({ id: 'test.max.long.twenty' }),
                           },

@@ -2,6 +2,7 @@ import React from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Icon } from 'antd';
 import styles from './index.less';
+import G from '@/global'
 
 export default {
   UserName: {
@@ -24,16 +25,22 @@ export default {
       type: 'password',
       placeholder: '888888',
     },
-    rules: [
-      {
-        required: true,
-        message: formatMessage({ id: 'customer.password.text' }),
-      },
-      {
-        min: 8,
-        message: formatMessage({ id: 'test.min.long.eight' }),
-      },
-    ],
+    rules:
+      [
+        { required: true, message: formatMessage({ id: 'customer.password.text' }) },
+        {
+          min: 8,
+          message: formatMessage({ id: 'test.min.long.eight' }),
+        },
+        {
+          max: 20,
+          message: formatMessage({ id: 'test.max.long.twenty' }),
+        },
+        {
+          pattern: G.passCheck,
+          message: formatMessage({ id: 'customer.password.message' }),
+        },
+      ]
   },
   Mobile: {
     props: {

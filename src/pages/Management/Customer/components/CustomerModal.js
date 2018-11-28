@@ -197,6 +197,10 @@ class NewCustomer extends Component {
                       ? [
                         { required: true, message: formatMessage({ id: 'customer.password.text' }) },
                         {
+                          min: 8,
+                          message: formatMessage({ id: 'test.min.long.eight' }),
+                        },
+                        {
                           max: 20,
                           message: formatMessage({ id: 'test.max.long.twenty' }),
                         },

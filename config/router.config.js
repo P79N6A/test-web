@@ -160,7 +160,7 @@ export default [
       },
       {
         name: 'device',
-        icon: 'setting',
+        icon: 'profile',
         path: './device',
         routes: [
           {

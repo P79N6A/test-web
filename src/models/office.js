@@ -22,6 +22,10 @@ export default {
         type: 'duration',
         date_type: "LAST_7DAYS"
       },
+      desk_avg_duration: {
+        condition_types: 'HOURLY',
+        date_type: 'LAST_DAY'
+      }
     },
     daskTotalCount: { total_count: 0, online_count: 0, offline_count: 0 },
     yesterdayUseCount: {
@@ -90,6 +94,33 @@ export default {
         message.error((response && response.message) || formatMessage({ id: "spaceUsage.server.time.error" }));
       }
     },
+    // 获取工位使用时长分布
+    *getAvgDuration({ payload }, { call, put }) {
+      const response = yield call(getAvgDuration, payload);
+      payload.callback && payload.callback(response);
+      if (response && response.status === 'success') {
+        const dataListCopy = [];
+        response.data.dataList.forEach(value => {
+          if (response.data.condition_type === 'HOURLY') {
+            dataListCopy.push({
+              x: `${value.week}:00`,
+              y: Number((value.duration / 60).toFixed(2)),
+            });
+          } else {
+            dataListCopy.push({
+              x: G.moment(G.moment().day(value.week)._d).format('dddd'),
+              y: Number((value.duration / 60).toFixed(2)),
+            });
+          }
+        });
+        yield put({
+          type: 'saveAvgDuration',
+          payload: { dataListCopy }
+        });
+      } else {
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.device.use.error" }));
+      }
+    },
   },
 
   reducers: {
@@ -118,6 +149,10 @@ export default {
     // 服务时长统计
     saveServiceDuration(state, { payload }) {
       return { ...state, serviceDuration: payload };
+    },
+    // 工位使用时长
+    saveAvgDuration(state, { payload }) {
+      return { ...state, deskAvgDurationList: payload };
     },
   },
 };

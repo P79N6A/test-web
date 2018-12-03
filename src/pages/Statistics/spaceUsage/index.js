@@ -26,6 +26,7 @@ export default class OfficeUsage extends Component {
     // 初进页面调取接口
     this.obOneLine({ condition_type });
     this.obUseRate({ condition_type });
+    this.obDeskUse({ condition_type });
   }
 
   // 选取9小时24小时
@@ -40,6 +41,7 @@ export default class OfficeUsage extends Component {
     // 修改完成之后，重新调取各个接口
     this.obOneLine({ condition_type: e.target.value });
     this.obUseRate({ condition_type: e.target.value });
+    this.obDeskUse({ condition_type: e.target.value });
   };
 
   // 获取工位总数、昨日使用数、未使用数、服务时长统计
@@ -64,15 +66,30 @@ export default class OfficeUsage extends Component {
     });
   }
 
+  // 获取工位使用时长分布
+  obDeskUse(condition_type) {
+    const { dispatch, office } = this.props;
+    const { desk_avg_duration } = office.global;
+    const date = G.moment(new Date()).format('YYYY-MM-DD');
+    dispatch({
+      type: 'office/getAvgDuration',
+      payload: {
+        ...desk_avg_duration,
+        ...condition_type,
+        date,
+        callback: () => { }
+      }
+    });
+  }
 
   render() {
     const topColResponsiveProps = { xs: 24, sm: 24, md: 12, lg: 12, xl: 8, xxl: 8, style: { marginBottom: 24 } };
     const deskrankprops = { xs: 24, sm: 24, md: 24, lg: 12, xl: 12, style: { marginBottom: 24 } };
     const { office, dispatch } = this.props;
     // 获取参数
-    const { condition_type, use_rate } = office.global;
+    const { condition_type, use_rate, desk_avg_duration } = office.global;
     // 获取数据
-    const { daskTotalCount, yesterdayUseCount, useRate, serviceDuration } = office;
+    const { daskTotalCount, yesterdayUseCount, useRate, serviceDuration, deskAvgDuration } = office;
     const content = (<div><p><FormattedMessage id="spaceUsage.nine.hour.note" /></p><p className={styles.time_solt}>（9:00~18:00）</p><p><FormattedMessage id="spaceUsage.twenty.four.hour.note" /></p><p className={styles.time_solt}>（0:00~24:00）</p></div>);
     return (
       <Fragment>
@@ -128,6 +145,15 @@ export default class OfficeUsage extends Component {
             <ServiceDuration serviceDuration={serviceDuration} />
           </Col>
         </Row>
+        {/* three */}
+        <DeskDuration
+          ref={o => {
+            this.deskDuration = o;
+          }}
+          deskAvgDuration={deskAvgDuration}
+          desk_avg_duration={desk_avg_duration}
+          dispatch={dispatch}
+        />
       </Fragment>
     );
   }

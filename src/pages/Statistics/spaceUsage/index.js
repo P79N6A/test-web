@@ -42,11 +42,12 @@ export default class OfficeUsage extends Component {
     this.obUseRate({ condition_type: e.target.value });
   };
 
-  // 获取工位总数以及昨日使用数，未使用数的数据
+  // 获取工位总数、昨日使用数、未使用数、服务时长统计
   obOneLine(condition_type) {
     const { dispatch } = this.props;
     dispatch({ type: 'office/getDeskCount', payload: { ...condition_type } });
     dispatch({ type: 'office/getYuseCount', payload: { ...condition_type } });
+    dispatch({ type: 'office/getServiceDuration', payload: { ...condition_type } });
   }
 
   // 获取工位使用趋势的数据
@@ -71,7 +72,7 @@ export default class OfficeUsage extends Component {
     // 获取参数
     const { condition_type, use_rate } = office.global;
     // 获取数据
-    const { daskTotalCount, yesterdayUseCount, useRate } = office;
+    const { daskTotalCount, yesterdayUseCount, useRate, serviceDuration } = office;
     const content = (<div><p><FormattedMessage id="spaceUsage.nine.hour.note" /></p><p className={styles.time_solt}>（9:00~18:00）</p><p><FormattedMessage id="spaceUsage.twenty.four.hour.note" /></p><p className={styles.time_solt}>（0:00~24:00）</p></div>);
     return (
       <Fragment>
@@ -122,6 +123,9 @@ export default class OfficeUsage extends Component {
         <Row gutter={24}>
           <Col xl={16} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
             <StationRate useRate={useRate} use_rate={use_rate} condition_type={condition_type} dispatch={dispatch} />
+          </Col>
+          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
+            <ServiceDuration serviceDuration={serviceDuration} />
           </Col>
         </Row>
       </Fragment>

@@ -293,3 +293,20 @@ export function processData(data) {
   }
   return { useRateTend, useRateAverage, date }
 }
+
+// 处理服务时长统计数据
+export function serviceData(data) {
+  let serviceData = [];
+  serviceData.push({ x: '使用时长', y: data.occupied_duration }, { x: '空闲时长', y: data.vacant_duration })
+  return serviceData;
+}
+
+// 计算总时长
+export function totalTime(data) {
+  let total = 0;
+  data.map((item) => {
+    total += Number(item.y)
+  });
+  let totlaText = parseInt(total / (24 * 60), 10) + '天' + G.moment.duration(total * 60 * 1000).hours() + '小时'
+  return totlaText;
+}

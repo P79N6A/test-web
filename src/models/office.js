@@ -42,9 +42,14 @@ export default {
       useRateTend: [],
       useRateAverage: [],
       date: []
-    }
-
-
+    },
+    serviceDuration: {
+      total_duration: 0, // 总时长 单位：分钟
+      occupied_duration: 0, // 占用总时长
+      vacant_duration: 0, // 空闲总时长
+      offline_duration: 0, // 离线总时长
+      average_duration: 0, // 平均时长
+    },
   },
 
   effects: {
@@ -66,7 +71,7 @@ export default {
         message.error((response && response.message) || formatMessage({ id: "spaceUsage.yesterday.use.error" }));
       }
     },
-    // TODO: 工位使用趋势
+    // 工位使用趋势
     *getUseRate({ payload }, { call, put }) {
       const response = yield call(getUseRate, payload);
       payload.callback && payload.callback(response);
@@ -77,6 +82,14 @@ export default {
       }
     },
     // 服务时长统计
+    *getServiceDuration({ payload }, { call, put }) {
+      const response = yield call(getServiceDuration, payload);
+      if (response && response.status === 'success') {
+        yield put({ type: 'saveServiceDuration', payload: response.data });
+      } else {
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.server.time.error" }));
+      }
+    },
   },
 
   reducers: {
@@ -101,6 +114,10 @@ export default {
     // 保存工位使用趋势数据
     saveUseRate(state, { payload }) {
       return { ...state, useRate: payload.data };
+    },
+    // 服务时长统计
+    saveServiceDuration(state, { payload }) {
+      return { ...state, serviceDuration: payload };
     },
   },
 };

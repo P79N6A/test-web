@@ -384,8 +384,8 @@ export async function getUseRate(payload) {
 }
 
 // 服务时长统计
-export async function getServiceDuration() {
-  const url = filterUrl({ token: getToken() });
+export async function getServiceDuration(payload) {
+  const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/service_duration?${url}`, {
     method: 'GET',
   });

@@ -12,7 +12,7 @@ import styles from './index.less';
 
 /* eslint react/no-danger:0 */
 @autoHeight()
-export default class Pie extends Component {
+class Pie extends Component {
   state = {
     legendData: [],
     legendBlock: false,
@@ -54,12 +54,11 @@ export default class Pie extends Component {
   // for custom lengend view
   getLegendData = () => {
     if (!this.chart) return;
-    const geom = this.chart.getAllGeoms()[0]; // 获取所有的图形
+    const geom = this.chart.getAllGeoms()[0];
     if (!geom) return;
-    const items = geom.get('dataArray') || []; // 获取图形对应的
+    const items = geom.get('dataArray') || [];
 
     const legendData = items.map(item => {
-      /* eslint no-underscore-dangle:0 */
       const origin = item[0]._origin;
       origin.color = item[0].color;
       origin.checked = true;
@@ -226,7 +225,7 @@ export default class Pie extends Component {
                 tooltip={tooltip && tooltipFormat}
                 type="intervalStack"
                 position="percent"
-                color={['x', percent || percent === 0 ? formatColor : defaultColors]}
+                color={['x', color]}
                 selected={selected}
               />
             </Chart>
@@ -267,3 +266,5 @@ export default class Pie extends Component {
     );
   }
 }
+
+export default Pie;

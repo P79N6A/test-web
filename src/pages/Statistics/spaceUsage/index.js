@@ -82,14 +82,36 @@ export default class OfficeUsage extends Component {
     });
   }
 
+  // 获取热门工位
+  obDeskRankHot(condition_type) {
+    const { dispatch, office } = this.props;
+    const { deskUseRank_hot, deskUseRank_free } = office.global;
+    dispatch({
+      type: 'office/getDeskUseRank',
+      payload: {
+        ...deskUseRank_hot,
+        ...condition_type,
+        callback: () => { }
+      }
+    });
+    dispatch({
+      type: 'office/getDeskUseRank',
+      payload: {
+        ...deskUseRank_free,
+        ...condition_type,
+        callback: () => { }
+      }
+    });
+  }
+
   render() {
     const topColResponsiveProps = { xs: 24, sm: 24, md: 12, lg: 12, xl: 8, xxl: 8, style: { marginBottom: 24 } };
     const deskrankprops = { xs: 24, sm: 24, md: 24, lg: 12, xl: 12, style: { marginBottom: 24 } };
     const { office, dispatch } = this.props;
     // 获取参数
-    const { condition_type, use_rate, desk_avg_duration } = office.global;
+    const { condition_type, use_rate, desk_avg_duration, desk_use_rank_hot, desk_use_rank_free } = office.global;
     // 获取数据
-    const { daskTotalCount, yesterdayUseCount, useRate, serviceDuration, deskAvgDuration } = office;
+    const { daskTotalCount, yesterdayUseCount, useRate, serviceDuration, deskAvgDuration, deskUseRankHotList, deskUseRankFreeList } = office;
     const content = (<div><p><FormattedMessage id="spaceUsage.nine.hour.note" /></p><p className={styles.time_solt}>（9:00~18:00）</p><p><FormattedMessage id="spaceUsage.twenty.four.hour.note" /></p><p className={styles.time_solt}>（0:00~24:00）</p></div>);
     return (
       <Fragment>
@@ -150,10 +172,37 @@ export default class OfficeUsage extends Component {
           ref={o => {
             this.deskDuration = o;
           }}
+          condition_type={condition_type}
           deskAvgDuration={deskAvgDuration}
           desk_avg_duration={desk_avg_duration}
           dispatch={dispatch}
         />
+        <Row gutter={24}>
+          <Col {...deskrankprops}>
+            <DeskUseDuration
+              ref={o => {
+                this.hotRank = o;
+              }}
+              condition_type={condition_type}
+              desk_use_rank={desk_use_rank_hot}
+              deskUseRank={deskUseRankHotList}
+              color="rgba(252, 176, 177, 1)"
+              dispatch={dispatch}
+            />
+          </Col>
+          <Col {...deskrankprops}>
+            <DeskUseDuration
+              ref={o => {
+                this.freeRank = o;
+              }}
+              condition_type={condition_type}
+              desk_use_rank={desk_use_rank_free}
+              deskUseRank={deskUseRankFreeList}
+              color="rgba(166, 214, 208, 1)"
+              dispatch={dispatch}
+            />
+          </Col>
+        </Row>
       </Fragment>
     );
   }

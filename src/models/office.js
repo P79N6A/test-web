@@ -25,7 +25,15 @@ export default {
       desk_avg_duration: {
         condition_types: 'HOURLY',
         date_type: 'LAST_DAY'
-      }
+      },
+      desk_use_rank_hot: {
+        status_type: 'HOT',
+        date_type: 'LAST_DAY',
+      },
+      desk_use_rank_free: {
+        status_type: 'FREE',
+        date_type: 'LAST_DAY',
+      },
     },
     daskTotalCount: { total_count: 0, online_count: 0, offline_count: 0 },
     yesterdayUseCount: {
@@ -54,6 +62,11 @@ export default {
       offline_duration: 0, // 离线总时长
       average_duration: 0, // 平均时长
     },
+    deskAvgDurationList: [],
+    // 热门工位排行
+    deskUseRankHotList: [],
+    // 空闲工位排行
+    deskUseRankFreeList: []
   },
 
   effects: {
@@ -121,6 +134,37 @@ export default {
         message.error((response && response.message) || formatMessage({ id: "spaceUsage.device.use.error" }));
       }
     },
+    // 工位使用率排行
+    *getDeskUseRank({ payload }, { call, put }) {
+      const response = yield call(getDeskUseRank, payload);
+      payload.callback && payload.callback(response);
+      if (response && response.status === 'success') {
+        const dataListCopy = [];
+        response.data.dataList.forEach(value => {
+          dataListCopy.push({
+            x: value.number,
+            y: Number((value.duration / 60).toFixed(2)),
+          });
+        });
+        if (response.data.status_type === 'HOT') {
+          yield put({
+            type: 'saveDeskUseRank_hot',
+            payload: {
+              dataList: dataListCopy.reverse(),
+            },
+          });
+        } else {
+          yield put({
+            type: 'saveDeskUseRank_free',
+            payload: {
+              dataList: dataListCopy.reverse(),
+            },
+          });
+        }
+      } else {
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.device.use.error" }));
+      }
+    }
   },
 
   reducers: {
@@ -153,6 +197,14 @@ export default {
     // 工位使用时长
     saveAvgDuration(state, { payload }) {
       return { ...state, deskAvgDurationList: payload };
+    },
+    // 热门工位排行
+    saveDeskUseRank_hot(state, { payload }) {
+      return { ...state, deskUseRankHotList: payload.dataList };
+    },
+    // 空闲工位排行
+    saveDeskUseRank_free(state, { payload }) {
+      return { ...state, deskUseRankFreeList: payload.dataList };
     },
   },
 };

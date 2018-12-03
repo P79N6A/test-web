@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'dva';
-import { Row, Col } from 'antd';
+import { formatMessage, FormattedMessage } from 'umi/locale';
+import { Row, Col, Popover, Icon, Radio } from 'antd';
 import G from '@/global';
 import Deskcount from './DeskCount';
 import Yusecount from './YuseCount';
@@ -9,91 +10,102 @@ import StationRate from './StationRate';
 import ServiceDuration from './ServiceDuration';
 import DeskDuration from './DeskDuration';
 import DeskUseDuration from './DeskUseDuration';
-import { getUserInfo } from '@/utils/authority';
+import styles from './index.less'
 
-@connect(({ office, user, loading }) => ({
+const RadioGroup = Radio.Group;
+
+@connect(({ office, loading }) => ({
   office,
-  user,
   loading: loading.effects['office/getUseRate'],
 }))
 export default class OfficeUsage extends Component {
-  state = {
-    type: 'WEEKLY',
-    desk_use_rank_HOT: false,
-    desk_use_rank_FREE: false,
-  };
-
-  componentWillMount() {
-    const userInfo = getUserInfo();
-    const user = JSON.parse(userInfo);
-    this.token = user.token;
-  }
 
   componentDidMount() {
+    const { dispatch, office } = this.props;
+    const { condition_type } = office.global;
+    // 初进页面调取接口
+    this.obOneLine({ condition_type });
+    this.obUseRate({ condition_type });
+  }
+
+  // 选取9小时24小时
+  onChange = e => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'office/checkLoginStatus',
+      type: 'office/changeGlobalType',
       payload: {
-        callback: this.requestAllData.bind(this),
+        condition_type: e.target.value
       },
     });
-  }
+    // 修改完成之后，重新调取各个接口
+    this.obOneLine({ condition_type: e.target.value });
+    this.obUseRate({ condition_type: e.target.value });
+  };
 
-  componentWillReceiveProps(nextProps) {
-    const { user } = nextProps.user;
-    if (user && user.token && this.token !== user.token && this.token) {
-      const { dispatch } = this.props;
-      dispatch({
-        type: 'office/checkLoginStatus',
-        payload: {
-          callback: this.requestAllData.bind(this),
-        },
-      });
-      this.token = user.token;
-    }
-  }
-
-  getUseRate() {
+  // 获取工位总数以及昨日使用数，未使用数的数据
+  obOneLine(condition_type) {
     const { dispatch } = this.props;
-    const dates = G.moment(new Date()).format('YYYY-MM-DD');
-    dispatch({ type: 'office/getUseRate', payload: { type: 'WEEKLY', date: dates } });
+    dispatch({ type: 'office/getDeskCount', payload: { ...condition_type } });
+    dispatch({ type: 'office/getYuseCount', payload: { ...condition_type } });
   }
 
-  setVisible(params) {
-    const { state } = this;
-    this.setState({
-      ...state,
-      ...params,
+  // 获取工位使用趋势的数据
+  obUseRate(condition_type) {
+    const { dispatch, office } = this.props;
+    const { use_rate } = office.global;
+    dispatch({
+      type: 'office/getUseRate',
+      payload: {
+        ...use_rate,
+        ...condition_type,
+        callback: () => { }
+      }
     });
   }
 
-  requestAllData(response) {
-    if (response.status === 'success') {
-      this.fetchData();
-      if (this.hotRank) this.hotRank.fetchData();
-      if (this.freeRank) this.freeRank.fetchData();
-      if (this.deskDuration) this.deskDuration.fetchData();
-    }
-  }
-
-  fetchData() {
-    const { dispatch } = this.props;
-    dispatch({ type: 'office/getDeskCount' });
-    dispatch({ type: 'office/getYuseCount' });
-    dispatch({ type: 'office/getYunuseCount' });
-    dispatch({ type: 'office/getYpeakCount' });
-    dispatch({ type: 'office/getServiceDuration' });
-    this.getUseRate({});
-  }
 
   render() {
     const topColResponsiveProps = { xs: 24, sm: 24, md: 12, lg: 12, xl: 8, xxl: 8, style: { marginBottom: 24 } };
     const deskrankprops = { xs: 24, sm: 24, md: 24, lg: 12, xl: 12, style: { marginBottom: 24 } };
-    const { desk_use_rank_HOT, desk_use_rank_FREE } = this.state;
     const { office, dispatch } = this.props;
-    const { useRate, daskTotalCount, yesterdayUseCount, serviceDuration, deskAvgDuration, deskUseRank_hot, deskUseRank_free, } = office;
+    // 获取参数
+    const { condition_type, use_rate } = office.global;
+    // 获取数据
+    const { daskTotalCount, yesterdayUseCount, useRate } = office;
+    const content = (<div><p><FormattedMessage id="spaceUsage.nine.hour.note" /></p><p className={styles.time_solt}>（9:00~18:00）</p><p><FormattedMessage id="spaceUsage.twenty.four.hour.note" /></p><p className={styles.time_solt}>（0:00~24:00）</p></div>);
     return (
       <Fragment>
+        <Row gutter={24} className={styles.top}>
+          <Col span={12}>
+            <h3 className={styles.title}>空间使用情况</h3>
+          </Col>
+          <Col span={12} className={styles.topRight}>
+            {/* 选项 */}
+            <Radio.Group buttonStyle="solid" onChange={this.onChange.bind(this)} value={condition_type}>
+              <Radio.Button value={9}><FormattedMessage id="spaceUsage.nine.hour" /></Radio.Button>
+              <Radio.Button value={24}><FormattedMessage id="spaceUsage.twenty.four.hour" /></Radio.Button>
+            </Radio.Group>
+            {/* 标签注释 */}
+            <Popover
+              placement="bottomRight"
+              title={formatMessage({ id: "spaceUsage.note" })}
+              content={content}
+              trigger="hover"
+            >
+              <Icon
+                type="info-circle"
+                theme="outlined"
+                style={{
+                  float: 'right',
+                  fontSize: '18px',
+                  margin: '7px 15px',
+                  color: 'RGBA(53, 83, 108, 0.2)',
+                  cursor: 'pointer',
+                }}
+              />
+            </Popover>
+          </Col>
+        </Row>
         {/* one */}
         <Row gutter={24}>
           <Col {...topColResponsiveProps}>
@@ -109,45 +121,7 @@ export default class OfficeUsage extends Component {
         {/* two */}
         <Row gutter={24}>
           <Col xl={16} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
-            <StationRate useRate={useRate} dispatch={dispatch} />
-          </Col>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24} style={{ marginBottom: 24 }}>
-            <ServiceDuration serviceDuration={serviceDuration} />
-          </Col>
-        </Row>
-        {/* three */}
-        <DeskDuration
-          ref={o => {
-            this.deskDuration = o;
-          }}
-          deskAvgDuration={deskAvgDuration}
-          dispatch={dispatch}
-        />
-        {/* four */}
-        <Row gutter={24}>
-          <Col {...deskrankprops}>
-            <DeskUseDuration
-              ref={o => {
-                this.hotRank = o;
-              }}
-              desk_use_rank={desk_use_rank_HOT}
-              deskUseRank={deskUseRank_hot}
-              color="rgba(252, 176, 177, 1)"
-              dispatch={dispatch}
-              setVisible={this.setVisible.bind(this)}
-            />
-          </Col>
-          <Col {...deskrankprops}>
-            <DeskUseDuration
-              ref={o => {
-                this.freeRank = o;
-              }}
-              desk_use_rank={desk_use_rank_FREE}
-              deskUseRank={deskUseRank_free}
-              color="rgba(166, 214, 208, 1)"
-              dispatch={dispatch}
-              setVisible={this.setVisible.bind(this)}
-            />
+            <StationRate useRate={useRate} use_rate={use_rate} condition_type={condition_type} dispatch={dispatch} />
           </Col>
         </Row>
       </Fragment>

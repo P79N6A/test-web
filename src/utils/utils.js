@@ -263,3 +263,33 @@ export function getToken() {
   const state = window.g_app._store.getState();
   return state && state.user && state.user.user && state.user.user.token;
 }
+
+// 处理工位使用趋势的数据
+export function processData(data) {
+  const dateShow = data.date_type === "LAST_7DAYS" ? 'dddd' : (data.date_type === "LAST_30DAYS" ? 'Do' : 'MM');
+  let useRateTend = [], useRateAverage = [], date = [];
+  // 返回百分比数据
+  if (data.type === "duration") {
+    let useRateTendFirst = [], useRateTendSecond = [], useRateTendthird = [];
+    data.dataList.map((item) => {
+      useRateTendFirst.push({ type: '离线', date: G.moment(item.time).format(dateShow), value: item.offline_duration });
+      useRateTendSecond.push({ type: '空闲', date: G.moment(item.time).format(dateShow), value: item.vacant_duration });
+      useRateTendthird.push({ type: '使用', date: G.moment(item.time).format(dateShow), value: item.occupied_duration });
+      useRateAverage.push({ date: G.moment(item.time).format(dateShow), value: item.daily_average_duration });
+    })
+    useRateTend = useRateTendFirst.concat(useRateTendSecond).concat(useRateTendthird);
+  }
+  // 返回数量
+  if (data.type === "workStation") {
+    let useRateTendFirst = { type: '离线' }, useRateTendSecond = { type: '空闲' }, useRateTendthird = { type: '使用' };
+    data.dataList.map((item) => {
+      date.push(G.moment(item.time).format(dateShow));
+      useRateTendFirst[G.moment(item.time).format(dateShow)] = item.offline_duration;
+      useRateTendSecond[G.moment(item.time).format(dateShow)] = item.vacant_duration;
+      useRateTendthird[G.moment(item.time).format(dateShow)] = item.occupied_duration;
+      useRateAverage.push({ date: G.moment(item.time).format(dateShow), value: item.daily_average_duration });
+    })
+    useRateTend.push(useRateTendFirst, useRateTendSecond, useRateTendthird);
+  }
+  return { useRateTend, useRateAverage, date }
+}

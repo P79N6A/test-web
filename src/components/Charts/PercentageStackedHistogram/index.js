@@ -2,7 +2,10 @@ import React from "react";
 import { Chart, Geom, Axis, Tooltip, Legend } from "bizcharts";
 import DataSet from "@antv/data-set";
 
-class Stackedpercentagecolumn extends React.Component {
+class PercentageStackedHistogram extends React.Component {
+  // type（第一个传入的是最上面的一个type）
+  // color（第一个传入的是最上面的一个颜色）
+  // date（是字符串，按传入的先后顺序展示）
   render() {
     const ds = new DataSet();
     const dv = ds
@@ -12,9 +15,9 @@ class Stackedpercentagecolumn extends React.Component {
         type: "percent",
         field: "value",
         // 统计销量
-        dimension: "country",
+        dimension: "type",
         // 每年的占比
-        groupBy: ["year"],
+        groupBy: ["date"],
         // 以不同产品类别为分组
         as: "percent"
       });
@@ -26,17 +29,18 @@ class Stackedpercentagecolumn extends React.Component {
         }
       }
     };
+    const { color } = this.props;
     return (
       <div>
         <Chart height={400} data={dv} scale={cols} forceFit>
           <Legend position="bottom-right" />
-          <Axis name="year" />
+          <Axis name="date" />
           <Axis name="percent" />
           <Tooltip />
           <Geom
             type="intervalStack"
-            position="year*percent"
-            color={["country", ['#C2CBD3', '#BDE4E1', '#FCB0B1']]}
+            position="date*percent"
+            color={["type", color]}
           />
         </Chart>
       </div>
@@ -44,4 +48,4 @@ class Stackedpercentagecolumn extends React.Component {
   }
 }
 
-export default Stackedpercentagecolumn;
+export default PercentageStackedHistogram;

@@ -183,7 +183,10 @@ export async function getQiniuToken() {
 // 获取设备列表
 export async function getResourceList(payload) {
   const body = filterBody({ ...payload, token: getToken() });
-  return request(`${G.API_URL}/resources/list`, { method: 'POST', body });
+  return request(`${G.API_URL}/resources/list`, {
+    method: 'POST',
+    body
+  });
 }
 
 // 设备列表添加备注
@@ -209,7 +212,7 @@ export async function removeDevice(payload) {
   return request(`${G.API_URL}/resources/${id}/remove`, { method: 'POST', body: { token: getToken() } });
 }
 
-// 获去通知列表
+// 获取通知列表
 export async function getNoticeList(payload) {
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/notifications/list`, { method: 'POST', body });
@@ -290,16 +293,18 @@ export async function getDeskState(payload) {
   });
 }
 
-// 工位总数
-export async function getDeskCount() {
-  return request(`${API_URL}/desk/count?token=${getToken()}`, {
+// TODO: 工位总数
+export async function getDeskCount(payload) {
+  const url = filterUrl({ ...payload, token: getToken() });
+  return request(`${API_URL}/desk/count?${url}`, {
     method: 'GET',
   });
 }
 
-// 昨日使用个数
-export async function getYuseCount() {
-  return request(`${API_URL}/desk/yesterday_count?token=${getToken()}`, {
+// TODO: 昨日使用个数以及昨日未使用数
+export async function getYuseCount(payload) {
+  const url = filterUrl({ ...payload, token: getToken() });
+  return request(`${API_URL}/desk/yesterday_count?${url}`, {
     method: 'GET',
   });
 }
@@ -312,8 +317,66 @@ export async function getAvgDuration(payload) {
   });
 }
 
-// 工位使用趋势
+// TODO: 工位使用趋势
 export async function getUseRate(payload) {
+  return {
+    "status": "success",
+    "data": {
+      "type": payload.type,
+      "date_type": "LAST_7DAYS",
+      "dataList": [
+        {
+          "time": "2018-11-25T07:38:14.619Z",
+          "occupied_duration": 89,
+          "vacant_duration": 180,
+          "offline_duration": 21,
+          "daily_average_duration": 56,
+        },
+        {
+          "time": "2018-11-26T07:38:14.619Z",
+          "occupied_duration": 89,
+          "vacant_duration": 180,
+          "offline_duration": 21,
+          "daily_average_duration": 56,
+        },
+        {
+          "time": "2018-11-27T07:38:14.619Z",
+          "occupied_duration": 89,
+          "vacant_duration": 180,
+          "offline_duration": 21,
+          "daily_average_duration": 56,
+        },
+        {
+          "time": "2018-11-27T07:38:14.619Z",
+          "occupied_duration": 43,
+          "vacant_duration": 31,
+          "offline_duration": 56,
+          "daily_average_duration": 1,
+        },
+        {
+          "time": "2018-11-28T07:38:14.619Z",
+          "occupied_duration": 343,
+          "vacant_duration": 333,
+          "offline_duration": 133,
+          "daily_average_duration": 13,
+        },
+        {
+          "time": "2018-11-29T07:38:14.619Z",
+          "occupied_duration": 340,
+          "vacant_duration": 300,
+          "offline_duration": 100,
+          "daily_average_duration": 10,
+        },
+        {
+          "time": "2018-11-30T07:38:14.619Z",
+          "occupied_duration": 400,
+          "vacant_duration": 300,
+          "offline_duration": 300,
+          "daily_average_duration": 20,
+        },
+      ]
+    }
+  }
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/use_rate?${url}`, {
     method: 'GET',

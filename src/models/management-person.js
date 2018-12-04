@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getPersonnelList, addPerson, updatePerson, getQiniuToken } from '../services/api';
+import { getPersonnelList, addPerson, updatePerson, getQiniuToken, usersBatchImport } from '../services/api';
 import { formatMessage } from 'umi/locale';
 
 export default {
@@ -11,7 +11,8 @@ export default {
       current: 1,
       limit: 15,
     },
-    qiniuToken: ''
+    qiniuToken: '',
+    errorList: {}
   },
 
   effects: {
@@ -48,6 +49,18 @@ export default {
       const response = yield call(getQiniuToken, payload);
       payload.callback(response);
     },
+    *usersBatchImport({ payload }, { call, put }) {
+      const response = yield call(usersBatchImport, payload);
+      payload.callback(response);
+      if (response && response.status === 'success') {
+        message.success('上传成功');
+      } else {
+        yield put({
+          type: 'saveError',
+          payload: response.data,
+        });
+      }
+    },
   },
 
   reducers: {
@@ -62,6 +75,14 @@ export default {
           limit: state.data.limit,
         },
       };
-    }
+    },
+    saveError(state, action) {
+      return {
+        ...state,
+        errorList: {
+          ...action.payload,
+        },
+      };
+    },
   },
 };

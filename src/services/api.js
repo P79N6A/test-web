@@ -131,7 +131,7 @@ export async function getPersonnelList(payload) {
           "role": "角色"
         },
         {
-          "uid": "99f89bbb-8042-4a3b-afc5-5f277e34d3af",
+          "uid": "90f89bbb-8042-4a3b-afc5-5f277e34d3af",
           "name": "haoshuo",
           "phone": "18811467730",
           "position": null,
@@ -177,6 +177,43 @@ export async function updatePerson(payload) {
 export async function getQiniuToken() {
   return request(`${API_URL}/users/qiniuToken?token=${getToken()}`, {
     method: 'GET',
+  });
+}
+
+// 上传文件
+export async function usersBatchImport(payload) {
+  return {
+    status: 'fail',
+    data: {
+      totalLine: 100,
+      successLine: 56,
+      dataList: [
+        { "errorId": 0, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 1, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 2, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 3, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 4, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 5, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 6, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 7, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 8, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 9, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 10, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 11, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 12, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 13, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 14, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 15, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 16, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+        { "errorId": 17, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
+      ]
+    }
+  }
+  const url = `${G.API_URL}/users/batch/import`;
+  const body = filterEdit({ ...payload, token: getToken() });
+  return request(url, {
+    method: 'POST',
+    body,
   });
 }
 

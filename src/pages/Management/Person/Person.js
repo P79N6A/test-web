@@ -6,6 +6,7 @@ import { Row, Col, Table, Button, Input, Divider, Pagination, Icon, Popconfirm, 
 import G from '@/global';
 import styles from './Person.less';
 import PersonModal from './components/PersonModal';
+import PersonTemplate from './components/PersonTemplate';
 
 @connect(({ ManagementPerson, user, loading }) => ({
   ManagementPerson,
@@ -25,6 +26,7 @@ export default class Person extends Component {
       { text: formatMessage({ id: 'person.status.unconnect' }), value: 1 },
       { text: formatMessage({ id: 'person.status.connected' }), value: 2 }
     ],
+    importTemplate: false
   };
 
   componentDidMount() {
@@ -186,7 +188,7 @@ export default class Person extends Component {
                 this.onEdit(text, record, index);
               }}
             >
-              功能权限
+              角色
             </a>
           </Fragment>
         ),
@@ -290,9 +292,26 @@ export default class Person extends Component {
     });
   }
 
+  // 批量导入
+  importUse() {
+    this.setState({
+      importTemplate: true
+    })
+  }
+
+  // 批量导入关闭弹窗
+  closeTemplate() {
+    this.setState({
+      importTemplate: false
+    });
+    const { ManagementPerson } = this.props;
+    const { current } = ManagementPerson.data;
+    this.fetchDataList({ current });
+  }
+
   render() {
     const { ManagementPerson, user, loading, dispatch } = this.props;
-    const { modalLoading, visible, editValue, query, filterStatus } = this.state;
+    const { modalLoading, visible, editValue, query, filterStatus, importTemplate } = this.state;
     const { limit, count, current } = ManagementPerson.data;
     const listTitle = {
       serialNumber: formatMessage({ id: 'all.serial.number' }),
@@ -317,7 +336,7 @@ export default class Person extends Component {
             <Button icon="plus" type="primary" size='small' onClick={this.showModal} style={{ marginRight: '20px' }}>
               <FormattedMessage id="all.add" />
             </Button>
-            <Button type="default" size='small'>批量导入</Button>
+            <Button type="default" size='small' onClick={this.importUse.bind(this)}>批量导入</Button>
           </Col>
           <Col span={12}>
             <Button
@@ -373,6 +392,13 @@ export default class Person extends Component {
           editValue={editValue}
           handleOk={this.handleOk.bind(this)}
           handleCancel={this.handleCancel.bind(this)}
+        />
+        {/* 导入模板 */}
+        <PersonTemplate
+          visible={importTemplate}
+          closeTemplate={this.closeTemplate.bind(this)}
+          errorList={ManagementPerson.errorList}
+          dispatch={dispatch}
         />
       </div>
     );

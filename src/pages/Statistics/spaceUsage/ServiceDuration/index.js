@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Card, Icon } from 'antd';
-import { Pie, yuan } from '@/components/Charts'
+import { Pie } from '@/components/Charts'
 import styles from './ServiceDuration.less';
 import G from '@/global';
 import ProgressLine from './ProgressLine';
@@ -20,44 +20,48 @@ class ServiceDuration extends Component {
             <Icon type="ellipsis" theme="outlined" className={styles.icon} />
           </p>
           <Pie
-            subTitle="总时长"
+            subTitle="平均时长"
             total={() => (
               <span
                 dangerouslySetInnerHTML={{
-                  __html: totalTime(salesPieData)
+                  __html: totalTime(serviceDuration.average_duration)
                 }}
               />
             )}
             data={salesPieData}
-            height={180}
+            height={200}
             color={['#FCB0B1', '#BDE4E1']}
           />
-          <p className={styles.totalText}>平均时长</p>
-          <p className={styles.totalTextContent}>8</p>
-          <p className={styles.totalTextContentFont}>小时/工位/天</p>
-          <ProgressLine
-            percent={Number(
-              ((serviceDuration.occupied_duration / serviceDuration.total_duration) * 100).toFixed(
-                2
-              )
-            )}
-            strokeColor="#FCB0B1"
-            title={formatMessage({ id: 'spaceUsage.use.time' })}
-            day={parseInt(serviceDuration.occupied_duration / (24 * 60), 10)}
-            hour={G.moment.duration(serviceDuration.occupied_duration * 60 * 1000).hours()}
-          />
-          <ProgressLine
-            percent={Number(
-              ((serviceDuration.vacant_duration / serviceDuration.total_duration) * 100).toFixed(2)
-            )}
-            strokeColor="#A6D6D0"
-            title={formatMessage({ id: 'spaceUsage.free.time' })}
-            day={parseInt(serviceDuration.vacant_duration / (24 * 60), 10)}
-            hour={G.moment.duration(serviceDuration.vacant_duration * 60 * 1000).hours()}
-          />
-          <div style={{ height: 55 }} />
+          <p className={styles.totalText}>总时长</p>
+          <p className={styles.totalTextContent}>
+            {parseInt(serviceDuration.total_duration / (24 * 60), 10)}
+            <font className={styles.textStatus}><FormattedMessage id="home.day" /></font>
+            {G.moment.duration(serviceDuration.total_duration * 60 * 1000).hours()}
+            <font className={styles.textStatus}><FormattedMessage id="home.hour" /></font>
+          </p>
+          {/* 使用时长 */}
+          <div className={styles.useBox}>
+            <p className={styles.useTitle}><i></i>使用时长</p>
+            <p className={styles.useTextContent}>
+              {parseInt(serviceDuration.occupied_duration / (24 * 60), 10)}
+              <font className={styles.textStatus}><FormattedMessage id="home.day" /></font>
+              {G.moment.duration(serviceDuration.occupied_duration * 60 * 1000).hours()}
+              <font className={styles.textStatus}><FormattedMessage id="home.hour" /></font>
+              <font className={styles.percent}>{Number(((serviceDuration.occupied_duration / serviceDuration.total_duration) * 100).toFixed(2))}<font className={styles.textStatus}>%</font></font>
+            </p>
+          </div>
+          {/* 空闲时长 */}
+          <div className={styles.useBox}>
+            <p className={styles.useTitle}><i className={styles.green}></i>使用时长</p>
+            <p className={styles.useTextContent}>
+              {parseInt(serviceDuration.vacant_duration / (24 * 60), 10)}
+              <font className={styles.textStatus}><FormattedMessage id="home.day" /></font>
+              {G.moment.duration(serviceDuration.vacant_duration * 60 * 1000).hours()}
+              <font className={styles.textStatus}><FormattedMessage id="home.hour" /></font>
+              <font className={styles.percentGreen}>{Number(((serviceDuration.vacant_duration / serviceDuration.total_duration) * 100).toFixed(2))}<font className={styles.textStatus}>%</font></font>
+            </p>
+          </div>
         </div>
-        <br />
       </Card>
     );
   }

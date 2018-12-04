@@ -303,10 +303,5 @@ export function serviceData(data) {
 
 // 计算总时长
 export function totalTime(data) {
-  let total = 0;
-  data.map((item) => {
-    total += Number(item.y)
-  });
-  let totlaText = parseInt(total / (24 * 60), 10) + '天' + G.moment.duration(total * 60 * 1000).hours() + '小时'
-  return totlaText;
+  return `<div style="font-size:30px;color:#35536C;"><p style="line-height:28px;margin-bottom:0;">${data}</p><p style="font-size:10px;line-height:14px;">小时/工位/天</p></div>`;
 }

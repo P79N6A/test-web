@@ -383,8 +383,18 @@ export async function getUseRate(payload) {
   });
 }
 
-// 服务时长统计
+// TODO: 服务时长统计
 export async function getServiceDuration(payload) {
+  return {
+    "status": "success",
+    "data": {
+      "total_duration": 1754952,
+      "occupied_duration": 161070,
+      "vacant_duration": 1593882,
+      "offline_duration": 1123662,
+      "average_duration": 6,
+    }
+  }
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/service_duration?${url}`, {
     method: 'GET',

@@ -27,6 +27,7 @@ export default class OfficeUsage extends Component {
     this.obOneLine({ condition_type });
     this.obUseRate({ condition_type });
     this.obDeskUse({ condition_type });
+    this.obDeskRankHot({ condition_type });
   }
 
   // 选取9小时24小时
@@ -42,6 +43,7 @@ export default class OfficeUsage extends Component {
     this.obOneLine({ condition_type: e.target.value });
     this.obUseRate({ condition_type: e.target.value });
     this.obDeskUse({ condition_type: e.target.value });
+    this.obDeskRankHot({ condition_type: e.target.value });
   };
 
   // 获取工位总数、昨日使用数、未使用数、服务时长统计

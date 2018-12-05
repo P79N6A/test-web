@@ -118,7 +118,13 @@ class DeskDuration extends Component {
             </Row>
             <Row gutter={24} style={{ position: 'relative' }}>
               <Col xl={24} lg={24} md={24} sm={24} xs={24}>
-                <Bar height={395} data={deskAvgDurationList} number={number} color="#FCB0B1" />
+                {deskAvgDurationList ?
+                  <Bar height={395} data={deskAvgDurationList} number={number} color="#FCB0B1" />
+                  :
+                  <div style={{ height: 400, display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: '-90px' }}>
+                    <FormattedMessage id="spaceUsage.none" />
+                  </div>
+                }
                 <Spin size="large" style={{ display: loading ? 'block' : 'none', position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%,-50%)' }} />
               </Col>
             </Row>

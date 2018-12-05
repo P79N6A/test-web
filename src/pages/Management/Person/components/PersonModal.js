@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import * as qiniu from 'qiniu-js';
-import { Modal, Button, Input, Form, Icon, Upload } from 'antd';
+import { Modal, Button, Input, Form, Icon, Upload, Row, Col } from 'antd';
 import G from '@/global';
 import styles from './PersonModal.less';
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 
 const ACCESSKEY = 'h07mPP3LHfjO8BHJfCyIRsiichflVYIHtyNkXNoM';
 const SECRETKEY = '6keig4uqFJFLjs80aLAPfjb3rnaMaiPOgRNJ9uik';
@@ -149,13 +150,12 @@ class PersonModal extends Component {
     const { visible, loading, handleCancel, form } = this.props;
     const { imageUrl, avatarLoading, title } = this.state;
     const { getFieldDecorator } = form;
-    const uploadButton = (<Icon type={avatarLoading ? 'loading' : 'plus'} style={{ fontSize: '70px', lineHeight: '70px', paddingTop: '6px' }} />);
-    const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 14 },
-    };
+    const uploadButton = (<Icon type={avatarLoading ? 'loading' : 'user'} style={{ fontSize: '30px', lineHeight: '60px', paddingTop: '4px', color: '#DFE4E8' }} />);
+    const formItemLayout = { labelCol: { span: 3 }, wrapperCol: { span: 9 } };
+    const leftImg = { xs: 24, sm: 12, md: 12, lg: 12, xl: 12, xxl: 12 };
     return (
       <Modal
+        width={780}
         visible={visible}
         title={title}
         onOk={this.okHandle}
@@ -169,87 +169,106 @@ class PersonModal extends Component {
           </Button>
         ]}
       >
-        <FormItem {...formItemLayout} label={formatMessage({ id: 'person.avatar' })}>
-          {getFieldDecorator('upload', {
-            valuePropName: 'fileList',
-            getValueFromEvent: this.normFile,
-          })(
-            <Upload
-              className={styles.avatarUploader}
-              name="avatar"
-              listType="picture-card"
-              accept="image/*"
-              showUploadList={false}
-              onChange={this.handleChange.bind(this)}
-              beforeUpload={this.beforeUpload.bind(this)}
-            >
-              {imageUrl ? (
-                <img className={styles.avatar} src={imageUrl} alt="avatar" />
-              ) : (
-                  uploadButton
-                )}
-            </Upload>
-          )}
-        </FormItem>
-        <br />
-        <FormItem {...formItemLayout} label={formatMessage({ id: 'person.name' })}>
-          {getFieldDecorator('name', {
-            rules: [
-              {
-                required: true,
-                message: formatMessage({ id: 'person.name.test.message' }),
-              },
-              {
-                max: 20,
-                message: formatMessage({ id: 'test.max.long.twenty' }),
-              },
-            ],
-          })(<Input placeholder={formatMessage({ id: 'person.name.input' })} />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label={formatMessage({ id: 'person.phone' })}>
-          {getFieldDecorator('phone', {
-            rules: [
-              {
-                required: true,
-                message: formatMessage({ id: 'person.phone.test.message' }),
-              },
-              {
-                validator: this.checkPhone.bind(this),
-              },
-            ],
-          })(<Input placeholder={formatMessage({ id: 'person.phone.input' })} />)}
-        </FormItem>
+        <Row gutter={24}>
+          <Col {...leftImg}>
+            <FormItem {...formItemLayout} label={formatMessage({ id: 'person.avatar' })}>
+              {getFieldDecorator('upload', {
+                valuePropName: 'fileList',
+                getValueFromEvent: this.normFile,
+              })(
+                <Upload
+                  className={styles.avatarUploader}
+                  name="avatar"
+                  listType="picture-card"
+                  accept="image/*"
+                  showUploadList={false}
+                  onChange={this.handleChange.bind(this)}
+                  beforeUpload={this.beforeUpload.bind(this)}
+                >
+                  {imageUrl ? (
+                    <img className={styles.avatar} src={imageUrl} alt="avatar" />
+                  ) : (
+                      uploadButton
+                    )}
+                </Upload>
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col {...leftImg}>
+            <FormItem label={formatMessage({ id: 'person.name' })}>
+              {getFieldDecorator('name', {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({ id: 'person.name.test.message' }),
+                  },
+                  {
+                    max: 20,
+                    message: formatMessage({ id: 'test.max.long.twenty' }),
+                  },
+                ],
+              })(<Input placeholder={formatMessage({ id: 'person.name.input' })} />)}
+            </FormItem>
+          </Col>
+          <Col {...leftImg}>
+            <FormItem label={formatMessage({ id: 'person.phone' })}>
+              {getFieldDecorator('phone', {
+                rules: [
+                  {
+                    required: true,
+                    message: formatMessage({ id: 'person.phone.test.message' }),
+                  },
+                  {
+                    validator: this.checkPhone.bind(this),
+                  },
+                ],
+              })(<Input placeholder={formatMessage({ id: 'person.phone.input' })} />)}
+            </FormItem>
+          </Col>
+        </Row>
         {/* 邮箱 */}
-        <FormItem {...formItemLayout} label={formatMessage({ id: 'app.settings.basic.email' })}>
-          {getFieldDecorator('email', {
-            rules: [
-              {
-                pattern: G.emailCheck,
-                message: formatMessage({ id: 'customer.email.message' }),
-              },
-            ],
-          })(<Input placeholder={formatMessage({ id: 'app.settings.basic.email-message' })} />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label={formatMessage({ id: 'person.position' })}>
-          {getFieldDecorator('position', {
-            rules: [
-              {
-                max: 10,
-                message: formatMessage({ id: 'test.max.long.ten' }),
-              },
-            ],
-          })(<Input placeholder={formatMessage({ id: 'person.position.input' })} />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label={formatMessage({ id: 'all.remarks' })}>
-          {getFieldDecorator('remark', {
-            rules: [
-              {
-                max: 100,
-                message: formatMessage({ id: 'test.max.long.one.hundred' }),
-              },
-            ],
-          })(<Input placeholder={formatMessage({ id: 'person.remarks.input' })} />)}
-        </FormItem>
+        <Row gutter={24}>
+          <Col {...leftImg}>
+            <FormItem label={formatMessage({ id: 'app.settings.basic.email' })}>
+              {getFieldDecorator('email', {
+                rules: [
+                  {
+                    pattern: G.emailCheck,
+                    message: formatMessage({ id: 'customer.email.message' }),
+                  },
+                ],
+              })(<Input placeholder={formatMessage({ id: 'app.settings.basic.email-message' })} />)}
+            </FormItem>
+          </Col>
+          <Col {...leftImg}>
+            <FormItem label={formatMessage({ id: 'person.position' })}>
+              {getFieldDecorator('position', {
+                rules: [
+                  {
+                    max: 10,
+                    message: formatMessage({ id: 'test.max.long.ten' }),
+                  },
+                ],
+              })(<Input placeholder={formatMessage({ id: 'person.position.input' })} />)}
+            </FormItem>
+          </Col>
+        </Row>
+        <Row gutter={24}>
+          <Col>
+            <FormItem label={formatMessage({ id: 'all.remarks' })}>
+              {getFieldDecorator('remark', {
+                rules: [
+                  {
+                    max: 100,
+                    message: formatMessage({ id: 'test.max.long.one.hundred' }),
+                  },
+                ],
+              })(<TextArea rows={3} placeholder={formatMessage({ id: 'person.remarks.input' })} />)}
+            </FormItem>
+          </Col>
+        </Row>
       </Modal>
     );
   }

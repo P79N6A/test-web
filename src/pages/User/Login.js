@@ -68,7 +68,7 @@ class LoginPage extends Component {
   }
 
   render() {
-    const { login, submitting, match } = this.props;
+    const { login, submitting, match, location } = this.props;
     const { type, autoLogin } = this.state;
     return (
       <div className={styles.main}>
@@ -92,7 +92,12 @@ class LoginPage extends Component {
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
           </Tab>
-          <p className={styles.retrievePassword} onClick={this.retrievePassword.bind(this)}>找回密码</p>
+          {
+            location.pathname && location.pathname === '/user/login' ?
+              <p className={styles.retrievePassword} onClick={this.retrievePassword.bind(this)}>找回密码</p>
+              :
+              ''
+          }
           <Submit loading={submitting} path={match.path}><FormattedMessage id='menu.user.login' /></Submit>
         </Login>
       </div>

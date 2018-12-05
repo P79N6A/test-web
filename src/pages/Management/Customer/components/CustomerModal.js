@@ -4,8 +4,10 @@ import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import G from '@/global'
+import styles from './../NewCustomer.less'
 
 const FormItem = Form.Item;
+const { TextArea } = Input;
 
 @connect(({ ManagementCustomer }) => ({
   ManagementCustomer,
@@ -25,6 +27,7 @@ class NewCustomer extends Component {
         password: '******',
         email: editValue.company.email,
         companyName: editValue.companyName,
+        customerName: editValue.customerName,
         contacts: editValue.company.contacts,
         telephone: editValue.company.telephone,
         address: editValue.company.address,
@@ -119,14 +122,32 @@ class NewCustomer extends Component {
     const { title } = this.state;
     const { getFieldDecorator } = form;
     const { editValue } = ManagementCustomer;
+    const leftImg = { xs: 24, sm: 12, md: 12, lg: 12, xl: 12, xxl: 12 };
     return (
       <div>
         <h3>{title}</h3>
         <br />
         <Form style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '4px' }}>
-          <Row>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'customer.company.name' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+          <Row gutter={24}>
+            <p className={styles.addTitle}>客户信息</p>
+            <Col {...leftImg}>
+              <FormItem label="客户名称">
+                {getFieldDecorator('customerName', {
+                  rules:
+                    editValue === ''
+                      ? [
+                        { required: true, message: "请输入客户名称" },
+                        {
+                          max: 50,
+                          message: formatMessage({ id: 'test.max.long.fifty' }),
+                        },
+                      ]
+                      : [],
+                })(<Input placeholder="请输入客户名称" />)}
+              </FormItem>
+            </Col>
+            <Col {...leftImg}>
+              <FormItem label={formatMessage({ id: 'customer.company.name' })}>
                 {getFieldDecorator('companyName', {
                   rules:
                     editValue === ''
@@ -138,25 +159,14 @@ class NewCustomer extends Component {
                         },
                       ]
                       : [],
-                })(<Input placeholder={formatMessage({ id: 'customer.company.name.message' })} size="large" disabled={editValue !== ''} />)}
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'customer.industry' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('industry', {
-                  rules: [
-                    {
-                      max: 20,
-                      message: formatMessage({ id: 'test.max.long.twenty' }),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({ id: 'customer.industry.message' })} size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.company.name.message' })} disabled={editValue !== ''} />)}
               </FormItem>
             </Col>
           </Row>
-          <Row>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'customer.account.number' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+          <Row gutter={24}>
+            <p className={styles.addTitle}>账号信息</p>
+            <Col {...leftImg}>
+              <FormItem label={formatMessage({ id: 'customer.account.number' })}>
                 {getFieldDecorator('account', {
                   rules:
                     editValue === ''
@@ -172,25 +182,11 @@ class NewCustomer extends Component {
                         },
                       ]
                       : [],
-                })(<Input placeholder={formatMessage({ id: 'customer.account.number.text' })} size="large" disabled={editValue !== ''} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.account.number.text' })} disabled={editValue !== ''} />)}
               </FormItem>
             </Col>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'customer.detailed.address' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('address', {
-                  rules: [
-                    {
-                      max: 100,
-                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({ id: 'customer.detailed.address.text' })} size="large" />)}
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'customer.password' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+            <Col {...leftImg}>
+              <FormItem label={formatMessage({ id: 'customer.password' })}>
                 {getFieldDecorator('password', {
                   rules:
                     editValue === ''
@@ -210,25 +206,11 @@ class NewCustomer extends Component {
                         },
                       ]
                       : [],
-                })(<Input placeholder={formatMessage({ id: 'customer.password.text' })} size="large" disabled={editValue !== ''} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.password.text' })} disabled={editValue !== ''} />)}
               </FormItem>
             </Col>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'customer.website.link' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('website', {
-                  rules: [
-                    {
-                      max: 100,
-                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({ id: 'customer.website.link.text' })} size="large" />)}
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'app.settings.basic.email' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+            <Col {...leftImg}>
+              <FormItem label={formatMessage({ id: 'app.settings.basic.email' })}>
                 {getFieldDecorator('email', {
                   rules: [
                     { required: true, message: formatMessage({ id: 'app.settings.basic.email-message' }) },
@@ -237,25 +219,14 @@ class NewCustomer extends Component {
                       message: formatMessage({ id: 'customer.email.message' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: 'app.settings.basic.email-message' })} size="large" />)}
-              </FormItem>
-            </Col>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'customer.contract.no' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('contractNo', {
-                  rules: [
-                    {
-                      max: 100,
-                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({ id: 'customer.contract.no.text' })} size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.email' })} />)}
               </FormItem>
             </Col>
           </Row>
-          <Row>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'customer.administrator.name' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+          <Row gutter={24}>
+            <p className={styles.addTitle}>管理人员设置</p>
+            <Col {...leftImg}>
+              <FormItem label={formatMessage({ id: 'customer.administrator.name' })}>
                 {getFieldDecorator('contacts', {
                   rules: [
                     { required: true, message: formatMessage({ id: 'customer.administrator.name.text' }) },
@@ -264,25 +235,11 @@ class NewCustomer extends Component {
                       message: formatMessage({ id: 'test.max.long.twenty' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: 'customer.administrator.name.text' })} size="large" />)}
+                })(<Input placeholder={formatMessage({ id: "customer.connect.name" })} />)}
               </FormItem>
             </Col>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'all.remarks' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
-                {getFieldDecorator('remark', {
-                  rules: [
-                    {
-                      max: 100,
-                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
-                    },
-                  ],
-                })(<Input placeholder={formatMessage({ id: 'person.remarks.input' })} size="large" />)}
-              </FormItem>
-            </Col>
-          </Row>
-          <Row>
-            <Col span={12}>
-              <FormItem label={formatMessage({ id: 'customer.administrator.mobile' })} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+            <Col {...leftImg}>
+              <FormItem label={formatMessage({ id: 'customer.administrator.mobile' })}>
                 {getFieldDecorator('telephone', {
                   rules: [
                     { required: true, message: formatMessage({ id: 'customer.administrator.mobile.text' }) },
@@ -295,11 +252,76 @@ class NewCustomer extends Component {
                       message: formatMessage({ id: 'customer.administrator.mobile.message' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: 'customer.administrator.mobile.text' })} size="large" />)}
+                })(<Input placeholder={formatMessage({ id: "customer.connect.mobile" })} />)}
               </FormItem>
             </Col>
           </Row>
-          <Row>
+          <Row gutter={24}>
+            <p className={styles.addTitle}>其他</p>
+            <Col {...leftImg}>
+              <FormItem label={formatMessage({ id: 'customer.detailed.address' })}>
+                {getFieldDecorator('address', {
+                  rules: [
+                    {
+                      max: 100,
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
+                    },
+                  ],
+                })(<Input placeholder={formatMessage({ id: "customer.address.text" })} />)}
+              </FormItem>
+            </Col>
+            <Col {...leftImg}>
+              <FormItem label={formatMessage({ id: 'customer.website.link' })}>
+                {getFieldDecorator('website', {
+                  rules: [
+                    {
+                      max: 100,
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
+                    },
+                  ],
+                })(<Input placeholder={formatMessage({ id: 'customer.website.link' })} />)}
+              </FormItem>
+            </Col>
+            <Col {...leftImg}>
+              <FormItem label={formatMessage({ id: 'customer.industry' })}>
+                {getFieldDecorator('industry', {
+                  rules: [
+                    {
+                      max: 20,
+                      message: formatMessage({ id: 'test.max.long.twenty' }),
+                    },
+                  ],
+                })(<Input placeholder={formatMessage({ id: 'customer.industry.message' })} />)}
+              </FormItem>
+            </Col>
+            <Col {...leftImg}>
+              <FormItem label={formatMessage({ id: 'customer.contract.no' })}>
+                {getFieldDecorator('contractNo', {
+                  rules: [
+                    {
+                      max: 100,
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
+                    },
+                  ],
+                })(<Input placeholder={formatMessage({ id: 'customer.contract.no.text' })} />)}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={24}>
+            <Col>
+              <FormItem label={formatMessage({ id: 'all.remarks' })}>
+                {getFieldDecorator('remark', {
+                  rules: [
+                    {
+                      max: 100,
+                      message: formatMessage({ id: 'test.max.long.one.hundred' }),
+                    },
+                  ],
+                })(<TextArea rows={5} placeholder={formatMessage({ id: 'customer.remarks.message' })} />)}
+              </FormItem>
+            </Col>
+          </Row>
+          <Row gutter={24}>
             <Col span={24} style={{ textAlign: 'right' }}>
               <Button type="primary" htmlType="submit" size='small' onClick={this.handleCommit.bind(this)}>
                 <FormattedMessage id='all.save' />

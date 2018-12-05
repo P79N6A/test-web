@@ -192,22 +192,32 @@ export default {
   "customer.company.name": "Company Full Name",
   "customer.company.name.message": "Please enter the company full name",
   "customer.industry": "Working Field",
-  "customer.industry.message": "Please enter working field",
+  "customer.industry.message": "Working field",
+  // TODO: 翻译
+  "customer.remarks.message": "备注信息",
   "customer.account.number.text": "Please enter account number",
   "customer.account.number.message": "Only half-Angle English numbers and underlining are supported",
   "customer.detailed.address": "Detailed Address",
   "customer.detailed.address.text": "Please type in the address",
+  // TODO: 翻译
+  "customer.address.text": "客户详细地址",
   "customer.password": "Password",
   "customer.password.text": "Please enter the password",
   "customer.password.message": "Formate Error",
   "customer.website.link": "Website",
   "customer.website.link.text": "Please enter the website",
+  // TODO: 翻译
+  "customer.email": "客户邮箱",
   "customer.email.message": "Email Formate Error",
   "customer.contract.no": "PO Number",
   "customer.contract.no.text": "Please enter PO number",
   "customer.administrator.name": "Admin Name",
   "customer.administrator.name.text": "Please type in admin name",
+  // TODO: 翻译
+  "customer.connect.name": "联系人姓名",
   "customer.administrator.mobile": "Admin Mobile Number",
+  // TODO: 翻译
+  "customer.connect.mobile": "联系电话",
   "customer.administrator.mobile.text": "Please type in admin mobile number",
   "customer.administrator.mobile.message": "Please enter the number in correct format",
   "customer.quest.error": "Request Failed",

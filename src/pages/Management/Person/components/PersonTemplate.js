@@ -214,7 +214,7 @@ class PersonTemplate extends Component {
                 <div className={styles.stapOne}>
                   <p className={styles.stapTitle}><font>1</font>下载模板</p>
                   <p className={styles.stapText}>请先下载导入用户的表格模板，并根据模板填写用户参数内容</p>
-                  <a className={styles.stapBtn} href="http://cdn.space.9amtech.com/download/9am_user.zip">下载模板</a>
+                  <a className={styles.stapBtn} href={`${G.picUrl}download/9am_user_importTemplate%20.zip`}>下载模板</a>
                 </div>
                 <div className={styles.stapOne}>
                   <p className={styles.stapTitle}><font>2</font>导入用户</p>

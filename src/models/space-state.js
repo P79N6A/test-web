@@ -1,4 +1,5 @@
 import { getSvg, getDeskState } from '../services/api';
+import { message } from 'antd';
 
 export default {
   namespace: 'spaceState',
@@ -9,8 +10,9 @@ export default {
 
   effects: {
     // 获取 svg 图 url 以及 svg 唯一标识
-    *getSvg(_, { call, put }) {
-      const response = yield call(getSvg);
+    *getSvg({ payload }, { call, put }) {
+      const response = yield call(getSvg, payload);
+      payload.callback(response);
       if (response && response.status === 'success') {
         yield put({ type: 'saveSvg', payload: response.data });
       } else {
@@ -19,7 +21,6 @@ export default {
     },
     *getDeskState({ payload }, { call, put }) {
       const response = yield call(getDeskState, payload);
-      payload.callback(response.data);
       if (response && response.status === 'success') {
         yield put({
           type: 'save',

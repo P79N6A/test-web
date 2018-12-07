@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon, Tooltip } from 'antd';
-
+import { Row, Col, Table, Button, Input, Divider, Popconfirm, Pagination, Icon, Tooltip, message } from 'antd';
+import Permission from './components/Permission'
 import G from '@/global';
 import styles from './Customer.less';
 import { routerRedux } from 'dva/router';
+import { checkAddPermission } from '@/utils/utils'
 
 @connect(({ ManagementCustomer, loading }) => ({
   ManagementCustomer,
@@ -16,10 +17,56 @@ export default class Wework extends Component {
   state = {
     query: '',
     sortParam: {},
+    visible: false
   };
 
   componentDidMount() {
     this.fetchDataList();
+  }
+
+  // 获取权限列表
+  obpermission(text) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ManagementCustomer/permissionsList',
+      payload: {
+        companyId: text.companyId,
+        callback: this.showModel.bind(this)
+      },
+    });
+    dispatch({
+      type: 'ManagementCustomer/saveCompanyId',
+      payload: {
+        companyId: text.companyId
+      }
+    });
+  }
+
+  // 回调函数
+  showModel(res) {
+    const { dispatch } = this.props;
+    const addPermission = checkAddPermission(res.data);
+    if (res.status === 'success') {
+      this.setState({
+        visible: true
+      });
+      dispatch({
+        type: 'ManagementCustomer/saveAddPermissions',
+        payload: {
+          addPermission: addPermission,
+        }
+      })
+    }
+  }
+
+  // 关闭弹窗
+  closeModel(res) {
+    this.setState({
+      visible: false
+    });
+    if (res === 1) {
+      this.fetchDataList();
+    }
   }
 
   onSearch() {
@@ -120,7 +167,7 @@ export default class Wework extends Component {
       {
         title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
-        width: 145,
+        width: 220,
         render: (text, record, index) => (
           <Fragment>
             <Popconfirm
@@ -139,6 +186,13 @@ export default class Wework extends Component {
               }}
             >
               <FormattedMessage id='all.edit' />
+            </a>
+            <Divider type="vertical" />
+            <a
+              onClick={() => {
+                this.obpermission(text, record, index);
+              }}>
+              功能权限
             </a>
           </Fragment>
         ),
@@ -213,8 +267,8 @@ export default class Wework extends Component {
   }
 
   render() {
-    const { ManagementCustomer, loading } = this.props;
-    const { query, sortParam } = this.state;
+    const { ManagementCustomer, loading, dispatch } = this.props;
+    const { query, sortParam, visible } = this.state;
     const { limit, current, count } = ManagementCustomer.data;
     const columns = this.getColumns(current, sortParam);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
@@ -275,6 +329,14 @@ export default class Wework extends Component {
             />
           </Col>
         </Row>
+        <Permission
+          dispatch={dispatch}
+          visible={visible}
+          companyId={ManagementCustomer.companyId}
+          permissionList={ManagementCustomer.permissionList}
+          addPermission={ManagementCustomer.addPermission}
+          closeModel={this.closeModel.bind(this)}
+        />
       </div>
     );
   }

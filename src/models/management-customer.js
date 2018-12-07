@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getCustomerList, addCustomer, editCustomer, resetPassword } from '../services/api';
+import { getCustomerList, addCustomer, editCustomer, resetPassword, permissionsList, setPermissions } from '../services/api';
 import { formatMessage } from 'umi/locale';
 
 export default {
@@ -12,7 +12,9 @@ export default {
       limit: 15,
     },
     editValue: '',
+    permissionList: [],
     companyId: '',
+    addPermission: []
   },
 
   effects: {
@@ -44,6 +46,24 @@ export default {
         message.error(response.message || formatMessage({ id: "customer.reset.password.error" }));
       }
     },
+    *permissionsList({ payload }, { call, put }) {
+      const response = yield call(permissionsList, payload);
+      payload.callback(response);
+      if (response && response.status === 'success') {
+        yield put({ type: 'savePermissionsList', payload: response.data });
+      } else {
+        message.error(response.message || 'error');
+      };
+    },
+    *setPermissions({ payload }, { call }) {
+      const response = yield call(setPermissions, payload);
+      payload.callback(response);
+      if (response && response.status === 'success') {
+        message.success('设置权限成功');
+      } else {
+        message.error(response.message || 'error');
+      };
+    }
   },
 
   reducers: {
@@ -69,6 +89,24 @@ export default {
       return {
         ...state,
         companyId: payload,
+      };
+    },
+    savePermissionsList(state, { payload }) {
+      return {
+        ...state,
+        permissionList: payload,
+      };
+    },
+    saveAddPermissions(state, { payload }) {
+      return {
+        ...state,
+        ...payload,
+      };
+    },
+    saveCompanyId(state, { payload }) {
+      return {
+        ...state,
+        companyId: { ...payload },
       };
     },
   },

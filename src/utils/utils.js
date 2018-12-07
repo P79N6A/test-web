@@ -305,3 +305,43 @@ export function serviceData(data) {
 export function totalTime(data) {
   return `<div style="font-size:30px;color:#35536C;"><p style="line-height:28px;margin-bottom:0;">${data}</p><p style="font-size:10px;line-height:14px;">小时/工位/天</p></div>`;
 }
+
+// 处理功能权限列表数据
+export function checkPermissionData(all) {
+  if (!all) {
+    return
+  }
+  let permission = [];
+  all.map((item) => {
+    let checkedListCopy = [], plainOptionsCopy = [];
+    item.child && item.child.map((lItem) => {
+      plainOptionsCopy.push({ 'label': lItem.menu_name, 'value': lItem.menu_id });
+      if (lItem.choose) {
+        checkedListCopy.push(lItem.menu_id)
+      }
+    })
+    permission.push({ 'title': item.menu_name, 'id': item.menu_id, checkedList: checkedListCopy, plainOptions: plainOptionsCopy })
+  })
+  return permission;
+}
+
+// 处理选择的数据
+export function checkData(all) {
+  let checkList = [];
+  all.map((item) => {
+    checkList.push(item.value)
+  })
+  return checkList;
+}
+
+export function checkAddPermission(data) {
+  let list = [];
+  data && data.map((item) => {
+    item.child && item.child.map((lItem) => {
+      if (lItem.choose === true) {
+        list.push(lItem.menu_id)
+      }
+    })
+  });
+  return list;
+}

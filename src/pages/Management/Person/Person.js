@@ -7,6 +7,7 @@ import G from '@/global';
 import styles from './Person.less';
 import PersonModal from './components/PersonModal';
 import PersonTemplate from './components/PersonTemplate';
+import PersonRole from './components/PersonRole';
 
 @connect(({ ManagementPerson, user, loading }) => ({
   ManagementPerson,
@@ -26,7 +27,8 @@ export default class Person extends Component {
       { text: formatMessage({ id: 'person.status.unconnect' }), value: 1 },
       { text: formatMessage({ id: 'person.status.connected' }), value: 2 }
     ],
-    importTemplate: false
+    importTemplate: false,
+    roleVisible: false
   };
 
   componentDidMount() {
@@ -185,7 +187,7 @@ export default class Person extends Component {
             <Divider type="vertical" />
             <a
               onClick={() => {
-                this.onEdit(text, record, index);
+                this.openRole(text, record, index);
               }}
             >
               角色
@@ -309,9 +311,33 @@ export default class Person extends Component {
     this.fetchDataList({ current });
   }
 
+  // 关闭权限弹窗
+  closeRole(state) {
+    const { ManagementPerson } = this.props;
+    const { current } = ManagementPerson.data;
+    if (state === 1) {
+      this.fetchDataList({ current });
+    }
+    this.setState({
+      roleVisible: false
+    })
+  }
+
+  // 打开权限弹窗
+  openRole(text, record, index) {
+    const { dispatch } = this.props;
+    this.setState({
+      roleVisible: true,
+    });
+    dispatch({
+      type: 'ManagementPerson/saveRole',
+      payload: text.role
+    });
+  }
+
   render() {
     const { ManagementPerson, user, loading, dispatch } = this.props;
-    const { modalLoading, visible, editValue, query, filterStatus, importTemplate } = this.state;
+    const { modalLoading, visible, editValue, query, filterStatus, importTemplate, roleVisible } = this.state;
     const { limit, count, current } = ManagementPerson.data;
     const listTitle = {
       serialNumber: formatMessage({ id: 'all.serial.number' }),
@@ -399,6 +425,14 @@ export default class Person extends Component {
           closeTemplate={this.closeTemplate.bind(this)}
           errorList={ManagementPerson.errorList}
           dispatch={dispatch}
+        />
+        {/* 用户角色弹窗 */}
+        <PersonRole
+          visible={roleVisible}
+          dispatch={dispatch}
+          user={user}
+          role={ManagementPerson.role}
+          closeRole={this.closeRole.bind(this)}
         />
       </div>
     );

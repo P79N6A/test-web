@@ -128,7 +128,7 @@ export async function getPersonnelList(payload) {
           "isDel": false,
           "remark": "hdiuwcdbxnadsdxnhdiuwcdbxnadsdxnhdiuwcdbxnadsdxnhdiuwcdbxnadsdxn",
           "status": 2,
-          "role": "角色"
+          "role": "default"
         },
         {
           "uid": "90f89bbb-8042-4a3b-afc5-5f277e34d3af",
@@ -139,7 +139,7 @@ export async function getPersonnelList(payload) {
           "isDel": false,
           "remark": null,
           "status": 2,
-          "role": "角色2"
+          "role": "manager_space"
         },
       ],
       "offset": 0,
@@ -214,6 +214,18 @@ export async function usersBatchImport(payload) {
   return request(url, {
     method: 'POST',
     body,
+  });
+}
+
+// 修改角色
+export async function changeRole(payload) {
+  return {
+    status: 'success'
+  }
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/users/configuration/role`, {
+    method: 'POST',
+    body
   });
 }
 

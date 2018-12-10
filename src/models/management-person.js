@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getPersonnelList, addPerson, updatePerson, getQiniuToken, usersBatchImport } from '../services/api';
+import { getPersonnelList, addPerson, updatePerson, getQiniuToken, usersBatchImport, changeRole } from '../services/api';
 import { formatMessage } from 'umi/locale';
 
 export default {
@@ -12,7 +12,8 @@ export default {
       limit: 15,
     },
     qiniuToken: '',
-    errorList: {}
+    errorList: {},
+    role: 'default'
   },
 
   effects: {
@@ -61,6 +62,15 @@ export default {
         });
       }
     },
+    *changeRole({ payload }, { call, put }) {
+      const response = yield call(changeRole, payload);
+      payload.callback(response);
+      if (response && response.status === 'success') {
+        message.success('修改角色成功');
+      } else {
+        message.error('失败');
+      }
+    },
   },
 
   reducers: {
@@ -82,6 +92,12 @@ export default {
         errorList: {
           ...action.payload,
         },
+      };
+    },
+    saveRole(state, action) {
+      return {
+        ...state,
+        role: action.payload
       };
     },
   },

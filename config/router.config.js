@@ -5,7 +5,7 @@ export default [
     component: '../layouts/BlankLayout',
     routes: [
       { path: '/dshow', redirect: '/dshow/login' },
-      { path: '/dshow/login', component: './Dshow/Login/DshowLogin' }
+      { path: '/dshow/login', component: './Dshow/Login/DshowLogin' },
     ],
   },
   // user
@@ -44,6 +44,22 @@ export default [
       { redirect: '/exception/404' },
     ],
   },
+  // office-map展示页面
+  {
+    path: '/office-map',
+    component: '../layouts/OfficeMapLayout',
+    routes: [
+      { path: '/office-map', redirect: '/office-map/9amdemo' },
+      { path: '/office-map/9amdemo', component: './OfficeMap/TianChuang' },
+      { path: '/office-map/weworkfun', component: './OfficeMap/WeworkFun' },
+      { path: '/office-map/demo2', component: './OfficeMap/Furniture' },
+      { path: '/office-map/demo2-2', component: './OfficeMap/Furniture' },
+      { path: '/office-map/microsoft', component: './OfficeMap/Microsoft' },
+      { path: '/office-map/microsoftHall', component: './OfficeMap/Microsoft/MicrosoftHall' },
+      { redirect: '/exception/404' },
+    ],
+  },
+
   // home
   {
     path: '/',
@@ -141,8 +157,8 @@ export default [
             component: './Statistics/spaceUsage',
             authority: ['user'],
           },
-          { redirect: '/exception/404' }
-        ]
+          { redirect: '/exception/404' },
+        ],
       },
       {
         name: 'settings',
@@ -155,8 +171,8 @@ export default [
             component: './Setting/Gateway',
             authority: ['admin'],
           },
-          { redirect: '/exception/404' }
-        ]
+          { redirect: '/exception/404' },
+        ],
       },
       {
         name: 'device',
@@ -168,8 +184,8 @@ export default [
             name: 'sensor',
             component: './Device/Sensor',
           },
-          { redirect: '/exception/404' }
-        ]
+          { redirect: '/exception/404' },
+        ],
       },
       {
         name: 'exception',
@@ -202,7 +218,7 @@ export default [
           { redirect: '/exception/404' },
         ],
       },
-      { redirect: '/exception/404' }
+      { redirect: '/exception/404' },
     ],
   },
 ];

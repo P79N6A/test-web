@@ -38,6 +38,19 @@ export default {
         message.error(response.message || formatMessage({ id: "login.error" }));
       }
     },
+    *autoLogin({ payload }, { call, put }) {
+      const response = yield call(login, payload);
+      if (response.status === 'success') {
+        yield put({
+          type: 'user/saveUser',
+          payload: response.data,
+        });
+      } else if (typeof response.message === 'object') {
+        message.error('登录失败！');
+      } else {
+        message.error(response.message || '登录失败！');
+      }
+    },
     *logout({ payload = {} }, { call, put }) {
       if (payload.tokenExpired) {
         message.error(formatMessage({ id: "login.token.lose" }));

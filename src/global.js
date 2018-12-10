@@ -13,6 +13,9 @@ if (env === '') {
   API_URL = `${process.API_URL}/api`;
 }
 const picUrl = 'http://cdn.space.9amtech.com/';
+const IXAM_URL = process.IXAM_URL;
+const SUBSCRIPTION_KEY = '8a61f42ed2144d18a11b4d0e243434e3';
+
 message.config({
   maxCount: 1,
 });
@@ -93,6 +96,8 @@ const errorLists = {
 
 export default {
   API_URL,
+  IXAM_URL,
+  SUBSCRIPTION_KEY,
   env,
   _,
   moment,

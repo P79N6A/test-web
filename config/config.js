@@ -47,6 +47,7 @@ export default {
     'process.SERVER_URL': process.env.SERVER_URL,
     'process.BUILD_ENV': process.env.BUILD_ENV,
     'process.DSHOW_URL': process.env.DSHOW_URL,
+    'process.IXAM_URL':process.env.IXAM_URL,
   },
   proxy: {
     '/api': {

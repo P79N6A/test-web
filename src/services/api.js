@@ -2,7 +2,7 @@ import request from '@/utils/request';
 import G from '@/global';
 import { filterUrl, filterBody, getToken, filterEdit } from '@/utils/utils';
 
-const { API_URL } = G;
+const { API_URL, IXAM_URL, SUBSCRIPTION_KEY } = G;
 // 登录
 export async function login(params) {
   const username = params.userName;
@@ -128,7 +128,7 @@ export async function getPersonnelList(payload) {
           "isDel": false,
           "remark": "hdiuwcdbxnadsdxnhdiuwcdbxnadsdxnhdiuwcdbxnadsdxnhdiuwcdbxnadsdxn",
           "status": 2,
-          "role": "default"
+          "role": "default",
         },
         {
           "uid": "90f89bbb-8042-4a3b-afc5-5f277e34d3af",
@@ -139,12 +139,12 @@ export async function getPersonnelList(payload) {
           "isDel": false,
           "remark": null,
           "status": 2,
-          "role": "manager_space"
+          "role": "manager_space",
         },
       ],
       "offset": 0,
-      "limit": 15
-    }
+      "limit": 15,
+    },
   }
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/users/list`, {
@@ -206,8 +206,8 @@ export async function usersBatchImport(payload) {
         { "errorId": 15, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
         { "errorId": 16, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
         { "errorId": 17, "row": 1, "title": "邮箱", "content": "123@163.com", "message": "邮箱已存在" },
-      ]
-    }
+      ],
+    },
   }
   const url = `${G.API_URL}/users/batch/import`;
   const body = filterEdit({ ...payload, token: getToken() });
@@ -220,12 +220,12 @@ export async function usersBatchImport(payload) {
 // 修改角色
 export async function changeRole(payload) {
   return {
-    status: 'success'
+    status: 'success',
   }
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/users/configuration/role`, {
     method: 'POST',
-    body
+    body,
   });
 }
 
@@ -234,7 +234,7 @@ export async function getResourceList(payload) {
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/resources/list`, {
     method: 'POST',
-    body
+    body,
   });
 }
 
@@ -341,7 +341,7 @@ export async function permissionsList(payload) {
             "menu_id": "ac0011",
             "menu_name": "首页",
             "choose": true,
-          }
+          },
         ],
       },
       {
@@ -358,7 +358,7 @@ export async function permissionsList(payload) {
             "menu_id": "ac0022",
             "menu_name": "Banner管理",
             "choose": false,
-          }
+          },
         ],
       },
       {
@@ -380,7 +380,7 @@ export async function permissionsList(payload) {
             "menu_id": "ac0033",
             "menu_name": "升降记录分析",
             "choose": false,
-          }
+          },
         ],
       },
       {
@@ -397,26 +397,26 @@ export async function permissionsList(payload) {
             "menu_id": "ac0042",
             "menu_name": "设备管理",
             "choose": true,
-          }
+          },
         ],
-      }
-    ]
+      },
+    ],
   }
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${G.API_URL}/permissions/list?${url}`, {
-    method: 'GET'
+    method: 'GET',
   });
 }
 
 // TODO: 设置权限列表
 export async function setPermissions(payload) {
   return {
-    status: 'success'
+    status: 'success',
   }
   const body = filterBody({ token: getToken(), ...payload });
   return request(`${G.API_URL}/permissions/list`, {
     method: 'POST',
-    body
+    body,
   });
 }
 
@@ -516,8 +516,8 @@ export async function getUseRate(payload) {
           "offline_duration": 300,
           "daily_average_duration": 20,
         },
-      ]
-    }
+      ],
+    },
   }
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/use_rate?${url}`, {
@@ -535,7 +535,7 @@ export async function getServiceDuration(payload) {
       "vacant_duration": 1593882,
       "offline_duration": 1123662,
       "average_duration": 6,
-    }
+    },
   }
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/service_duration?${url}`, {
@@ -579,7 +579,7 @@ export async function addBanner(payload) {
 export async function bannerPublish() {
   return request(`${API_URL}/banner/publish`, {
     method: 'POST',
-    body: { token: getToken() }
+    body: { token: getToken() },
   });
 }
 
@@ -668,34 +668,34 @@ export async function sensorList(payload) {
           "number": "A0001",
           "state": "占用",
           "remark": "备注的可持续拉克丝拉着",
-          "last_time": "2018-08-01T00:00:00.000Z"
+          "last_time": "2018-08-01T00:00:00.000Z",
         },
         {
           "id": "dndk002",
           "number": "A0001",
           "state": "空闲",
           "remark": "备注才能代理商可执行",
-          "last_time": "2018-08-01T00:00:00.000Z"
+          "last_time": "2018-08-01T00:00:00.000Z",
         },
         {
           "id": "dndk003",
           "number": "A0001",
           "state": "离线",
           "remark": "备注哇哇哇哇",
-          "last_time": "2018-08-01T00:00:00.000Z"
+          "last_time": "2018-08-01T00:00:00.000Z",
         },
         {
           "id": "dndk004",
           "number": "A0001",
           "state": "离线",
           "remark": "备注",
-          "last_time": "2018-08-01T00:00:00.000Z"
-        }
+          "last_time": "2018-08-01T00:00:00.000Z",
+        },
       ],
       "count": 86,
       "offset": 0,
-      "limit": 15
-    }
+      "limit": 15,
+    },
   }
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/sensor/list`, {
@@ -707,12 +707,28 @@ export async function sensorList(payload) {
 // TODO: 传感器添加备注
 export async function sensorRemark(payload) {
   return {
-    "status": "success"
+    "status": "success",
   }
   const { id } = payload;
   const url = `${G.API_URL}/sensor/${id}`;
   return request(url, {
     method: 'POST',
     body: { remark: payload.remark, token: getToken() },
+  });
+}
+
+/**
+ * @method 查询传感器状态
+ * @param {*} payload
+ *  tags      Array       查询的传感器tag
+ */
+export async function getDeviceStatus(payload) {
+  return request(`${IXAM_URL}/base/devices/status`, {
+    method: 'POST',
+    body: { ...payload, token: getToken() },
+    headers: {
+      'Ocp-Apim-Subscription-Key': SUBSCRIPTION_KEY,
+      'Ocp-Apim-Trace': true,
+    },
   });
 }

@@ -1,6 +1,7 @@
 import fetch from 'dva/fetch';
 import router from 'umi/router';
 import { getUserInfo } from '@/utils/authority';
+import user from '@/locales/user';
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -30,14 +31,11 @@ function checkStatus(response) {
     throw error;
   }
   if (response.status !== 401) return response;
-  const user = getUserInfo();
-  if (JSON.parse(user).autoLogin) {
+  const { pathname } = window.location;
+  if (pathname.indexOf('office-map') > -1) {
     dispatch({
-      type: 'login/login',
-      payload: {
-        password: 'Lato7176',
-        username: 'ucommune@9amtech.com',
-      },
+      type: 'login/autoLogin',
+      payload: user.officeMapUser,
     });
   } else {
     dispatch({

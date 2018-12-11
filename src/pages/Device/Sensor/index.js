@@ -57,7 +57,7 @@ export default class Sensor extends Component {
         offset: (value && (value.current - 1) * 15),
         limit: (value && value.limit) || sensorData.limit,
         query: (value && value.query) || query,
-        sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { serialNumber: (value && value.sortParams) || sortParam },
+        sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { tag: (value && value.sortParams) || sortParam },
         filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : (value.filterParam || sortParam)
       },
     });
@@ -97,26 +97,26 @@ export default class Sensor extends Component {
       },
       {
         title: '编号',
-        key: 'number',
+        key: 'tag',
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
         render: (text, record, index) => (
           <Fragment>
-            <Tooltip placement="topLeft" title={text.number}>
-              <font>{text.number}</font>
+            <Tooltip placement="topLeft" title={text.tag}>
+              <font>{text.tag}</font>
             </Tooltip>
           </Fragment>
         ),
       },
       {
         title: formatMessage({ id: 'device.status' }),
-        key: 'state',
+        key: 'inUse',
         filters: stateList,
         render: (text) => {
           return (
             <Fragment>
-              <Tooltip placement="topLeft" title={text.state}>
-                <span>{text.state}</span>
+              <Tooltip placement="topLeft" title={text.inUse}>
+                <span>{text.inUse}</span>
               </Tooltip>
             </Fragment>
           )
@@ -137,12 +137,12 @@ export default class Sensor extends Component {
       },
       {
         title: '最后联网时间',
-        key: 'last_time',
+        key: 'updatedAt',
         render: (text) => {
           return (
             <Fragment>
-              <Tooltip placement="topLeft" title={G.moment(text.last_time).format('YYYY-MM-DD HH:mm:ss')}>
-                <span>{G.moment(text.last_time).format('YYYY-MM-DD HH:mm:ss')}</span>
+              <Tooltip placement="topLeft" title={G.moment(text.updatedAt).format('YYYY-MM-DD HH:mm:ss')}>
+                <span>{G.moment(text.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</span>
               </Tooltip>
             </Fragment>
           )
@@ -244,7 +244,7 @@ export default class Sensor extends Component {
         <Row className={styles.lageBox}>
           <Col span={24}>
             <Table
-              rowKey="gateway_id"
+              rowKey="deviceId"
               loading={loading}
               dataSource={rows}
               columns={columns}

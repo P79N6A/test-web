@@ -44,8 +44,8 @@ export default {
       const { offset } = action.payload;
       let stateList = [];
       action.payload.rows.map((item, i) => {
-        if (G._.findIndex(stateList, { value: item.state }) === -1) {
-          stateList.push({ "text": item.state, "value": item.state });
+        if (G._.findIndex(stateList, { value: item.inUse }) === -1) {
+          stateList.push({ "text": item.inUse, "value": item.inUse });
         }
       })
       return {

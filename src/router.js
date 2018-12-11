@@ -13,18 +13,29 @@ function RouterConfig({ history, app }) {
   const routerData = getRouterData(app);
   const UserLayout = routerData['/user'].component;
   const AdminLayout = routerData['/admin_user'].component;
+  const SpacexUserLayout = routerData['/SpacexUserLayout'].component;
   const BasicLayout = routerData['/'].component;
   const ExternalLayout = routerData['/external'].component;
   const OfficeMapLayout = routerData['/office-map'].component;
+  const SpacexLayout = routerData['/spacex'].component;
   return (
     <LocaleProvider locale={zhCN}>
       <ConnectedRouter history={history}>
         <Switch>
           <Route path="/user" component={UserLayout} />
           <Route path="/admin_user" component={AdminLayout} />
+          <Route path="/space-user" component={SpacexUserLayout} />
           <Route path="/dshow" component={BlankLayout} />
           <Route path="/external" component={ExternalLayout} />
           <Route path="/office-map" component={OfficeMapLayout} />
+          <AuthorizedRoute
+            path="/spacex"
+            render={props => <SpacexLayout {...props} />}
+            authority={['admin', 'user']}
+            redirectPath={getQueryPath('/spacex-user/login', {
+              redirect: window.location.href,
+            })}
+          />
           {/* 判定权限默认全部 */}
           <AuthorizedRoute
             path="/"

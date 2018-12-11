@@ -30,6 +30,15 @@ export default [
       { path: '/admin_user/login', component: './User/Login' },
     ],
   },
+  // space-user
+  {
+    path: '/spacex-user',
+    component: '../layouts/SpacexUserLayout',
+    routes: [
+      { path: '/spacex-user', redirect: '/spacex-user/login' },
+      { path: '/spacex-user/login', component: './User/SpaceLogin' },
+    ],
+  },
   // 只有头部没有权限设置的外接页面
   {
     path: '/external',
@@ -60,6 +69,19 @@ export default [
     ],
   },
 
+  // space 工位实时状态以及数据统计展示
+  {
+    path: '/spacex',
+    component: '../layouts/SpacexLayout',
+    Routes: ['src/pages/Authorized'],
+    routes: [
+      { path: '/spacex', redirect: '/spacex/space-status' },
+      { path: '/spacex/space-status', component: './Spacex/SpaceStatus' },
+      { path: '/spacex/space-demo', component: './Spacex/SpaceStatus' },
+      { path: '/spacex/space-statistics', component: './Spacex/OfficeUsage' },
+      { redirect: '/exception/404' },
+    ],
+  },
   // home
   {
     path: '/',

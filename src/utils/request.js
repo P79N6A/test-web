@@ -1,6 +1,7 @@
 import fetch from 'dva/fetch';
 import router from 'umi/router';
 import { getUserInfo } from '@/utils/authority';
+import { getUserWithCToken } from '@/utils/utils';
 import user from '@/locales/user';
 
 const codeMessage = {
@@ -32,10 +33,17 @@ function checkStatus(response) {
   }
   if (response.status !== 401) return response;
   const { pathname } = window.location;
+  const currentUser = JSON.parse(getUserInfo());
+  const loginUser = getUserWithCToken(currentUser && currentUser.token);
   if (pathname.indexOf('office-map') > -1) {
     dispatch({
       type: 'login/autoLogin',
       payload: user.officeMapUser,
+    });
+  } else if (pathname.indexOf('spacex') > -1 && loginUser && currentUser && currentUser.autoLogin) {
+    dispatch({
+      type: 'login/autoLogin',
+      payload: loginUser,
     });
   } else {
     dispatch({

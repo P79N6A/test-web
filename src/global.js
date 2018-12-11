@@ -15,6 +15,15 @@ if (env === '') {
 const picUrl = 'http://cdn.space.9amtech.com/';
 const IXAM_URL = process.IXAM_URL;
 const SUBSCRIPTION_KEY = '8a61f42ed2144d18a11b4d0e243434e3';
+const CNAME_CONFIG = ['siemens', 'weworkchina'];
+const svgColor = {
+  strokeOffline: '#DBDBDB',
+  fillOffline: '#F3F3F3',
+  strokeOccupied: '#FF5A5F',
+  fillOccupied: '#FFDEDF',
+  strokeVacant: '#00A699',
+  fillVacant: '#CCEDEB',
+};
 
 message.config({
   maxCount: 1,
@@ -98,6 +107,7 @@ export default {
   API_URL,
   IXAM_URL,
   SUBSCRIPTION_KEY,
+  CNAME_CONFIG,
   env,
   _,
   moment,
@@ -110,4 +120,5 @@ export default {
   passCheck,
   accountCheck,
   errorLists,
+  svgColor,
 };

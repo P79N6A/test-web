@@ -31,7 +31,11 @@ export default {
           payload: response.data,
         });
         reloadAuthorized();
-        yield put(routerRedux.replace('/home'));
+        if (payload.redirect) {
+          yield put(routerRedux.replace(payload.redirect));
+        } else {
+          yield put(routerRedux.replace('/home'));
+        }
       } else if (typeof response.message === 'object') {
         message.error(formatMessage({ id: "login.error" }));
       } else {
@@ -62,11 +66,14 @@ export default {
         yield put({ type: 'logoutWithoutToken' });
       }
     },
-    *logoutWithoutToken(_, { put }) {
+    *logoutWithoutToken({ payload }, { put }) {
       const authority = localStorage.getItem('antd-pro-authority') || 'user';
       let path = '/user/login';
       if (authority === 'admin') {
         path = '/admin_user/login';
+      }
+      if (payload.redirect) {
+        path = payload.redirect;
       }
       yield put({
         type: 'changeLoginStatus',

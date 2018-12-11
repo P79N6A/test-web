@@ -3,6 +3,7 @@ import React from 'react';
 import nzh from 'nzh/cn';
 import { parse, stringify } from 'qs';
 import G from '@/global';
+import { spacexUser } from '@/locales/user';
 
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -246,7 +247,7 @@ export function filterEdit(body) {
 // 根据时间类型返回对应时间和单位
 export function getTimeByType(date, type) {
   if (type === 'LAST_DAY') {
-    return date + ':00';
+    return `${date  }:00`;
   }
   if (type === 'LAST_7DAYS') {
     return G.moment.unix(date).format('dddd');
@@ -267,10 +268,10 @@ export function getToken() {
 // 处理工位使用趋势的数据
 export function processData(data) {
   const dateShow = data.date_type === "LAST_7DAYS" ? 'dddd' : (data.date_type === "LAST_30DAYS" ? 'Do' : 'MM');
-  let useRateTend = [], useRateAverage = [], date = [];
+  let useRateTend = []; let useRateAverage = []; let date = [];
   // 返回百分比数据
   if (data.type === "duration") {
-    let useRateTendFirst = [], useRateTendSecond = [], useRateTendthird = [];
+    const useRateTendFirst = []; let useRateTendSecond = []; let useRateTendthird = [];
     data.dataList.map((item) => {
       useRateTendFirst.push({ type: '离线', date: G.moment(item.time).format(dateShow), value: item.offline_duration });
       useRateTendSecond.push({ type: '空闲', date: G.moment(item.time).format(dateShow), value: item.vacant_duration });
@@ -281,7 +282,7 @@ export function processData(data) {
   }
   // 返回数量
   if (data.type === "workStation") {
-    let useRateTendFirst = { type: '离线' }, useRateTendSecond = { type: '空闲' }, useRateTendthird = { type: '使用' };
+    let useRateTendFirst = { type: '离线' }; let useRateTendSecond = { type: '空闲' }; let useRateTendthird = { type: '使用' };
     data.dataList.map((item) => {
       date.push(G.moment(item.time).format(dateShow));
       useRateTendFirst[G.moment(item.time).format(dateShow)] = item.offline_duration;
@@ -296,7 +297,7 @@ export function processData(data) {
 
 // 处理服务时长统计数据
 export function serviceData(data) {
-  let serviceData = [];
+  const serviceData = [];
   serviceData.push({ x: '使用时长', y: data.occupied_duration }, { x: '空闲时长', y: data.vacant_duration })
   return serviceData;
 }
@@ -311,9 +312,9 @@ export function checkPermissionData(all) {
   if (!all) {
     return
   }
-  let permission = [];
+  const permission = [];
   all.map((item) => {
-    let checkedListCopy = [], plainOptionsCopy = [];
+    const checkedListCopy = []; let plainOptionsCopy = [];
     item.child && item.child.map((lItem) => {
       plainOptionsCopy.push({ 'label': lItem.menu_name, 'value': lItem.menu_id });
       if (lItem.choose) {
@@ -327,7 +328,7 @@ export function checkPermissionData(all) {
 
 // 处理选择的数据
 export function checkData(all) {
-  let checkList = [];
+  const checkList = [];
   all.map((item) => {
     checkList.push(item.value)
   })
@@ -335,7 +336,7 @@ export function checkData(all) {
 }
 
 export function checkAddPermission(data) {
-  let list = [];
+  const list = [];
   data && data.map((item) => {
     item.child && item.child.map((lItem) => {
       if (lItem.choose === true) {
@@ -344,4 +345,11 @@ export function checkAddPermission(data) {
     })
   });
   return list;
+}
+
+export function getUserWithCToken(ctoken) {
+  const user = G._.find(spacexUser, (value) => {
+    return value.ctoken === ctoken;
+  })
+  return user;
 }

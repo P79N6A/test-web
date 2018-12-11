@@ -7,7 +7,7 @@ const FormItem = Form.Item;
 
 const LoginSubmit = ({ className, ...rest }) => {
   let clsString = classNames(styles.submit, className);
-  if (rest.path === '/admin_user/login') {
+  if (rest.path === '/admin_user/login' || rest.path === '/spacex-user/login') {
     clsString = classNames(styles.submits, className);
   }
 

@@ -12,7 +12,10 @@ import MiniProgress from './MiniProgress';
 import Field from './Field';
 import WaterWave from './WaterWave';
 import TagCloud from './TagCloud';
+import Area from './AreaGlobal';
 import TimelineChart from './TimelineChart';
+import IntervalChart from './IntervalChart';
+import MiniLine from './MiniLine';
 
 const yuan = val => `¥ ${numeral(val).format('0,0')}`;
 
@@ -31,6 +34,9 @@ const Charts = {
   WaterWave,
   TagCloud,
   TimelineChart,
+  Area,
+  IntervalChart,
+  MiniLine,
 };
 
 export {
@@ -49,4 +55,7 @@ export {
   WaterWave,
   TagCloud,
   TimelineChart,
+  Area,
+  IntervalChart,
+  MiniLine,
 };

@@ -28,7 +28,7 @@ class LoginPage extends Component {
         payload: {
           ...values,
           type,
-          redirect: '/spacex',
+          redirect: values.userName === '9amGlobal' ? '/spacex/global-status' : '/spacex',
         },
       });
     }

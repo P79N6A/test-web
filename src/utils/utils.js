@@ -5,6 +5,12 @@ import { parse, stringify } from 'qs';
 import G from '@/global';
 import { spacexUser } from '@/locales/user';
 
+const { globalStartTime } = G;
+
+export function random(m, n) {
+  return Math.floor(Math.random() * (m - n) + n);
+}
+
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
 }
@@ -247,7 +253,7 @@ export function filterEdit(body) {
 // 根据时间类型返回对应时间和单位
 export function getTimeByType(date, type) {
   if (type === 'LAST_DAY') {
-    return `${date  }:00`;
+    return `${date}:00`;
   }
   if (type === 'LAST_7DAYS') {
     return G.moment.unix(date).format('dddd');
@@ -268,10 +274,10 @@ export function getToken() {
 // 处理工位使用趋势的数据
 export function processData(data) {
   const dateShow = data.date_type === "LAST_7DAYS" ? 'dddd' : (data.date_type === "LAST_30DAYS" ? 'Do' : 'MM');
-  let useRateTend = []; let useRateAverage = []; let date = [];
+  let useRateTend = []; const useRateAverage = []; const date = [];
   // 返回百分比数据
   if (data.type === "duration") {
-    const useRateTendFirst = []; let useRateTendSecond = []; let useRateTendthird = [];
+    const useRateTendFirst = []; const useRateTendSecond = []; const useRateTendthird = [];
     data.dataList.map((item) => {
       useRateTendFirst.push({ type: '离线', date: G.moment(item.time).format(dateShow), value: item.offline_duration });
       useRateTendSecond.push({ type: '空闲', date: G.moment(item.time).format(dateShow), value: item.vacant_duration });
@@ -282,7 +288,7 @@ export function processData(data) {
   }
   // 返回数量
   if (data.type === "workStation") {
-    let useRateTendFirst = { type: '离线' }; let useRateTendSecond = { type: '空闲' }; let useRateTendthird = { type: '使用' };
+    const useRateTendFirst = { type: '离线' }; const useRateTendSecond = { type: '空闲' }; const useRateTendthird = { type: '使用' };
     data.dataList.map((item) => {
       date.push(G.moment(item.time).format(dateShow));
       useRateTendFirst[G.moment(item.time).format(dateShow)] = item.offline_duration;
@@ -314,7 +320,7 @@ export function checkPermissionData(all) {
   }
   const permission = [];
   all.map((item) => {
-    const checkedListCopy = []; let plainOptionsCopy = [];
+    const checkedListCopy = []; const plainOptionsCopy = [];
     item.child && item.child.map((lItem) => {
       plainOptionsCopy.push({ 'label': lItem.menu_name, 'value': lItem.menu_id });
       if (lItem.choose) {
@@ -352,4 +358,124 @@ export function getUserWithCToken(ctoken) {
     return value.ctoken === ctoken;
   })
   return user;
+}
+
+export function getHourDuractionRate(status, hour, sensorLength, config, occupiedCount) {
+  if (hour <= 5) {
+    return 0;
+  }
+  let occupied = occupiedCount - 10;
+  if ((hour > 5 && hour < 9) || hour > 20) {
+    occupied = 10;
+  } else if (hour > 18 && hour <= 20) {
+    occupied = 20;
+  } else if (hour >= 9 && hour <= 11) {
+    occupied = 20;
+  }
+  const today = moment()
+    .startOf('day')
+    .format('D');
+  let dutaction = 0;
+  switch (status) {
+    case 'Yesterday':
+      if (today % 3 === 0) {
+        occupied += config[hour % 10];
+      } else {
+        occupied -= config[hour % 10];
+      }
+      dutaction = parseInt((24 * sensorLength * occupied) / 100);
+      break;
+    case '7 Days':
+      if (today % 7 === 0) {
+        occupied -= config[hour % 10];
+      } else {
+        occupied += config[hour % 10];
+      }
+      const daysIntervalWeek = parseInt((moment().unix() - globalStartTime) / 86400);
+      if (daysIntervalWeek >= 7) {
+        dutaction = parseInt((24 * sensorLength * 7 * occupied) / 100);
+      } else {
+        dutaction = parseInt((24 * sensorLength * daysIntervalWeek * occupied) / 100);
+      }
+      break;
+    case '30 Days':
+      if (today % 4 === 0) {
+        occupied -= config[hour % 10];
+      } else {
+        occupied += config[hour % 10];
+      }
+      const daysIntervalMonth = parseInt((moment().unix() - globalStartTime) / 86400);
+      if (daysIntervalMonth >= 30) {
+        dutaction = parseInt((24 * sensorLength * 30 * occupied) / 100);
+      } else {
+        dutaction = parseInt((24 * sensorLength * daysIntervalMonth * occupied) / 100);
+      }
+      break;
+    case 'Year':
+      if (today % 6 === 0) {
+        occupied -= config[hour % 10];
+      } else {
+        occupied += config[hour % 10];
+      }
+      const daysIntervalYear = parseInt((moment().unix() - globalStartTime) / 86400);
+      dutaction = parseInt((24 * sensorLength * daysIntervalYear * occupied) / 100);
+      break;
+    default:
+      break;
+  }
+  return dutaction;
+}
+
+export function getUsingRankDuraction(index, status, occupiedCountRate, config, occupiedResort) {
+  let lastTime = moment().unix() - globalStartTime;
+  const fourWeek = 86400 * 28;
+  let occupiedCount = occupiedCountRate;
+  if (status === 'Last 4 Weeks' && lastTime >= fourWeek) {
+    lastTime = fourWeek;
+  }
+  if (index % 3 === 0) {
+    occupiedCount -= config[index];
+  } else {
+    occupiedCount += config[index];
+  }
+  if (status === 'Year') {
+    occupiedCount -= 15;
+  } else {
+    occupiedCount -= 40;
+  }
+  if ((index >= 6 && index < 9) || (index >= 1 && index < 5)) {
+    occupiedCount += occupiedCountRate;
+  }
+  const duraction = parseFloat(((lastTime * occupiedResort[index]) / 100 / 3600).toFixed(1));
+  return duraction;
+}
+
+function filterOccupiedTime(occupiedTime, tag) {
+  let isBetween = false;
+  occupiedTime.forEach(value => {
+    const timearr = value.split('-');
+    const startTime = timearr[0];
+    const endTime = timearr[1];
+    const currentTime =
+      moment().unix() -
+      moment()
+        .startOf('d')
+        .unix();
+    const startDuraction = parseTime(startTime);
+    const endDuraction = parseTime(endTime);
+    if (currentTime >= startDuraction && currentTime <= endDuraction) {
+      isBetween = true;
+    }
+  });
+  return isBetween;
+}
+
+export function isOccupiedTime(occupiedCountRate, sensor, occupiedTime) {
+  const hour = parseInt(moment().format('H'));
+  if (hour <= 6 || hour >= 23) return false;
+  const tag = parseInt(sensor.split('_')[1]) + 1111;
+  if ((hour > 6 && hour < 10) || (hour >= 18 && hour < 23)) {
+    return filterOccupiedTime(occupiedTime, tag);
+  }
+  return random(0, 50) >= 20;
 }

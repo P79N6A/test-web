@@ -40,7 +40,7 @@ function checkStatus(response) {
       type: 'login/autoLogin',
       payload: user.officeMapUser,
     });
-  } else if (pathname.indexOf('spacex') > -1 && loginUser && currentUser && currentUser.autoLogin) {
+  } else if (loginUser && currentUser && currentUser.autoLogin) {
     dispatch({
       type: 'login/autoLogin',
       payload: loginUser,
@@ -48,7 +48,7 @@ function checkStatus(response) {
   } else {
     dispatch({
       type: 'login/logout',
-      payload: { tokenExpired: true },
+      payload: { tokenExpired: true, redirect: pathname.indexOf('spacex') > -1 ? '/spacex-user/login' : false },
     });
   }
   return response;

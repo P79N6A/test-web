@@ -8,17 +8,22 @@ const spacexUser = {
   urowrk: {
     password: 'Lato7176',
     userName: 'ucommune@9amtech.com',
-    ctoken: 'EJ3lZjIAqUanJPqOPFlf8fC9AMCKbBp9amrr9FS69am82h',
+    ctoken: 'EJBBSlZjIAqUanJPqOPFlf8fCxcvzKbBp9amrr9FS69am82h',
   },
   siemens: {
     password: 'iW7hc4zgd3WRwZ2',
     userName: 'siemensbj',
-    ctoken: 'EJ3lZjIAqUanJxzcOPFlf8fC9AMWQETTp9qwerr9FS69am8',
+    ctoken: 'EJ3ZXjIAqUanFHDFOPFlf8QWEMWQETTp9qwerzxr9FS69am8',
   },
   weworkchina: {
     password: 'weworkchina9am',
     userName: 'weworkchina',
-    ctoken: 'EJ3lZjIAqZCUanJxOQWE8fC9AMWQETwerDr9FSzxca69am8',
+    ctoken: 'EJQWElZjIAqZCUanJxOQWE8fC9AMWQETwerDr9FSzxca69am',
+  },
+  global: {
+    password: '9amGlobal',
+    userName: '9amGlobal',
+    ctoken: 'EJCXZjIAqZCUanqwFXCQWWQAE8fC9AMWQETwZXCerzxc9am8',
   },
 }
 

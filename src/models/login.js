@@ -57,8 +57,7 @@ export default {
     },
     *logout({ payload = {} }, { call, put }) {
       if (payload.tokenExpired) {
-        message.error(formatMessage({ id: "login.token.lose" }));
-        yield put({ type: 'logoutWithoutToken' });
+        yield put({ type: 'logoutWithoutToken', payload });
         return;
       }
       const response = yield call(logout);

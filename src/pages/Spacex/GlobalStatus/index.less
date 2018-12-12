@@ -1,0 +1,634 @@
+.realTimeView {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+}
+.realTimeContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+}
+.mapContainer {
+  flex: 1;
+  display: flex;
+  border: 2px solid #ebeef1;
+  border-radius: 8px;
+  background-color: white;
+  padding: 20px 32px 0 32px;
+  flex-direction: column;
+}
+
+.realData {
+  height: 76px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.space {
+  width: 20px;
+  height: 100%;
+}
+.statisticsContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 16px;
+  font-family: DINProMedium !important;
+  color: #35536c;
+  font-weight: 500;
+}
+.circle {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+}
+.realTimeTitle {
+  font-size: 12px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  margin-left: 6px;
+  color: #9aa9b5;
+}
+.realTimeCount {
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(53, 83, 108, 1);
+  margin-left: 10px;
+}
+.realTimeUsageView {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+.realTimeUsageText {
+  font-size: 20px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(53, 83, 108, 1);
+  align-self: flex-end;
+  margin-bottom: -12px;
+}
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #ebeef1;
+}
+.defaultContainer {
+  display: flex;
+  width: 100%;
+  height: 95px;
+  flex-direction: row;
+  align-items: center;
+}
+.defaultText {
+  font-size: 18px;
+  font-weight: 500;
+  color: #35536c;
+}
+.occupiedView {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(255, 90, 95, 0.2);
+  border: 1px solid #ff5a5f;
+}
+.occupiedText {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(53, 83, 108, 1);
+  margin-left: 5px;
+}
+.vacantView {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(0, 166, 153, 0.2);
+  border: 1px solid #00a699;
+  margin-left: 20px;
+}
+.vacantText {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(53, 83, 108, 1);
+  margin-left: 5px;
+}
+.offlineView {
+  width: 12px;
+  height: 12px;
+  background-color: #f3f3f3;
+  border: 1px solid #dbdbdb;
+  margin-left: 20px;
+}
+.offlineText {
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(53, 83, 108, 1);
+  margin-left: 5px;
+}
+.svg {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.svgView {
+  width: 100%;
+  height: 100%;
+}
+.statisticsLine {
+  width: 100%;
+  height: 20px;
+}
+.statisticsLine2 {
+  width: 20px;
+  height: 100%;
+}
+.workStationView {
+  width: 100%;
+  flex: 195;
+  min-height: 195px;
+  padding: 20px 32px 0 20px;
+  border: 2px solid #ebeef1;
+  border-radius: 8px;
+  background-color: white;
+  position: relative;
+}
+.workStationTitleView {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.workStationTitle {
+  font-size: 16px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(53, 83, 108, 1);
+}
+.workStationOccupiedCircle {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #fcb0b1;
+}
+.workStationOccupied {
+  font-size: 12px;
+  color: rgba(154, 169, 181, 1);
+  margin-left: 5px;
+}
+.workStationVacantCircle {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #bde4e1;
+  margin-left: 20px;
+}
+.workStationOfflineCircle {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #c2cbd3;
+  margin-left: 20px;
+}
+.serviceHourContainer {
+  display: flex;
+  flex-direction: row;
+  min-height: 180px;
+  flex: 180;
+}
+.serviceHourLeft {
+  display: flex;
+  flex: 1;
+  border: 2px solid #ebeef1;
+  border-radius: 8px;
+  padding: 20px 30px;
+  flex-direction: column;
+  background-color: white;
+  position: relative;
+}
+.serviceHourText {
+  font-size: 16px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(53, 83, 108, 1);
+}
+.serviceHourCircleView {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+.serviceHourCircleContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.circleView {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.totalText {
+  font-size: 12px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(154, 169, 181, 1);
+}
+.totalText2 {
+  font-size: 14px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(53, 83, 108, 1);
+  margin-top: 5px;
+}
+.serviceHourCount {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.serviceHourCount2 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+.occupiedCircle {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #fcb0b1;
+}
+.occupiedTextSmall {
+  font-size: 12px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(154, 169, 181, 1);
+  margin-left: 12px;
+}
+.occupiedCount2 {
+  display: flex;
+  flex-direction: row;
+  margin-left: 18px;
+  align-items: center;
+}
+.totalText3 {
+  font-size: 14px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(53, 83, 108, 1);
+}
+.occupiedTextCount {
+  font-size: 14px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(252, 176, 177, 1);
+}
+.vacantCircle {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #bde4e1;
+}
+.serviceHourRight {
+  display: flex;
+  flex: 1;
+  border: 2px solid #ebeef1;
+  border-radius: 8px;
+  padding: 20px 20px;
+  flex-direction: column;
+  background-color: white;
+  position: relative;
+}
+.serviceHourTitle {
+  font-size: 16px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(53, 83, 108, 1);
+}
+.serviceRightTop {
+  display: flex;
+  flex: 23;
+  border: 1px solid #35536c;
+  border-radius: 8px;
+  padding: 20px 30px;
+  flex-direction: column;
+}
+.yesterdayView {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  margin-top: 20px;
+}
+.yesterdayLine {
+  width: 1px;
+  height: 33px;
+  background-color: #eaedf0;
+  margin-top: 20px;
+}
+.yesterdayLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.yesterdayRow {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
+.yesterdayText {
+  font-size: 12px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(154, 169, 181, 1);
+  margin-left: 5px;
+}
+.yesterdayText2 {
+  font-size: 14px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(53, 83, 108, 1);
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.weeklyView {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: 100%;
+}
+.weeklyLeft {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+}
+.weeklyText {
+  font-size: 10px;
+  font-family: DINProRegular;
+  color: rgba(154, 169, 181, 1);
+}
+.weeklyRateLeft {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 5px;
+}
+.weeklyRateLeftText {
+  font-size: 14px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(252, 176, 177, 1);
+  margin-left: 4px;
+}
+.weeklyRateRightText {
+  font-size: 14px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: rgba(166, 214, 208, 1);
+  margin-left: 4px;
+}
+
+.serviceRightBottom {
+  display: flex;
+  flex: 10;
+  border: 1px solid #35536c;
+  border-radius: 8px;
+  padding: 20px 30px 10px 30px;
+}
+.bottomView {
+  width: 100%;
+  min-height: 178px;
+  flex: 178;
+  display: flex;
+  flex-direction: row;
+  z-index: 1000;
+}
+.statisticsLeft {
+  display: flex;
+  flex-direction: column;
+  flex: 19;
+  border: 2px solid #ebeef1;
+  border-radius: 8px;
+  padding: 20px 30px 0 30px;
+  background-color: white;
+  position: relative;
+}
+.usingHourTitleView {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+}
+.usingHourTitle {
+  font-size: 16px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+  color: #35536c;
+}
+.tabView {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.tabHour {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+.tabWeek {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-left: 12px;
+  cursor: pointer;
+}
+.tabLine {
+  width: 8px;
+  height: 2px;
+  background-color: #35536c;
+}
+.tabText {
+  font-size: 12px;
+  font-family: DINProMedium !important;
+  font-weight: 500;
+}
+.dropdownView {
+  display: flex;
+  width: 110px;
+  flex-direction: row;
+}
+.statisticsRight {
+  display: flex;
+  flex-direction: column;
+  flex: 11;
+  border: 2px solid #ebeef1;
+  border-radius: 8px;
+  padding: 20px 20px 0 30px;
+  background-color: white;
+  position: relative;
+}
+@media (max-width: 576px) {
+  .container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    min-width: 622px;
+    flex-direction: column;
+  }
+  .content {
+    display: flex;
+    width: 100%;
+    height: auto;
+    padding: 24px;
+    flex-direction: column;
+  }
+  .space {
+    width: 100%;
+    height: 24px;
+  }
+  .statisticsContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 622px;
+  }
+  .svgView {
+    width: 100%;
+    min-height: 427px;
+    height: 100%;
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 768px) {
+  .container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+  .content {
+    display: flex;
+    width: 100%;
+    height: auto;
+    padding: 24px;
+    flex-direction: column;
+    min-width: 622px;
+  }
+  .space {
+    width: 100%;
+    height: 24px;
+  }
+  .statisticsContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 622px;
+  }
+  .svgView {
+    width: 100%;
+    min-height: 427px;
+    height: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 992px) {
+  .container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+  .content {
+    display: flex;
+    width: 100%;
+    height: auto;
+    padding: 24px;
+    flex-direction: column;
+  }
+  .space {
+    width: 100%;
+    height: 24px;
+  }
+  .svgView {
+    width: 100%;
+    min-height: 427px;
+    height: 100%;
+  }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1200px) {
+  .container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+  .content {
+    display: flex;
+    width: 100%;
+    height: auto;
+    padding: 24px;
+    flex-direction: column;
+  }
+  .space {
+    width: 100%;
+    height: 24px;
+  }
+  .svgView {
+    width: 100%;
+    min-height: 427px;
+    height: 100%;
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1600px) {
+  .container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+  .content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1600px) {
+  .container {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+  }
+  .content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    flex-direction: row;
+  }
+}

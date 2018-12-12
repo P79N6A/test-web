@@ -78,6 +78,7 @@ export default [
       { path: '/spacex', redirect: '/spacex/space-status' },
       { path: '/spacex/space-status', component: './Spacex/SpaceStatus' },
       { path: '/spacex/space-demo', component: './Spacex/SpaceStatus' },
+      { path: '/spacex/global-status', component: './Spacex/GlobalStatus' },
       { path: '/spacex/space-statistics', component: './Spacex/OfficeUsage' },
       { redirect: '/exception/404' },
     ],

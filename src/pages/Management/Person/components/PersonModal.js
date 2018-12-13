@@ -22,6 +22,7 @@ class PersonModal extends Component {
     imageUrl: '',
     avatarLoading: false,
     title: formatMessage({ id: 'person.new.users' }),
+    subTitle: formatMessage({ id: 'person.new.users.message' }),
   };
 
   componentWillReceiveProps(nextProps) {
@@ -41,6 +42,7 @@ class PersonModal extends Component {
           remark: editValue.remark
         });
         this.setState({ title: formatMessage({ id: 'person.edit.users' }) });
+        this.setState({ subTitle: formatMessage({ id: 'person.edit.users.message' }) });
       } else {
         nextProps.form.setFieldsValue({
           name: '',
@@ -50,6 +52,7 @@ class PersonModal extends Component {
           remark: '',
         });
         this.setState({ title: formatMessage({ id: 'person.new.users' }) });
+        this.setState({ subTitle: formatMessage({ id: 'person.new.users.message' }) });
       }
     }
   }
@@ -148,10 +151,10 @@ class PersonModal extends Component {
 
   render() {
     const { visible, loading, handleCancel, form } = this.props;
-    const { imageUrl, avatarLoading, title } = this.state;
+    const { imageUrl, avatarLoading, title, subTitle } = this.state;
     const { getFieldDecorator } = form;
     const uploadButton = (<Icon type={avatarLoading ? 'loading' : 'user'} style={{ fontSize: '30px', lineHeight: '60px', paddingTop: '4px', color: '#DFE4E8' }} />);
-    const formItemLayout = { labelCol: { span: 3 }, wrapperCol: { span: 9 } };
+    const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 9 } };
     const leftImg = { xs: 24, sm: 12, md: 12, lg: 12, xl: 12, xxl: 12 };
     return (
       <Modal
@@ -162,13 +165,14 @@ class PersonModal extends Component {
         onCancel={this.onCancel.bind(this, handleCancel)}
         footer={[
           <Button key="back" size='small' onClick={this.onCancel.bind(this, handleCancel)}>
-            <FormattedMessage id="all.close" />
+            <FormattedMessage id="all.cancel" />
           </Button>,
           <Button key="submit" size='small' type="primary" loading={loading} onClick={this.okHandle}>
-            <FormattedMessage id="all.submit" />
+            <FormattedMessage id="all.save" />
           </Button>
         ]}
       >
+        <p className={styles.subTitle}>{subTitle}</p>
         <Row gutter={24}>
           <Col {...leftImg}>
             <FormItem {...formItemLayout} label={formatMessage({ id: 'person.avatar' })}>
@@ -209,7 +213,7 @@ class PersonModal extends Component {
                     message: formatMessage({ id: 'test.max.long.twenty' }),
                   },
                 ],
-              })(<Input placeholder={formatMessage({ id: 'person.name.input' })} />)}
+              })(<Input placeholder={formatMessage({ id: 'person.name.test.message' })} />)}
             </FormItem>
           </Col>
           <Col {...leftImg}>
@@ -224,7 +228,7 @@ class PersonModal extends Component {
                     validator: this.checkPhone.bind(this),
                   },
                 ],
-              })(<Input placeholder={formatMessage({ id: 'person.phone.input' })} />)}
+              })(<Input placeholder={formatMessage({ id: 'person.phone.test.message' })} />)}
             </FormItem>
           </Col>
         </Row>

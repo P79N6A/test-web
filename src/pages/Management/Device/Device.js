@@ -289,10 +289,9 @@ export default class Device extends Component {
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
-        <h3><FormattedMessage id="menu.management.device" /></h3>
+        <h3>云桌管理</h3>
         <br />
         <Row className={styles.lageBox}>
-          <p><FormattedMessage id="device.list" /></p>
           {/* 查询 */}
           <Col span={24}>
             <Button

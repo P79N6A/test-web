@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import { getCustomerList, addCustomer, editCustomer, resetPassword, permissionsList, setPermissions } from '../services/api';
-import { formatMessage } from 'umi/locale';
+import { getLocale } from 'umi/locale';
+import G from '@/global';
 
 export default {
   namespace: 'ManagementCustomer',
@@ -26,7 +27,7 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error(response.message || formatMessage({ id: "customer.quest.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *addCustomer({ payload }, { call }) {
@@ -43,7 +44,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(response.data);
       } else {
-        message.error(response.message || formatMessage({ id: "customer.reset.password.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *permissionsList({ payload }, { call, put }) {
@@ -52,7 +53,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'savePermissionsList', payload: response.data });
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       };
     },
     *setPermissions({ payload }, { call }) {
@@ -61,7 +62,7 @@ export default {
       if (response && response.status === 'success') {
         message.success('设置权限成功');
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       };
     }
   },

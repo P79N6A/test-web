@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { formatMessage, FormattedMessage, getLocale } from 'umi/locale';
 import { connect } from 'dva';
 import { Row, Col, Carousel, Button, Icon, Modal } from 'antd';
 import BannerModal from './components/BannerModal'
@@ -132,7 +132,7 @@ export default class Banner extends Component {
     if (res.status === 'success') {
       this.getBannerList();
     } else {
-      message.error(response.message || 'error');
+      message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
     }
   }
 

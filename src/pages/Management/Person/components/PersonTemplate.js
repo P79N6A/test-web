@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { formatMessage, FormattedMessage, getLocale } from 'umi/locale';
 import { Modal, Button, Upload, message, Table, Tooltip, Progress } from 'antd';
 import G from '@/global';
 import styles from './PersonTemplate.less';
@@ -101,7 +101,7 @@ class PersonTemplate extends Component {
                   type: 1
                 })
               } else {
-                message.error('上传失败');
+                message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
                 this.changeTitle('批量导入用户', '取消');
                 closeTemplate();
               }

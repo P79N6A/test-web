@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import { getPersonnelList, addPerson, updatePerson, getQiniuToken, usersBatchImport, changeRole } from '../services/api';
-import { formatMessage } from 'umi/locale';
+import { formatMessage, getLocale } from 'umi/locale';
+import G from '@/global';
 
 export default {
   namespace: 'ManagementPerson',
@@ -25,7 +26,7 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error(formatMessage({ id: "customer.quest.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *addPerson({ payload }, { call }) {
@@ -34,7 +35,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(response.message || formatMessage({ id: "customer.add.success" }));
       } else {
-        message.error(response.message || formatMessage({ id: "customer.add.fail" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *updatePerson({ payload }, { call }) {
@@ -43,7 +44,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(response.data || formatMessage({ id: "customer.successfully.modified" }));
       } else {
-        message.error(response.message || formatMessage({ id: "customer.fail.to.edit" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *getQiniuToken({ payload }, { call }) {
@@ -68,7 +69,7 @@ export default {
       if (response && response.status === 'success') {
         message.success('修改角色成功');
       } else {
-        message.error('失败');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
   },

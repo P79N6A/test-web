@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { formatMessage, FormattedMessage, getLocale } from 'umi/locale';
 import { Form, Input, Select, Row, Col, Button, message, Radio, Icon, Modal, Upload } from 'antd';
 import * as qiniu from 'qiniu-js';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
@@ -139,7 +139,7 @@ class NewNoticeForm extends Component {
       });
       history.back(-1);
     } else {
-      message.error(formatMessage({ id: 'notice.failed.to.send' }));
+      message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
     }
   }
 

@@ -1,6 +1,4 @@
-import { message } from 'antd';
 import { retrievePassword, sendPassword } from '../services/api';
-import { formatMessage } from 'umi/locale';
 
 export default {
   namespace: 'RetrieveMail',

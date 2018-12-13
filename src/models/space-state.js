@@ -1,5 +1,7 @@
 import { getSvg, getDeskState } from '../services/api';
 import { message } from 'antd';
+import G from '@/global';
+import { getLocale } from 'umi/locale';
 
 export default {
   namespace: 'spaceState',
@@ -16,7 +18,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveSvg', payload: response.data });
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       };
     },
     *getDeskState({ payload }, { call, put }) {
@@ -27,7 +29,7 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     }
   },

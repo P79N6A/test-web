@@ -1,6 +1,7 @@
 import { getNoticeList, getBannerList, getDefaultBannerList, addBanner, bannerPublish, delBanner, sortBanner } from '@/services/api';
 import { message } from 'antd';
-import { formatMessage } from 'umi/locale';
+import { formatMessage, getLocale } from 'umi/locale';
+import G from '@/global';
 
 export default {
   namespace: 'Banner',
@@ -31,7 +32,7 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error(response.message);
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *getBanner(_, { call, put }) {
@@ -39,7 +40,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveBannerList', payload: response.data });
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *getDefaultBanner(_, { call, put }) {
@@ -47,7 +48,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveDefaultBannerList', payload: response.data });
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *addBanner({ payload }, { call }) {
@@ -56,7 +57,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(formatMessage({ id: "customer.add.success" }));
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *bannerPublish({ payload }, { call }) {
@@ -65,7 +66,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(formatMessage({ id: "banner.send.success" }));
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *delBanner({ payload }, { call }) {
@@ -74,7 +75,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(formatMessage({ id: "banner.delete.success" }));
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *sortBanner({ payload }, { call }) {
@@ -83,7 +84,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(formatMessage({ id: "banner.move.success" }));
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
 

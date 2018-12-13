@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { formatMessage, FormattedMessage, getLocale } from 'umi/locale';
 import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
@@ -43,7 +43,7 @@ class ModalChange extends Component {
       }
       return;
     } else {
-      message.error(res.message || formatMessage({ id: 'customer.fail.to.edit' }));
+      message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
     }
   }
 

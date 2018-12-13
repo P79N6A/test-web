@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import { getResourceList, addRemark, releaseDevice, removeDevice } from '../services/api';
-import { formatMessage } from 'umi/locale';
+import { formatMessage, getLocale } from 'umi/locale';
+import G from '@/global';
 
 export default {
   namespace: 'ManagementDevice',
@@ -26,7 +27,7 @@ export default {
           type: 'deviceDel',
           payload: '',
         });
-        message.error(response.message || formatMessage({ id: "spaceUsage.none" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *addRemark({ payload }, { call }) {
@@ -35,7 +36,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(response.data);
       } else {
-        message.error(response.message || formatMessage({ id: "all.operate.fail" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *release({ payload }, { call }) {
@@ -44,7 +45,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(formatMessage({ id: "device.untie.success" }));
       } else {
-        message.error(response.message || formatMessage({ id: "device.untie.fail" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *remove({ payload }, { call }) {
@@ -53,7 +54,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(formatMessage({ id: "device.remove.success" }));
       } else {
-        message.error(response.message || formatMessage({ id: "device.remove.fail" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     }
   },

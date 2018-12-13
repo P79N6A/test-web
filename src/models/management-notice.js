@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { formatMessage } from 'umi/locale';
+import { formatMessage, getLocale } from 'umi/locale';
 import { getNoticeList, getNoticeState, sendNotice, topNotice } from '../services/api';
 import G from '@/global';
 
@@ -25,7 +25,7 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error(response.message);
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     // 获取通知的状态
@@ -45,7 +45,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(response.message || formatMessage({ id: 'all.operate.success' }));
       } else {
-        message.error(response.message || formatMessage({ id: 'all.operate.fail' }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
       payload.callback(response);
     },

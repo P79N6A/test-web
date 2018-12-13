@@ -8,7 +8,8 @@ import {
   getHomeRank,
 } from '../services/api';
 import { getTimeByType } from '../utils/utils.js';
-import { formatMessage } from 'umi/locale';
+import { getLocale } from 'umi/locale';
+import G from '@/global';
 
 export default {
   namespace: 'home',
@@ -29,7 +30,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveResourceNum', payload: response.data });
       } else {
-        message.error(response.message || formatMessage({ id: "home.device.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *getUserNum(_, { call, put }) {
@@ -37,7 +38,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveUserNum', payload: response.data });
       } else {
-        message.error(response.message || formatMessage({ id: "home.user.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *getNotificationCount(_, { call, put }) {
@@ -45,7 +46,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveNotificationNum', payload: response.data });
       } else {
-        message.error(response.message || formatMessage({ id: "home.notice.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *getStandNum(_, { call, put }) {
@@ -53,7 +54,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveStandNum', payload: response.data });
       } else {
-        message.error(response.message || formatMessage({ id: "home.stand.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *getHomeStand({ payload }, { call, put }) {
@@ -61,7 +62,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveHomeStand', payload: response.data });
       } else {
-        message.error(response.message || formatMessage({ id: "home.stand.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *getHomeRank({ payload }, { call, put }) {
@@ -69,7 +70,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveHomeRank', payload: response.data.rank });
       } else {
-        message.error(response.message || formatMessage({ id: "home.stand.rate.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
         yield put({ type: 'saveHomeRank', payload: [] });
       }
     },

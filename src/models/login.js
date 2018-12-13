@@ -2,10 +2,11 @@ import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
 import { login } from '@/services/api';
 import { setAuthority, setUserInfo, getUserInfo } from '@/utils/authority';
-import { getPageQuery, isJSON } from '@/utils/utils';
+import { isJSON } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
 import { message } from 'antd';
-import { formatMessage } from 'umi/locale';
+import { getLocale } from 'umi/locale';
+import G from '@/global';
 
 export default {
   namespace: 'login',
@@ -36,10 +37,8 @@ export default {
         } else {
           yield put(routerRedux.replace('/home'));
         }
-      } else if (typeof response.message === 'object') {
-        message.error(formatMessage({ id: "login.error" }));
       } else {
-        message.error(response.message || formatMessage({ id: "login.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *autoLogin({ payload }, { call, put }) {
@@ -49,10 +48,8 @@ export default {
           type: 'user/saveUser',
           payload: response.data,
         });
-      } else if (typeof response.message === 'object') {
-        message.error('登录失败！');
       } else {
-        message.error(response.message || '登录失败！');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *logout({ payload = {} }, { call, put }) {

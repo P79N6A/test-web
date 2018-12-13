@@ -1,7 +1,7 @@
 import { gatewayList, gatewayRemark, gatewayCommand } from '@/services/api';
 import { message } from 'antd';
 import G from '@/global';
-import { formatMessage } from 'umi/locale';
+import { formatMessage, getLocale } from 'umi/locale';
 
 export default {
   namespace: 'Gateway',
@@ -31,7 +31,7 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *gatewayRemark({ payload }, { call }) {
@@ -40,7 +40,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(formatMessage({ id: "gateway.remark.success" }));
       } else {
-        message.error(response.message || formatMessage({ id: "gateway.remark.fail" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *gatewayCommand({ payload }, { call }) {
@@ -49,7 +49,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(formatMessage({ id: "gateway.configure.success" }));
       } else {
-        message.error(response.message || formatMessage({ id: "gateway.configure.fail" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
   },

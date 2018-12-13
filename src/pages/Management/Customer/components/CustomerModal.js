@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { formatMessage, FormattedMessage, getLocale } from 'umi/locale';
 import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
@@ -59,7 +59,7 @@ class NewCustomer extends Component {
         this.goBack();
       }, 2000);
     } else {
-      message.error(res.message || formatMessage({ id: 'customer.add.company.fail' }));
+      message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
     }
   }
 
@@ -71,7 +71,7 @@ class NewCustomer extends Component {
         this.goBack();
       }, 2000);
     } else {
-      message.error(res.message || formatMessage({ id: 'customer.fail.to.edit' }));
+      message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
     }
   }
   // 添加

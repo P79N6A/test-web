@@ -11,6 +11,7 @@ _roadhog-api-doc
 /dist
 /.vscode
 /.temp
+/src/errorCode.js
 
 # misc
 .DS_Store

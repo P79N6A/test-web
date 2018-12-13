@@ -1,7 +1,7 @@
 import { sensorList, sensorRemark } from '@/services/api';
 import { message } from 'antd';
 import G from '@/global';
-import { formatMessage } from 'umi/locale';
+import { formatMessage, getLocale } from 'umi/locale';
 
 export default {
   namespace: 'Sensor',
@@ -25,7 +25,7 @@ export default {
           payload: response.data,
         });
       } else {
-        message.error(response.message || 'error');
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     *sensorRemark({ payload }, { call }) {
@@ -34,7 +34,7 @@ export default {
       if (response && response.status === 'success') {
         message.success(formatMessage({ id: "gateway.remark.success" }));
       } else {
-        message.error(response.message || formatMessage({ id: "gateway.remark.fail" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
   },

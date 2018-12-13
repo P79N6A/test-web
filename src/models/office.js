@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { formatMessage } from 'umi/locale';
+import { formatMessage, getLocale } from 'umi/locale';
 import { processData } from '@/utils/utils';
 import G from '@/global';
 import {
@@ -76,7 +76,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveDeskCount', payload: response.data });
       } else {
-        message.error((response && response.message) || formatMessage({ id: "spaceUsage.device.total.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     // 获取昨日使用数以及昨日未使用数
@@ -85,7 +85,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveYesterdayUseCount', payload: response.data });
       } else {
-        message.error((response && response.message) || formatMessage({ id: "spaceUsage.yesterday.use.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     // 工位使用趋势
@@ -95,7 +95,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveUseRate', payload: { data: processData(response.data) } });
       } else {
-        message.error((response && response.message) || formatMessage({ id: "spaceUsage.station.usage.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     // 服务时长统计
@@ -104,7 +104,7 @@ export default {
       if (response && response.status === 'success') {
         yield put({ type: 'saveServiceDuration', payload: response.data });
       } else {
-        message.error((response && response.message) || formatMessage({ id: "spaceUsage.server.time.error" }));
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
     // 获取工位使用时长分布

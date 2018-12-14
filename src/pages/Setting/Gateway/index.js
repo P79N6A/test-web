@@ -32,7 +32,7 @@ export default class Gateway extends Component {
     const { Gateway } = this.props;
     const { configureList } = Gateway;
     if (G._.isEmpty(configureList)) {
-      message.error(formatMessage({ id: "gateway.choose" }));
+      message.error(formatMessage({ id: "gateway.list.choose" }));
     } else {
       this.changeConfigure({ configureVisible: true });
     }
@@ -103,7 +103,7 @@ export default class Gateway extends Component {
   getColumns(sortOrder, customerList, positionList) {
     const columns = [
       {
-        title: formatMessage({ id: "gateway.number" }),
+        title: formatMessage({ id: "gateway.list.number" }),
         key: 'id',
         width: 70,
         sorter: true,
@@ -117,7 +117,7 @@ export default class Gateway extends Component {
         ),
       },
       {
-        title: formatMessage({ id: "device.customer" }),
+        title: formatMessage({ id: "device.list.customer" }),
         key: 'companyName',
         filters: customerList,
         render: (text) => {
@@ -131,7 +131,7 @@ export default class Gateway extends Component {
         }
       },
       {
-        title: formatMessage({ id: 'device.status' }),
+        title: formatMessage({ id: 'device.list.status' }),
         key: 'status',
         render: text => {
           return (
@@ -144,7 +144,7 @@ export default class Gateway extends Component {
         }
       },
       {
-        title: formatMessage({ id: "gateway.position" }),
+        title: formatMessage({ id: "gateway.list.position" }),
         key: "position",
         filters: positionList,
         render: (text) => {
@@ -171,7 +171,7 @@ export default class Gateway extends Component {
         }
       },
       {
-        title: formatMessage({ id: "gateway.link.state" }),
+        title: formatMessage({ id: "gateway.list.link-state" }),
         key: 'statuse',
         render: (text) => {
           return (
@@ -196,7 +196,7 @@ export default class Gateway extends Component {
                 this.changeConfigure({ configureList: array, configureVisible: true });
               }}
             >
-              <FormattedMessage id="gateway.configure" />
+              <FormattedMessage id="gateway.list.configure" />
             </a>
             <Divider type="vertical" />
             <a
@@ -280,7 +280,7 @@ export default class Gateway extends Component {
     const { configureList, configureVisible } = Gateway;
     const { rows, limit, current, count } = Gateway.gatewayData;
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
-    const columns = this.getColumns(sortParam, Gateway.customerList, Gateway.positionList);
+    const columns = this.getColumns(sortParam, Gateway.customerList, gateway.list.positionList);
     const rowSelection = {
       configureList,
       onChange: this.onSelectChange,
@@ -297,7 +297,7 @@ export default class Gateway extends Component {
               type="primary"
               onClick={this.configuration.bind(this)}
             >
-              <FormattedMessage id="gateway.batch.configure" />
+              <FormattedMessage id="gateway.configure.batch-configure" />
             </Button>
             <Button
               className={styles.rights}

@@ -55,7 +55,7 @@ export default {
       const response = yield call(addBanner, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(formatMessage({ id: "customer.add.success" }));
+        message.success(formatMessage({ id: "customer.operate.add-success" }));
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
@@ -64,7 +64,7 @@ export default {
       const response = yield call(bannerPublish, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(formatMessage({ id: "banner.send.success" }));
+        message.success(formatMessage({ id: "banner.send-success" }));
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
@@ -73,7 +73,7 @@ export default {
       const response = yield call(delBanner, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(formatMessage({ id: "banner.delete.success" }));
+        message.success(formatMessage({ id: "banner.delete-success" }));
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
@@ -82,7 +82,7 @@ export default {
       const response = yield call(sortBanner, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(formatMessage({ id: "banner.move.success" }));
+        message.success(formatMessage({ id: "banner.move-success" }));
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }

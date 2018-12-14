@@ -13,7 +13,7 @@ class AdminLayout extends React.PureComponent {
         <div className={styles.admin_container}>
           <div className={styles.containers}>
             <div className={styles.contents}>
-              <img alt={formatMessage({ id: "login.image" })} src={`${G.picUrl}${formatMessage({ id: "banner.backchart.admin" })}`} />
+              <img alt={formatMessage({ id: "login.image" })} src={`${G.picUrl}${formatMessage({ id: "image.banner.backchart-admin" })}`} />
             </div>
             <div className={styles.content}>
               <div className={styles.top}>

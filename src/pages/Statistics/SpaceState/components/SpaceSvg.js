@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'umi/locale';
 import styles from './../SpaceState.less';
 import Urwork from "./svg/urwork";
 
@@ -51,7 +52,9 @@ export default class SpaceSvg extends Component {
         {svg.svgName && svg.svgName === 'urwork.svg' ?
           <Urwork data={data} svg={svg} setCount={setCount} filter={filter} />
           :
-          <div className={styles.svgPic}>暂无数据</div>
+          <div className={styles.svgPic}>
+            <FormattedMessage id="spaceUsage.none" />
+          </div>
         }
       </div>
     );

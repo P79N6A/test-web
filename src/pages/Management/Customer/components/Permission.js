@@ -69,19 +69,19 @@ class Permission extends Component {
       <Modal
         width={780}
         visible={true}
-        title="设置功能权限"
+        title={formatMessage({ id: "customer.permission.set-permission" })}
         onOk={this.okHandle}
         onCancel={this.onCancel.bind(this, 0)}
         footer={[
           <Button key="back" size='small' onClick={this.onCancel.bind(this, 0)}>
-            取消
+            <FormattedMessage id="all.cancel" />
           </Button>,
           <Button key="submit" size='small' type="primary" loading={loading} onClick={this.okHandle}>
-            保存
+            <FormattedMessage id="all.save" />
           </Button>
         ]}
       >
-        <p className={styles.subTitle}>设置权限后，该客户将在Space管理后台开通对应的功能</p>
+        <p className={styles.subTitle}><FormattedMessage id="customer.permission.set-permission-message" /></p>
         {
           dataList && dataList.length > 0 ?
             dataList.map((item, index) => {
@@ -94,7 +94,7 @@ class Permission extends Component {
                 id={item.id} />
             })
             :
-            '暂无数据'
+            <FormattedMessage id="spaceUsage.none" />
         }
       </Modal>
     );

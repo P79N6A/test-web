@@ -82,19 +82,19 @@ class BannerModel extends Component {
     const reg = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
     if (modal.type === 0) {
       if (!bannerSrc) {
-        message.error(formatMessage({ id: "banner.upload.banner" }));
+        message.error(formatMessage({ id: "banner.upload-banner" }));
         return
       }
       if (type === 0 && !bannerUrl) {
-        message.error(formatMessage({ id: "banner.choose.notice" }));
+        message.error(formatMessage({ id: "banner.choose-notice" }));
         return
       }
       if (type === 1 && !bannerUrl) {
-        message.error(formatMessage({ id: "banner.input.link" }));
+        message.error(formatMessage({ id: "banner.input-link" }));
         return
       }
       if (type === 1 && !reg.test(bannerUrl)) {
-        message.error(formatMessage({ id: "banner.input.link.success" }));
+        message.error(formatMessage({ id: "banner.input-link-success" }));
         return
       }
       addBanners();
@@ -147,7 +147,7 @@ class BannerModel extends Component {
   getColumnes(current) {
     const columns = [
       {
-        title: formatMessage({ id: 'notice.title' }),
+        title: formatMessage({ id: 'notice.list.title' }),
         key: 'title',
         render: (text) => {
           return (
@@ -160,7 +160,7 @@ class BannerModel extends Component {
         }
       },
       {
-        title: formatMessage({ id: 'notice.receiver' }),
+        title: formatMessage({ id: 'notice.list.receiver' }),
         key: 'unreadCount',
         render: (text, record, index) => {
           return (
@@ -171,7 +171,7 @@ class BannerModel extends Component {
         },
       },
       {
-        title: formatMessage({ id: 'notice.release.time' }),
+        title: formatMessage({ id: 'notice.list.release-time' }),
         key: 'createdAt',
         render: (text) => {
           return (
@@ -213,11 +213,11 @@ class BannerModel extends Component {
     return new Promise(function (resolve, reject) {
       let filereader = new FileReader();
       if (file.size > 1024000) {
-        reject({ title: formatMessage({ id: "notice.poster.message.two" }) });
+        reject({ title: formatMessage({ id: "notice.operate.poster-message-two" }) });
       }
       const imgType = file.name.split('.')[file.name.split('.').length - 1];
       if ('png,jpeg,jpg'.indexOf(imgType) < 0) {
-        reject({ title: formatMessage({ id: "notice.poster.message.error" }) });
+        reject({ title: formatMessage({ id: "notice.operate.poster-message-error" }) });
       }
       filereader.onload = e => {
         let src = e.target.result;
@@ -226,15 +226,15 @@ class BannerModel extends Component {
           const rate = Number((this.height / this.width).toFixed(4));
           if (width && this.width > width) {
             reject({
-              title: formatMessage({ id: "notice.poster.message.max.width" }) + width + 'px'
+              title: formatMessage({ id: "notice.operate.poster-message-max-width" }) + width + 'px'
             });
           } else if (height && this.height > height) {
             reject({
-              title: formatMessage({ id: "notice.poster.message.max.height" }) + height + 'px'
+              title: formatMessage({ id: "notice.operate.poster-message-max-height" }) + height + 'px'
             });
           } else if (rate !== (height / width)) {
             reject({
-              title: formatMessage({ id: "banner.image.rate" })
+              title: formatMessage({ id: "banner.image-rate" })
             });
           } else {
             resolve();
@@ -267,7 +267,7 @@ class BannerModel extends Component {
               })
               return false;
             } else {
-              message.error(formatMessage({ id: 'person.refresh.page' }));
+              message.error(formatMessage({ id: 'person.operate.reload-page' }));
             }
           }
         }
@@ -358,13 +358,13 @@ class BannerModel extends Component {
               <Col {...leftImg}>
                 {bannerAdd.bannerSrc ?
                   <img className={styles.bannerNone} src={bannerAdd.bannerSrc} /> :
-                  <img className={styles.bannerNone} src={`${G.picUrl}${formatMessage({ id: "banner.none.add" })}`} />
+                  <img className={styles.bannerNone} src={`${G.picUrl}${formatMessage({ id: "image.banner.none-add" })}`} />
                 }
               </Col>
               <Col {...rightText}>
-                <p className={styles.bannerAddTitle}><FormattedMessage id="banner.upload.image" /></p>
-                <p className={styles.bannerAddText}><FormattedMessage id="banner.upload.image.message.one" /></p>
-                <p className={styles.bannerAddText}><FormattedMessage id="banner.upload.image.message.two" /></p>
+                <p className={styles.bannerAddTitle}><FormattedMessage id="banner.upload-image" /></p>
+                <p className={styles.bannerAddText}><FormattedMessage id="banner.upload-image.message-one" /></p>
+                <p className={styles.bannerAddText}><FormattedMessage id="banner.upload-image.message-two" /></p>
                 <Upload
                   name="avatar"
                   accept="image/*"
@@ -372,23 +372,23 @@ class BannerModel extends Component {
                   beforeUpload={this.beforeUpload.bind(this)} >
                   <Button className={styles.btn} key="local" size='small' type="primary">
                     <Icon type={avatarLoading ? 'loading' : 'plus'} />
-                    <FormattedMessage id="banner.upload.local" />
+                    <FormattedMessage id="banner.upload-local" />
                   </Button>
                 </Upload>
                 <Button className={styles.btnDefault}
                   key="choose"
                   size='small'
-                  onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.add" }), type: 1, certain: formatMessage({ id: "all.certain" }) })}><FormattedMessage id="banner.choose.default" /></Button>
+                  onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.add" }), type: 1, certain: formatMessage({ id: "all.certain" }) })}><FormattedMessage id="banner.choose-default" /></Button>
               </Col>
             </Row>
             <p className={styles.bannerAddTitle}><FormattedMessage id="banner.jump" /></p>
             <RadioGroup onChange={this.onChangeType.bind(this)} className={styles.btnGroup} value={bannerAdd.type}>
               <Row gutter={24}>
                 <Col span={4}>
-                  <Radio style={{ paddingTop: '5px' }} value={0}><FormattedMessage id="banner.open.notice" /></Radio>
+                  <Radio style={{ paddingTop: '5px' }} value={0}><FormattedMessage id="banner.open-notice" /></Radio>
                 </Col>
                 <Col span={15}>
-                  <Input placeholder={formatMessage({ id: "banner.open.notice.message" })} disabled value={bannerAdd.title} />
+                  <Input placeholder={formatMessage({ id: "banner.open-notice-message" })} disabled value={bannerAdd.title} />
                 </Col>
                 <Col span={5} style={{ display: 'flex', justifyContent: 'flex-end' }}>
                   <Button
@@ -397,24 +397,24 @@ class BannerModel extends Component {
                     size='small'
                     type="primary"
                     disabled={bannerAdd.type === 0 ? false : true}
-                    onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.choose.notice.title" }), type: 2, certain: formatMessage({ id: "all.certain" }) })}>
-                    <FormattedMessage id="banner.choose.notice.title" />
+                    onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.choose-notice-title" }), type: 2, certain: formatMessage({ id: "all.certain" }) })}>
+                    <FormattedMessage id="banner.choose-notice-title" />
                   </Button>
                 </Col>
               </Row>
               <br />
               <Row gutter={24}>
                 <Col span={4}>
-                  <Radio style={{ paddingTop: '5px' }} value={1}><FormattedMessage id="banner.open.link" /></Radio>
+                  <Radio style={{ paddingTop: '5px' }} value={1}><FormattedMessage id="banner.open-link" /></Radio>
                 </Col>
                 <Col span={20}>
-                  <Input style={{ marginRight: '4px !important' }} placeholder={formatMessage({ id: "customer.website.link.text" })} value={bannerAdd.type === 0 ? '' : bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type === 1 ? false : true} />
+                  <Input style={{ marginRight: '4px !important' }} placeholder={formatMessage({ id: "customer.operate.website-link-text" })} value={bannerAdd.type === 0 ? '' : bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type === 1 ? false : true} />
                 </Col>
               </Row>
             </RadioGroup>
           </div> : (modal.type === 1 ? (
             <div className={styles.screenShow}>
-              <p className={styles.bannerCompanyText}><FormattedMessage id="banner.banner.9am" /></p>
+              <p className={styles.bannerCompanyText}><FormattedMessage id="banner.banner-9am" /></p>
               {defaultBannerList && defaultBannerList.length > 0 ? defaultBannerList.map((item, i) => (
                 <div
                   key={`${item.id}_defaultBanner`}
@@ -433,7 +433,7 @@ class BannerModel extends Component {
             </div>
           ) : (
               <div className={styles.screenShow}>
-                <p className={styles.bannerAddText}><FormattedMessage id="banner.choose.notice.message" /></p>
+                <p className={styles.bannerAddText}><FormattedMessage id="banner.choose-notice-message" /></p>
                 <Table
                   rowKey="_id"
                   loading={loading}

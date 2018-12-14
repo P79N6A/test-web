@@ -88,7 +88,7 @@ class DeskUseDuration extends Component {
         <Row gutter={24}>
           <Col {...deskuseRateProps}>
             <h3 className={styles.deskDduration}>
-              {status_type === 'HOT' ? formatMessage({ id: 'spaceUsage.hot.station.rank' }) : formatMessage({ id: 'spaceUsage.free.station.rank' })}
+              {status_type === 'HOT' ? formatMessage({ id: 'spaceUsage.hot-station-rank' }) : formatMessage({ id: 'spaceUsage.free-station-rank' })}
             </h3>
           </Col>
           <Col {...deskuseRatePropsO}>

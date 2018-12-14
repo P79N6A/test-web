@@ -16,11 +16,11 @@ class ServiceDuration extends Component {
       <Card bordered={false} bodyStyle={{ padding: '19px 24px 8px 24px' }}>
         <div>
           <p className={styles.deskDduration}>
-            <FormattedMessage id="spaceUsage.server.time" />
+            <FormattedMessage id="spaceUsage.server-time" />
             <Icon type="ellipsis" theme="outlined" className={styles.icon} />
           </p>
           <Pie
-            subTitle="平均时长"
+            subTitle={formatMessage({ id: "spaceUsage.average-time" })}
             total={() => (
               <span
                 dangerouslySetInnerHTML={{
@@ -32,7 +32,7 @@ class ServiceDuration extends Component {
             height={200}
             color={['#FCB0B1', '#BDE4E1']}
           />
-          <p className={styles.totalText}>总时长</p>
+          <p className={styles.totalText}><FormattedMessage id="spaceUsage.all-time" /></p>
           <p className={styles.totalTextContent}>
             {parseInt(serviceDuration.total_duration / (24 * 60), 10)}
             <font className={styles.textStatus}><FormattedMessage id="home.day" /></font>
@@ -41,7 +41,7 @@ class ServiceDuration extends Component {
           </p>
           {/* 使用时长 */}
           <div className={styles.useBox}>
-            <p className={styles.useTitle}><i></i>使用时长</p>
+            <p className={styles.useTitle}><i></i><FormattedMessage id="spaceUsage.use.time" /></p>
             <p className={styles.useTextContent}>
               {parseInt(serviceDuration.occupied_duration / (24 * 60), 10)}
               <font className={styles.textStatus}><FormattedMessage id="home.day" /></font>
@@ -52,7 +52,7 @@ class ServiceDuration extends Component {
           </div>
           {/* 空闲时长 */}
           <div className={styles.useBox}>
-            <p className={styles.useTitle}><i className={styles.green}></i>使用时长</p>
+            <p className={styles.useTitle}><i className={styles.green}></i><FormattedMessage id="spaceUsage.use.time" /></p>
             <p className={styles.useTextContent}>
               {parseInt(serviceDuration.vacant_duration / (24 * 60), 10)}
               <font className={styles.textStatus}><FormattedMessage id="home.day" /></font>

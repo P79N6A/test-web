@@ -87,7 +87,7 @@ class NewNoticeForm extends Component {
       this.children.push(<SelectOption key={user[i].uid}>{user[i].name}</SelectOption>);
       this.valueOfAll.push(user[i].uid);
     }
-    this.children.unshift(<SelectOption key="all"><FormattedMessage id='notice.all' /></SelectOption>);
+    this.children.unshift(<SelectOption key="all"><FormattedMessage id='notice.operate.all' /></SelectOption>);
   }
 
   selectAll() {
@@ -132,7 +132,7 @@ class NewNoticeForm extends Component {
   sendResponse(res) {
     const { dispatch } = this.props;
     if (res.status === 'success') {
-      message.success(formatMessage({ id: 'notice.sent.successfully' }));
+      message.success(formatMessage({ id: 'notice.operate.sent-successfully' }));
       dispatch({
         type: 'ManagementNotice/changeCurrent',
         payload: { current: 1 },
@@ -146,7 +146,7 @@ class NewNoticeForm extends Component {
   checkEditor(rule, value, callback) {
     const { editorState } = this.state;
     if (editorState === '' || editorState.length === 8) {
-      callback(formatMessage({ id: 'notice.send.message' }));
+      callback(formatMessage({ id: 'notice.operate.send-message' }));
     } else {
       callback();
     }
@@ -179,7 +179,7 @@ class NewNoticeForm extends Component {
               const observable = qiniu.upload(file, avatarUrl, res.data, putExtra, config);
               observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this, resolve));
             } else {
-              message.error(formatMessage({ id: 'notice.refresh' }));
+              message.error(formatMessage({ id: 'notice.operate.refresh' }));
             }
           }
         },
@@ -204,8 +204,8 @@ class NewNoticeForm extends Component {
         this.setState({
           prompt: {
             visible: true,
-            title: formatMessage({ id: "notice.certain.title" }),
-            content: formatMessage({ id: "notice.certain.text" })
+            title: formatMessage({ id: "notice.operate.certain-title" }),
+            content: formatMessage({ id: "notice.operate.certain-text" })
           }
         });
       }
@@ -218,8 +218,8 @@ class NewNoticeForm extends Component {
         this.setState({
           prompt: {
             visible: true,
-            title: formatMessage({ id: "notice.certain.title" }),
-            content: formatMessage({ id: "notice.certain.poster" })
+            title: formatMessage({ id: "notice.operate.certain-title" }),
+            content: formatMessage({ id: "notice.operate.certain-poster" })
           }
         });
       }
@@ -258,7 +258,7 @@ class NewNoticeForm extends Component {
     const { poster } = this.state;
     if (!poster) {
       this.setState({
-        posterMessage: formatMessage({ id: "notice.poster.message" })
+        posterMessage: formatMessage({ id: "notice.operate.poster-message" })
       });
       return false;
     }
@@ -283,11 +283,11 @@ class NewNoticeForm extends Component {
     return new Promise(function (resolve, reject) {
       let filereader = new FileReader();
       if (file.size > 1024000) {
-        reject({ title: formatMessage({ id: "notice.poster.message.two" }) });
+        reject({ title: formatMessage({ id: "notice.operate.poster-message-two" }) });
       }
       const imgType = file.name.split('.')[file.name.split('.').length - 1];
       if ('png,jpeg,jpg'.indexOf(imgType) < 0) {
-        reject({ title: formatMessage({ id: "notice.poster.message.error" }) });
+        reject({ title: formatMessage({ id: "notice.operate.poster-message-error" }) });
       }
       filereader.onload = e => {
         let src = e.target.result;
@@ -297,15 +297,15 @@ class NewNoticeForm extends Component {
           const myRate = Number((height / width).toFixed(4));
           if (512 > this.width > width) {
             reject({
-              title: formatMessage({ id: "notice.poster.message.width.min" }) + width + formatMessage({ id: "notice.poster.message.width.max" })
+              title: formatMessage({ id: "notice.operate.poster-message-width-min" }) + width + formatMessage({ id: "notice.operate.poster-message-width-max" })
             });
           } else if (569 > this.height > height) {
             reject({
-              title: formatMessage({ id: "notice.poster.message.height.min" }) + height + formatMessage({ id: "notice.poster.message.height.max" }),
+              title: formatMessage({ id: "notice.operate.poster-message-height-min" }) + height + formatMessage({ id: "notice.operate.poster-message-height-max" }),
             });
           } else if (rate !== myRate) {
             reject({
-              title: formatMessage({ id: 'notice.poster.message.rate' })
+              title: formatMessage({ id: 'notice.operate.poster-message-rate' })
             });
           } else {
             resolve();
@@ -338,7 +338,7 @@ class NewNoticeForm extends Component {
               })
               return false;
             } else {
-              message.error(formatMessage({ id: 'person.refresh.page' }));
+              message.error(formatMessage({ id: 'person.operate.reload-page' }));
             }
           }
         }
@@ -362,7 +362,7 @@ class NewNoticeForm extends Component {
     const { editor, type, poster, posterMessage, avatarLoading } = this.state;
     const uploadButton = (
       <div className={styles.posterAdd}>
-        <Icon className={styles.posterIcon} style={{ paddingRight: '16px', fontSize: '24px', fontWeight: '800' }} type={avatarLoading ? 'loading' : 'plus'} /><FormattedMessage id="notice.poster.add" />
+        <Icon className={styles.posterIcon} style={{ paddingRight: '16px', fontSize: '24px', fontWeight: '800' }} type={avatarLoading ? 'loading' : 'plus'} /><FormattedMessage id="notice.operate.poster-add" />
       </div>
     );
     return (
@@ -370,23 +370,23 @@ class NewNoticeForm extends Component {
         <FormItem>
           {getFieldDecorator('title', {
             rules: [
-              { required: true, message: formatMessage({ id: 'notice.input.title' }) },
+              { required: true, message: formatMessage({ id: 'notice.operate.input-title' }) },
               {
                 max: 100,
                 message: formatMessage({ id: 'test.max.long.one.hundred' }),
               },
             ],
-          })(<Input placeholder={formatMessage({ id: 'notice.input.title' })} size="large" />)}
+          })(<Input placeholder={formatMessage({ id: 'notice.operate.input-title' })} size="large" />)}
         </FormItem>
         <FormItem>
           {getFieldDecorator('person', {
-            rules: [{ required: true, message: formatMessage({ id: 'notice.select.receiver' }) }],
+            rules: [{ required: true, message: formatMessage({ id: 'notice.operate.select-receiver' }) }],
           })(
             <Select
               mode="multiple"
               allowClear
               size="large"
-              placeholder={formatMessage({ id: 'notice.select.receiver' })}
+              placeholder={formatMessage({ id: 'notice.operate.select-receiver' })}
               onChange={this.handleChangeTest.bind(this)}
               style={{ width: '100%' }}
               filterOption={(input, option) => {
@@ -441,20 +441,20 @@ class NewNoticeForm extends Component {
         </FormItem>
         {/* 推送设置 */}
         <div>
-          <p className={styles.title}><FormattedMessage id="notice.push.setting" /></p>
-          <p className={styles.content}><FormattedMessage id="notice.push.setting.title" /></p>
+          <p className={styles.title}><FormattedMessage id="notice.operate.push-setting" /></p>
+          <p className={styles.content}><FormattedMessage id="notice.operate.push-setting-title" /></p>
           <Row gutter={24} style={{ marginBottom: '5px' }}>
             <Col xl={8} lg={8} md={8} sm={8} xs={8}>
               <div className={styles.titleBox}>
-                <p className={styles.modelShow}><FormattedMessage id="notice.display.preview" /></p>
+                <p className={styles.modelShow}><FormattedMessage id="notice.operate.display-preview" /></p>
               </div>
               <div className={styles.mobileShow}>
                 <div className={styles.mobile}>
                   {/* 内容展示区 */}
                   <div className={styles.mobileText}>
                     {!poster ? (<div className={styles.mobileNone}>
-                      <h3><FormattedMessage id="notice.no.content" /></h3>
-                      <p className={styles.mobileNoneText}><FormattedMessage id="notice.right.content" /></p>
+                      <h3><FormattedMessage id="notice.operate.no-content" /></h3>
+                      <p className={styles.mobileNoneText}><FormattedMessage id="notice.operate.right-content" /></p>
                     </div>)
                       : (type === 0 ? <p>{poster}</p> : <img src={poster} />)
                     }
@@ -465,15 +465,15 @@ class NewNoticeForm extends Component {
             </Col>
             <Col xl={16} lg={16} md={16} sm={16} xs={16} style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
               <Radio.Group value={type} onChange={this.onChangeType}>
-                <Radio.Button value={0}><FormattedMessage id="notice.text" /></Radio.Button>
-                <Radio.Button value={1}><FormattedMessage id="notice.poster" /></Radio.Button>
+                <Radio.Button value={0}><FormattedMessage id="notice.operate.text" /></Radio.Button>
+                <Radio.Button value={1}><FormattedMessage id="notice.operate.poster" /></Radio.Button>
               </Radio.Group>
               <div className={styles.textContent}>
                 {type === 0 ?
                   <FormItem style={{ width: '100%', height: '100%', paddingTop: '18px' }}>
                     {getFieldDecorator('text', {
                       rules: [
-                        { required: type === 0 ? true : false, message: formatMessage({ id: 'notice.text.message' }) },
+                        { required: type === 0 ? true : false, message: formatMessage({ id: 'notice.operate.text-message' }) },
                         {
                           max: 50,
                           message: formatMessage({ id: "test.max.long.fifty" }),
@@ -481,7 +481,7 @@ class NewNoticeForm extends Component {
                       ],
                     })(<TextArea
                       rows={14}
-                      placeholder={formatMessage({ id: "notice.text.show" })}
+                      placeholder={formatMessage({ id: "notice.operate.text-show" })}
                       style={{ resize: 'none', width: '100%', padding: '18px 20px', height: '320px' }}
                       onChange={this.onChangeTextArea} />)}
                   </FormItem> :
@@ -514,7 +514,7 @@ class NewNoticeForm extends Component {
                           )}
                       </Upload>
                       {!poster ? (
-                        <font className={styles.avatarTest}><FormattedMessage id="notice.image.message.one" /><br /><FormattedMessage id="notice.image.message.two" /></font>
+                        <font className={styles.avatarTest}><FormattedMessage id="notice.operate.image-message-one" /><br /><FormattedMessage id="notice.operate.image-message-two" /></font>
                       ) : ''}
                     </FormItem>
                     <p style={{ color: 'red', textAlign: 'left', fontSize: '14px', marginTop: '-20px' }}>{posterMessage}</p>
@@ -546,7 +546,7 @@ class NewNoticeForm extends Component {
               <FormattedMessage id='all.cancel' />
             </Button>
             <Button type="primary" size='small' htmlType="submit" onClick={this.handleCommit.bind(this)}>
-              <FormattedMessage id='notice.publish' />
+              <FormattedMessage id='notice.operate.publish' />
             </Button>
           </Col>
         </Row>

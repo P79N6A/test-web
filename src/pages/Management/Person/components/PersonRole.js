@@ -42,7 +42,7 @@ export default class PersonRole extends Component {
       <Modal
         width={780}
         visible={true}
-        title="设置角色"
+        title={formatMessage({ id: "person.role.set-role" })}
         onOk={this.okHandle.bind(this)}
         onCancel={closeRole}
         footer={[
@@ -54,18 +54,18 @@ export default class PersonRole extends Component {
           </Button>
         ]}
       >
-        <p className={styles.subTitle}>所有角色都可以登录到DShow客户端</p>
+        <p className={styles.subTitle}><FormattedMessage id="person.role.open-to-all" /></p>
         <Row className={styles.rowBox}>
           <RadioGroup style={{ display: 'block' }} onChange={this.onChange} value={role}>
-            <Col {...titleStyle}>功能</Col>
+            <Col {...titleStyle}><FormattedMessage id="person.role.features" /></Col>
             <Col span={6} style={{ textAlign: 'center' }}>
-              <Radio value={'manager'}>管理者</Radio>
+              <Radio value={'manager'}><FormattedMessage id="person.role.manager" /></Radio>
             </Col>
             <Col span={6} style={{ textAlign: 'center' }}>
-              <Radio value={'manager_space'}>空间管理员</Radio>
+              <Radio value={'manager_space'}><FormattedMessage id="person.role.space-manager" /></Radio>
             </Col>
             <Col span={6} style={{ textAlign: 'center' }}>
-              <Radio value={'default'}>普通成员</Radio>
+              <Radio value={'default'}><FormattedMessage id="person.role.user" /></Radio>
             </Col>
           </RadioGroup>
         </Row>
@@ -73,7 +73,7 @@ export default class PersonRole extends Component {
           <div className={styles.roleLeft}>
             <RoleShow data={sidebar} />
           </div>
-          <div className={styles.roleRight}>默认角色</div>
+          <div className={styles.roleRight}><FormattedMessage id="person.role.default" /></div>
         </div>
       </Modal>
     );

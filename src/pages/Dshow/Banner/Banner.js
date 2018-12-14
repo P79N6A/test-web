@@ -151,8 +151,8 @@ export default class Banner extends Component {
   delConfirm(bannerId) {
     let _this = this;
     confirm({
-      title: formatMessage({ id: "notice.certain.title" }),
-      content: formatMessage({ id: "banner.delete.message" }),
+      title: formatMessage({ id: "notice.operate.certain-title" }),
+      content: formatMessage({ id: "banner.delete-message" }),
       okText: formatMessage({ id: "all.certain" }),
       cancelText: formatMessage({ id: "all.cancel" }),
       okButtonProps: {
@@ -213,18 +213,18 @@ export default class Banner extends Component {
             <Col {...leftImg}>
               <div className={styles.bannerBox}>
                 <img src={`${G.picUrl}image/banner_background.png`} />
-                <p className={styles.notice}><FormattedMessage id="banner.dshow.message" /></p>
+                <p className={styles.notice}><FormattedMessage id="banner.dshow-message" /></p>
                 {/* 轮播图 */}
                 <Carousel autoplay className={styles.carousel}>
                   {bannerList && bannerList.length > 0 ? bannerList.map((item, i) => (<div key={`carousel_${item.bannerId}`}><img src={item.src} /></div>))
-                    : (<img className={styles.bannerNone} src={`${G.picUrl}${formatMessage({ id: "banner.none.add" })}`} />)}
+                    : (<img className={styles.bannerNone} src={`${G.picUrl}${formatMessage({ id: "image.banner.none-add" })}`} />)}
                 </Carousel>
               </div>
             </Col>
             {/* 列表 */}
             <Col span={12}>
               <p className={styles.bannerTitle}>Banner</p>
-              <p className={styles.bannerNotice}><FormattedMessage id="banner.dshow.message.one" /></p>
+              <p className={styles.bannerNotice}><FormattedMessage id="banner.dshow-message-one" /></p>
               <div className={styles.bannerPicBox}>
                 <img className={styles.bannerPic} src={bannerUrl.src} />
               </div>
@@ -260,24 +260,24 @@ export default class Banner extends Component {
                     {/* 添加图片 */}
                     {bannerList.length >= 5 ? '' : (
                       <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>
-                        <img className={styles.addBanner} src={`${G.picUrl}${formatMessage({ id: "banner.add.en" })}`} />
+                        <img className={styles.addBanner} src={`${G.picUrl}${formatMessage({ id: "image.banner.add-en" })}`} />
                       </li>
                     )}
                   </ul>) : (
                   <ul className={styles.bannerListBox}>
                     <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>
-                      <img className={styles.addBanner} src={`${G.picUrl}${formatMessage({ id: "banner.add.en" })}`} />
+                      <img className={styles.addBanner} src={`${G.picUrl}${formatMessage({ id: "image.banner.add-en" })}`} />
                     </li>
                   </ul>
                 )}
               {/* 发布 */}
               <Row gutter={24}>
                 <Col span={24}>
-                  <Button onClick={this.bannerPublish.bind(this)} type="primary" size='small' className={styles.btn}><FormattedMessage id="banner.publish.dshow" /></Button>
+                  <Button onClick={this.bannerPublish.bind(this)} type="primary" size='small' className={styles.btn}><FormattedMessage id="banner.publish-dshow" /></Button>
                 </Col>
                 <Col span={24}>
-                  <p className={styles.lastTest}><FormattedMessage id="banner.publish.dshow.message.one" /></p>
-                  <p className={styles.lastTest}><FormattedMessage id="banner.publish.dshow.message.two" /></p>
+                  <p className={styles.lastTest}><FormattedMessage id="banner.publish-dshow.message-one" /></p>
+                  <p className={styles.lastTest}><FormattedMessage id="banner.publish-dshow.message-two" /></p>
                 </Col>
               </Row>
             </Col>

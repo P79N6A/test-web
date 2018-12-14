@@ -15,16 +15,16 @@ export default class SpaceTotal extends Component {
     return (
       <div className={styles.svgLeft}>
         <div className={styles.top}>
-          <p className={styles.sizeTwo + " " + styles.nowText}><FormattedMessage id="spaceState.real.time.statistics" /></p>
+          <p className={styles.sizeTwo + " " + styles.nowText}><FormattedMessage id="spaceState.real-time-statistics" /></p>
           <div className={styles.useCountView}>
             <div className={styles.line} />
-            <font className={styles.useCountDes + " " + styles.sizeOne}><FormattedMessage id="spaceState.used.workstations" /></font>
+            <font className={styles.useCountDes + " " + styles.sizeOne}><FormattedMessage id="spaceState.used-workstations" /></font>
           </div>
           <p className={styles.useCount + " " + styles.sizeFour}>{occupiedCount}</p>
           <div className={styles.rowView}>
-            <Count className={styles.sizeOne} title={formatMessage({ id: 'spaceState.total.workstations' })} lineColor="#9AA9B5" count={total} />
+            <Count className={styles.sizeOne} title={formatMessage({ id: 'spaceState.total-workstations' })} lineColor="#9AA9B5" count={total} />
             <div className={styles.lineView} />
-            <Count className={styles.sizeOne} title={formatMessage({ id: 'spaceState.free.workstations' })} lineColor="#A6D6D0" count={vacantCount} />
+            <Count className={styles.sizeOne} title={formatMessage({ id: 'spaceState.free-workstations' })} lineColor="#A6D6D0" count={vacantCount} />
           </div>
         </div>
         {/* bottom */}
@@ -44,7 +44,7 @@ export default class SpaceTotal extends Component {
           </div>
           <div className={styles.useRateView}>
             <div className={styles.redCircle} />
-            <font className={styles.sizeOne + " " + styles.useRateText}><FormattedMessage id="spaceState.rate.workstations" /></font>
+            <font className={styles.sizeOne + " " + styles.useRateText}><FormattedMessage id="spaceState.rate-workstations" /></font>
             <div style={{ flex: 1 }} />
             <font className={styles.sizeThree + " " + styles.rateText}>
               {parseInt((occupiedCount / onlineCount) * 100, 10) || 0}%

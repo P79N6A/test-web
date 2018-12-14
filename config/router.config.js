@@ -42,14 +42,15 @@ export default [
   // 只有头部没有权限设置的外接页面
   {
     path: '/external',
+    name: 'external',
     component: '../layouts/ExternalLayout',
     routes: [
       { path: '/external', redirect: '/external/RetrievePassword' },
       // 找回密码
-      { path: '/external/RetrievePassword', component: './Password/RetrievePassword' },
+      { name: 'reset.password', path: '/external/RetrievePassword', component: './Password/RetrievePassword' },
       // 找回密码的邮箱模板
-      { path: '/external/RetrieveMail', component: './Password/RetrieveMail' },
-      { path: '/external/NewPassword', component: './Password/RetrieveMail/NewPassword' },
+      { name: 'retrieve.mail', path: '/external/RetrieveMail', component: './Password/RetrieveMail' },
+      { name: 'new.password', path: '/external/NewPassword', component: './Password/RetrieveMail/NewPassword' },
       { redirect: '/exception/404' },
     ],
   },

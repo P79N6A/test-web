@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { FormattedMessage } from 'umi/locale';
 import { Card, Spin, Radio } from 'antd';
 import PercentageStackedHistogram from "@/components/Charts/PercentageStackedHistogram";
 import Area from '@/components/Charts/Area';
@@ -65,10 +65,10 @@ class StationRate extends Component {
     return (
       <Card bordered={false} bodyStyle={{ padding: '20px 24px 8px 24px' }}>
         <div className={styles.deskDdurationBox}>
-          <span className={styles.deskDduration}><FormattedMessage id="spaceUsage.station.usage.trend" /></span>
+          <span className={styles.deskDduration}><FormattedMessage id="spaceUsage.station-usage-trend" /></span>
           <Radio.Group className={styles.deskType} buttonStyle="solid" onChange={this.onChange.bind(this)} value={use_rate.type}>
-            <Radio.Button value={'duration'}>时长</Radio.Button>
-            <Radio.Button value={'workStation'}>工位</Radio.Button>
+            <Radio.Button value={'duration'}><FormattedMessage id="spaceUsage.duration" /></Radio.Button>
+            <Radio.Button value={'workStation'}><FormattedMessage id="spaceUsage.station" /></Radio.Button>
           </Radio.Group>
           <ul className={styles.selector}>
             <a
@@ -76,21 +76,21 @@ class StationRate extends Component {
               onClick={this.changeGlobal.bind(this, { date_type: 'LAST_7DAYS' })}
             >
               {' '}
-              近7天
+              <FormattedMessage id="home.nearly.seven.day" />
             </a>
             <a
               className={use_rate.date_type === 'LAST_30DAYS' ? '' : styles.active}
               onClick={this.changeGlobal.bind(this, { date_type: 'LAST_30DAYS' })}
             >
               {' '}
-              近30天
+              <FormattedMessage id="home.nearly.thirty.day" />
             </a>
             <a
               className={use_rate.date_type === 'LAST_1YEAR' ? '' : styles.active}
               onClick={this.changeGlobal.bind(this, { date_type: 'LAST_1YEAR' })}
             >
               {' '}
-              近1年
+              <FormattedMessage id="home.nearly.one.year" />
             </a>
           </ul>
         </div>

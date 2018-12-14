@@ -23,9 +23,9 @@ export default class Device extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: formatMessage({ id: 'device.offline' }), value: 2 },
-      { text: formatMessage({ id: 'device.using' }), value: 3 },
-      { text: formatMessage({ id: 'device.leisure' }), value: 4 },
+      { text: formatMessage({ id: 'device.list.offline' }), value: 2 },
+      { text: formatMessage({ id: 'device.list.using' }), value: 3 },
+      { text: formatMessage({ id: 'device.list.leisure' }), value: 4 },
     ],
   };
 
@@ -69,7 +69,7 @@ export default class Device extends Component {
         ),
       },
       {
-        title: formatMessage({ id: 'device.desk.id' }),
+        title: formatMessage({ id: 'device.list.desk-id' }),
         key: 'serialNumber',
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
@@ -84,7 +84,7 @@ export default class Device extends Component {
         }
       },
       {
-        title: formatMessage({ id: 'device.status' }),
+        title: formatMessage({ id: 'device.list.status' }),
         key: 'status',
         filters: filterStatus,
         render: text => {
@@ -98,7 +98,7 @@ export default class Device extends Component {
         }
       },
       {
-        title: currentAuthority === 'admin' ? formatMessage({ id: 'device.customer' }) : formatMessage({ id: 'device.user' }),
+        title: currentAuthority === 'admin' ? formatMessage({ id: 'device.list.customer' }) : formatMessage({ id: 'device.list.user' }),
         key: currentAuthority === 'admin' ? 'companyName' : 'user_name',
         render: (text) => {
           return (
@@ -124,7 +124,7 @@ export default class Device extends Component {
         }
       },
       {
-        title: formatMessage({ id: 'device.use.time' }),
+        title: formatMessage({ id: 'device.list.use-time' }),
         key: 'lastOperationTime',
         render: (text) => {
           return (
@@ -289,7 +289,7 @@ export default class Device extends Component {
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
     return (
       <div className={styles.main}>
-        <h3>云桌管理</h3>
+        <h3><FormattedMessage id="device.list.management" /></h3>
         <br />
         <Row className={styles.lageBox}>
           {/* 查询 */}
@@ -306,7 +306,7 @@ export default class Device extends Component {
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder={user.user.currentAuthority === 'user' ? formatMessage({ id: 'device.search.user.text' }) : formatMessage({ id: 'device.search.admin.text' })}
+              placeholder={user.user.currentAuthority === 'user' ? formatMessage({ id: 'device.list.search-user-text' }) : formatMessage({ id: 'device.list.search-admin-text' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

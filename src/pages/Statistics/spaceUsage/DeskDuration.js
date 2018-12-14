@@ -11,7 +11,7 @@ class DeskDuration extends Component {
     loading: false,
     number: 0,
     avg_dur: {
-      WEEKLY: [{ title: formatMessage({ id: 'home.nearly.one.year' }), value: 'LAST_YEAR' }, { title: formatMessage({ id: 'spaceUsage.nearly.four.week' }), value: 'LAST_4WEEKS' }],
+      WEEKLY: [{ title: formatMessage({ id: 'home.nearly.one.year' }), value: 'LAST_YEAR' }, { title: formatMessage({ id: 'spaceUsage.nearly-four-week' }), value: 'LAST_4WEEKS' }],
       HOURLY: [
         { title: formatMessage({ id: 'spaceUsage.year' }), value: 'CURRENT_YEAR' },
         { title: formatMessage({ id: 'home.nearly.thirty.day' }), value: 'LAST_30DAYS' },
@@ -94,12 +94,12 @@ class DeskDuration extends Component {
           <Card bordered={false} bodyStyle={{ padding: '20px 24px 8px 24px' }}>
             <Row gutter={24}>
               <Col {...deskuseRatePropsO}>
-                <h3 className={styles.deskDduration}><FormattedMessage id="spaceUsage.station.use.time" /></h3>
+                <h3 className={styles.deskDduration}><FormattedMessage id="spaceUsage.station-use-time" /></h3>
               </Col>
               <Col {...deskuseRateProps}>
                 <Radio.Group value={condition_types} onChange={this.onChange}>
-                  <Radio.Button value="HOURLY"><FormattedMessage id="spaceUsage.distribution.hour" /></Radio.Button>
-                  <Radio.Button value="WEEKLY"><FormattedMessage id="spaceUsage.distribution.week" /></Radio.Button>
+                  <Radio.Button value="HOURLY"><FormattedMessage id="spaceUsage.distribution-hour" /></Radio.Button>
+                  <Radio.Button value="WEEKLY"><FormattedMessage id="spaceUsage.distribution-week" /></Radio.Button>
                 </Radio.Group>
               </Col>
               <Col xl={8} lg={8} md={8} sm={24} xs={24}>

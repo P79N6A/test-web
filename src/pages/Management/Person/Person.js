@@ -24,8 +24,8 @@ export default class Person extends Component {
     visible: false,
     editValue: {},
     filterStatus: [
-      { text: formatMessage({ id: 'person.status.unconnect' }), value: 1 },
-      { text: formatMessage({ id: 'person.status.connected' }), value: 2 }
+      { text: formatMessage({ id: 'person.list.status.disconnected' }), value: 1 },
+      { text: formatMessage({ id: 'person.list.status.connected' }), value: 2 }
     ],
     importTemplate: false,
     roleVisible: false
@@ -177,7 +177,7 @@ export default class Person extends Component {
             <Divider type="vertical" />
             <Popconfirm
               placement="left"
-              title={formatMessage({ id: 'person.delete.tip' })}
+              title={formatMessage({ id: 'person.list.delete.tip' })}
               onConfirm={this.onDelete.bind(this, text)}
               okText={formatMessage({ id: 'all.certain' })}
               cancelText={formatMessage({ id: 'all.cancel' })}
@@ -341,11 +341,11 @@ export default class Person extends Component {
     const { limit, count, current } = ManagementPerson.data;
     const listTitle = {
       serialNumber: formatMessage({ id: 'all.serial.number' }),
-      name: formatMessage({ id: 'person.name' }),
-      phone: formatMessage({ id: 'person.phone' }),
+      name: formatMessage({ id: 'person.list.name' }),
+      phone: formatMessage({ id: 'person.list.phone' }),
       email: formatMessage({ id: 'app.settings.basic.email' }),
-      position: formatMessage({ id: 'person.position' }),
-      status: formatMessage({ id: 'person.use.status' }),
+      position: formatMessage({ id: 'person.list.position' }),
+      status: formatMessage({ id: 'person.list.use.status' }),
       remarks: formatMessage({ id: 'all.remarks' }),
       operate: formatMessage({ id: 'all.operating' }),
       edit: formatMessage({ id: 'all.edit' }),
@@ -377,7 +377,7 @@ export default class Person extends Component {
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder={formatMessage({ id: 'person.search.text' })}
+              placeholder={formatMessage({ id: 'person.list.search.text' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

@@ -31,21 +31,21 @@ class SendEmail extends Component {
     return (
       <div className={styles.emailBox}>
         <div className={styles.emailContent}>
-          <h3>找回密码</h3>
-          <p>如果您无法访问空间管理系统，请输入您的注册邮箱地址，系统会给您发送详细的帐号信息。</p>
+          <h3><FormattedMessage id="reset.password" /></h3>
+          <p><FormattedMessage id="reset.password.null" /></p>
           <Row className={styles.lageBox}>
             <Col span={24}>
               <Form>
-                <FormItem label={"邮箱地址"} labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
+                <FormItem label={formatMessage({ id: "reset.password.email-address" })} labelCol={{ span: 5 }} wrapperCol={{ span: 19 }}>
                   {getFieldDecorator('email', {
                     rules: [
-                      { required: true, message: "请输入邮箱地址" },
+                      { required: true, message: formatMessage({ id: "reset.password.email-input" }) },
                       {
                         pattern: G.emailCheck,
-                        message: formatMessage({ id: 'customer.email.message' }),
+                        message: formatMessage({ id: 'customer.operate.email-message' }),
                       },
                     ],
-                  })(<Input placeholder={"请输入邮箱地址"} />)}
+                  })(<Input placeholder={formatMessage({ id: "reset.password.email-input" })} />)}
                 </FormItem>
               </Form>
             </Col>
@@ -59,7 +59,9 @@ class SendEmail extends Component {
               >
                 <FormattedMessage id='all.cancel' />
               </Button>
-              <Button type="primary" size='small' htmlType="submit" onClick={this.checkEmail.bind(this)}>发送</Button>
+              <Button type="primary" size='small' htmlType="submit" onClick={this.checkEmail.bind(this)}>
+                <FormattedMessage id="reset.password.send" />
+              </Button>
             </Col>
           </Row>
         </div>

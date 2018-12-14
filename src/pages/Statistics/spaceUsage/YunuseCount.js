@@ -12,7 +12,7 @@ class YunuseCount extends Component {
     return (
       <ChartCard
         bordered={false}
-        title={formatMessage({ id: "spaceUsage.yesterday.unuse" })}
+        title={formatMessage({ id: "spaceUsage.yesterday-unuse" })}
         subtitle={formatMessage({ id: "spaceUsage.one" })}
         action={
           <Icon
@@ -30,7 +30,7 @@ class YunuseCount extends Component {
         contentHeight={60}
       >
         <font style={{ marginRight: 50 }}>
-          <FormattedMessage id="spaceUsage.week.rate" />
+          <FormattedMessage id="spaceUsage.week-rate" />
           <span
             className={
               yesterdayUseCount.unuseWeekState === 'up'
@@ -46,7 +46,7 @@ class YunuseCount extends Component {
           </span>
         </font>
         <font>
-          <FormattedMessage id="spaceUsage.day.rate" />
+          <FormattedMessage id="spaceUsage.day-rate" />
           <span
             className={
               yesterdayUseCount.unuseDayState === 'up'

@@ -28,7 +28,7 @@ class ModalChange extends Component {
     const { form, user } = this.props;
     const currentAuthority = user.user.currentAuthority;
     if (res.status === 'success') {
-      message.success(res.message || formatMessage({ id: 'customer.successfully.modified' }));
+      message.success(res.message || formatMessage({ id: 'customer.operate.successfully-modified' }));
       form.setFieldsValue({
         oldPassword: '',
         newPassword: '',
@@ -74,7 +74,7 @@ class ModalChange extends Component {
               <FormItem label={formatMessage({ id: 'change.original.password' })} labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('oldPassword', {
                   rules: [
-                    { required: true, message: formatMessage({ id: 'change.original.password.text' }) },
+                    { required: true, message: formatMessage({ id: 'change.original.password-text' }) },
                     {
                       min: 8,
                       message: formatMessage({ id: 'test.min.long.eight' }),
@@ -85,10 +85,10 @@ class ModalChange extends Component {
                     },
                     {
                       pattern: G.passCheck,
-                      message: formatMessage({ id: 'change.original.password.message' }),
+                      message: formatMessage({ id: 'change.original.password-message' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: 'change.original.password.text' })} type="password" size="large" />)}
+                })(<Input placeholder={formatMessage({ id: 'change.original.password-text' })} type="password" size="large" />)}
               </FormItem>
             </Col>
           </Row>
@@ -108,7 +108,7 @@ class ModalChange extends Component {
                     },
                     {
                       pattern: G.passCheck,
-                      message: formatMessage({ id: 'change.original.password.message' }),
+                      message: formatMessage({ id: 'change.original.password-message' }),
                     },
                   ],
                 })(<Input placeholder={formatMessage({ id: 'change.new.password.text' })} type="password" size="large" />)}
@@ -117,17 +117,17 @@ class ModalChange extends Component {
           </Row>
           <Row>
             <Col span={20} offset={2}>
-              <FormItem label={formatMessage({ id: 'change.confirm.new.password' })} labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
+              <FormItem label={formatMessage({ id: 'change.confirm.new-password' })} labelCol={{ span: 5 }} wrapperCol={{ span: 16 }}>
                 {getFieldDecorator('newsPassword', {
                   rules: [
-                    { required: true, message: formatMessage({ id: 'change.confirm.new.password.text' }) },
+                    { required: true, message: formatMessage({ id: 'change.confirm.new-password-text' }) },
                     {
                       validator: this.compareToFirstPassword,
                     },
                   ],
                 })(
                   <Input
-                    placeholder={formatMessage({ id: 'change.confirm.new.password.text' })}
+                    placeholder={formatMessage({ id: 'change.confirm.new-password-text' })}
                     type="password"
                     size="large"
                     onBlur={this.handleConfirmBlur}

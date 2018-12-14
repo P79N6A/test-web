@@ -16,7 +16,7 @@ const FormItem = Form.Item;
 class SetNewPassword extends Component {
   state = {
     id: "",
-    save: "保存"
+    save: formatMessage({ id: "all.save" })
   }
 
   componentDidMount() {
@@ -32,7 +32,7 @@ class SetNewPassword extends Component {
     form.validateFields(err => {
       if (err) return;
       this.setState({
-        save: "验证"
+        save: formatMessage({ id: "reset.password.verify" })
       })
       const all = form.getFieldsValue();
       delete all.passwordAgain;
@@ -52,11 +52,11 @@ class SetNewPassword extends Component {
   release(res) {
     if (res.status === 'success') {
       this.setState({
-        save: "保存成功"
+        save: formatMessage({ id: "reset.password.save-success" })
       })
     } else {
       this.setState({
-        save: "保存失败"
+        save: formatMessage({ id: "reset.password.save-fail" })
       })
     }
   }
@@ -90,8 +90,8 @@ class SetNewPassword extends Component {
           <Row className={styles.new_password}>
             <Col {...leftImg}></Col>
             <Col {...centerContent}>
-              <p className={styles.title}>设置新密码</p>
-              <p className={styles.set_new_password}>设置您新的密码并开始使用</p>
+              <p className={styles.title}><FormattedMessage id="reset.password.set-new-password" /></p>
+              <p className={styles.set_new_password}><FormattedMessage id="reset.password.set-new-password-start" /></p>
               <Form className={styles.formModel}>
                 <Row type="flex" justify="center">
                   <Col {...inputPass}>
@@ -109,7 +109,7 @@ class SetNewPassword extends Component {
                           },
                           {
                             pattern: G.passCheck,
-                            message: formatMessage({ id: 'change.original.password.message' }),
+                            message: formatMessage({ id: 'change.original.password-message' }),
                           },
                         ],
                       })(<Input placeholder={formatMessage({ id: 'change.new.password.text' })} type="password" size="large" />)}
@@ -119,14 +119,14 @@ class SetNewPassword extends Component {
                     <FormItem wrapperCol={{ span: 24 }} className={styles.input_pass}>
                       {getFieldDecorator('passwordAgain', {
                         rules: [
-                          { required: true, message: formatMessage({ id: 'change.confirm.new.password.text' }) },
+                          { required: true, message: formatMessage({ id: 'change.confirm.new-password-text' }) },
                           {
                             validator: this.compareToFirstPassword,
                           },
                         ],
                       })(
                         <Input
-                          placeholder={formatMessage({ id: 'change.confirm.new.password.text' })}
+                          placeholder={formatMessage({ id: 'change.confirm.new-password-text' })}
                           type="password"
                           size="large"
                         />
@@ -137,12 +137,14 @@ class SetNewPassword extends Component {
                     <Button className={styles.set_new_btn} type="primary" htmlType="submit" onClick={this.handleCommit.bind(this)}>{save}</Button>
                   </Col>
                   <Col {...inputPass}>
-                    <p className={styles.go_login} onClick={this.goLogin.bind(this)}>去登录</p>
+                    <p className={styles.go_login} onClick={this.goLogin.bind(this)}>
+                      <FormattedMessage id="reset.password.go-login" />
+                    </p>
                   </Col>
                 </Row>
               </Form>
-              <p className={styles.question}>如有任何问题，可以与我们联系，我们将尽快为你解答。</p>
-              <p className={styles.email}>Email:_________<span>电话:_________</span></p>
+              <p className={styles.question}><FormattedMessage id="reset.password.connect-us" /></p>
+              <p className={styles.email}>Email:_________<span><FormattedMessage id="reset.password.phone" />:_________</span></p>
             </Col>
           </Row>
         </div>

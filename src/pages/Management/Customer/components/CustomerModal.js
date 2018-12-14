@@ -36,7 +36,7 @@ class NewCustomer extends Component {
         contractNo: editValue.company.contractNo,
         remark: editValue.company.remark,
       });
-      this.setState({ title: formatMessage({ id: 'customer.edit.customer' }) });
+      this.setState({ title: formatMessage({ id: 'customer.operate.edit-customer' }) });
     }
   }
 
@@ -54,7 +54,7 @@ class NewCustomer extends Component {
   // 上传成功或者失败的回调
   release(res) {
     if (res.status === 'success') {
-      message.success(res.message || formatMessage({ id: 'customer.add.success' }));
+      message.success(res.message || formatMessage({ id: 'customer.operate.add-success' }));
       setTimeout(() => {
         this.goBack();
       }, 2000);
@@ -66,7 +66,7 @@ class NewCustomer extends Component {
   // 编辑成功或者失败的回调
   releases(res) {
     if (res.status === 'success') {
-      message.success(res.message || formatMessage({ id: 'customer.successfully.modified' }));
+      message.success(res.message || formatMessage({ id: 'customer.operate.successfully-modified' }));
       setTimeout(() => {
         this.goBack();
       }, 2000);
@@ -129,69 +129,69 @@ class NewCustomer extends Component {
         <br />
         <Form style={{ backgroundColor: '#fff', padding: '20px', borderRadius: '4px' }}>
           <Row gutter={24}>
-            <p className={styles.addTitle}>客户信息</p>
+            <p className={styles.addTitle}><FormattedMessage id="customer.operate.message" /></p>
             <Col {...leftImg}>
-              <FormItem label="客户名称">
+              <FormItem label={formatMessage({ id: "customer.list.name" })}>
                 {getFieldDecorator('customerName', {
                   rules:
                     editValue === ''
                       ? [
-                        { required: true, message: "请输入客户名称" },
+                        { required: true, message: formatMessage({ id: "customer.operate.input-message" }) },
                         {
                           max: 50,
                           message: formatMessage({ id: 'test.max.long.fifty' }),
                         },
                       ]
                       : [],
-                })(<Input placeholder="请输入客户名称" />)}
+                })(<Input placeholder={formatMessage({ id: "customer.operate.input-message" })} />)}
               </FormItem>
             </Col>
             <Col {...leftImg}>
-              <FormItem label={formatMessage({ id: 'customer.company.name' })}>
+              <FormItem label={formatMessage({ id: 'customer.operate.company-name' })}>
                 {getFieldDecorator('companyName', {
                   rules:
                     editValue === ''
                       ? [
-                        { required: true, message: formatMessage({ id: 'customer.company.name.message' }) },
+                        { required: true, message: formatMessage({ id: 'customer.operate.company-name-message' }) },
                         {
                           max: 50,
                           message: formatMessage({ id: 'test.max.long.fifty' }),
                         },
                       ]
                       : [],
-                })(<Input placeholder={formatMessage({ id: 'customer.company.name.message' })} disabled={editValue !== ''} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.operate.company-name-message' })} disabled={editValue !== ''} />)}
               </FormItem>
             </Col>
           </Row>
           <Row gutter={24}>
-            <p className={styles.addTitle}>账号信息</p>
+            <p className={styles.addTitle}><FormattedMessage id="customer.operate.account-message" /></p>
             <Col {...leftImg}>
-              <FormItem label={formatMessage({ id: 'customer.account.number' })}>
+              <FormItem label={formatMessage({ id: 'customer.list.account-number' })}>
                 {getFieldDecorator('account', {
                   rules:
                     editValue === ''
                       ? [
-                        { required: true, message: formatMessage({ id: 'customer.account.number.text' }) },
+                        { required: true, message: formatMessage({ id: 'customer.operate.account-number-text' }) },
                         {
                           max: 20,
                           message: formatMessage({ id: 'test.max.long.twenty' }),
                         },
                         {
                           pattern: G.accountCheck,
-                          message: formatMessage({ id: 'customer.account.number.message' }),
+                          message: formatMessage({ id: 'customer.operate.account-number-message' }),
                         },
                       ]
                       : [],
-                })(<Input placeholder={formatMessage({ id: 'customer.account.number.text' })} disabled={editValue !== ''} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.operate.account-number-text' })} disabled={editValue !== ''} />)}
               </FormItem>
             </Col>
             <Col {...leftImg}>
-              <FormItem label={formatMessage({ id: 'customer.password' })}>
+              <FormItem label={formatMessage({ id: 'customer.operate.password' })}>
                 {getFieldDecorator('password', {
                   rules:
                     editValue === ''
                       ? [
-                        { required: true, message: formatMessage({ id: 'customer.password.text' }) },
+                        { required: true, message: formatMessage({ id: 'customer.operate.password-text' }) },
                         {
                           min: 8,
                           message: formatMessage({ id: 'test.min.long.eight' }),
@@ -202,11 +202,11 @@ class NewCustomer extends Component {
                         },
                         {
                           pattern: G.passCheck,
-                          message: formatMessage({ id: 'customer.password.message' }),
+                          message: formatMessage({ id: 'customer.operate.password-message' }),
                         },
                       ]
                       : [],
-                })(<Input placeholder={formatMessage({ id: 'customer.password.text' })} disabled={editValue !== ''} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.operate.password-text' })} disabled={editValue !== ''} />)}
               </FormItem>
             </Col>
             <Col {...leftImg}>
@@ -216,50 +216,50 @@ class NewCustomer extends Component {
                     { required: true, message: formatMessage({ id: 'app.settings.basic.email-message' }) },
                     {
                       pattern: G.emailCheck,
-                      message: formatMessage({ id: 'customer.email.message' }),
+                      message: formatMessage({ id: 'customer.operate.email-message' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: 'customer.email' })} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.operate.email' })} />)}
               </FormItem>
             </Col>
           </Row>
           <Row gutter={24}>
-            <p className={styles.addTitle}>管理人员设置</p>
+            <p className={styles.addTitle}><FormattedMessage id="customer.operate.set-message" /></p>
             <Col {...leftImg}>
-              <FormItem label={formatMessage({ id: 'customer.administrator.name' })}>
+              <FormItem label={formatMessage({ id: 'customer.operate.administrator-name' })}>
                 {getFieldDecorator('contacts', {
                   rules: [
-                    { required: true, message: formatMessage({ id: 'customer.administrator.name.text' }) },
+                    { required: true, message: formatMessage({ id: 'customer.operate.administrator-name-text' }) },
                     {
                       max: 20,
                       message: formatMessage({ id: 'test.max.long.twenty' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: "customer.connect.name" })} />)}
+                })(<Input placeholder={formatMessage({ id: "customer.operate.connect-name" })} />)}
               </FormItem>
             </Col>
             <Col {...leftImg}>
-              <FormItem label={formatMessage({ id: 'customer.administrator.mobile' })}>
+              <FormItem label={formatMessage({ id: 'customer.operate.administrator-mobile' })}>
                 {getFieldDecorator('telephone', {
                   rules: [
-                    { required: true, message: formatMessage({ id: 'customer.administrator.mobile.text' }) },
+                    { required: true, message: formatMessage({ id: 'customer.operate.administrator-mobile-text' }) },
                     {
                       max: 11,
                       message: formatMessage({ id: 'test.max.long.eleven' }),
                     },
                     {
                       pattern: G.phoneCheck,
-                      message: formatMessage({ id: 'customer.administrator.mobile.message' }),
+                      message: formatMessage({ id: 'customer.operate.administrator-mobile-message' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: "customer.connect.mobile" })} />)}
+                })(<Input placeholder={formatMessage({ id: "customer.operate.connect-mobile" })} />)}
               </FormItem>
             </Col>
           </Row>
           <Row gutter={24}>
-            <p className={styles.addTitle}>其他</p>
+            <p className={styles.addTitle}><FormattedMessage id="all.other" /></p>
             <Col {...leftImg}>
-              <FormItem label={formatMessage({ id: 'customer.detailed.address' })}>
+              <FormItem label={formatMessage({ id: 'customer.operate.detailed-address' })}>
                 {getFieldDecorator('address', {
                   rules: [
                     {
@@ -267,11 +267,11 @@ class NewCustomer extends Component {
                       message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: "customer.address.text" })} />)}
+                })(<Input placeholder={formatMessage({ id: "customer.operate.address-text" })} />)}
               </FormItem>
             </Col>
             <Col {...leftImg}>
-              <FormItem label={formatMessage({ id: 'customer.website.link' })}>
+              <FormItem label={formatMessage({ id: 'customer.operate.website-link' })}>
                 {getFieldDecorator('website', {
                   rules: [
                     {
@@ -279,11 +279,11 @@ class NewCustomer extends Component {
                       message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: 'customer.website.link' })} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.operate.website-link' })} />)}
               </FormItem>
             </Col>
             <Col {...leftImg}>
-              <FormItem label={formatMessage({ id: 'customer.industry' })}>
+              <FormItem label={formatMessage({ id: 'customer.operate.industry' })}>
                 {getFieldDecorator('industry', {
                   rules: [
                     {
@@ -291,11 +291,11 @@ class NewCustomer extends Component {
                       message: formatMessage({ id: 'test.max.long.twenty' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: 'customer.industry.message' })} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.operate.industry-message' })} />)}
               </FormItem>
             </Col>
             <Col {...leftImg}>
-              <FormItem label={formatMessage({ id: 'customer.contract.no' })}>
+              <FormItem label={formatMessage({ id: 'customer.operate.contract-no' })}>
                 {getFieldDecorator('contractNo', {
                   rules: [
                     {
@@ -303,7 +303,7 @@ class NewCustomer extends Component {
                       message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
-                })(<Input placeholder={formatMessage({ id: 'customer.contract.no.text' })} />)}
+                })(<Input placeholder={formatMessage({ id: 'customer.operate.contract-no-text' })} />)}
               </FormItem>
             </Col>
           </Row>
@@ -317,7 +317,7 @@ class NewCustomer extends Component {
                       message: formatMessage({ id: 'test.max.long.one.hundred' }),
                     },
                   ],
-                })(<TextArea rows={5} placeholder={formatMessage({ id: 'customer.remarks.message' })} />)}
+                })(<TextArea rows={5} placeholder={formatMessage({ id: 'customer.operate.remarks-message' })} />)}
               </FormItem>
             </Col>
           </Row>

@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { getCustomerList, addCustomer, editCustomer, resetPassword, permissionsList, setPermissions } from '../services/api';
-import { getLocale } from 'umi/locale';
+import { getLocale, formatMessage } from 'umi/locale';
 import G from '@/global';
 
 export default {
@@ -60,7 +60,7 @@ export default {
       const response = yield call(setPermissions, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success('设置权限成功');
+        message.success(formatMessage({ id: 'customer.permission.set-permission-success' }));
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       };

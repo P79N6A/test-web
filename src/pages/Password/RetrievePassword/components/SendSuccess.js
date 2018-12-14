@@ -33,20 +33,31 @@ export default class SendSuccess extends Component {
       <div className={styles.successBox}>
         <div className={styles.successContent}>
           <div className={styles.successText}>
-            <h3>邮箱发送成功</h3>
-            <p>我们已向您的注册邮箱{RetrievePassword.email}发送了一封密码找回邮件，请注意查收。</p>
+            <h3><FormattedMessage id="reset.password.send-email-success" /></h3>
+            <p>
+              <FormattedMessage id="reset.password.send-email-message-one" />
+              {RetrievePassword.email}
+              <FormattedMessage id="reset.password.send-email-message-two" />
+            </p>
             <Row>
               <Col style={{ textAlign: 'center', margin: '35px 0' }}>
-                <Button style={{ width: '112' }} type="primary" size='small' onClick={this.goLogin.bind(this)}>去登录</Button>
+                <Button style={{ width: '112' }} type="primary" size='small' onClick={this.goLogin.bind(this)}>
+                  <FormattedMessage id="reset.password.go-login" />
+                </Button>
               </Col>
             </Row>
-            <p className={styles.emailNone}>没有收到邮箱？<span onClick={this.sendAgain.bind(this)}>重新发送</span></p>
+            <p className={styles.emailNone}>
+              <FormattedMessage id="reset.password.send-email-none" />
+              <span onClick={this.sendAgain.bind(this)}>
+                <FormattedMessage id="reset.password.send-again" />
+              </span>
+            </p>
           </div>
         </div>
         <p className={styles.conntectUs}>
-          如有任何问题，可以与我们联系，我们将尽快为你解答。
+          <FormattedMessage id="reset.password.connect-us" />
           <span>Email:_________</span>
-          <span>电话:_________</span>
+          <span><FormattedMessage id="reset.password.phone" />:_________</span>
         </p>
       </div>
     );

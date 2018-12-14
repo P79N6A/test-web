@@ -100,7 +100,7 @@ export default class Wework extends Component {
         ),
       },
       {
-        title: formatMessage({ id: 'customer.name' }),
+        title: formatMessage({ id: 'customer.list.name' }),
         key: 'companyName',
         render: text => {
           return (
@@ -113,7 +113,7 @@ export default class Wework extends Component {
         }
       },
       {
-        title: formatMessage({ id: 'customer.account.number' }),
+        title: formatMessage({ id: 'customer.list.account-number' }),
         key: 'company.account',
         render: text => {
           return (
@@ -142,7 +142,7 @@ export default class Wework extends Component {
         ),
       },
       {
-        title: formatMessage({ id: 'customer.offline.devices' }),
+        title: formatMessage({ id: 'customer.list.offline-devices' }),
         dataIndex: 'resourceOffline',
         key: 'resourceOffline',
       },
@@ -172,12 +172,12 @@ export default class Wework extends Component {
           <Fragment>
             <Popconfirm
               placement="left"
-              title={formatMessage({ id: 'customer.reset.password.message' })}
+              title={formatMessage({ id: 'customer.list.reset-password-message' })}
               onConfirm={this.untiedConfirm.bind(this, text)}
               okText={formatMessage({ id: 'all.certain' })}
               cancelText={formatMessage({ id: 'all.cancel' })}
             >
-              <a><FormattedMessage id='customer.reset.password' /></a>
+              <a><FormattedMessage id='customer.list.reset-password' /></a>
             </Popconfirm>
             <Divider type="vertical" />
             <a
@@ -192,7 +192,7 @@ export default class Wework extends Component {
               onClick={() => {
                 this.obpermission(text, record, index);
               }}>
-              功能权限
+              <FormattedMessage id="customer.permission" />
             </a>
           </Fragment>
         ),
@@ -297,7 +297,7 @@ export default class Wework extends Component {
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder={formatMessage({ id: 'customer.search.text' })}
+              placeholder={formatMessage({ id: 'customer.list.search-text' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

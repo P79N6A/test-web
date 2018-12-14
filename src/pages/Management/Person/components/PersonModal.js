@@ -21,8 +21,8 @@ class PersonModal extends Component {
   state = {
     imageUrl: '',
     avatarLoading: false,
-    title: formatMessage({ id: 'person.new.users' }),
-    subTitle: formatMessage({ id: 'person.new.users.message' }),
+    title: formatMessage({ id: 'person.operate.new-users' }),
+    subTitle: formatMessage({ id: 'person.operate.new-user-message' }),
   };
 
   componentWillReceiveProps(nextProps) {
@@ -41,8 +41,8 @@ class PersonModal extends Component {
           position: editValue.position,
           remark: editValue.remark
         });
-        this.setState({ title: formatMessage({ id: 'person.edit.users' }) });
-        this.setState({ subTitle: formatMessage({ id: 'person.edit.users.message' }) });
+        this.setState({ title: formatMessage({ id: 'person.operate.edit-users' }) });
+        this.setState({ subTitle: formatMessage({ id: 'person.operate.edit-user-message' }) });
       } else {
         nextProps.form.setFieldsValue({
           name: '',
@@ -51,8 +51,8 @@ class PersonModal extends Component {
           position: '',
           remark: '',
         });
-        this.setState({ title: formatMessage({ id: 'person.new.users' }) });
-        this.setState({ subTitle: formatMessage({ id: 'person.new.users.message' }) });
+        this.setState({ title: formatMessage({ id: 'person.operate.new-users' }) });
+        this.setState({ subTitle: formatMessage({ id: 'person.operate.new-user-message' }) });
       }
     }
   }
@@ -84,7 +84,7 @@ class PersonModal extends Component {
     if (value.length === 11 && re.test(value)) {
       callback();
     } else {
-      callback(formatMessage({ id: 'person.phone.format.message' }));
+      callback(formatMessage({ id: 'person.operate.phone-format-alert' }));
     }
   };
 
@@ -140,7 +140,7 @@ class PersonModal extends Component {
             observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this));
             return false;
           } else {
-            message.error(formatMessage({ id: 'person.refresh.page' }));
+            message.error(formatMessage({ id: 'person.operate.reload-page' }));
           }
         }
       },
@@ -175,7 +175,7 @@ class PersonModal extends Component {
         <p className={styles.subTitle}>{subTitle}</p>
         <Row gutter={24}>
           <Col {...leftImg}>
-            <FormItem {...formItemLayout} label={formatMessage({ id: 'person.avatar' })}>
+            <FormItem {...formItemLayout} label={formatMessage({ id: 'person.operate.avatar' })}>
               {getFieldDecorator('upload', {
                 valuePropName: 'fileList',
                 getValueFromEvent: this.normFile,
@@ -201,34 +201,34 @@ class PersonModal extends Component {
         </Row>
         <Row gutter={24}>
           <Col {...leftImg}>
-            <FormItem label={formatMessage({ id: 'person.name' })}>
+            <FormItem label={formatMessage({ id: 'person.list.name' })}>
               {getFieldDecorator('name', {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({ id: 'person.name.test.message' }),
+                    message: formatMessage({ id: 'person.operate.name-empty-alert' }),
                   },
                   {
                     max: 20,
                     message: formatMessage({ id: 'test.max.long.twenty' }),
                   },
                 ],
-              })(<Input placeholder={formatMessage({ id: 'person.name.test.message' })} />)}
+              })(<Input placeholder={formatMessage({ id: 'person.operate.name-empty-alert' })} />)}
             </FormItem>
           </Col>
           <Col {...leftImg}>
-            <FormItem label={formatMessage({ id: 'person.phone' })}>
+            <FormItem label={formatMessage({ id: 'person.list.phone' })}>
               {getFieldDecorator('phone', {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage({ id: 'person.phone.test.message' }),
+                    message: formatMessage({ id: 'person.operate.phone-empty-alert' }),
                   },
                   {
                     validator: this.checkPhone.bind(this),
                   },
                 ],
-              })(<Input placeholder={formatMessage({ id: 'person.phone.test.message' })} />)}
+              })(<Input placeholder={formatMessage({ id: 'person.operate.phone-empty-alert' })} />)}
             </FormItem>
           </Col>
         </Row>
@@ -240,14 +240,14 @@ class PersonModal extends Component {
                 rules: [
                   {
                     pattern: G.emailCheck,
-                    message: formatMessage({ id: 'customer.email.message' }),
+                    message: formatMessage({ id: 'customer.operate.email-message' }),
                   },
                 ],
               })(<Input placeholder={formatMessage({ id: 'app.settings.basic.email-message' })} />)}
             </FormItem>
           </Col>
           <Col {...leftImg}>
-            <FormItem label={formatMessage({ id: 'person.position' })}>
+            <FormItem label={formatMessage({ id: 'person.list.position' })}>
               {getFieldDecorator('position', {
                 rules: [
                   {
@@ -255,7 +255,7 @@ class PersonModal extends Component {
                     message: formatMessage({ id: 'test.max.long.ten' }),
                   },
                 ],
-              })(<Input placeholder={formatMessage({ id: 'person.position.input' })} />)}
+              })(<Input placeholder={formatMessage({ id: 'person.operate.position-input' })} />)}
             </FormItem>
           </Col>
         </Row>
@@ -269,7 +269,7 @@ class PersonModal extends Component {
                     message: formatMessage({ id: 'test.max.long.one.hundred' }),
                   },
                 ],
-              })(<TextArea rows={3} placeholder={formatMessage({ id: 'person.remarks.input' })} />)}
+              })(<TextArea rows={3} placeholder={formatMessage({ id: 'person.operate.remarks-input' })} />)}
             </FormItem>
           </Col>
         </Row>

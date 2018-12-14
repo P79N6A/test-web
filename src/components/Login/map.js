@@ -27,7 +27,7 @@ export default {
     },
     rules:
       [
-        { required: true, message: formatMessage({ id: 'customer.password.text' }) },
+        { required: true, message: formatMessage({ id: 'customer.operate.password-text' }) },
         {
           min: 8,
           message: formatMessage({ id: 'test.min.long.eight' }),
@@ -38,7 +38,7 @@ export default {
         },
         {
           pattern: G.passCheck,
-          message: formatMessage({ id: 'customer.password.message' }),
+          message: formatMessage({ id: 'customer.operate.password-message' }),
         },
       ]
   },

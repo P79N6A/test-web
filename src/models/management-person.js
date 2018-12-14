@@ -33,7 +33,7 @@ export default {
       const response = yield call(addPerson, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.message || formatMessage({ id: "customer.add.success" }));
+        message.success(response.message || formatMessage({ id: "customer.operate.add-success" }));
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
@@ -42,7 +42,7 @@ export default {
       const response = yield call(updatePerson, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success(response.data || formatMessage({ id: "customer.successfully.modified" }));
+        message.success(response.data || formatMessage({ id: "customer.operate.successfully-modified" }));
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
@@ -55,7 +55,7 @@ export default {
       const response = yield call(usersBatchImport, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success('上传成功');
+        message.success(formatMessage({ id: "person.operate.upload-success" }));
       } else {
         yield put({
           type: 'saveError',
@@ -67,7 +67,7 @@ export default {
       const response = yield call(changeRole, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
-        message.success('修改角色成功');
+        message.success(formatMessage({ id: "person.role.change-role-success" }));
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }

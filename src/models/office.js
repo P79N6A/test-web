@@ -131,7 +131,7 @@ export default {
           payload: { dataListCopy }
         });
       } else {
-        message.error((response && response.message) || formatMessage({ id: "spaceUsage.device.use.error" }));
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.device-use-error" }));
       }
     },
     // 工位使用率排行
@@ -162,7 +162,7 @@ export default {
           });
         }
       } else {
-        message.error((response && response.message) || formatMessage({ id: "spaceUsage.device.use.error" }));
+        message.error((response && response.message) || formatMessage({ id: "spaceUsage.device-use-error" }));
       }
     }
   },

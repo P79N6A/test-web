@@ -12,8 +12,6 @@ import DeskDuration from './DeskDuration';
 import DeskUseDuration from './DeskUseDuration';
 import styles from './index.less'
 
-const RadioGroup = Radio.Group;
-
 @connect(({ office, loading }) => ({
   office,
   loading: loading.effects['office/getUseRate'],
@@ -114,18 +112,18 @@ export default class OfficeUsage extends Component {
     const { condition_type, use_rate, desk_avg_duration, desk_use_rank_hot, desk_use_rank_free } = office.global;
     // 获取数据
     const { daskTotalCount, yesterdayUseCount, useRate, serviceDuration, deskAvgDuration, deskUseRankHotList, deskUseRankFreeList } = office;
-    const content = (<div><p><FormattedMessage id="spaceUsage.nine.hour.note" /></p><p className={styles.time_solt}>（9:00~18:00）</p><p><FormattedMessage id="spaceUsage.twenty.four.hour.note" /></p><p className={styles.time_solt}>（0:00~24:00）</p></div>);
+    const content = (<div><p><FormattedMessage id="spaceUsage.nine-hour-note" /></p><p className={styles.time_solt}>（9:00~18:00）</p><p><FormattedMessage id="spaceUsage.twenty-four-hour-note" /></p><p className={styles.time_solt}>（0:00~24:00）</p></div>);
     return (
       <Fragment>
         <Row gutter={24} className={styles.top}>
           <Col span={12}>
-            <h3 className={styles.title}>空间使用情况</h3>
+            <h3 className={styles.title}><FormattedMessage id="menu.statistics.spaceUsage" /></h3>
           </Col>
           <Col span={12} className={styles.topRight}>
             {/* 选项 */}
             <Radio.Group buttonStyle="solid" onChange={this.onChange.bind(this)} value={condition_type}>
-              <Radio.Button value={9}><FormattedMessage id="spaceUsage.nine.hour" /></Radio.Button>
-              <Radio.Button value={24}><FormattedMessage id="spaceUsage.twenty.four.hour" /></Radio.Button>
+              <Radio.Button value={9}><FormattedMessage id="spaceUsage.nine-hour" /></Radio.Button>
+              <Radio.Button value={24}><FormattedMessage id="spaceUsage.twenty-four-hour" /></Radio.Button>
             </Radio.Group>
             {/* 标签注释 */}
             <Popover

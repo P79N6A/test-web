@@ -7,8 +7,8 @@ import styles from './PersonTemplate.less';
 
 class PersonTemplate extends Component {
   state = {
-    title: '批量导入用户',
-    modelBtn: '取消',
+    title: formatMessage({ id: "person.import.batch" }),
+    modelBtn: formatMessage({ id: "all.cancel" }),
     type: 0,
     file: '',
     number: 0,
@@ -30,7 +30,7 @@ class PersonTemplate extends Component {
       this.setState({
         type: 0
       });
-      this.changeTitle('批量导入用户', '取消')
+      this.changeTitle(formatMessage({ id: "person.import.batch" }), formatMessage({ id: "all.cancel" }))
     }
   };
 
@@ -93,16 +93,16 @@ class PersonTemplate extends Component {
             this.uploadNumberAdd('none', 100);
             if (res.status === 'success') {
               closeTemplate();
-              this.changeTitle('批量导入用户', '取消');
+              this.changeTitle(formatMessage({ id: "person.import.batch" }), formatMessage({ id: "all.cancel" }));
             } else {
               if (res.data && res.data.dataList && res.data.dataList.length > 0) {
-                this.changeTitle('导入确认', '重新上传');
+                this.changeTitle(formatMessage({ id: "person.import.confirm" }), formatMessage({ id: "person.import.retry" }));
                 this.setState({
                   type: 1
                 })
               } else {
                 message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
-                this.changeTitle('批量导入用户', '取消');
+                this.changeTitle(formatMessage({ id: "person.import.batch" }), formatMessage({ id: "all.cancel" }));
                 closeTemplate();
               }
             };
@@ -119,7 +119,7 @@ class PersonTemplate extends Component {
   getColumns() {
     const columns = [
       {
-        title: '行号',
+        title: formatMessage({ id: "person.import.row" }),
         key: 'row',
         width: 80,
         render: (text) => (
@@ -129,7 +129,7 @@ class PersonTemplate extends Component {
         ),
       },
       {
-        title: '列标题',
+        title: formatMessage({ id: "person.import.col-title" }),
         key: 'title',
         render: (text) => {
           return (
@@ -142,7 +142,7 @@ class PersonTemplate extends Component {
         }
       },
       {
-        title: '单元格内容',
+        title: formatMessage({ id: "person.import.cell-content" }),
         key: 'content',
         render: (text) => {
           return (
@@ -155,7 +155,7 @@ class PersonTemplate extends Component {
         }
       },
       {
-        title: '错误原因',
+        title: formatMessage({ id: "person.import.error-reson" }),
         key: 'message',
         render: (text) => {
           return (
@@ -185,7 +185,7 @@ class PersonTemplate extends Component {
         const fileType = info.file.name.split('.')[info.file.name.split('.').length - 1];
         if (info.file.status !== 'uploading') {
           if ('xls,xlsx'.indexOf(fileType) < 0) {
-            message.error('支持文件类型：xls，xlsx');
+            message.error(`${formatMessage({ id: "person.import.supported.file.type" })}：xls，xlsx`);
             return;
           };
           this.uploadNumberAdd('block', 1)
@@ -204,32 +204,38 @@ class PersonTemplate extends Component {
           onCancel={this.onCancel.bind(this, type)}
           footer={[
             <Button key="back" size='small' onClick={this.onCancel.bind(this, type)}>{modelBtn}</Button>,
-            <Button key="submit" size='small' type="primary" onClick={this.okHandle.bind(this, type)}>确定导入</Button>
+            <Button key="submit" size='small' type="primary" onClick={this.okHandle.bind(this, type)}>
+              <FormattedMessage id="person.import.confirm-import" />
+            </Button>
           ]}
         >
           {
             type === 0 ?
               <div className={styles.download}>
-                <p className={styles.staps}>请按步骤操作</p>
+                <p className={styles.staps}><FormattedMessage id="person.import.step-by-step" /></p>
                 <div className={styles.stapOne}>
-                  <p className={styles.stapTitle}><font>1</font>下载模板</p>
-                  <p className={styles.stapText}>请先下载导入用户的表格模板，并根据模板填写用户参数内容</p>
-                  <a className={styles.stapBtn} href={`${G.picUrl}download/9am_user_importTemplate%20.zip`}>下载模板</a>
+                  <p className={styles.stapTitle}><font>1</font><FormattedMessage id="person.import.download-template" /></p>
+                  <p className={styles.stapText}><FormattedMessage id="person.import.download-model-first" /></p>
+                  <a className={styles.stapBtn} href={`${G.picUrl}download/9am_user_importTemplate%20.zip`}>
+                    <FormattedMessage id="person.import.download-template" />
+                  </a>
                 </div>
                 <div className={styles.stapOne}>
-                  <p className={styles.stapTitle}><font>2</font>导入用户</p>
-                  <p className={styles.stapText}>· 支持文件类型：xls，xlsx</p>
-                  <p className={styles.stapText}>· 一次最多导入500条</p>
-                  <p className={styles.stapText}>· 每个点位任一参数不符合规则时，对应的用户将不会被导入</p>
+                  <p className={styles.stapTitle}><font>2</font><FormattedMessage id="person.import.person" /></p>
+                  <p className={styles.stapText}>· <FormattedMessage id="person.import.supported-file-type" />：xls，xlsx</p>
+                  <p className={styles.stapText}>· <FormattedMessage id="person.import.max-amount" /></p>
+                  <p className={styles.stapText}>· <FormattedMessage id="person.import.error" /></p>
                   <Upload {...props}>
-                    <Button className={styles.stapBtn} size="small" type="primary">上传文件</Button>
+                    <Button className={styles.stapBtn} size="small" type="primary">
+                      <FormattedMessage id="person.import.file" />
+                    </Button>
                   </Upload>
                 </div>
               </div>
               :
               <div>
-                <p>{`文件上传成功。共${errorList.totalLine}个点位，其中${errorList.successLine}条可成功导入`}</p>
-                <p className={styles.errorList}>{`以下${errorList.totalLine - errorList.successLine}条不符合要求的数据，将不会被导入`}</p>
+                <p>{`${formatMessage({ id: "person.import.file-success-one" })}${errorList.totalLine}${formatMessage({ id: "person.import.file-success-two" })}${errorList.successLine}${formatMessage({ id: "person.import.file-success-three" })}`}</p>
+                <p className={styles.errorList}>{`${formatMessage({ id: "person.import.file.error.one" })}${errorList.totalLine - errorList.successLine}${formatMessage({ id: "person.import.file.error.two" })}`}</p>
                 <Table
                   rowKey="errorId"
                   dataSource={errorList.dataList}
@@ -244,7 +250,7 @@ class PersonTemplate extends Component {
         {/* 上传进度条 */}
         <div className={styles.modelProgessBox} style={{ display: `${progress}` }}>
           <div className={styles.modelProgess}>
-            <p>上传解析中</p>
+            <p><FormattedMessage id="person.import.loading" /></p>
             <Progress percent={number} status="active" strokeColor="#A6D6D0" />
           </div>
         </div>

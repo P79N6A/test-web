@@ -57,12 +57,12 @@ export default class DetailNotice extends Component {
             dangerouslySetInnerHTML={{
               __html: `<style>.box {font-size: 24px;color: #35536C}.box img {max-width: 100%;}</style><div class="box">${
                 copyValue.content
-              }</div>`,
+                }</div>`,
             }}
           />
         </div>
         {/* 推送效果 */}
-        <p style={{ marginTop: '30px' }}><FormattedMessage id="notice.push.preview" /></p>
+        <p style={{ marginTop: '30px' }}><FormattedMessage id="notice.operate.push-preview" /></p>
         <div style={{ padding: '5% 5% 3%' }}>
           <div className={styles.mobile}>
             {/* 内容展示区 */}
@@ -79,7 +79,7 @@ export default class DetailNotice extends Component {
         <Row style={{ paddingTop: '20px', borderTop: '1px solid #F2F2F2', marginTop: '20px' }}>
           <Col span={24} style={{ textAlign: 'right' }}>
             <Button type="primary" size="small" onClick={this.goList.bind(this)}>
-              返回
+              <FormattedMessage id="all.back" />
             </Button>
           </Col>
         </Row>

@@ -47,7 +47,7 @@ export default class LoginPage extends Component {
           <div>
             <br />
             <UserName name="username" placeholder={formatMessage({ id: 'login.account' })} />
-            <Password name="password" placeholder={formatMessage({ id: 'customer.password' })} />
+            <Password name="password" placeholder={formatMessage({ id: 'customer.operate.password' })} />
           </div>
           <Submit loading={submitting}><FormattedMessage id='menu.admin_user.login' /></Submit>
         </Login>

@@ -211,7 +211,7 @@ export default class Home extends Component {
                         <Bar padding={0} height={400} title={`${formatMessage({ id: 'home.unit' })}(${formatMessage({ id: 'home.hour' })})`} data={homeStand} color="#A6D6D0" autoLabel={false} />
                       ) : (
                           <div className={styles.emptyBar}>
-                            <img src={`${G.picUrl}${formatMessage({ id: "stand.time.trend.none" })}`} />
+                            <img src={`${G.picUrl}${formatMessage({ id: "image.stand.time-trend-none" })}`} />
                           </div>
                         )}
                     </div>
@@ -246,7 +246,7 @@ export default class Home extends Component {
                         </ul>
                       ) : (
                           <div className={styles.emptyRand}>
-                            <img src={`${G.picUrl}${formatMessage({ id: "stand.time.rank.none" })}`} />
+                            <img src={`${G.picUrl}${formatMessage({ id: "image.stand.time-rank-none" })}`} />
                           </div>
                         )}
                     </div>

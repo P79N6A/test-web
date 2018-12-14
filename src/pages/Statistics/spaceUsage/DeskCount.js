@@ -12,7 +12,7 @@ class DeskCount extends Component {
     return (
       <ChartCard
         bordered={false}
-        title={formatMessage({ id: "spaceState.total.workstations" })}
+        title={formatMessage({ id: "spaceState.total-workstations" })}
         subtitle={formatMessage({ id: "spaceUsage.one" })}
         action={
           <Icon
@@ -34,7 +34,7 @@ class DeskCount extends Component {
           <span className={styles.trendText}>{daskTotalCount.online_count}</span>
         </font>
         <font>
-          <FormattedMessage id="device.offline" />
+          <FormattedMessage id="device.list.offline" />
           <span className={styles.trendText}>{daskTotalCount.offline_count}</span>
         </font>
       </ChartCard>

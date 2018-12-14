@@ -44,11 +44,11 @@ class SettingDrawer extends PureComponent {
           >
             {layout === 'sidemenu' ? null : (
               <Option value="Fixed">
-                {formatMessage({ id: 'app.setting.content-width.fixed' })}
+                {formatMessage({ id: 'app.setting.content-width-fixed' })}
               </Option>
             )}
             <Option value="Fluid">
-              {formatMessage({ id: 'app.setting.content-width.fluid' })}
+              {formatMessage({ id: 'app.setting.content-width-fluid' })}
             </Option>
           </Select>
         ),
@@ -66,7 +66,7 @@ class SettingDrawer extends PureComponent {
       {
         title: formatMessage({ id: 'app.setting.hideheader' }),
         disabled: !fixedHeader,
-        disabledReason: formatMessage({ id: 'app.setting.hideheader.hint' }),
+        disabledReason: formatMessage({ id: 'app.setting.hideheader-hint' }),
         action: (
           <Switch
             size="small"
@@ -78,7 +78,7 @@ class SettingDrawer extends PureComponent {
       {
         title: formatMessage({ id: 'app.setting.fixedsidebar' }),
         disabled: layout === 'topmenu',
-        disabledReason: formatMessage({ id: 'app.setting.fixedsidebar.hint' }),
+        disabledReason: formatMessage({ id: 'app.setting.fixedsidebar-hint' }),
         action: (
           <Switch
             size="small"
@@ -159,12 +159,12 @@ class SettingDrawer extends PureComponent {
                 {
                   key: 'dark',
                   url: 'https://gw.alipayobjects.com/zos/rmsportal/LCkqqYNmvBEbokSDscrm.svg',
-                  title: formatMessage({ id: 'app.setting.pagestyle.dark' }),
+                  title: formatMessage({ id: 'app.setting.pagestyle-dark' }),
                 },
                 {
                   key: 'light',
                   url: 'https://gw.alipayobjects.com/zos/rmsportal/jpRkZQMyYRryryPNtyIC.svg',
-                  title: formatMessage({ id: 'app.setting.pagestyle.light' }),
+                  title: formatMessage({ id: 'app.setting.pagestyle-light' }),
                 },
               ]}
               value={navTheme}

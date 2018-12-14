@@ -30,7 +30,7 @@ class ConfigureModel extends Component {
         });
       })
     } else {
-      message.error(formatMessage({ id: "gateway.write.command" }));
+      message.error(formatMessage({ id: "gateway.configure.write-command" }));
     }
 
   }
@@ -70,16 +70,16 @@ class ConfigureModel extends Component {
           </Button>,
         ]}
       >
-        <p className={styles.gatewayNumber}><FormattedMessage id="gateway.gateway.number" />：{configureList.toString()}</p>
-        <h3 className={styles.command}><FormattedMessage id="gateway.command.line" /></h3>
+        <p className={styles.gatewayNumber}><FormattedMessage id="gateway.configure.gateway-number" />：{configureList.toString()}</p>
+        <h3 className={styles.command}><FormattedMessage id="gateway.configure.command-line" /></h3>
         <TextArea
           rows={8}
           value={command}
           placeholder={formatMessage({ id: "gateway.configure.command" })}
           style={{ resize: 'none' }}
           onChange={this.onChangeTextArea.bind(this)} />
-        <Button key="implement" type="primary" size="small" onClick={this.implement.bind(this)} style={{ marginTop: '16px' }}><FormattedMessage id="gateway.implement" /></Button>
-        <h3 className={styles.command}><FormattedMessage id="gateway.callback" /><span className={styles.clear} onClick={this.clear.bind(this)}><FormattedMessage id="gateway.clear" /></span></h3>
+        <Button key="implement" type="primary" size="small" onClick={this.implement.bind(this)} style={{ marginTop: '16px' }}><FormattedMessage id="gateway.configure.implement" /></Button>
+        <h3 className={styles.command}><FormattedMessage id="gateway.configure.callback" /><span className={styles.clear} onClick={this.clear.bind(this)}><FormattedMessage id="gateway.configure.clear" /></span></h3>
         <div className={styles.resultBox}>
           {
             result && result.length > 0 ? result.map((item, i) => {

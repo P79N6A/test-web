@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import { setLocale } from 'umi/locale';
-import { Row, Col, message, Button } from 'antd';
+import { FormattedMessage, setLocale } from 'umi/locale';
+import { Row, Col, Button } from 'antd';
 import CenterHeader from '@/components/SpaceHeader/CenterHeader';
 import styles from './index.less';
 import { routerRedux } from 'dva/router';
@@ -76,11 +76,17 @@ export default class RetrieveMail extends Component {
         <Row className={styles.onePage}>
           <Col {...leftImg}></Col>
           <Col {...centerContent}>
-            <h3 className={styles.title}>找回密码</h3>
-            <h4 className={styles.subtitle}>此密码找回链接无效或已过期。</h4>
-            <Button type="primary" className={styles.button} onClick={this.goOn.bind(this)}>继续</Button>
-            <p className={styles.question}>如有任何问题，可以与我们联系，我们将尽快为你解答。</p>
-            <p className={styles.email}>Email:_________<span>电话:_________</span></p>
+            <h3 className={styles.title}>
+              <FormattedMessage id="reset.password" />
+            </h3>
+            <h4 className={styles.subtitle}>
+              <FormattedMessage id="reset.password.lose" />
+            </h4>
+            <Button type="primary" className={styles.button} onClick={this.goOn.bind(this)}>
+              <FormattedMessage id="reset.password.continue" />
+            </Button>
+            <p className={styles.question}><FormattedMessage id="reset.password.connect-us" /></p>
+            <p className={styles.email}>Email:_________<span><FormattedMessage id="reset.password.phone" />:_________</span></p>
           </Col>
         </Row>
       </div>

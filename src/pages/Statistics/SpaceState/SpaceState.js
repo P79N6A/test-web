@@ -36,7 +36,7 @@ export default class SpaceState extends Component {
   onSearch() {
     const { query } = this.state;
     if ((query && (query.length < 5 || query.length > 7) || !query)) {
-      message.error('点位编号长度为5至7个字符');
+      message.error(formatMessage({ id: "spaceState.point-check" }));
       return;
     }
     const { data } = this.props.spaceState;
@@ -46,7 +46,7 @@ export default class SpaceState extends Component {
       }
     })
     if (filter.length <= 0) {
-      message.error('没有此点位编号');
+      message.error(formatMessage({ id: "spaceState.point-none" }));
     }
     this.setState({
       filter,
@@ -82,7 +82,7 @@ export default class SpaceState extends Component {
       <div className={styles.box}>
         <Row style={{ padding: '0 10px 10px' }}>
           <Col {...leftText}>
-            <p className={styles.statusText}>空间实时状态</p>
+            <p className={styles.statusText}><FormattedMessage id="menu.statistics.spaceState" /></p>
           </Col>
           <Col {...rightSearch}>
             <Button
@@ -97,7 +97,7 @@ export default class SpaceState extends Component {
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder={"点位编号"}
+              placeholder={formatMessage({ id: "spaceState.point" })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

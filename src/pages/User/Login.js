@@ -88,13 +88,13 @@ class LoginPage extends Component {
             <UserName name="userName" placeholder={formatMessage({ id: 'login.account' })} />
             <Password
               name="password"
-              placeholder={formatMessage({ id: 'customer.password' })}
+              placeholder={formatMessage({ id: 'customer.operate.password' })}
               onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
             />
           </Tab>
           {
             location.pathname && location.pathname === '/user/login' ?
-              <p className={styles.retrievePassword} onClick={this.retrievePassword.bind(this)}>找回密码</p>
+              <p className={styles.retrievePassword} onClick={this.retrievePassword.bind(this)}><FormattedMessage id="reset.password" /></p>
               :
               ''
           }

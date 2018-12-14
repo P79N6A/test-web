@@ -38,7 +38,7 @@ export default class Notice extends Component {
       content: '<p>Hello World</p>',
     },
     noticeState: [],
-    state: [formatMessage({ id: 'notice.empty' }), formatMessage({ id: 'notice.send' }), formatMessage({ id: 'notice.revice' }), formatMessage({ id: 'notice.upcoming' }), formatMessage({ id: 'notice.read' })]
+    state: [formatMessage({ id: 'notice.list.empty' }), formatMessage({ id: 'notice.list.send' }), formatMessage({ id: 'notice.list.revice' }), formatMessage({ id: 'notice.list.upcoming' }), formatMessage({ id: 'notice.list.read' })]
   };
 
   componentDidUpdate(nextProps) {
@@ -95,7 +95,7 @@ export default class Notice extends Component {
     const contest = (
       <div>
         {noticeState.map((comment) => (
-          <p key={comment._id}><span>{comment.username || formatMessage({ id: 'notice.no.nickname' })}</span><span style={{ float: 'right' }}>{state[comment.readingState]}</span></p>
+          <p key={comment._id}><span>{comment.username || formatMessage({ id: 'notice.list.no-nickname' })}</span><span style={{ float: 'right' }}>{state[comment.readingState]}</span></p>
         ))}
       </div>
     );
@@ -111,7 +111,7 @@ export default class Notice extends Component {
         ),
       },
       {
-        title: formatMessage({ id: 'notice.title' }),
+        title: formatMessage({ id: 'notice.list.title' }),
         key: 'title',
         render: (text) => {
           return (
@@ -119,7 +119,7 @@ export default class Notice extends Component {
               <Tooltip placement="topLeft" title={text.title}>
                 <div id={`titleTd_${text.noticeId}`} style={{ display: 'flex', flexDirection: 'row' }}>
                   <span id={`titleText_${text.noticeId}`} onClick={this.goDetail.bind(this, text)} className={styles.colSql}>{text.title}</span>
-                  <span className={styles.titleTop} style={{ opacity: text.topStatus ? '1' : '0' }}><FormattedMessage id="notice.topping" /></span>
+                  <span className={styles.titleTop} style={{ opacity: text.topStatus ? '1' : '0' }}><FormattedMessage id="notice.list.topping" /></span>
                 </div>
               </Tooltip>
             </Fragment >
@@ -127,7 +127,7 @@ export default class Notice extends Component {
         }
       },
       {
-        title: formatMessage({ id: 'notice.receiver' }),
+        title: formatMessage({ id: 'notice.list.receiver' }),
         key: 'unreadCount',
         width: 120,
         render: (text, record, index) => {
@@ -136,7 +136,7 @@ export default class Notice extends Component {
               <Popover
                 placement="rightTop"
                 content={contest}
-                title={formatMessage({ id: 'notice.delivered' })}
+                title={formatMessage({ id: 'notice.list.delivered' })}
                 trigger="click"
                 onClick={this.handleClickChange.bind(this, text.noticeId)}>
                 <font style={{ cursor: 'pointer' }}>{`${text.viewCount}/${text.unreadCount + text.viewCount}`}</font>
@@ -146,7 +146,7 @@ export default class Notice extends Component {
         },
       },
       {
-        title: formatMessage({ id: 'notice.release.time' }),
+        title: formatMessage({ id: 'notice.list.release-time' }),
         key: 'createdAt',
         render: (text) => {
           return (
@@ -166,15 +166,15 @@ export default class Notice extends Component {
           <Fragment>
             <Popconfirm
               placement="left"
-              title={text.topStatus ? formatMessage({ id: 'notice.down.message' }) : formatMessage({ id: 'notice.top.message' })}
+              title={text.topStatus ? formatMessage({ id: 'notice.list.down-alert' }) : formatMessage({ id: 'notice.list.top-alert' })}
               onConfirm={this.untiedConfirm.bind(this, text)}
               okText={formatMessage({ id: 'all.certain' })}
               cancelText={formatMessage({ id: 'all.cancel' })}
             >
-              <a>{text.topStatus ? formatMessage({ id: 'notice.unpin' }) : formatMessage({ id: 'notice.topping' })}</a>
+              <a>{text.topStatus ? formatMessage({ id: 'notice.list.unpin' }) : formatMessage({ id: 'notice.list.topping' })}</a>
             </Popconfirm>
             <Divider type="vertical" />
-            <a onClick={this.copyPush.bind(this, text)}><FormattedMessage id='notice.copy' /></a>
+            <a onClick={this.copyPush.bind(this, text)}><FormattedMessage id='notice.list.copy' /></a>
           </Fragment>
         ),
       },
@@ -281,7 +281,7 @@ export default class Notice extends Component {
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder={formatMessage({ id: 'notice.title' })}
+              placeholder={formatMessage({ id: 'notice.list.title' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

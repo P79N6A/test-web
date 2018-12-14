@@ -13,7 +13,7 @@ class UserLayout extends React.PureComponent {
         <div className={styles.container}>
           <div className={styles.containers}>
             <div className={styles.contents}>
-              <img alt={formatMessage({ id: "login.image" })} src={`${G.picUrl}${formatMessage({ id: "banner.backchart" })}`} />
+              <img alt={formatMessage({ id: "login.image" })} src={`${G.picUrl}${formatMessage({ id: "image.banner.backchart" })}`} />
             </div>
             <div className={styles.content}>
               <div className={styles.top}>

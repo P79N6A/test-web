@@ -13,7 +13,7 @@ class YpeakCount extends Component {
     return (
       <ChartCard
         bordered={false}
-        title={formatMessage({ id: "spaceUsage.yesterday.use.peak" })}
+        title={formatMessage({ id: "spaceUsage.yesterday-use-peak" })}
         subtitle={formatMessage({ id: "spaceUsage.one" })}
         action={
           <Icon

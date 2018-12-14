@@ -96,7 +96,7 @@ export default class Sensor extends Component {
         ),
       },
       {
-        title: '编号',
+        title: formatMessage({ id: "gateway.list.number" }),
         key: 'tag',
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
@@ -109,7 +109,7 @@ export default class Sensor extends Component {
         ),
       },
       {
-        title: formatMessage({ id: 'device.status' }),
+        title: formatMessage({ id: 'device.list.status' }),
         key: 'inUse',
         filters: stateList,
         render: (text) => {
@@ -136,7 +136,7 @@ export default class Sensor extends Component {
         }
       },
       {
-        title: '最后联网时间',
+        title: formatMessage({ id: "sensor.list.last-time" }),
         key: 'updatedAt',
         render: (text) => {
           return (
@@ -213,10 +213,10 @@ export default class Sensor extends Component {
     const columns = this.getColumns(current, sortParam, stateList);
     return (
       <div className={styles.main}>
-        <h3>传感器管理</h3>
+        <h3><FormattedMessage id="sensor.list.management" /></h3>
         <br />
         <Row className={styles.lageBox}>
-          <p>传感器列表</p>
+          <p><FormattedMessage id="sensor.list" /></p>
           <Col span={24}>
             <Button
               className={styles.rights}
@@ -230,7 +230,7 @@ export default class Sensor extends Component {
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder={'编号 / 备注'}
+              placeholder={formatMessage({ id: "sensor.list.number-remark" })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

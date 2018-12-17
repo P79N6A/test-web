@@ -139,7 +139,9 @@ export default {
   "person.import.file-error-one": "以下",
   "person.import.file-error-two": "条不符合要求的数据，将不会被导入",
   "person.import.loading": "上传解析中",
-  // 设备管理（列表）
+  "person.import.success": "成功导入",
+  "person.import.success.data": "条数据",
+  // 设备管理
   "device.list": "设备列表",
   "device.list.search-user-text": "设备编号 / 使用者 / 备注",
   "device.list.search-admin-text": "设备编号 / 所属客户 / 备注",

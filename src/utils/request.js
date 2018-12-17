@@ -61,7 +61,7 @@ function checkStatus(response) {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  */
-export default function request(url, options) {
+export function request(url, options) {
   const defaultOptions = {};
   const newOptions = { ...defaultOptions, ...options };
   newOptions.headers = {
@@ -69,6 +69,28 @@ export default function request(url, options) {
     ...newOptions.headers,
   };
   newOptions.body = JSON.stringify(newOptions.body);
+  return fetch(url, newOptions)
+    .then(checkStatus)
+    .then(response => response.json())
+    .catch(err => {
+      const { dispatch } = window.g_app._store;
+      const status = err.name;
+      if (status <= 504 && status >= 500) {
+        dispatch(routerRedux.push('/exception/500'));
+      }
+    });
+}
+
+/**
+ * Requests a URL, returning a promise.
+ *
+ * @param  {string} url       The URL we want to request
+ * @param  {object} [options] The options we want to pass to "fetch"
+ * @return {object}           An object containing either "data" or "err"
+ */
+export function requestFile(url, options) {
+  const defaultOptions = {};
+  const newOptions = { ...defaultOptions, ...options };
   return fetch(url, newOptions)
     .then(checkStatus)
     .then(response => response.json())

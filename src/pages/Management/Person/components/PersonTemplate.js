@@ -82,37 +82,35 @@ class PersonTemplate extends Component {
       file
     })
     const { dispatch } = this.props;
-
-    setTimeout(() => {
-      dispatch({
-        type: 'ManagementPerson/usersBatchImport',
-        payload: {
-          file,
-          force,
-          callback: (res) => {
-            this.uploadNumberAdd('none', 100);
-            if (res.status === 'success') {
-              closeTemplate();
-              this.changeTitle(formatMessage({ id: "person.import.batch" }), formatMessage({ id: "all.cancel" }));
+    dispatch({
+      type: 'ManagementPerson/usersBatchImport',
+      payload: {
+        file,
+        force,
+        callback: (res) => {
+          this.uploadNumberAdd('none', 100);
+          if (res.status === 'success') {
+            message.success(`${formatMessage({ id: "person.import.success" })}${res.data.successCount}${formatMessage({ id: "person.import.success.data" })}`);
+            closeTemplate();
+            this.changeTitle(formatMessage({ id: "person.import" }), formatMessage({ id: "all.cancel" }));
+          } else {
+            if (res.data && res.data.dataList && res.data.dataList.length > 0) {
+              this.changeTitle(formatMessage({ id: "person.import.certain" }), formatMessage({ id: "person.import.again" }));
+              this.setState({
+                type: 1
+              })
             } else {
-              if (res.data && res.data.dataList && res.data.dataList.length > 0) {
-                this.changeTitle(formatMessage({ id: "person.import.confirm" }), formatMessage({ id: "person.import.retry" }));
-                this.setState({
-                  type: 1
-                })
-              } else {
-                message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
-                this.changeTitle(formatMessage({ id: "person.import.batch" }), formatMessage({ id: "all.cancel" }));
-                closeTemplate();
-              }
-            };
-            setTimeout(() => {
-              this.uploadNumberAdd('none', 0)
-            }, 1000)
-          }
-        },
-      });
-    }, 5000)
+              message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
+              this.changeTitle(formatMessage({ id: "person.import" }), formatMessage({ id: "all.cancel" }));
+              closeTemplate();
+            }
+          };
+          setTimeout(() => {
+            this.uploadNumberAdd('none', 0)
+          }, 1000)
+        }
+      },
+    });
   }
 
   // 定义表格
@@ -181,17 +179,15 @@ class PersonTemplate extends Component {
         authorization: 'authorization-text',
       },
       showUploadList: false,
-      onChange: (info) => {
-        const fileType = info.file.name.split('.')[info.file.name.split('.').length - 1];
-        if (info.file.status !== 'uploading') {
-          if ('xls,xlsx'.indexOf(fileType) < 0) {
-            message.error(`${formatMessage({ id: "person.import.supported.file.type" })}：xls，xlsx`);
-            return;
-          };
-          this.uploadNumberAdd('block', 1)
-          this.uploadFile(info, false);
-        }
-      },
+      beforeUpload: (info) => {
+        const fileType = info.name.split('.')[info.name.split('.').length - 1];
+        if ('xls,xlsx'.indexOf(fileType) < 0) {
+          message.error(`${formatMessage({ id: "person.support.file.type" })}：xls，xlsx`);
+          return;
+        };
+        this.uploadNumberAdd('block', 1)
+        this.uploadFile(info, false);
+      }
     };
     const columns = this.getColumns();
     return (
@@ -235,7 +231,7 @@ class PersonTemplate extends Component {
               :
               <div>
                 <p>{`${formatMessage({ id: "person.import.file-success-one" })}${errorList.totalLine}${formatMessage({ id: "person.import.file-success-two" })}${errorList.successLine}${formatMessage({ id: "person.import.file-success-three" })}`}</p>
-                <p className={styles.errorList}>{`${formatMessage({ id: "person.import.file.error.one" })}${errorList.totalLine - errorList.successLine}${formatMessage({ id: "person.import.file.error.two" })}`}</p>
+                <p className={styles.errorList}>{`${formatMessage({ id: "person.import.file-error-one" })}${errorList.totalLine - errorList.successLine}${formatMessage({ id: "person.import.file.error.two" })}`}</p>
                 <Table
                   rowKey="errorId"
                   dataSource={errorList.dataList}

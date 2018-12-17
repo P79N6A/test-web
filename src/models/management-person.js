@@ -54,14 +54,10 @@ export default {
     *usersBatchImport({ payload }, { call, put }) {
       const response = yield call(usersBatchImport, payload);
       payload.callback(response);
-      if (response && response.status === 'success') {
-        message.success(formatMessage({ id: "person.operate.upload-success" }));
-      } else {
-        yield put({
-          type: 'saveError',
-          payload: response.data,
-        });
-      }
+      yield put({
+        type: 'saveError',
+        payload: response.data,
+      });
     },
     *changeRole({ payload }, { call, put }) {
       const response = yield call(changeRole, payload);

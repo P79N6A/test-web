@@ -691,3 +691,10 @@ export async function getDeviceStatus(payload) {
     },
   });
 }
+
+// 获取 JD 数据
+export async function deviceTwins() {
+  return request(`${API_URL}/deviceTwins`, {
+    method: 'GET',
+  });
+}

@@ -65,6 +65,7 @@ export default [
       { path: '/office-map/demo2-2', component: './OfficeMap/Furniture' },
       { path: '/office-map/microsoft', component: './OfficeMap/Microsoft' },
       { path: '/office-map/microsoftHall', component: './OfficeMap/Microsoft/MicrosoftHall' },
+      { path: '/office-map/jd', component: './OfficeMap/JD' },
       { redirect: '/exception/404' },
     ],
   },

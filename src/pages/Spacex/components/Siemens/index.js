@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import G from '@/global';
-import { getUserInfo } from '@/utils/authority';
 import { connect } from 'dva';
+import { updateSvgElement } from '@/utils/utils';
 
 import styles from '../../SpaceStatus.less';
 import { sensorD } from './SensorConfig';
@@ -12,10 +12,6 @@ const URL = process.IXAM_API;
 const {
   strokeOffline,
   fillOffline,
-  strokeVacant,
-  fillVacant,
-  strokeOccupied,
-  fillOccupied,
 } = G.svgColor;
 
 @connect(() => ({}))
@@ -68,38 +64,8 @@ class Siemens extends Component {
     if (!data) {
       return;
     }
-    let offlineCount = 0;
-    let vacantCount = 0;
-    let occupiedCount = 0;
-    for (let i = 0; i < data.length; i += 1) {
-      const { tag, humansensor, status } = data[i];
-      const htmlId = tag.replace('_', '');
-      const element = this.svgDoc.getElementById(htmlId);
-      if (htmlId && element) {
-        let stroke = '';
-        let fill = '';
-        if (status === 'offline') {
-          offlineCount += 1;
-          stroke = strokeOffline;
-          fill = fillOffline;
-        } else if (parseInt(humansensor, 10) === 0) {
-          vacantCount += 1;
-          stroke = strokeVacant;
-          fill = fillVacant;
-        } else {
-          occupiedCount += 1;
-          stroke = strokeOccupied;
-          fill = fillOccupied;
-        }
-        this.updateSvg(element, stroke, fill);
-      }
-    }
     const { setCount } = this.props;
-    setCount({
-      offlineCount,
-      vacantCount,
-      occupiedCount,
-    });
+    updateSvgElement(data, this.svgDoc, this.updateSvg.bind(this), setCount);
   }
 
   updateSvg(element, stroke, fill) {

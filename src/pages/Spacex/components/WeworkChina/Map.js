@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import G from '@/global';
 import { connect } from 'dva';
+import { updateSvgElement } from '@/utils/utils';
 import { wework3FloorSensors, wework5FloorSensors, wework6FloorSensors } from './SensorConfig';
 import styles from './index.less';
 
@@ -12,7 +13,7 @@ const svg5FloorPathNumber = require('@/static/weworkChina5FloorNumber.svg');
 const svg6FloorPathNumber = require('@/static/weworkChina6FloorNumber.svg');
 
 const sensorsArr = [wework3FloorSensors, wework5FloorSensors, wework6FloorSensors];
-const { env, svgColor } = G;
+const { env } = G;
 
 @connect(() => ({}))
 class Map extends Component {
@@ -71,35 +72,7 @@ class Map extends Component {
     if (!data || !this.svgDoc) {
       return;
     }
-    const {
-      strokeOffline,
-      fillOffline,
-      strokeVacant,
-      fillVacant,
-      strokeOccupied,
-      fillOccupied,
-    } = svgColor;
-
-    for (let i = 0; i < data.length; i += 1) {
-      const { tag, humansensor, status } = data[i];
-      const htmlId = tag.replace('_', '');
-      const element = this.svgDoc.getElementById(htmlId);
-      if (htmlId && element) {
-        let stroke = '';
-        let fill = '';
-        if (status === 'offline') {
-          stroke = strokeOffline;
-          fill = fillOffline;
-        } else if (parseInt(humansensor, 10) === 0) {
-          stroke = strokeVacant;
-          fill = fillVacant;
-        } else {
-          stroke = strokeOccupied;
-          fill = fillOccupied;
-        }
-        this.updateSvg(element, stroke, fill);
-      }
-    }
+    updateSvgElement(data, this.svgDoc, this.updateSvg.bind(this));
   }
 
   updateSvg(element, stroke, fill) {

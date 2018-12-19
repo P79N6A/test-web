@@ -6,6 +6,14 @@ import G from '@/global';
 import { spacexUser } from '@/locales/user';
 
 const { globalStartTime } = G;
+const {
+  strokeOffline,
+  fillOffline,
+  strokeVacant,
+  fillVacant,
+  strokeOccupied,
+  fillOccupied,
+} = G.svgColor;
 
 export function random(m, n) {
   return Math.floor(Math.random() * (m - n) + n);
@@ -478,4 +486,47 @@ export function isOccupiedTime(occupiedCountRate, sensor, occupiedTime) {
     return filterOccupiedTime(occupiedTime, tag);
   }
   return random(0, 50) >= 20;
+}
+
+/**
+ * 修改 svg 中所有元素的颜色以及统计每个状态的个数
+ *
+ * @param {array} data svg 元素数据
+ * @param {object} svgDoc svg
+ * @param {function} updateSvg 修改 svg 元素函数回调
+ * @param {function} setCount 统计在线、离线个数回调
+ */
+export function updateSvgElement(data, svgDoc, updateSvg, setCount) {
+  let offlineCount = 0;
+  let vacantCount = 0;
+  let occupiedCount = 0;
+  for (let i = 0; i < data.length; i += 1) {
+    const { tag, humansensor, status } = data[i];
+    if (!tag) continue;
+    const htmlId = tag.replace('_', '');
+    const element = svgDoc.getElementById(htmlId);
+    if (htmlId && element) {
+      let stroke = '';
+      let fill = '';
+      if (status === 'offline') {
+        offlineCount += 1;
+        stroke = strokeOffline;
+        fill = fillOffline;
+      } else if (parseInt(humansensor, 10) === 0) {
+        vacantCount += 1;
+        stroke = strokeVacant;
+        fill = fillVacant;
+      } else {
+        occupiedCount += 1;
+        stroke = strokeOccupied;
+        fill = fillOccupied;
+      }
+      updateSvg && updateSvg(element, stroke, fill);
+    }
+  }
+  setCount && setCount({
+    offlineCount,
+    vacantCount,
+    occupiedCount,
+  });
 }

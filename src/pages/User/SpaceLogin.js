@@ -43,11 +43,22 @@ class LoginPage extends Component {
     const { type } = this.state;
     return (
       <div className={styles.main}>
-        <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
+        <Login
+          defaultActiveKey={type}
+          onTabChange={this.onTabChange}
+          onSubmit={this.handleSubmit}
+          ref={form => {
+            this.loginForm = form;
+          }}
+        >
           <div>
             <br />
             <UserName name="userName" placeholder="账户" />
-            <Password name="password" placeholder="密码" />
+            <Password
+              name="password"
+              placeholder="密码"
+              onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
+            />
           </div>
           <Submit loading={submitting} path="/spacex-user/login">登录</Submit>
         </Login>

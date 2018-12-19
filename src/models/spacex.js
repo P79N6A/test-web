@@ -9,7 +9,7 @@ export default {
   effects: {
     *getDeviceStatus({ payload }, { call }) {
       const response = yield call(getDeviceStatus, payload.tags);
-      payload.callback(response.data);
+      payload.callback(response && response.data);
     },
   },
 

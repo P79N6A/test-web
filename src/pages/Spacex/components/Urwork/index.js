@@ -77,6 +77,7 @@ export default class Urwork extends Component {
     let occupiedCount = 0;
     for (let i = 0; i < data.length; i += 1) {
       const { tag, humansensor, status } = data[i];
+      if (!tag) continue;
       const htmlId = tag.replace('_', '');
       const element = this.svgDoc.getElementById(htmlId);
       if (htmlId && element) {

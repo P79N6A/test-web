@@ -280,7 +280,7 @@ export default class Gateway extends Component {
     const { configureList, configureVisible } = Gateway;
     const { rows, limit, current, count } = Gateway.gatewayData;
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
-    const columns = this.getColumns(sortParam, Gateway.customerList, gateway.list.positionList);
+    const columns = this.getColumns(sortParam, Gateway.customerList, Gateway.positionList);
     const rowSelection = {
       configureList,
       onChange: this.onSelectChange,

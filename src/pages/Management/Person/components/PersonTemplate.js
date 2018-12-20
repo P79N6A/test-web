@@ -7,7 +7,7 @@ import styles from './PersonTemplate.less';
 
 class PersonTemplate extends Component {
   state = {
-    title: formatMessage({ id: "person.import.batch" }),
+    title: formatMessage({ id: "person.import.batch-user" }),
     modelBtn: formatMessage({ id: "all.cancel" }),
     type: 0,
     file: '',
@@ -30,7 +30,7 @@ class PersonTemplate extends Component {
       this.setState({
         type: 0
       });
-      this.changeTitle(formatMessage({ id: "person.import.batch" }), formatMessage({ id: "all.cancel" }))
+      this.changeTitle(formatMessage({ id: "person.import.batch-user" }), formatMessage({ id: "all.cancel" }))
     }
   };
 

@@ -108,6 +108,7 @@ export default {
   "person.operate.reload-page": "请刷新页面",
   "person.operate.upload-success": "上传成功",
   // 用户管理（角色）
+  "person.role": "角色",
   "person.role.change-role-success": "修改角色成功",
   "person.role.set-role": "设置角色",
   "person.role.open-to-all": "所有角色都可以登录到DShow客户端",
@@ -117,7 +118,8 @@ export default {
   "person.role.user": "普通成员",
   "person.role.default": "默认角色",
   // 用户管理（批量导入）
-  "person.import.batch": "批量导入用户",
+  "person.import.batch": "批量导入",
+  "person.import.batch-user": "批量导入用户",
   "person.import.confirm": "导入确认",
   "person.import.retry": "重新上传",
   "person.import.row": "行号",
@@ -461,5 +463,4 @@ export default {
   "reset.password.send-email-message-two": "发送了一封密码找回邮件，请注意查收。",
   "reset.password.send-email-none": "没有收到邮件？",
   "reset.password.send-again": "重新发送",
-  // TODO: src/static/retrievePassword.html
 };

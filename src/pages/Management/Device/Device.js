@@ -139,7 +139,6 @@ export default class Device extends Component {
       {
         title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
-        width: 115,
         render: (text, record, index) => (
           <Fragment>
             {currentAuthority === 'admin' ? (

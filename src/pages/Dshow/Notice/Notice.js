@@ -161,7 +161,6 @@ export default class Notice extends Component {
       {
         title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
-        width: 150,
         render: (text, record, index) => (
           <Fragment>
             <Popconfirm

@@ -190,7 +190,7 @@ export default class Person extends Component {
                 this.openRole(text, record, index);
               }}
             >
-              角色
+              <FormattedMessage id="person.role" />
             </a>
           </Fragment>
         ),
@@ -362,7 +362,7 @@ export default class Person extends Component {
             <Button icon="plus" type="primary" size='small' onClick={this.showModal} style={{ marginRight: '20px' }}>
               <FormattedMessage id="all.add" />
             </Button>
-            <Button type="default" size='small' onClick={this.importUse.bind(this)}>批量导入</Button>
+            <Button type="default" size='small' onClick={this.importUse.bind(this)}><FormattedMessage id="person.import.batch" /></Button>
           </Col>
           <Col span={12}>
             <Button

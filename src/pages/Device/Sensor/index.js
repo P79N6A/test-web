@@ -150,7 +150,6 @@ export default class Sensor extends Component {
       },
       {
         title: formatMessage({ id: 'all.operating' }),
-        key: 'setting',
         width: 170,
         render: (text, record, index) => (
           <Fragment>

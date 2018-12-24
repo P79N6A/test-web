@@ -3,7 +3,7 @@ import { Menu, Dropdown, Icon } from 'antd';
 import G from '@/global';
 import styles from './index.less';
 
-const menuData = ['3TH FLOOR', '5TH FLOOR', '6TH FLOOR'];
+const menuData = ['3RD FLOOR', '5TH FLOOR', '6TH FLOOR'];
 class Header extends Component {
   constructor(props) {
     super(props);

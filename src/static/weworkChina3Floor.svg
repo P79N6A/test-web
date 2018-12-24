@@ -11,14 +11,14 @@
                 <g id="桌子" transform="translate(14.000000, 11.000000)" fill="#F3F3F3" stroke="#DBDBDB" stroke-width="0.5">
                     <rect id="A21801" x="39.25" y="0.25" width="15.5" height="7.5"></rect>
                     <rect id="A21913" x="605.25" y="0.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21946" x="600.25" y="301.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21944" x="600.25" y="261.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21943" transform="translate(612.000000, 228.500000) rotate(90.000000) translate(-612.000000, -228.500000) " x="603.75" y="224.75" width="16.5" height="7.5"></rect>
+                    <rect id="A21946" x="617.25" y="301.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21944" x="617.25" y="261.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21943" x="616.25" y="229.25" width="16.5" height="7.5"></rect>
                     <rect id="A21809" x="0.25" y="54.25" width="15.5" height="7.5"></rect>
                     <rect id="A21802" x="56.25" y="0.25" width="15.5" height="7.5"></rect>
                     <rect id="A21914" x="622.25" y="0.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21947" x="600.25" y="310.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21945" x="600.25" y="270.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21947" x="617.25" y="310.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21945" x="617.25" y="270.25" width="15.5" height="7.5"></rect>
                     <rect id="A21861" x="110.25" y="0.25" width="7.5" height="15.5"></rect>
                     <rect id="A21865" x="119.25" y="0.25" width="7.5" height="15.5"></rect>
                     <rect id="A21862" x="110.25" y="17.25" width="7.5" height="15.5"></rect>
@@ -139,18 +139,18 @@
                     <rect id="A21929" x="617.25" y="188.25" width="15.5" height="7.5"></rect>
                     <rect id="A21928" x="634.25" y="179.25" width="15.5" height="7.5"></rect>
                     <rect id="A21930" x="634.25" y="188.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21931" x="617.25" y="220.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21933" x="617.25" y="229.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21932" x="634.25" y="220.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21934" x="634.25" y="229.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21935" x="617.25" y="261.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21937" x="617.25" y="270.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21936" x="634.25" y="261.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21938" x="634.25" y="270.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21939" x="617.25" y="301.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21941" x="617.25" y="310.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21940" x="634.25" y="301.25" width="15.5" height="7.5"></rect>
-                    <rect id="A21942" x="634.25" y="310.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21931" x="634.25" y="220.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21933" x="634.25" y="229.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21932" x="651.25" y="220.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21934" x="651.25" y="229.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21935" x="634.25" y="261.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21937" x="634.25" y="270.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21936" x="651.25" y="261.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21938" x="651.25" y="270.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21939" x="634.25" y="301.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21941" x="634.25" y="310.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21940" x="651.25" y="301.25" width="15.5" height="7.5"></rect>
+                    <rect id="A21942" x="651.25" y="310.25" width="15.5" height="7.5"></rect>
                     <rect id="A21960" x="668.25" y="220.25" width="15.5" height="7.5"></rect>
                     <rect id="A21962" x="668.25" y="229.25" width="15.5" height="7.5"></rect>
                     <rect id="A21961" x="685.25" y="220.25" width="15.5" height="7.5"></rect>

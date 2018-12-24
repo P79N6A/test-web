@@ -14,10 +14,24 @@ class JD extends Component {
   }
 
   componentDidMount() {
+    // 初始化数据，防止延迟
+    this.getData();
+    this.interval = setInterval(() => {
+      this.getData();
+    }, 15 * 1000);
+  }
+
+  // 请求接口
+  getData() {
     const { dispatch } = this.props;
     dispatch({
       type: 'Jd/fetch',
     });
+  }
+
+  // 离开页面时，清除计时器
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {

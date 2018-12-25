@@ -1,4 +1,4 @@
-FROM registry-internal.cn-beijing.aliyuncs.com/9am/apis AS apis
+FROM registry.cn-beijing.aliyuncs.com/9am/apis AS apis
 
 FROM node:slim AS web
 

@@ -58,7 +58,7 @@ export default class Sensor extends Component {
         limit: (value && value.limit) || sensorData.limit,
         query: (value && value.query) || query,
         sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { tag: (value && value.sortParams) || sortParam },
-        filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : (value.filterParam || sortParam)
+        filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : ((value && value.filterParam) || filterParam)
       },
     });
   }

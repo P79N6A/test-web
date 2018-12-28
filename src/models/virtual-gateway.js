@@ -1,12 +1,12 @@
-import { gatewayList, gatewayRemark, gatewayCommand, customerList } from '@/services/api';
+import { virtualGatewayList, customerList, virtualGatewaySensorList } from '@/services/api';
 import { message } from 'antd';
 import G from '@/global';
 import { formatMessage, getLocale } from 'umi/locale';
 
 export default {
-  namespace: 'Gateway',
+  namespace: 'virtualGateway',
   state: {
-    gatewayData: {
+    virtualGatewayData: {
       rows: [],
       offset: 0,
       current: 1,
@@ -14,41 +14,29 @@ export default {
     },
     // 客户列表
     customerList: [],
-    // 配置弹窗
-    configureVisible: false,
-    // 要配置的网关列表
-    configureList: [],
+    // 详情数据
+    detail: {
+      detailData: {},
+      visible: false
+    },
+    // 详情页面传感器列表
+    gatewayList: {
+      rows: [],
+      offset: 0,
+      current: 1,
+      limit: 15,
+    }
   },
 
   effects: {
     // 获取物理网关列表
-    *gatewayList({ payload }, { call, put }) {
-      const response = yield call(gatewayList, payload);
+    *virtualGatewayList({ payload }, { call, put }) {
+      const response = yield call(virtualGatewayList, payload);
       if (response && response.status === 'success') {
         yield put({
           type: 'save',
           payload: response.data,
         });
-      } else {
-        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
-      }
-    },
-    // 物理网关标记
-    *gatewayRemark({ payload }, { call }) {
-      const response = yield call(gatewayRemark, payload);
-      payload.callback(response);
-      if (response && response.status === 'success') {
-        message.success(formatMessage({ id: "gateway.remark.success" }));
-      } else {
-        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
-      }
-    },
-    // 物理网关配置
-    *gatewayCommand({ payload }, { call }) {
-      const response = yield call(gatewayCommand, payload);
-      payload.callback(response);
-      if (response && response.status === 'success') {
-        message.success(formatMessage({ id: "gateway.configure.success" }));
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
@@ -65,6 +53,18 @@ export default {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
+    // 获取物理网关列表
+    *virtualGatewaySensorList({ payload }, { call, put }) {
+      const response = yield call(virtualGatewaySensorList, payload);
+      if (response && response.status === 'success') {
+        yield put({
+          type: 'saveSensor',
+          payload: response.data,
+        });
+      } else {
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
+      }
+    },
   },
 
   reducers: {
@@ -72,19 +72,12 @@ export default {
       const { offset } = action.payload;
       return {
         ...state,
-        gatewayData: {
+        virtualGatewayData: {
           ...action.payload,
           offset: Number(offset),
           current: Number(offset) / 15 + 1,
-          limit: state.gatewayData.limit,
+          limit: state.virtualGatewayData.limit,
         }
-      };
-    },
-    // 修改配置列表
-    changeConfigureModel(state, action) {
-      return {
-        ...state,
-        ...action.payload
       };
     },
     // 保存客户列表
@@ -96,6 +89,27 @@ export default {
       return {
         ...state,
         customerList,
+      };
+    },
+    // 修改详情数据
+    changeDetailData(state, action) {
+      return {
+        ...state,
+        detail: {
+          ...action.payload,
+        }
+      };
+    },
+    saveSensor(state, action) {
+      const { offset } = action.payload;
+      return {
+        ...state,
+        gatewayList: {
+          ...action.payload,
+          offset: Number(offset),
+          current: Number(offset) / 15 + 1,
+          limit: state.gatewayList.limit,
+        }
       };
     },
   }

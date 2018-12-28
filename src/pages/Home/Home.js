@@ -202,58 +202,60 @@ export default class Home extends Component {
 
         <Card bordered={false} bodyStyle={{ padding: 0 }} style={{ borderRadius: '4px' }}>
           <div className={styles.salesCard}>
-            <Tabs tabBarExtraContent={salesExtra} size="large" tabBarStyle={{ marginBottom: 24 }}>
-              <TabPane tab={formatMessage({ id: 'home.standing.time.trend' })} key="views">
-                <Row>
-                  <Col xl={16} lg={16} md={16} sm={24} xs={24} className={styles.scalesTab}>
-                    <div className={styles.salesBar}>
-                      {homeStand.length > 0 ? (
-                        <Bar padding={0} height={400} title={`${formatMessage({ id: 'home.unit' })}(${formatMessage({ id: 'home.hour' })})`} data={homeStand} color="#A6D6D0" autoLabel={false} />
-                      ) : (
-                          <div className={styles.emptyBar}>
-                            <img src={`${G.picUrl}${formatMessage({ id: "image.stand.time-trend-none" })}`} />
-                          </div>
-                        )}
-                    </div>
-                  </Col>
-                  <Col xl={8} lg={8} md={8} sm={24} xs={24}>
-                    <div className={styles.salesRank}>
-                      <h4 className={styles.rankingTitle}><FormattedMessage id="home.person.standing.time.ranking" /></h4>
-                      {homeRank && homeRank.length > 0 ? (
-                        <ul className={styles.rankingList}>
-                          {homeRank.map((item, i) => {
-                            const { duration, username } = item;
-                            const days = G.moment.duration(duration, 'm').days();
-                            const hours = G.moment.duration(duration, 'm').hours();
-                            const minutes = G.moment.duration(duration, 'm').minutes();
-                            return (
-                              <li key={`standRank${i}`}>
-                                <div>
-                                  <font className={i < 3 ? styles.active : ''}>{i + 1}</font>
-                                  <font>{username}</font>
-                                  <font>
-                                    {days || null}
-                                    {days ? <i><FormattedMessage id="home.day" /></i> : null}
-                                    {hours || null}
-                                    {hours ? <i><FormattedMessage id="home.hour" /></i> : null}
-                                    {minutes || null}
-                                    {minutes ? <i><FormattedMessage id="home.minute" /></i> : <i style={{ fontSize: 14 }}>0<i><FormattedMessage id="home.minute" /></i></i>}
-                                  </font>
-                                </div>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      ) : (
-                          <div className={styles.emptyRand}>
-                            <img src={`${G.picUrl}${formatMessage({ id: "image.stand.time-rank-none" })}`} />
-                          </div>
-                        )}
-                    </div>
-                  </Col>
-                </Row>
-              </TabPane>
-            </Tabs>
+            <Row style={{ marginBottom: '24px', borderBottom: '1px solid #E5E5E5' }}>
+              <Col xl={12} lg={12} md={12} sm={24} xs={24}>
+                <p className={styles.salesExtraTitle}><FormattedMessage id="home.standing.time.trend" /></p>
+              </Col>
+              <Col xl={12} lg={12} md={12} sm={24} xs={24}>{salesExtra}</Col>
+            </Row>
+            <Row>
+              <Col xl={16} lg={16} md={16} sm={24} xs={24} className={styles.scalesTab}>
+                <div className={styles.salesBar}>
+                  {homeStand.length > 0 ? (
+                    <Bar padding={0} height={400} title={`${formatMessage({ id: 'home.unit' })}(${formatMessage({ id: 'home.hour' })})`} data={homeStand} color="#A6D6D0" autoLabel={false} />
+                  ) : (
+                      <div className={styles.emptyBar}>
+                        <img src={`${G.picUrl}${formatMessage({ id: "image.stand.time-trend-none" })}`} />
+                      </div>
+                    )}
+                </div>
+              </Col>
+              <Col xl={8} lg={8} md={8} sm={24} xs={24}>
+                <div className={styles.salesRank}>
+                  <h4 className={styles.rankingTitle}><FormattedMessage id="home.person.standing.time.ranking" /></h4>
+                  {homeRank && homeRank.length > 0 ? (
+                    <ul className={styles.rankingList}>
+                      {homeRank.map((item, i) => {
+                        const { duration, username } = item;
+                        const days = G.moment.duration(duration, 'm').days();
+                        const hours = G.moment.duration(duration, 'm').hours();
+                        const minutes = G.moment.duration(duration, 'm').minutes();
+                        return (
+                          <li key={`standRank${i}`}>
+                            <div>
+                              <font className={i < 3 ? styles.active : ''}>{i + 1}</font>
+                              <font>{username}</font>
+                              <font>
+                                {days || null}
+                                {days ? <i><FormattedMessage id="home.day" /></i> : null}
+                                {hours || null}
+                                {hours ? <i><FormattedMessage id="home.hour" /></i> : null}
+                                {minutes || null}
+                                {minutes ? <i><FormattedMessage id="home.minute" /></i> : <i style={{ fontSize: 14 }}>0<i><FormattedMessage id="home.minute" /></i></i>}
+                              </font>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  ) : (
+                      <div className={styles.emptyRand}>
+                        <img src={`${G.picUrl}${formatMessage({ id: "image.stand.time-rank-none" })}`} />
+                      </div>
+                    )}
+                </div>
+              </Col>
+            </Row>
           </div>
         </Card>
       </Fragment>

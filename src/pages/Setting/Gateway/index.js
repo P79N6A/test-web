@@ -25,6 +25,15 @@ export default class Gateway extends Component {
 
   componentDidMount() {
     this.fetchDataList({ current: 1 });
+    this.getCustomer();
+  }
+
+  // 获取客户列表
+  getCustomer() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Gateway/customerList',
+    });
   }
 
   // 配置网关
@@ -73,7 +82,7 @@ export default class Gateway extends Component {
         limit: (value && value.limit) || gatewayData.limit,
         query: (value && value.query) || query,
         sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { resourceTotal: (value && value.sortParams) || sortParam },
-        filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : (value.filterParam || sortParam)
+        filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : ((value && value.filterParam) || filterParam)
       },
     });
   }
@@ -100,18 +109,20 @@ export default class Gateway extends Component {
   };
 
   // 表格数据展示
-  getColumns(sortOrder, customerList, positionList) {
+  getColumns(sortOrder, customerList) {
     const columns = [
       {
         title: formatMessage({ id: "gateway.list.number" }),
-        key: 'id',
-        width: 70,
+        key: 'SerialNumber',
+        width: 100,
         sorter: true,
         sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
         render: (text, record, index) => (
           <Fragment>
-            <Tooltip placement="topLeft" title={text.id}>
-              <font>{text.id}</font>
+            <Tooltip placement="topLeft" title={text.SerialNumber}>
+              <font onClick={() => {
+                this.goVirtualGateway(text, record, index);
+              }} style={{ cursor: 'pointer' }}>{text.SerialNumber}</font>
             </Tooltip>
           </Fragment>
         ),
@@ -131,22 +142,8 @@ export default class Gateway extends Component {
         }
       },
       {
-        title: formatMessage({ id: 'device.list.status' }),
-        key: 'status',
-        render: text => {
-          return (
-            <Fragment>
-              <Tooltip placement="topLeft" title={text.status}>
-                <font>{text.status}</font>
-              </Tooltip>
-            </Fragment>
-          );
-        }
-      },
-      {
         title: formatMessage({ id: "gateway.list.position" }),
         key: "position",
-        filters: positionList,
         render: (text) => {
           return (
             <Fragment>
@@ -171,22 +168,8 @@ export default class Gateway extends Component {
         }
       },
       {
-        title: formatMessage({ id: "gateway.list.link-state" }),
-        key: 'statuse',
-        render: (text) => {
-          return (
-            <Fragment>
-              <Tooltip placement="topLeft" title={text.status}>
-                <span>{text.status}</span>
-              </Tooltip>
-            </Fragment>
-          )
-        }
-      },
-      {
         title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
-        width: 115,
         render: (text, record, index) => (
           <Fragment>
             <a
@@ -274,23 +257,26 @@ export default class Gateway extends Component {
     this.fetchDataList({ current: 1 });
   }
 
+  // 处理去虚拟网关页面
+  goVirtualGateway(text, record, index) {
+    const { saveGatewayParams } = this.props;
+    saveGatewayParams("virtual_gateway", text.id);
+  }
+
   render() {
     const { query, sortParam, editValue, visible } = this.state;
     const { loading, Gateway, dispatch } = this.props;
     const { configureList, configureVisible } = Gateway;
     const { rows, limit, current, count } = Gateway.gatewayData;
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
-    const columns = this.getColumns(sortParam, Gateway.customerList, Gateway.positionList);
+    const columns = this.getColumns(sortParam, Gateway.customerList);
     const rowSelection = {
       configureList,
       onChange: this.onSelectChange,
     }
     return (
       <div className={styles.main}>
-        <h3><FormattedMessage id="menu.settings.gateway" /></h3>
-        <br />
         <Row className={styles.lageBox}>
-          <p><FormattedMessage id="gateway.list" /></p>
           <Col span={24}>
             <Button
               size='small'
@@ -301,7 +287,7 @@ export default class Gateway extends Component {
             </Button>
             <Button
               className={styles.rights}
-              size='small'
+              size="small"
               icon="search"
               type="primary"
               onClick={this.onSearch.bind(this)}
@@ -311,7 +297,7 @@ export default class Gateway extends Component {
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder={'IP / Name'}
+              placeholder="网关 / 备注"
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

@@ -1,0 +1,68 @@
+@import '~antd/lib/style/themes/default.less';
+.main {
+  color: @text-color;
+  h3 {
+    font-size: 20px;
+    font-weight: 800;
+  }
+  p {
+    font-size: 16px;
+    padding-left: 10px;
+  }
+  .lageBox {
+    background: #fff;
+    padding: 15px;
+  }
+  .rights {
+    float: right;
+  }
+  .widthInput {
+    float: right;
+    width: 300px !important;
+    display: block;
+    margin-right: 15px;
+  }
+}
+.gatewayNumber{
+  color: #9AA9B5;
+}
+.command{
+  padding-top: 30px;
+  .clear{
+    float: right;
+    font-size: 14px;
+    color: #46978D;
+    cursor: pointer;
+    padding-right: 8px;
+  }
+}
+.resultBox{
+  width: 100%;
+  padding: 5px 10px;
+  height: auto;
+  min-height: 100px;
+  border-radius: 4px;
+  border:1px solid #E4E6E6;
+  color: #9AA9B5;
+  .resultTextModel{
+    padding-top: 10px;
+    border-bottom: 2px dotted #E4E6E6;
+    .resultText{
+      color: #35536C;
+      line-height: 24px;
+      .leftName{
+        color: #46978D;
+        font-weight: 600;
+        padding-right: 16px;
+      }
+      .rightName{
+        color: #46978D;
+        font-weight: 600;
+        padding:0 16px 0 35px;
+      }
+    }
+  }
+  .resultTextModel:last-of-type{
+    border:none;
+  }
+}

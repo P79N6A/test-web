@@ -68,7 +68,7 @@ export default {
       if (authority === 'admin') {
         path = '/admin_user/login';
       }
-      if (payload.redirect) {
+      if (payload && payload.redirect) {
         path = payload.redirect;
       }
       yield put({

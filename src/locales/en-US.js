@@ -461,4 +461,5 @@ export default {
   "reset.password.send-email-message-two": "We have sent a password getting back E-mail to you,please check it.",
   "reset.password.send-email-none": "Haven't received the mail?",
   "reset.password.send-again": "Re-send",
+  // TODO: Setting下面所有页面
 };

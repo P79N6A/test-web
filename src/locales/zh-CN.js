@@ -463,4 +463,5 @@ export default {
   "reset.password.send-email-message-two": "发送了一封密码找回邮件，请注意查收。",
   "reset.password.send-email-none": "没有收到邮件？",
   "reset.password.send-again": "重新发送",
+  // TODO: Setting下面所有页面
 };

@@ -193,7 +193,7 @@ export default [
           {
             path: '/setting/gateway',
             name: 'gateway',
-            component: './Setting/Gateway',
+            component: './Setting/All',
             authority: ['admin'],
           },
           { redirect: '/exception/404' },

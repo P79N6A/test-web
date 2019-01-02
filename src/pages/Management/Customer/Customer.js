@@ -167,6 +167,7 @@ export default class Wework extends Component {
       {
         title: formatMessage({ id: 'all.operating' }),
         key: 'setting',
+        width: 220,
         render: (text, record, index) => (
           <Fragment>
             <Popconfirm

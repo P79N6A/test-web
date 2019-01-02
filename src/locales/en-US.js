@@ -13,6 +13,8 @@ export default {
   "menu.management.customer": "Customers Management",
   "menu.management.newCustomer": "Add New Customer",
   "menu.management.person": "User Management",
+  // TODO: 翻译
+  "menu.management.personGroup": "用户组管理",
   "menu.management.device": "Cloud Desk",
   "menu.management.notice": "Notification Center",
   "menu.management.newNotice": "New Notification",
@@ -462,4 +464,6 @@ export default {
   "reset.password.send-email-none": "Haven't received the mail?",
   "reset.password.send-again": "Re-send",
   // TODO: Setting下面所有页面
+  // TODO: Person页面
+  // TODO: PersonGroup页面
 };

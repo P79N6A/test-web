@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import * as qiniu from 'qiniu-js';
-import { Modal, Button, Input, Form, Icon, Upload, Row, Col } from 'antd';
+import { Modal, Button, Input, Form, Icon, Upload, Row, Col, Select } from 'antd';
 import G from '@/global';
 import styles from './PersonModal.less';
 
 const FormItem = Form.Item;
-const { TextArea } = Input;
+const Option = Select.Option;
 
 const ACCESSKEY = 'h07mPP3LHfjO8BHJfCyIRsiichflVYIHtyNkXNoM';
 const SECRETKEY = '6keig4uqFJFLjs80aLAPfjb3rnaMaiPOgRNJ9uik';
@@ -19,6 +19,7 @@ function getBase64(img, callback) {
 
 class PersonModal extends Component {
   state = {
+    group: '',
     imageUrl: '',
     avatarLoading: false,
     title: formatMessage({ id: 'person.operate.new-users' }),
@@ -26,7 +27,7 @@ class PersonModal extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    const { visible, editValue } = nextProps;
+    const { visible, editValue, groupList } = nextProps;
     if (this.visible !== visible && !G._.isEqual(this.editValue, editValue)) {
       this.visible = visible;
       this.editValue = editValue;
@@ -39,7 +40,8 @@ class PersonModal extends Component {
           phone: editValue.phone,
           email: editValue.email,
           position: editValue.position,
-          remark: editValue.remark
+          remark: editValue.remark,
+          group: editValue.group,
         });
         this.setState({ title: formatMessage({ id: 'person.operate.edit-users' }) });
         this.setState({ subTitle: formatMessage({ id: 'person.operate.edit-user-message' }) });
@@ -50,6 +52,7 @@ class PersonModal extends Component {
           email: '',
           position: '',
           remark: '',
+          group: groupList && groupList.length > 0 ? groupList[0].id : '',
         });
         this.setState({ title: formatMessage({ id: 'person.operate.new-users' }) });
         this.setState({ subTitle: formatMessage({ id: 'person.operate.new-user-message' }) });
@@ -64,13 +67,14 @@ class PersonModal extends Component {
 
   okHandle = () => {
     const { form, handleOk, editValue } = this.props;
-    const { imageUrl } = this.state;
+    const { imageUrl, group } = this.state;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       handleOk(
         { ...fieldsValue, position: fieldsValue.position || '', remark: fieldsValue.remark || '' },
         imageUrl,
-        editValue.uid
+        editValue.uid,
+        group,
       );
     });
   };
@@ -144,37 +148,40 @@ class PersonModal extends Component {
           }
         }
       },
-
     });
+  }
 
+  // 选择角色
+  changeSelect(value) {
+    this.setState({
+      group: value,
+    })
   }
 
   render() {
-    const { visible, loading, handleCancel, form } = this.props;
+    const { visible, loading, handleCancel, form, groupList } = this.props;
     const { imageUrl, avatarLoading, title, subTitle } = this.state;
     const { getFieldDecorator } = form;
-    const uploadButton = (<Icon type={avatarLoading ? 'loading' : 'user'} style={{ fontSize: '30px', lineHeight: '60px', paddingTop: '4px', color: '#DFE4E8' }} />);
-    const formItemLayout = { labelCol: { span: 4 }, wrapperCol: { span: 9 } };
-    const leftImg = { xs: 24, sm: 12, md: 12, lg: 12, xl: 12, xxl: 12 };
+    const uploadButton = (<Icon type={avatarLoading ? "loading" : "user"} style={{ fontSize: '30px', lineHeight: '60px', paddingTop: '4px', color: '#DFE4E8' }} />);
+    const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
     return (
       <Modal
-        width={780}
         visible={visible}
         title={title}
-        onOk={this.okHandle}
+        onOk={this.okHandle.bind(this)}
         onCancel={this.onCancel.bind(this, handleCancel)}
         footer={[
-          <Button key="back" size='small' onClick={this.onCancel.bind(this, handleCancel)}>
+          <Button key="back" size="small" onClick={this.onCancel.bind(this, handleCancel)}>
             <FormattedMessage id="all.cancel" />
           </Button>,
-          <Button key="submit" size='small' type="primary" loading={loading} onClick={this.okHandle}>
+          <Button key="submit" size="small" type="primary" loading={loading} onClick={this.okHandle.bind(this)}>
             <FormattedMessage id="all.save" />
           </Button>
         ]}
       >
         <p className={styles.subTitle}>{subTitle}</p>
         <Row gutter={24}>
-          <Col {...leftImg}>
+          <Col span={24}>
             <FormItem {...formItemLayout} label={formatMessage({ id: 'person.operate.avatar' })}>
               {getFieldDecorator('upload', {
                 valuePropName: 'fileList',
@@ -200,8 +207,8 @@ class PersonModal extends Component {
           </Col>
         </Row>
         <Row gutter={24}>
-          <Col {...leftImg}>
-            <FormItem label={formatMessage({ id: 'person.list.name' })}>
+          <Col span={24}>
+            <FormItem label={formatMessage({ id: 'person.list.name' })} {...formItemLayout}>
               {getFieldDecorator('name', {
                 rules: [
                   {
@@ -216,8 +223,8 @@ class PersonModal extends Component {
               })(<Input placeholder={formatMessage({ id: 'person.operate.name-empty-alert' })} />)}
             </FormItem>
           </Col>
-          <Col {...leftImg}>
-            <FormItem label={formatMessage({ id: 'person.list.phone' })}>
+          <Col span={24}>
+            <FormItem {...formItemLayout} label={formatMessage({ id: 'person.list.phone' })}>
               {getFieldDecorator('phone', {
                 rules: [
                   {
@@ -234,8 +241,8 @@ class PersonModal extends Component {
         </Row>
         {/* 邮箱 */}
         <Row gutter={24}>
-          <Col {...leftImg}>
-            <FormItem label={formatMessage({ id: 'app.settings.basic.email' })}>
+          <Col span={24}>
+            <FormItem {...formItemLayout} label={formatMessage({ id: 'app.settings.basic.email' })}>
               {getFieldDecorator('email', {
                 rules: [
                   {
@@ -246,8 +253,8 @@ class PersonModal extends Component {
               })(<Input placeholder={formatMessage({ id: 'app.settings.basic.email-message' })} />)}
             </FormItem>
           </Col>
-          <Col {...leftImg}>
-            <FormItem label={formatMessage({ id: 'person.list.position' })}>
+          <Col span={24}>
+            <FormItem {...formItemLayout} label={formatMessage({ id: 'person.list.position' })}>
               {getFieldDecorator('position', {
                 rules: [
                   {
@@ -259,9 +266,9 @@ class PersonModal extends Component {
             </FormItem>
           </Col>
         </Row>
-        <Row gutter={24}>
+        <Row span={24}>
           <Col>
-            <FormItem label={formatMessage({ id: 'all.remarks' })}>
+            <FormItem {...formItemLayout} label={formatMessage({ id: 'all.remarks' })}>
               {getFieldDecorator('remark', {
                 rules: [
                   {
@@ -269,7 +276,29 @@ class PersonModal extends Component {
                     message: formatMessage({ id: 'test.max.long.one.hundred' }),
                   },
                 ],
-              })(<TextArea rows={3} placeholder={formatMessage({ id: 'person.operate.remarks-input' })} />)}
+              })(<Input placeholder={formatMessage({ id: 'person.operate.remarks-input' })} />)}
+            </FormItem>
+          </Col>
+        </Row>
+        <div className={styles.line} />
+        <Row span={24}>
+          <Col>
+            <FormItem {...formItemLayout} label="用户组">
+              {getFieldDecorator('group', {
+                rules: [],
+              })(
+                <Select style={{ width: 354 }} onChange={this.changeSelect.bind(this)}>
+                  {
+                    groupList && groupList.length > 0
+                      ?
+                      groupList.map((item, index) => {
+                        return <Option key={item.id} value={item.id}>{item.name}</Option>
+                      })
+                      :
+                      ''
+                  }
+                </Select>
+              )}
             </FormItem>
           </Col>
         </Row>

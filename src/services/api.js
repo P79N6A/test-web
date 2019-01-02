@@ -112,34 +112,87 @@ export async function getHomeData() {
   });
 }
 
-// TODO: 获取人员数组
+// TODO: 获取用户组
+export async function usersGroupList(payload) {
+  return {
+    "status": "success",
+    "data": [
+      { "id": 0, "name": "默认组" },
+      { "id": 1, "name": "第一组" },
+      { "id": 2, "name": "第二组" }
+    ]
+  }
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/users/group/list`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// TODO: 创建用户组
+export async function addUsersGroup(payload) {
+  return {
+    "status": "success"
+  }
+  const url = `${G.API_URL}/users/group`;
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(url, {
+    method: 'PUT',
+    body,
+  });
+}
+
+// TODO: 删除用户组
+export async function usersGroupUpdate(payload) {
+  return {
+    "status": "success"
+  }
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/users/group/update`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// TODO: 获取人员列表
 export async function getPersonnelList(payload) {
   return {
     "status": "success",
     "data": {
-      "count": 5,
+      "count": 45,
       "rows": [
         {
           "uid": "99f89bbb-8042-4a3b-afc5-5f277e34d3af",
-          "name": "haoshuo",
+          "name": "haosdddddhuo",
           "phone": "18811467730",
           "position": null,
           "email": "18811467730@163.com",
           "isDel": false,
           "remark": "hdiuwcdbxnadsdxnhdiuwcdbxnadsdxnhdiuwcdbxnadsdxnhdiuwcdbxnadsdxn",
           "status": 2,
-          "role": "default",
+          "role": "superAdmin",
         },
         {
           "uid": "90f89bbb-8042-4a3b-afc5-5f277e34d3af",
-          "name": "haoshuo",
+          "name": "haoshucjdfncjdo",
           "phone": "18811467730",
           "position": null,
           "email": "18811467730@163.com",
           "isDel": false,
           "remark": null,
           "status": 2,
-          "role": "manager_space",
+          "role": "groupAdmin",
+        },
+        {
+          "uid": "90f89bbb-8042-4a3b-afc5-5f277e34d3ae",
+          "name": "haosckhbsdncnmlsuo",
+          "phone": "18811467730",
+          "position": null,
+          "email": "18811467730@163.com",
+          "isDel": false,
+          "remark": null,
+          "status": 2,
+          "role": "defaultMember",
         },
       ],
       "offset": 0,
@@ -197,7 +250,7 @@ export async function changeRole(payload) {
     status: 'success',
   }
   const body = filterBody({ ...payload, token: getToken() });
-  return request(`${G.API_URL}/users/configuration/role`, {
+  return request(`${G.API_URL}/users/role`, {
     method: 'POST',
     body,
   });

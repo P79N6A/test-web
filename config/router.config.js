@@ -130,6 +130,12 @@ export default [
             authority: ['user'],
           },
           {
+            path: '/management/person-group',
+            name: 'personGroup',
+            component: './Management/PersonGroup',
+            authority: ['user'],
+          },
+          {
             path: '/management/device',
             name: 'device',
             component: './Management/Device/Device',

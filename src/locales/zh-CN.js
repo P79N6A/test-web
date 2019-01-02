@@ -13,6 +13,7 @@ export default {
   "menu.management.customer": "客户管理",
   "menu.management.newCustomer": "新增客户",
   "menu.management.person": "用户管理",
+  "menu.management.personGroup": "用户组管理",
   "menu.management.device": "云桌",
   "menu.management.notice": "通知管理",
   "menu.management.newNotice": "新建通知",
@@ -464,4 +465,6 @@ export default {
   "reset.password.send-email-none": "没有收到邮件？",
   "reset.password.send-again": "重新发送",
   // TODO: Setting下面所有页面
+  // TODO: Person页面
+  // TODO: PersonGroup页面
 };

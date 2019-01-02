@@ -81,12 +81,13 @@ class PersonTemplate extends Component {
     this.setState({
       file
     })
-    const { dispatch } = this.props;
+    const { dispatch, groupActive } = this.props;
     dispatch({
       type: 'ManagementPerson/usersBatchImport',
       payload: {
         file,
         force,
+        groupActive,
         callback: (res) => {
           this.uploadNumberAdd('none', 100);
           if (res.status === 'success') {

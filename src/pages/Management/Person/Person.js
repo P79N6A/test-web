@@ -1,17 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Table, Button, Input, Divider, Pagination, Icon, Popconfirm, Tooltip } from 'antd';
+import { Row, Col, Table, Button, Input, Divider, Pagination, Icon, Popconfirm, Tooltip, Modal } from 'antd';
 
 import G from '@/global';
 import styles from './Person.less';
 import PersonModal from './components/PersonModal';
 import PersonTemplate from './components/PersonTemplate';
-import PersonRole from './components/PersonRole';
 
-@connect(({ ManagementPerson, user, loading }) => ({
+@connect(({ ManagementPerson, loading }) => ({
   ManagementPerson,
-  user,
   loading: loading.effects['ManagementPerson/fetch'],
 }))
 export default class Person extends Component {
@@ -28,13 +26,25 @@ export default class Person extends Component {
       { text: formatMessage({ id: 'person.list.status.connected' }), value: 2 }
     ],
     importTemplate: false,
-    roleVisible: false
+    roleVisible: false,
+    uid: '',
+    role: '',
   };
 
   componentDidMount() {
     const { ManagementPerson } = this.props;
     const { current } = ManagementPerson.data;
     this.fetchDataList({ current });
+    this.getGroupList();
+  }
+
+  // 获取用户组列表
+  getGroupList() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ManagementPerson/usersGroupList',
+      payload: {}
+    })
   }
 
   onSearch() {
@@ -81,7 +91,19 @@ export default class Person extends Component {
           return (
             <Fragment>
               <Tooltip placement="topLeft" title={text.name}>
-                <span>{text.name}</span>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <span className={styles.colSql}>{text.name}</span>
+                  {
+                    text.role === 'superAdmin' ?
+                      <img className={styles.titleTop} src={`${G.picUrl}image/super_admin.png`} />
+                      :
+
+                      text.role === 'groupAdmin' ?
+                        <img className={styles.titleTop} src={`${G.picUrl}image/group_admin.png`} />
+                        :
+                        ''
+                  }
+                </div>
               </Tooltip>
             </Fragment>
           )
@@ -164,7 +186,7 @@ export default class Person extends Component {
       },
       {
         title: listTitle.operate,
-        width: 185,
+        width: 210,
         render: (text, record, index) => (
           <Fragment>
             <a
@@ -185,13 +207,28 @@ export default class Person extends Component {
               <a>{listTitle.delete}</a>
             </Popconfirm>
             <Divider type="vertical" />
-            <a
-              onClick={() => {
-                this.openRole(text, record, index);
-              }}
-            >
-              <FormattedMessage id="person.role" />
-            </a>
+            {
+              // 超级管理员禁用
+              text.role === 'superAdmin' ? <a className={styles.disabledColor}>设为组管理员</a> :
+                text.role === 'groupAdmin'
+                  ?
+                  // 组管理员
+                  <Popconfirm
+                    placement="left"
+                    title="确定取消组管理员吗？"
+                    onConfirm={this.onCancel.bind(this, text)}
+                    okText={formatMessage({ id: 'all.certain' })}
+                    cancelText={formatMessage({ id: 'all.cancel' })}
+                  >
+                    <a>取消组管理员</a>
+                  </Popconfirm>
+                  :
+                  // 默认成员
+                  <a
+                    onClick={() => {
+                      this.openRole(text, record, index);
+                    }}>设为组管理员</a>
+            }
           </Fragment>
         ),
       },
@@ -211,18 +248,18 @@ export default class Person extends Component {
     });
   };
 
-  handleOk = (fieldsValue, avatar, uid) => {
+  handleOk = (fieldsValue, avatar, uid, group) => {
     const fieldsValues = fieldsValue;
     delete fieldsValues.isDel;
     this.setState({ modalLoading: true });
     delete fieldsValues.upload;
     const { editValue } = this.state;
     if (G._.isEmpty(editValue)) {
-      this.addPerson({ ...fieldsValues, avatar, callback: this.upload.bind(this) });
+      this.addPerson({ ...fieldsValues, avatar, group, callback: this.upload.bind(this) });
       return;
     }
     fieldsValues.uid = uid;
-    this.updatePerson({ ...fieldsValues, avatar, callback: this.update.bind(this) });
+    this.updatePerson({ ...fieldsValues, avatar, group, callback: this.update.bind(this) });
   };
 
   upload = res => {
@@ -295,7 +332,7 @@ export default class Person extends Component {
   }
 
   // 批量导入
-  importUse() {
+  importUser() {
     this.setState({
       importTemplate: true
     })
@@ -311,34 +348,60 @@ export default class Person extends Component {
     this.fetchDataList({ current });
   }
 
-  // 关闭权限弹窗
-  closeRole(state) {
-    const { ManagementPerson } = this.props;
-    const { current } = ManagementPerson.data;
-    if (state === 1) {
-      this.fetchDataList({ current });
-    }
-    this.setState({
-      roleVisible: false
-    })
-  }
-
   // 打开权限弹窗
   openRole(text, record, index) {
-    const { dispatch } = this.props;
     this.setState({
       roleVisible: true,
+      uid: text.uid,
+      role: 'groupAdmin'
     });
+  }
+
+  // 关闭权限弹窗
+  closeRole() {
+    this.setState({
+      roleVisible: false,
+      uid: '',
+      role: ''
+    });
+  }
+
+  // 设置管理员
+  okHandle() {
+    const { uid, role } = this.state;
+    this.changeRole(uid, role);
+  }
+
+  // 取消组管理员
+  onCancel(text) {
+    this.changeRole(text.uid, 'defaultMember');
+  }
+
+  changeRole(uid, role) {
+    const { dispatch } = this.props;
     dispatch({
-      type: 'ManagementPerson/saveRole',
-      payload: text.role
+      type: 'ManagementPerson/changeRole',
+      payload: {
+        role,
+        uid,
+        callback: this.call.bind(this)
+      }
     });
+  }
+
+  // 取消（设置）管理员的回调函数
+  call(res) {
+    this.closeRole();
+    const { ManagementPerson } = this.props;
+    const { current } = ManagementPerson.data;
+    this.fetchDataList({ current });
   }
 
   render() {
-    const { ManagementPerson, user, loading, dispatch } = this.props;
+    const { ManagementPerson, loading, dispatch } = this.props;
     const { modalLoading, visible, editValue, query, filterStatus, importTemplate, roleVisible } = this.state;
     const { limit, count, current } = ManagementPerson.data;
+    const { groupList } = ManagementPerson;
     const listTitle = {
       serialNumber: formatMessage({ id: 'all.serial.number' }),
       name: formatMessage({ id: 'person.list.name' }),
@@ -362,7 +425,7 @@ export default class Person extends Component {
             <Button icon="plus" type="primary" size='small' onClick={this.showModal} style={{ marginRight: '20px' }}>
               <FormattedMessage id="all.add" />
             </Button>
-            <Button type="default" size='small' onClick={this.importUse.bind(this)}><FormattedMessage id="person.import.batch" /></Button>
+            <Button type="default" size='small' onClick={this.importUser.bind(this)}><FormattedMessage id="person.import.batch" /></Button>
           </Col>
           <Col span={12}>
             <Button
@@ -409,13 +472,13 @@ export default class Person extends Component {
             />
           </Col>
         </Row>
-        {/* 弹窗 */}
+        {/* 添加以及编辑模板 */}
         <PersonModal
           dispatch={dispatch}
-          user={user}
           visible={visible}
           loading={modalLoading}
           editValue={editValue}
+          groupList={groupList}
           handleOk={this.handleOk.bind(this)}
           handleCancel={this.handleCancel.bind(this)}
         />
@@ -426,14 +489,28 @@ export default class Person extends Component {
           errorList={ManagementPerson.errorList}
           dispatch={dispatch}
         />
-        {/* 用户角色弹窗 */}
-        <PersonRole
+        {/* 设置为管理员 */}
+        <Modal
           visible={roleVisible}
-          dispatch={dispatch}
-          user={user}
-          role={ManagementPerson.role}
-          closeRole={this.closeRole.bind(this)}
-        />
+          title="设置组管理员"
+          onOk={this.okHandle.bind(this)}
+          onCancel={this.closeRole.bind(this)}
+          footer={[
+            <Button key="back" size="small" onClick={this.closeRole.bind(this)}>
+              <FormattedMessage id="all.cancel" />
+            </Button>,
+            <Button key="submit" size="small" type="primary" onClick={this.okHandle.bind(this)}>
+              <FormattedMessage id="all.certain" />
+            </Button>
+          ]}
+        >
+          <p>设置为组管理员后， 该成员可以使用邮箱登录到管理平台，对 所在用户组内的信息进行管理，登录密码通过邮件通知该成员。</p>
+          <p className={styles.openPermission}>开放权限：</p>
+          <p className={styles.firstPage}>1. 首页</p>
+          <p className={styles.firstPage}>2. 通知管理</p>
+          <p className={styles.firstPage}>3. 云桌管理</p>
+          <p className={styles.firstPage}>4. 用户管理</p>
+        </Modal>
       </div>
     );
   }

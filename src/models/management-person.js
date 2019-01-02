@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getPersonnelList, addPerson, updatePerson, getQiniuToken, usersBatchImport, changeRole } from '../services/api';
+import { getPersonnelList, addPerson, updatePerson, getQiniuToken, usersBatchImport, changeRole, usersGroupList } from '@ß/services/api';
 import { formatMessage, getLocale } from 'umi/locale';
 import G from '@/global';
 
@@ -14,7 +14,8 @@ export default {
     },
     qiniuToken: '',
     errorList: {},
-    role: 'default'
+    // 用户组列表
+    groupList: [],
   },
 
   effects: {
@@ -59,11 +60,24 @@ export default {
         payload: response.data,
       });
     },
+    // 改变用户角色
     *changeRole({ payload }, { call, put }) {
       const response = yield call(changeRole, payload);
       payload.callback(response);
       if (response && response.status === 'success') {
         message.success(formatMessage({ id: "person.role.change-role-success" }));
+      } else {
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
+      }
+    },
+    // 获取用户组列表
+    *usersGroupList({ payload }, { call, put }) {
+      const response = yield call(usersGroupList, payload);
+      if (response && response.status === 'success') {
+        yield put({
+          type: 'saveGroup',
+          payload: response.data,
+        });
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
@@ -91,10 +105,11 @@ export default {
         },
       };
     },
-    saveRole(state, action) {
+    // 保存用户组
+    saveGroup(state, action) {
       return {
         ...state,
-        role: action.payload
+        groupList: action.payload,
       };
     },
   },

@@ -19,7 +19,7 @@ import { getAuthority } from '@/utils/authority';
 import G from '@/global';
 import Exception403 from '../pages/Exception/403';
 import Context from './MenuContext';
-import { getUserInfo, setUserInfo } from '@/utils/authority';
+import { getUserInfo, setUserInfo, getSidebar } from '@/utils/authority';
 
 const { Content } = Layout;
 
@@ -132,6 +132,11 @@ class BasicLayout extends React.PureComponent {
         type: 'login/logoutWithoutToken',
       });
     }
+    const sidebar = getSidebar();
+    dispatch({
+      type: 'login/saveSidebar',
+      payload: sidebar,
+    });
   }
 
   componentDidMount() {
@@ -254,11 +259,6 @@ class BasicLayout extends React.PureComponent {
     if (Authority[0] === 'admin') {
       color = 'dark'
     }
-    const { user } = this.props.user;
-    let menuLists = [];
-    if (user && user.sidebar) {
-      menuLists = user.sidebar.data;
-    }
     const myProps = { ...this.props, navTheme: color };
     const {
       currentUser,
@@ -266,7 +266,9 @@ class BasicLayout extends React.PureComponent {
       layout: PropsLayout,
       children,
       location: { pathname },
+      login,
     } = myProps;
+    const { sidebarList } = login;
     const { isMobile } = this.state;
     const isTop = PropsLayout === 'topmenu';
     const menuData = this.getMenuData();
@@ -282,7 +284,7 @@ class BasicLayout extends React.PureComponent {
               theme={navTheme}
               onCollapse={this.handleMenuCollapse}
               menuData={menuData}
-              menuLists={menuLists}
+              menuLists={sidebarList}
               isMobile={isMobile}
               {...myProps}
             />
@@ -331,9 +333,10 @@ class BasicLayout extends React.PureComponent {
   }
 }
 
-export default connect(({ user, global, setting }) => ({
+export default connect(({ user, global, setting, login }) => ({
   currentUser: user.user,
   collapsed: global.collapsed,
   layout: setting.layout,
+  login: login,
   ...setting,
 }))(BasicLayout);

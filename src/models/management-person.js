@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getPersonnelList, addPerson, updatePerson, getQiniuToken, usersBatchImport, changeRole, usersGroupList } from '@ß/services/api';
+import { getPersonnelList, addPerson, updatePerson, getQiniuToken, usersBatchImport, changeRole, usersGroupList } from '@/services/api';
 import { formatMessage, getLocale } from 'umi/locale';
 import G from '@/global';
 

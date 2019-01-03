@@ -22,6 +22,131 @@ export async function logout() {
   });
 }
 
+// TODO: 获取侧边栏
+export async function getSidebarList() {
+  return {
+    status: "success",
+    data: [
+      {
+        "name": "home",
+        "icon": "home",
+        "path": "/home",
+        "locale": "menu.home",
+        "children": [
+
+        ]
+      },
+      {
+        "name": "dshow",
+        "icon": "tablet",
+        "path": "/dshow",
+        "locale": "menu.dshow",
+        "children": [
+          {
+            "name": "notice",
+            "icon": null,
+            "path": "/management/notice",
+            "locale": "menu.management.notice",
+            "children": [
+
+            ]
+          },
+          {
+            "name": "banner",
+            "icon": null,
+            "path": "/management/banner",
+            "locale": "menu.management.banner",
+            "children": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "name": "statistics",
+        "icon": "pie-chart",
+        "path": "/statistics",
+        "locale": "menu.statistics",
+        "children": [
+          {
+            "name": "spaceState",
+            "icon": null,
+            "path": "/statistics/spaceState",
+            "locale": "menu.statistics.spaceState",
+            "children": [
+
+            ]
+          },
+          {
+            "name": "spaceUsage",
+            "icon": null,
+            "path": "/statistics/spaceUsage",
+            "locale": "menu.statistics.spaceUsage",
+            "children": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "name": "device",
+        "icon": "profile",
+        "path": "/device",
+        "locale": "menu.device",
+        "children": [
+          {
+            "name": "sensor",
+            "icon": null,
+            "path": "/device/sensor",
+            "locale": "menu.device.sensor",
+            "children": [
+
+            ]
+          },
+          {
+            "name": "device",
+            "icon": null,
+            "path": "/management/device",
+            "locale": "menu.management.device",
+            "children": [
+
+            ]
+          }
+        ]
+      },
+      {
+        "name": "management",
+        "icon": "table",
+        "path": "/management",
+        "locale": "menu.management",
+        "children": [
+          {
+            "name": "person",
+            "icon": null,
+            "path": "/management/person",
+            "locale": "menu.management.person",
+            "children": [
+
+            ]
+          },
+          {
+            "name": "personGroup",
+            "icon": null,
+            "path": "/management/person-group",
+            "locale": "menu.management.personGroup",
+            "children": [
+
+            ]
+          }
+        ]
+      },
+    ]
+  }
+  return request(`${API_URL}/sidebar/list?token=${getToken()}`, {
+    method: 'GET',
+  });
+}
+
 // 修改密码
 export async function changePassword(payload) {
   return request(`${API_URL}/users/password`, {
@@ -156,49 +281,6 @@ export async function usersGroupUpdate(payload) {
 
 // TODO: 获取人员列表
 export async function getPersonnelList(payload) {
-  return {
-    "status": "success",
-    "data": {
-      "count": 45,
-      "rows": [
-        {
-          "uid": "99f89bbb-8042-4a3b-afc5-5f277e34d3af",
-          "name": "haosdddddhuo",
-          "phone": "18811467730",
-          "position": null,
-          "email": "18811467730@163.com",
-          "isDel": false,
-          "remark": "hdiuwcdbxnadsdxnhdiuwcdbxnadsdxnhdiuwcdbxnadsdxnhdiuwcdbxnadsdxn",
-          "status": 2,
-          "role": "superAdmin",
-        },
-        {
-          "uid": "90f89bbb-8042-4a3b-afc5-5f277e34d3af",
-          "name": "haoshucjdfncjdo",
-          "phone": "18811467730",
-          "position": null,
-          "email": "18811467730@163.com",
-          "isDel": false,
-          "remark": null,
-          "status": 2,
-          "role": "groupAdmin",
-        },
-        {
-          "uid": "90f89bbb-8042-4a3b-afc5-5f277e34d3ae",
-          "name": "haosckhbsdncnmlsuo",
-          "phone": "18811467730",
-          "position": null,
-          "email": "18811467730@163.com",
-          "isDel": false,
-          "remark": null,
-          "status": 2,
-          "role": "defaultMember",
-        },
-      ],
-      "offset": 0,
-      "limit": 15,
-    },
-  }
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/users/list`, {
     method: 'POST',
@@ -441,7 +523,7 @@ export async function setPermissions(payload) {
     status: 'success',
   }
   const body = filterBody({ token: getToken(), ...payload });
-  return request(`${G.API_URL}/permissions/list`, {
+  return request(`${G.API_URL}/permissions/update`, {
     method: 'POST',
     body,
   });

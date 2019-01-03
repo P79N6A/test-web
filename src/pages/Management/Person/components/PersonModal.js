@@ -19,7 +19,7 @@ function getBase64(img, callback) {
 
 class PersonModal extends Component {
   state = {
-    group: '',
+    groupId: '',
     imageUrl: '',
     avatarLoading: false,
     title: formatMessage({ id: 'person.operate.new-users' }),
@@ -41,7 +41,7 @@ class PersonModal extends Component {
           email: editValue.email,
           position: editValue.position,
           remark: editValue.remark,
-          group: editValue.group,
+          groupId: editValue.groupId,
         });
         this.setState({ title: formatMessage({ id: 'person.operate.edit-users' }) });
         this.setState({ subTitle: formatMessage({ id: 'person.operate.edit-user-message' }) });
@@ -52,7 +52,7 @@ class PersonModal extends Component {
           email: '',
           position: '',
           remark: '',
-          group: groupList && groupList.length > 0 ? groupList[0].id : '',
+          groupId: groupList && groupList.length > 0 ? groupList[0].id : '',
         });
         this.setState({ title: formatMessage({ id: 'person.operate.new-users' }) });
         this.setState({ subTitle: formatMessage({ id: 'person.operate.new-user-message' }) });
@@ -67,14 +67,14 @@ class PersonModal extends Component {
 
   okHandle = () => {
     const { form, handleOk, editValue } = this.props;
-    const { imageUrl, group } = this.state;
+    const { imageUrl, groupId } = this.state;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       handleOk(
         { ...fieldsValue, position: fieldsValue.position || '', remark: fieldsValue.remark || '' },
         imageUrl,
         editValue.uid,
-        group,
+        groupId,
       );
     });
   };
@@ -154,7 +154,7 @@ class PersonModal extends Component {
   // 选择角色
   changeSelect(value) {
     this.setState({
-      group: value,
+      groupId: value,
     })
   }
 
@@ -284,7 +284,7 @@ class PersonModal extends Component {
         <Row span={24}>
           <Col>
             <FormItem {...formItemLayout} label="用户组">
-              {getFieldDecorator('group', {
+              {getFieldDecorator('groupId', {
                 rules: [],
               })(
                 <Select style={{ width: 354 }} onChange={this.changeSelect.bind(this)}>

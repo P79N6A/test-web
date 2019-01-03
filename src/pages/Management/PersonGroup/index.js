@@ -71,7 +71,7 @@ export default class PersonGroup extends Component {
     this.setState({
       groupActive: id
     });
-    this.fetchDataList({ group: id });
+    this.fetchDataList({ groupId: id });
   }
 
   // 打开添加组的弹窗
@@ -196,7 +196,7 @@ export default class PersonGroup extends Component {
       payload: {
         limit: (value && value.limit) || limit,
         offset: (value && (value.current - 1) * 15) || (current - 1) * 15,
-        group: (value && value.group),
+        groupId: (value && value.groupId),
         query,
       },
     });

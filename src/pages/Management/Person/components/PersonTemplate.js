@@ -87,7 +87,7 @@ class PersonTemplate extends Component {
       payload: {
         file,
         force,
-        groupActive,
+        gruopId: groupActive,
         callback: (res) => {
           this.uploadNumberAdd('none', 100);
           if (res.status === 'success') {

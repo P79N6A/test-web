@@ -1,11 +1,11 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { login } from '@/services/api';
-import { setAuthority, setUserInfo, getUserInfo } from '@/utils/authority';
+import { login, getSidebarList } from '@/services/api';
+import { setAuthority, setUserInfo, getUserInfo, setSidebar } from '@/utils/authority';
 import { isJSON } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
 import { message } from 'antd';
-import { getLocale } from 'umi/locale';
+import { formatMessage, getLocale } from 'umi/locale';
 import G from '@/global';
 
 export default {
@@ -13,11 +13,13 @@ export default {
 
   state: {
     status: undefined,
+    sidebarList: []
   },
 
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(login, payload);
+      payload.callback(response);
       // Login successfully
       if (response.status === 'success') {
         let user = {};
@@ -94,6 +96,19 @@ export default {
         })
       );
     },
+    // 获取侧边栏
+    *getSidebarList(_, { call, put }) {
+      const response = yield call(getSidebarList);
+      if (response && response.status === 'success') {
+        yield put({
+          type: 'saveSidebar',
+          payload: response.data,
+        });
+        setSidebar(response.data);
+      } else {
+        message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
+      }
+    },
   },
 
   reducers: {
@@ -105,6 +120,13 @@ export default {
         ...state,
         status: payload.status,
         type: payload.type,
+      };
+    },
+    // 保存侧边栏列表
+    saveSidebar(state, action) {
+      return {
+        ...state,
+        sidebarList: action.payload,
       };
     },
   },

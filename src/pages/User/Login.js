@@ -48,10 +48,20 @@ class LoginPage extends Component {
         payload: {
           ...values,
           type,
+          callback: this.getSidebar.bind(this)
         },
       });
     }
   };
+
+  getSidebar(res) {
+    const { dispatch } = this.props;
+    if (res.status === 'success') {
+      dispatch({
+        type: 'login/getSidebarList',
+      })
+    }
+  }
 
   changeAutoLogin = e => {
     this.setState({

@@ -28,3 +28,11 @@ export function setUserInfo(user) {
 export function getUserInfo() {
   return sessionStorage.getItem('userInfo');
 }
+
+export function getSidebar() {
+  return JSON.parse(sessionStorage.getItem('sidebar'));
+}
+
+export function setSidebar(sidebar) {
+  sessionStorage.setItem('sidebar', JSON.stringify(sidebar));
+}

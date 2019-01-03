@@ -821,7 +821,7 @@ export async function virtualGatewaySensorList(payload) {
   });
 }
 
-// admin传感器列表以及查询
+// admin 传感器列表以及查询
 export async function adminSensorList(payload) {
   return {
     "status": "success",
@@ -840,6 +840,24 @@ export async function adminSensorList(payload) {
 
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/admin/sensor/list`, {
+    method: 'POST',
+    body,
+  });
+}
+
+// admin 根据传感器 ID 查询虚拟网关状态
+export async function getGatewayStatus(payload) {
+  return {
+    "status": "success",
+    "data": {
+      "sensor_state": 0,
+      "virtual_gateway_id": "dacdncjata",
+      "virtual_gateway_state": 1,
+    }
+  }
+
+  const body = filterBody({ token: getToken() });
+  return request(`${G.API_URL}/admin/sensor/${payload.id}`, {
     method: 'POST',
     body,
   });

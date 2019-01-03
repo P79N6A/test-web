@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Icon, Button, Input, Tooltip, Table, Pagination, Divider, message } from 'antd';
+import { Row, Col, Icon, Button, Input, Tooltip, Table, Pagination, Modal } from 'antd';
 import styles from './index.less';
+import G from '@/global';
 
 @connect(({ adminSensor, loading }) => ({
   adminSensor,
@@ -11,6 +12,19 @@ import styles from './index.less';
 export default class AdminSensor extends Component {
   state = {
     query: '',
+    visible: false,
+    sensorId: '',
+    // 虚拟网关状态
+    stateData: [
+      { text: "在线", value: 0 },
+      { text: "离线", value: 1 },
+    ],
+    // 传感器状态
+    sensorState: [
+      { text: "占用", value: 0 },
+      { text: "空闲", value: 1 },
+      { text: "离线", value: 2 },
+    ],
   }
 
   componentDidMount() {
@@ -59,7 +73,7 @@ export default class AdminSensor extends Component {
         render: (text, record, index) => (
           <Fragment>
             <Tooltip placement="topLeft" title={text.number}>
-              <font>{text.number}</font>
+              <font onClick={this.showDetail.bind(this, text.id)}>{text.number}</font>
             </Tooltip>
           </Fragment>
         ),
@@ -114,9 +128,32 @@ export default class AdminSensor extends Component {
     });
   }
 
+  // 显示详情页面
+  showDetail(id) {
+    const { dispatch } = this.props;
+    this.setState({
+      visible: true,
+      sensorId: id,
+    });
+    dispatch({
+      type: 'adminSensor/getGatewayStatus',
+      payload: {
+        id,
+      }
+    })
+  }
+
+  // 关闭详情页面
+  handClose() {
+    this.setState({
+      visible: false,
+      sensorId: '',
+    })
+  }
+
   render() {
-    const { query } = this.state;
-    const { adminSensorData } = this.props.adminSensor;
+    const { query, visible, sensorId, sensorState, stateData } = this.state;
+    const { adminSensorData, sensorData } = this.props.adminSensor;
     const { rows, limit, current, count } = adminSensorData;
     const columns = this.getColumns(current);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
@@ -166,6 +203,30 @@ export default class AdminSensor extends Component {
             />
           </Col>
         </Row>
+        {/* 详情弹窗 */}
+        <Modal
+          visible={visible}
+          title="传感器详情"
+          onOk={this.handClose.bind(this)}
+          onCancel={this.handClose.bind(this)}
+          footer={[
+            <Button key="back" size="small" onClick={this.handClose.bind(this)}>
+              <FormattedMessage id="all.close" />
+            </Button>
+          ]}
+        >
+          <p>传感器ID：{sensorId}</p>
+          {
+            !G._.isEmpty(sensorData) ?
+              <span>
+                <p>传感器状态：{sensorState[sensorData.sensor_state].text}</p>
+                <p>虚拟网关ID：{sensorData.virtual_gateway_id}</p>
+                <p>虚拟网关状态：{stateData[sensorData.virtual_gateway_state].text}</p>
+              </span>
+              :
+              ''
+          }
+        </Modal>
       </div>
     );
   }

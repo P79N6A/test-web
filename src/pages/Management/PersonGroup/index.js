@@ -264,7 +264,7 @@ export default class PersonGroup extends Component {
       type: 'PersonGroup/usersGroupUpdate',
       payload: {
         isDel: true,
-        groupActive,
+        groupId: groupActive,
         callback: this.back.bind(this)
       }
     })

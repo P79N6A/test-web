@@ -5,12 +5,12 @@ import { filterUrl, filterBody, getToken, filterEdit } from '@/utils/utils';
 const { API_URL, IXAM_URL, SUBSCRIPTION_KEY } = G;
 // 登录
 export async function login(params) {
-  const username = params.userName;
+  const userAccount = params.userName;
   const password = params.password;
-  // 执行api请求
+  const role = params.role;
   return request(`${API_URL}/users/login`, {
     method: 'POST',
-    body: { username, password },
+    body: { userAccount, password, role },
   });
 }
 
@@ -176,7 +176,7 @@ export async function getNotificationCount() {
   });
 }
 
-// 通知数
+// 站立时长
 export async function getStandNum() {
   return request(`${API_URL}/stats/standTotalTime?token=${getToken()}`, {
     method: 'GET',
@@ -237,16 +237,8 @@ export async function getHomeData() {
   });
 }
 
-// TODO: 获取用户组
+// 获取用户组
 export async function usersGroupList(payload) {
-  return {
-    "status": "success",
-    "data": [
-      { "id": 0, "name": "默认组" },
-      { "id": 1, "name": "第一组" },
-      { "id": 2, "name": "第二组" }
-    ]
-  }
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/users/group/list`, {
     method: 'POST',
@@ -254,11 +246,8 @@ export async function usersGroupList(payload) {
   });
 }
 
-// TODO: 创建用户组
+// 创建用户组
 export async function addUsersGroup(payload) {
-  return {
-    "status": "success"
-  }
   const url = `${G.API_URL}/users/group`;
   const body = filterBody({ ...payload, token: getToken() });
   return request(url, {
@@ -267,11 +256,8 @@ export async function addUsersGroup(payload) {
   });
 }
 
-// TODO: 删除用户组
+// 删除用户组
 export async function usersGroupUpdate(payload) {
-  return {
-    "status": "success"
-  }
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/users/group/update`, {
     method: 'POST',
@@ -279,7 +265,7 @@ export async function usersGroupUpdate(payload) {
   });
 }
 
-// TODO: 获取人员列表
+// 获取人员列表
 export async function getPersonnelList(payload) {
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/users/list`, {
@@ -328,9 +314,6 @@ export async function usersBatchImport(payload) {
 
 // 修改角色
 export async function changeRole(payload) {
-  return {
-    status: 'success',
-  }
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/users/role`, {
     method: 'POST',

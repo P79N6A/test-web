@@ -248,18 +248,18 @@ export default class Person extends Component {
     });
   };
 
-  handleOk = (fieldsValue, avatar, uid, group) => {
+  handleOk = (fieldsValue, avatar, uid) => {
     const fieldsValues = fieldsValue;
     delete fieldsValues.isDel;
     this.setState({ modalLoading: true });
     delete fieldsValues.upload;
     const { editValue } = this.state;
     if (G._.isEmpty(editValue)) {
-      this.addPerson({ ...fieldsValues, avatar, group, callback: this.upload.bind(this) });
+      this.addPerson({ ...fieldsValues, avatar, callback: this.upload.bind(this) });
       return;
     }
     fieldsValues.uid = uid;
-    this.updatePerson({ ...fieldsValues, avatar, group, callback: this.update.bind(this) });
+    this.updatePerson({ ...fieldsValues, avatar, callback: this.update.bind(this) });
   };
 
   upload = res => {
@@ -421,13 +421,13 @@ export default class Person extends Component {
         <h3><FormattedMessage id="menu.management.person" /></h3>
         <br />
         <Row className={styles.lageBox}>
-          <Col span={12}>
+          <Col span={10}>
             <Button icon="plus" type="primary" size='small' onClick={this.showModal} style={{ marginRight: '20px' }}>
               <FormattedMessage id="all.add" />
             </Button>
             <Button type="default" size='small' onClick={this.importUser.bind(this)}><FormattedMessage id="person.import.batch" /></Button>
           </Col>
-          <Col span={12}>
+          <Col span={14}>
             <Button
               className={styles.rights}
               size='small'

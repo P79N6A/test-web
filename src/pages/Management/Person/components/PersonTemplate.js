@@ -213,7 +213,7 @@ class PersonTemplate extends Component {
                 <div className={styles.stapOne}>
                   <p className={styles.stapTitle}><font>1</font><FormattedMessage id="person.import.download-template" /></p>
                   <p className={styles.stapText}><FormattedMessage id="person.import.download-model-first" /></p>
-                  <a className={styles.stapBtn} href={`${G.picUrl}download/9am_user_importTemplate%20.zip`}>
+                  <a className={styles.stapBtn} href={`${G.picUrl}download/9am_user_importTemplate.zip`}>
                     <FormattedMessage id="person.import.download-template" />
                   </a>
                 </div>

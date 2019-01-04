@@ -41,6 +41,10 @@ class SendEmail extends Component {
                     rules: [
                       { required: true, message: formatMessage({ id: "reset.password.email-input" }) },
                       {
+                        max: 50,
+                        message: formatMessage({ id: 'test.max.long.fifty' }),
+                      },
+                      {
                         pattern: G.emailCheck,
                         message: formatMessage({ id: 'customer.operate.email-message' }),
                       },

@@ -67,14 +67,13 @@ class PersonModal extends Component {
 
   okHandle = () => {
     const { form, handleOk, editValue } = this.props;
-    const { imageUrl, groupId } = this.state;
+    const { imageUrl } = this.state;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       handleOk(
         { ...fieldsValue, position: fieldsValue.position || '', remark: fieldsValue.remark || '' },
         imageUrl,
         editValue.uid,
-        groupId,
       );
     });
   };
@@ -245,6 +244,10 @@ class PersonModal extends Component {
             <FormItem {...formItemLayout} label={formatMessage({ id: 'app.settings.basic.email' })}>
               {getFieldDecorator('email', {
                 rules: [
+                  {
+                    max: 50,
+                    message: formatMessage({ id: 'test.max.long.fifty' }),
+                  },
                   {
                     pattern: G.emailCheck,
                     message: formatMessage({ id: 'customer.operate.email-message' }),

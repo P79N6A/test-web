@@ -215,6 +215,10 @@ class NewCustomer extends Component {
                   rules: [
                     { required: true, message: formatMessage({ id: 'app.settings.basic.email-message' }) },
                     {
+                      max: 50,
+                      message: formatMessage({ id: 'test.max.long.fifty' }),
+                    },
+                    {
                       pattern: G.emailCheck,
                       message: formatMessage({ id: 'customer.operate.email-message' }),
                     },

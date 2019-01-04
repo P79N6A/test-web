@@ -39,7 +39,11 @@ class LoginPage extends Component {
       });
     });
 
-  handleSubmit = (err, values) => {
+  handleSubmit = (location, err, values) => {
+    let role = 'user';
+    if (location.pathname === '/admin_user/login') {
+      role = 'admin';
+    }
     const { type } = this.state;
     if (!err) {
       const { dispatch } = this.props;
@@ -47,6 +51,7 @@ class LoginPage extends Component {
         type: 'login/login',
         payload: {
           ...values,
+          role,
           type,
           callback: this.getSidebar.bind(this)
         },
@@ -85,7 +90,7 @@ class LoginPage extends Component {
         <Login
           defaultActiveKey={type}
           onTabChange={this.onTabChange}
-          onSubmit={this.handleSubmit}
+          onSubmit={this.handleSubmit.bind(this, location)}
           ref={form => {
             this.loginForm = form;
           }}
@@ -99,7 +104,7 @@ class LoginPage extends Component {
             <Password
               name="password"
               placeholder={formatMessage({ id: 'customer.operate.password' })}
-              onPressEnter={() => this.loginForm.validateFields(this.handleSubmit)}
+              onPressEnter={() => this.loginForm.validateFields(this.handleSubmit.bind(this, location))}
             />
           </Tab>
           {

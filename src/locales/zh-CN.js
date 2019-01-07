@@ -95,6 +95,9 @@ export default {
   "person.list.position": "职务",
   "person.list.use.status": "使用状态",
   "person.list.delete.tip": "确定要删除此条信息吗？",
+  "person.list.set.group.management": "设为组管理员",
+  "person.list.acncel.group.management": "取消组管理员",
+  "person.list.cancel.group.management.tip": "确定取消组管理员吗？",
   // 用户管理（操作）
   "person.operate.new-users": "添加用户",
   "person.operate.edit-users": "编辑用户",
@@ -144,6 +147,21 @@ export default {
   "person.import.loading": "上传解析中",
   "person.import.success": "成功导入",
   "person.import.success.data": "条数据",
+  // 用户组
+  "person.group": "用户组",
+  "person.group.super.admin": "超级管理员",
+  "person.group.group.admin": "组管理员",
+  "person.group.default.member": "成员",
+  "person.group.del": "删除用户组",
+  "person.group.management": "用户组管理",
+  "person.group.search.placeholder": "搜索用户组或成员",
+  "person.group.create": "创建用户组",
+  "person.group.all.member": "所有成员",
+  "person.group.import.member": "导入成员",
+  "person.group.add.member": "添加成员",
+  "person.group.add.group.name": "请填写用户组名称",
+  "person.group.add.group.check.message": "用户组名字长度不能超过20字符",
+  "person.group.add.group.placeholder": "请输入用户组名称",
   // 设备管理
   "device.list": "设备列表",
   "device.list.search-user-text": "设备编号 / 使用者 / 备注",
@@ -464,7 +482,23 @@ export default {
   "reset.password.send-email-message-two": "发送了一封密码找回邮件，请注意查收。",
   "reset.password.send-email-none": "没有收到邮件？",
   "reset.password.send-again": "重新发送",
-  // TODO: Setting下面所有页面
-  // TODO: Person页面
-  // TODO: PersonGroup页面
+  // admin 传感器页面
+  "admin.sensor.list.occupy": "占用",
+  "admin.sensor.list.sensor.number": "传感器编号",
+  "admin.sensor.list.gateway.id": "物理网关ID",
+  "admin.sensor.list.customer": "客户",
+  "admin.sensor.list.sensor.id": "传感器ID",
+  "admin.sensor.detail": "传感器详情",
+  "admin.sensor.detail.status": "传感器状态",
+  "admin.sensor.detail.virtual.gateway.id": "虚拟网关ID",
+  "admin.sensor.detail.virtual.gateway.status": "虚拟网关状态",
+  // 网关管理
+  "gateway.management": "网关管理",
+  "gateway.management.gateway": "物理网关",
+  "gateway.management.virtual.gateway": "虚拟网关",
+  // 虚拟网关
+  "virtual.gateway.script": "脚本",
+  "virtual.gateway.type": "类型",
+  "virtual.gateway.copy.connect.string": "复制连接字符串",
+  "virtual.gateway.detail": "虚拟网关详情",
 };

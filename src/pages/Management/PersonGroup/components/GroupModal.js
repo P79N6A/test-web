@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Modal, Button, Input, message } from 'antd';
-import G from '@/global';
 import styles from './GroupModal.less';
 
 export default class GroupModal extends Component {
@@ -11,13 +10,13 @@ export default class GroupModal extends Component {
 
   okHandle() {
     const { group } = this.state;
-    const { dispatch, closeGroupModel } = this.props;
+    const { dispatch } = this.props;
     if (group.length <= 0) {
-      message.error('请填写用户组名称');
+      message.error(formatMessage({ id: 'person.group.add.group.name' }));
       return;
     }
     if (group.length > 20) {
-      message.error('用户组名字长度不能超过20字符');
+      message.error(formatMessage({ id: 'person.group.add.group.check.message' }));
       return;
     }
     dispatch({
@@ -46,7 +45,7 @@ export default class GroupModal extends Component {
     return (
       <Modal
         visible={visible}
-        title="创建用户组"
+        title={formatMessage({ id: 'person.group.create' })}
         onOk={this.okHandle.bind(this)}
         onCancel={closeGroupModel}
         footer={[
@@ -62,7 +61,7 @@ export default class GroupModal extends Component {
           value={group}
           onChange={this.changeGroupInfo.bind(this)}
           className={styles.group}
-          placeholder="请输入用户组名称"
+          placeholder={formatMessage({ id: 'person.group.add.group.placeholder' })}
         />
       </Modal>
     );

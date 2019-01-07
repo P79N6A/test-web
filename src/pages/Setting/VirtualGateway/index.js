@@ -18,8 +18,8 @@ export default class VirtualGateway extends Component {
       query: props.id,
       filterParam: {},
       filterStatus: [
-        { text: "脚本", value: 0 },
-        { text: "网关", value: 1 },
+        { text: formatMessage({ id: 'virtual.gateway.script' }), value: 0 },
+        { text: formatMessage({ id: 'gateway' }), value: 1 },
       ],
     }
   }
@@ -74,7 +74,7 @@ export default class VirtualGateway extends Component {
         ),
       },
       {
-        title: "虚拟网关",
+        title: formatMessage({ id: 'gateway.management.virtual.gateway' }),
         key: 'virtualGateway',
         render: (text, record, index) => {
           return (
@@ -89,7 +89,7 @@ export default class VirtualGateway extends Component {
         }
       },
       {
-        title: "物理网关",
+        title: formatMessage({ id: 'gateway.management.gateway' }),
         key: "gateway",
         render: (text) => {
           return (
@@ -102,7 +102,7 @@ export default class VirtualGateway extends Component {
         }
       },
       {
-        title: "类型",
+        title: formatMessage({ id: 'virtual.gateway.type' }),
         key: 'type',
         filters: filterStatus,
         render: text => {
@@ -116,7 +116,7 @@ export default class VirtualGateway extends Component {
         }
       },
       {
-        title: "客户",
+        title: formatMessage({ id: 'admin.sensor.list.customer' }),
         key: 'companyName',
         filters: customerList,
         render: (text) => {
@@ -135,7 +135,7 @@ export default class VirtualGateway extends Component {
         render: (text, record, index) => (
           <Fragment>
             <CopyToClipboard text={text.connectString}>
-              <a>复制连接字符串</a>
+              <a><FormattedMessage id="virtual.gateway.copy.connect.string" /></a>
             </CopyToClipboard>
           </Fragment>
         )
@@ -226,7 +226,7 @@ export default class VirtualGateway extends Component {
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder="虚拟网关 / 物理网关"
+              placeholder={formatMessage({ id: 'gateway.management.virtual.gateway' }) / formatMessage({ id: 'gateway.management.gateway' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;

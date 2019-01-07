@@ -8,16 +8,16 @@ class DetailModel extends Component {
   state = {
     // 虚拟网关状态
     stateData: [
-      { text: "在线", value: 0 },
-      { text: "离线", value: 1 },
+      { text: formatMessage({ id: 'spaceUsage.online' }), value: 0 },
+      { text: formatMessage({ id: 'device.list.offline' }), value: 1 },
     ],
-    query: "",
+    query: '',
     filterParam: {},
     // 传感器状态
     sensorState: [
-      { text: "占用", value: 0 },
-      { text: "空闲", value: 1 },
-      { text: "离线", value: 2 },
+      { text: formatMessage({ id: 'admin.sensor.list.occupy' }), value: 0 },
+      { text: formatMessage({ id: 'device.list.leisure' }), value: 1 },
+      { text: formatMessage({ id: 'device.list.offline' }), value: 2 },
     ]
   }
 
@@ -52,7 +52,7 @@ class DetailModel extends Component {
   getColumns(sensorState) {
     const columns = [
       {
-        title: "传感器ID",
+        title: formatMessage({ id: 'admin.sensor.list.sensor.id' }),
         key: 'gatewayId',
         render: (text, record, index) => (
           <Fragment>
@@ -63,7 +63,7 @@ class DetailModel extends Component {
         ),
       },
       {
-        title: "状态",
+        title: formatMessage({ id: 'device.list.status' }),
         key: 'state',
         filters: sensorState,
         render: text => {
@@ -124,7 +124,7 @@ class DetailModel extends Component {
       <Modal
         width={780}
         visible={visible}
-        title="虚拟网关详情"
+        title={formatMessage({ id: 'virtual.gateway.detail' })}
         onOk={handClose}
         onCancel={handClose}
         footer={[
@@ -134,8 +134,8 @@ class DetailModel extends Component {
         ]}
       >
         <div className={styles.main}>
-          <p className={styles.gatewayState}>虚拟网关ID：{virtualGateway}</p>
-          <p className={styles.gatewayState}>虚拟网关状态：{stateData[state].text}</p>
+          <p className={styles.gatewayState}><FormattedMessage id="admin.sensor.detail.virtual.gateway.id" />：{virtualGateway}</p>
+          <p className={styles.gatewayState}><FormattedMessage id="admin.sensor.detail.virtual.gateway.status" />：{stateData[state].text}</p>
           <Row className={styles.lageBox}>
             <Col span={24}>
               <Button
@@ -150,7 +150,7 @@ class DetailModel extends Component {
               <Input
                 value={query}
                 className={styles.widthInput}
-                placeholder="传感器ID"
+                placeholder={formatMessage({ id: 'admin.sensor.list.sensor.id' })}
                 suffix={suffix}
                 ref={node => {
                   this.userNameInput = node;
@@ -158,7 +158,7 @@ class DetailModel extends Component {
                 onChange={this.onChangeSearchInfo.bind(this)}
                 onKeyUp={this.handelKeydown.bind(this)}
               />
-              <span className={styles.gatewayState}>传感器列表</span>
+              <span className={styles.gatewayState}><FormattedMessage id="sensor.list" /></span>
             </Col>
             <br />
           </Row>

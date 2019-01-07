@@ -95,7 +95,7 @@ export default class PersonGroup extends Component {
   getColumns(current) {
     const columns = [
       {
-        title: '序号',
+        title: formatMessage({ id: 'all.serial.number' }),
         key: 'uid',
         width: 70,
         render: (text, record, index) => (
@@ -105,7 +105,7 @@ export default class PersonGroup extends Component {
         ),
       },
       {
-        title: '用户',
+        title: formatMessage({ id: 'device.list.user' }),
         key: 'name',
         render: (text) => {
           return (
@@ -129,7 +129,7 @@ export default class PersonGroup extends Component {
         }
       },
       {
-        title: '手机',
+        title: formatMessage({ id: 'person.list.phone' }),
         key: 'phone',
         render: (text) => {
           return (
@@ -142,7 +142,7 @@ export default class PersonGroup extends Component {
         }
       },
       {
-        title: '邮箱',
+        title: formatMessage({ id: 'app.settings.basic.email' }),
         key: 'email',
         render: (text) => {
           return (
@@ -155,13 +155,13 @@ export default class PersonGroup extends Component {
         }
       },
       {
-        title: '角色',
+        title: formatMessage({ id: 'person.role' }),
         render: (text, record, index) => (
           <Fragment>
             <Select defaultValue={text.role} style={{ width: 120 }} onChange={this.handleChange.bind(this, text, record, index)}>
-              <Option value="superAdmin">超级管理员</Option>
-              <Option value="groupAdmin">组管理员</Option>
-              <Option value="defaultMember">成员</Option>
+              <Option value="superAdmin"><FormattedMessage id="person.group.super.admin" /></Option>
+              <Option value="groupAdmin"><FormattedMessage id="person.group.group.admin" /></Option>
+              <Option value="defaultMember"><FormattedMessage id="person.group.default.member" /></Option>
             </Select>
           </Fragment>
         ),
@@ -283,12 +283,12 @@ export default class PersonGroup extends Component {
     const columns = this.getColumns(current);
     const content = (
       <div>
-        <font className={styles.delGroup} onClick={this.delGroup.bind(this)}>删除用户组</font>
+        <font className={styles.delGroup} onClick={this.delGroup.bind(this)}><FormattedMessage id="person.group.del" /></font>
       </div>
     );
     return (
       <div className={styles.main}>
-        <h3>用户组管理</h3>
+        <h3><FormattedMessage id="person.group.management" /></h3>
         <br />
         <Row gutter={24} className={styles.box}>
           {/* 用户组 */}
@@ -297,7 +297,7 @@ export default class PersonGroup extends Component {
               <Input
                 className={styles.search}
                 value={query}
-                placeholder="搜索用户组或成员"
+                placeholder={formatMessage({ id: 'person.group.search.placeholder' })}
                 prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 suffix={suffix}
                 ref={node => {
@@ -306,9 +306,9 @@ export default class PersonGroup extends Component {
                 onChange={this.onChangeSearchInfo.bind(this)}
                 onKeyUp={this.handelKeydown.bind(this)}
               />
-              <Button size="small" className={styles.btn} onClick={this.openGroupModel.bind(this)}>创建用户组</Button>
+              <Button size="small" className={styles.btn} onClick={this.openGroupModel.bind(this)}><FormattedMessage id="person.group.create" /></Button>
               <ul className={styles.groupBox}>
-                <p onClick={this.changeGroup.bind(this, '')} className={[styles.title, groupActive === '' && styles.bg_green].join(' ')}><Icon type="caret-down" className={styles.icon} />所有成员</p>
+                <p onClick={this.changeGroup.bind(this, '')} className={[styles.title, groupActive === '' && styles.bg_green].join(' ')}><Icon type="caret-down" className={styles.icon} /><FormattedMessage id="person.group.all.member" /></p>
                 {
                   groupList && groupList.length > 0
                     ?
@@ -325,17 +325,17 @@ export default class PersonGroup extends Component {
           <Col span={17} className={styles.boxs}>
             <div className={styles.rightList}>
               <div className={styles.titleBox}>
-                <h3>所有成员</h3>
+                <h3><FormattedMessage id="person.group.all.member" /></h3>
                 <p className={styles.del}>
                   <Popover content={content}>
                     <Icon type="ellipsis" className={styles.deleteIcon} />
                   </Popover>
                 </p>
                 <Button type="default" size="small" className={styles.addBtn} onClick={this.importUser.bind(this)}>
-                  导入成员
+                  <FormattedMessage id="person.group.import.member" />
                 </Button>
                 <Button icon="plus" type="primary" size="small" className={styles.addBtn} onClick={this.showModal}>
-                  添加成员
+                  <FormattedMessage id="person.group.add.member" />
                 </Button>
               </div>
               <div className={styles.userList}>

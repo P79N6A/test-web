@@ -209,25 +209,25 @@ export default class Person extends Component {
             <Divider type="vertical" />
             {
               // 超级管理员禁用
-              text.role === 'superAdmin' ? <a className={styles.disabledColor}>设为组管理员</a> :
+              text.role === 'superAdmin' ? <a className={styles.disabledColor}><FormattedMessage id="person.list.set.group.management" /></a> :
                 text.role === 'groupAdmin'
                   ?
                   // 组管理员
                   <Popconfirm
                     placement="left"
-                    title="确定取消组管理员吗？"
+                    title={formatMessage({ id: 'person.list.cancel.group.management.tip' })}
                     onConfirm={this.onCancel.bind(this, text)}
                     okText={formatMessage({ id: 'all.certain' })}
                     cancelText={formatMessage({ id: 'all.cancel' })}
                   >
-                    <a>取消组管理员</a>
+                    <a><FormattedMessage id="person.list.acncel.group.management" /></a>
                   </Popconfirm>
                   :
                   // 默认成员
                   <a
                     onClick={() => {
                       this.openRole(text, record, index);
-                    }}>设为组管理员</a>
+                    }}><FormattedMessage id="person.list.set.group.management" /></a>
             }
           </Fragment>
         ),

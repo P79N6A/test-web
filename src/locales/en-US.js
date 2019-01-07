@@ -13,8 +13,8 @@ export default {
   "menu.management.customer": "Customers Management",
   "menu.management.newCustomer": "Add New Customer",
   "menu.management.person": "User Management",
-  // TODO: 翻译
-  "menu.management.personGroup": "用户组管理",
+  // 翻译
+  "menu.management.personGroup": "Usergroup Manage",
   "menu.management.device": "Cloud Desk",
   "menu.management.notice": "Notification Center",
   "menu.management.newNotice": "New Notification",
@@ -96,6 +96,10 @@ export default {
   "person.list.position": "Position",
   "person.list.use.status": "Using Status",
   "person.list.delete.tip": "Do you want to delete this message ?",
+  // 翻译
+  "person.list.set.group.management": "Set Manager",
+  "person.list.acncel.group.management": "Cancel Manager",
+  "person.list.cancel.group.management.tip": "Cancel the group manager?",
   // 用户管理（操作）
   "person.operate.new-users": "Add New User",
   "person.operate.edit-users": "Edit User Info",
@@ -143,6 +147,23 @@ export default {
   "person.import.file-error-one": "of them",
   "person.import.file-error-two": "do not meet the requirements for data, which will not be imported",
   "person.import.loading": "Files are under parsed now",
+  "person.import.success": "Successful imported",
+  "person.import.success.data": "record",
+  // 用户组
+  "person.group": "Usergroup",
+  "person.group.super.admin": "Super Manager",
+  "person.group.group.admin": "Group Manager",
+  "person.group.default.member": "Member",
+  "person.group.del": "Delete usergroup",
+  "person.group.management": "Usergroup manage",
+  "person.group.search.placeholder": "Search usergroup or member",
+  "person.group.create": "Create usergroup",
+  "person.group.all.member": "All members",
+  "person.group.import.member": "Import members",
+  "person.group.add.member": "Add",
+  "person.group.add.group.name": "Please input usergroup name",
+  "person.group.add.group.check.message": "User group name cannot exceed 20 characters in length",
+  "person.group.add.group.placeholder": "Please input usergroup name",
   // 设备管理
   "device.list": "Device List",
   "device.list.search-user-text": "Device ID/Users/Remarks",
@@ -463,7 +484,23 @@ export default {
   "reset.password.send-email-message-two": "We have sent a password getting back E-mail to you,please check it.",
   "reset.password.send-email-none": "Haven't received the mail?",
   "reset.password.send-again": "Re-send",
-  // TODO: Setting下面所有页面
-  // TODO: Person页面
-  // TODO: PersonGroup页面
+  // admin 传感器页面
+  "admin.sensor.list.occupy": "Occupation",
+  "admin.sensor.list.sensor.number": "Sensor code",
+  "admin.sensor.list.gateway.id": "Geteway ID",
+  "admin.sensor.list.customer": "Customer",
+  "admin.sensor.list.sensor.id": "Sensor ID",
+  "admin.sensor.detail": "Sensor detail",
+  "admin.sensor.detail.status": "Sensor status",
+  "admin.sensor.detail.virtual.gateway.id": "Virtual gateway ID",
+  "admin.sensor.detail.virtual.gateway.status": "Virtual gateway Status",
+  // 网关管理
+  "gateway.management": "Geteway manage",
+  "gateway.management.gateway": "Geteway",
+  "gateway.management.virtual.gateway": "Virtual gateway",
+  // 虚拟网关
+  "virtual.gateway.script": "Script",
+  "virtual.gateway.type": "Type",
+  "virtual.gateway.copy.connect.string": "Copy connection string",
+  "virtual.gateway.detail": "Virtual gateway detail",
 };

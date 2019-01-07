@@ -286,7 +286,7 @@ class PersonModal extends Component {
         <div className={styles.line} />
         <Row span={24}>
           <Col>
-            <FormItem {...formItemLayout} label="用户组">
+            <FormItem {...formItemLayout} label={formatMessage({ id: 'person.group' })}>
               {getFieldDecorator('groupId', {
                 rules: [],
               })(

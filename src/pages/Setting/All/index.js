@@ -31,11 +31,11 @@ export default class All extends Component {
     const { key, id } = this.state;
     return (
       <div className={styles.main}>
-        <h3>网关管理</h3>
+        <h3><FormattedMessage id="gateway.management" /></h3>
         <Tabs activeKey={key} onChange={this.callback.bind(this)}>
-          <TabPane tab="物理网关" key="gateway">{key === 'gateway' ? <Gateway saveGatewayParams={this.saveGatewayParams.bind(this)} /> : ''}</TabPane>
-          <TabPane tab="虚拟网关" key="virtual_gateway">{key === 'virtual_gateway' ? <VirtualGateway id={id} /> : ''}</TabPane>
-          <TabPane tab="传感器" key="admin_sensor">{key === 'admin_sensor' ? <AdminSensor /> : ''}</TabPane>
+          <TabPane tab={formatMessage({ id: 'gateway.management.gateway' })} key="gateway">{key === 'gateway' ? <Gateway saveGatewayParams={this.saveGatewayParams.bind(this)} /> : ''}</TabPane>
+          <TabPane tab={formatMessage({ id: 'gateway.management.virtual.gateway' })} key="virtual_gateway">{key === 'virtual_gateway' ? <VirtualGateway id={id} /> : ''}</TabPane>
+          <TabPane tab={formatMessage({ id: 'menu.device.sensor' })} key="admin_sensor">{key === 'admin_sensor' ? <AdminSensor /> : ''}</TabPane>
         </Tabs>
       </div>
     );

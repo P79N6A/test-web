@@ -16,14 +16,14 @@ export default class AdminSensor extends Component {
     sensorId: '',
     // 虚拟网关状态
     stateData: [
-      { text: "在线", value: 0 },
-      { text: "离线", value: 1 },
+      { text: formatMessage({ id: 'spaceUsage.online' }), value: 0 },
+      { text: formatMessage({ id: 'device.list.offline' }), value: 1 },
     ],
     // 传感器状态
     sensorState: [
-      { text: "占用", value: 0 },
-      { text: "空闲", value: 1 },
-      { text: "离线", value: 2 },
+      { text: formatMessage({ id: 'admin.sensor.list.occupy' }), value: 0 },
+      { text: formatMessage({ id: 'device.list.leisure' }), value: 1 },
+      { text: formatMessage({ id: 'device.list.offline' }), value: 2 },
     ],
   }
 
@@ -68,7 +68,7 @@ export default class AdminSensor extends Component {
         ),
       },
       {
-        title: "传感器编号",
+        title: formatMessage({ id: 'admin.sensor.list.sensor.number' }),
         key: 'number',
         render: (text, record, index) => (
           <Fragment>
@@ -79,7 +79,7 @@ export default class AdminSensor extends Component {
         ),
       },
       {
-        title: "物理网关ID",
+        title: formatMessage({ id: 'admin.sensor.list.gateway.id' }),
         key: 'gatewayId',
         render: (text) => {
           return (
@@ -92,7 +92,7 @@ export default class AdminSensor extends Component {
         }
       },
       {
-        title: "客户",
+        title: formatMessage({ id: 'admin.sensor.list.customer' }),
         key: 'customerName',
         render: text => {
           return (
@@ -173,7 +173,7 @@ export default class AdminSensor extends Component {
             <Input
               value={query}
               className={styles.widthInput}
-              placeholder="传感器ID"
+              placeholder={formatMessage({ id: 'admin.sensor.list.sensor.id' })}
               suffix={suffix}
               ref={node => {
                 this.userNameInput = node;
@@ -181,7 +181,7 @@ export default class AdminSensor extends Component {
               onChange={this.onChangeSearchInfo.bind(this)}
               onKeyUp={this.handelKeydown.bind(this)}
             />
-            <span className={styles.gatewayState}>传感器列表</span>
+            <span className={styles.gatewayState}><FormattedMessage id="sensor.list" /></span>
           </Col>
           <br />
         </Row>
@@ -206,7 +206,7 @@ export default class AdminSensor extends Component {
         {/* 详情弹窗 */}
         <Modal
           visible={visible}
-          title="传感器详情"
+          title={formatMessage({ id: 'admin.sensor.detail' })}
           onOk={this.handClose.bind(this)}
           onCancel={this.handClose.bind(this)}
           footer={[
@@ -215,13 +215,13 @@ export default class AdminSensor extends Component {
             </Button>
           ]}
         >
-          <p>传感器ID：{sensorId}</p>
+          <p><FormattedMessage id="admin.sensor.list.sensor.id" />：{sensorId}</p>
           {
             !G._.isEmpty(sensorData) ?
               <span>
-                <p>传感器状态：{sensorState[sensorData.sensor_state].text}</p>
-                <p>虚拟网关ID：{sensorData.virtual_gateway_id}</p>
-                <p>虚拟网关状态：{stateData[sensorData.virtual_gateway_state].text}</p>
+                <p><FormattedMessage id="admin.sensor.detail.status" />：{sensorState[sensorData.sensor_state].text}</p>
+                <p><FormattedMessage id="admin.sensor.detail.virtual.gateway.id" />：{sensorData.virtual_gateway_id}</p>
+                <p><FormattedMessage id="admin.sensor.detail.virtual.gateway.status" />：{stateData[sensorData.virtual_gateway_state].text}</p>
               </span>
               :
               ''

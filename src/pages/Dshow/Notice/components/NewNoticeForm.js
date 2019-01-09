@@ -27,9 +27,8 @@ class NewNoticeForm extends Component {
     prompt: {
       visible: false,
       title: '',
-      content: ''
-    }
-
+      content: '',
+    },
   };
 
   componentWillMount() {
@@ -47,11 +46,11 @@ class NewNoticeForm extends Component {
   componentDidMount() {
     const { copyValue, form } = this.props;
     if (!copyValue) return;
-    let fieldsValue = {
+    const fieldsValue = {
       person: copyValue.receivers || [],
       title: copyValue.title || '',
       type: copyValue.type,
-      text: copyValue.message || ''
+      text: copyValue.message || '',
     };
     form.setFieldsValue(fieldsValue);
     const contentBlock = htmlToDraft(copyValue.content);
@@ -62,7 +61,7 @@ class NewNoticeForm extends Component {
       editor: editorState,
       editorState: copyValue.content,
       type: copyValue.type,
-      poster: copyValue.message
+      poster: copyValue.message,
     });
   }
 
@@ -80,6 +79,78 @@ class NewNoticeForm extends Component {
     });
   }
 
+  normFile = e => {
+    if (!e || !e.fileList) {
+      return e;
+    }
+    const { fileList } = e;
+    return fileList;
+  };
+
+  // 获取文本内容
+  onChangeTextArea = (e) => {
+    this.setState({
+      poster: e.target.value,
+    })
+  }
+
+  handleCancel = (e) => {
+    this.setState({
+      prompt: {
+        visible: false,
+      },
+    });
+  }
+
+  // 弹窗回调
+  handleOk = (e) => {
+    this.setState({
+      poster: '',
+      posterMessage: '',
+      prompt: {
+        visible: false,
+      },
+      type: Number(this.contentTypeCopy),
+    });
+  }
+
+  // 选择文本或者海报
+  onChangeType = e => {
+    const a = e.target.value;
+    const { poster } = this.state;
+    this.contentTypeCopy = Number(a);
+    if (a === 0) {
+      if (!poster) {
+        this.setState({
+          prompt: {
+            visible: false,
+          },
+          type: 0,
+        });
+      } else {
+        this.setState({
+          prompt: {
+            visible: true,
+            title: formatMessage({ id: "notice.operate.certain-title" }),
+            content: formatMessage({ id: "notice.operate.certain-text" }),
+          },
+        });
+      }
+    } else if (!poster) {
+        this.setState({
+          type: 1,
+        });
+      } else {
+        this.setState({
+          prompt: {
+            visible: true,
+            title: formatMessage({ id: "notice.operate.certain-title" }),
+            content: formatMessage({ id: "notice.operate.certain-poster" }),
+          },
+        });
+      }
+  };
+  
   configSelectOption(user) {
     this.children = [];
     this.valueOfAll = [];
@@ -121,7 +192,7 @@ class NewNoticeForm extends Component {
           title: values.title,
           receivers: values.person,
           content: editorState,
-          type: type,
+          type,
           message: type === 0 ? values.text : poster,
           callback: this.sendResponse.bind(this),
         },
@@ -159,7 +230,7 @@ class NewNoticeForm extends Component {
 
   complete(resolve, response) {
     const data = {
-      link: G.picUrl + response.key
+      link: G.picUrl + response.key,
     }
     resolve({ data })
   }
@@ -181,75 +252,9 @@ class NewNoticeForm extends Component {
             } else {
               message.error(formatMessage({ id: 'notice.operate.refresh' }));
             }
-          }
+          },
         },
       });
-    })
-  }
-
-  // 选择文本或者海报
-  onChangeType = e => {
-    const a = e.target.value;
-    const { poster } = this.state;
-    this.contentTypeCopy = Number(a);
-    if (a === 0) {
-      if (!poster) {
-        this.setState({
-          prompt: {
-            visible: false
-          },
-          type: 0
-        });
-      } else {
-        this.setState({
-          prompt: {
-            visible: true,
-            title: formatMessage({ id: "notice.operate.certain-title" }),
-            content: formatMessage({ id: "notice.operate.certain-text" })
-          }
-        });
-      }
-    } else {
-      if (!poster) {
-        this.setState({
-          type: 1
-        });
-      } else {
-        this.setState({
-          prompt: {
-            visible: true,
-            title: formatMessage({ id: "notice.operate.certain-title" }),
-            content: formatMessage({ id: "notice.operate.certain-poster" })
-          }
-        });
-      }
-    }
-  };
-
-  // 弹窗回调
-  handleOk = (e) => {
-    this.setState({
-      poster: '',
-      posterMessage: '',
-      prompt: {
-        visible: false
-      },
-      type: Number(this.contentTypeCopy)
-    });
-  }
-
-  handleCancel = (e) => {
-    this.setState({
-      prompt: {
-        visible: false
-      }
-    });
-  }
-
-  // 获取文本内容
-  onChangeTextArea = (e) => {
-    this.setState({
-      poster: e.target.value
     })
   }
 
@@ -258,7 +263,7 @@ class NewNoticeForm extends Component {
     const { poster } = this.state;
     if (!poster) {
       this.setState({
-        posterMessage: formatMessage({ id: "notice.operate.poster-message" })
+        posterMessage: formatMessage({ id: "notice.operate.poster-message" }),
       });
       return false;
     }
@@ -275,13 +280,13 @@ class NewNoticeForm extends Component {
     this.setState({
       avatarLoading: false,
       poster: G.picUrl + response.key,
-      posterMessage: ''
+      posterMessage: '',
     });
   }
 
   checkImageWH(file, width, height) {
-    return new Promise(function (resolve, reject) {
-      let filereader = new FileReader();
+    return new Promise(((resolve, reject) => {
+      const filereader = new FileReader();
       if (file.size > 1024000) {
         reject({ title: formatMessage({ id: "notice.operate.poster-message-two" }) });
       }
@@ -290,22 +295,22 @@ class NewNoticeForm extends Component {
         reject({ title: formatMessage({ id: "notice.operate.poster-message-error" }) });
       }
       filereader.onload = e => {
-        let src = e.target.result;
+        const src = e.target.result;
         const image = new Image();
         image.onload = function () {
           const rate = Number((this.height / this.width).toFixed(4));
           const myRate = Number((height / width).toFixed(4));
-          if (512 > this.width > width) {
+          if (this.width < 512 > width) {
             reject({
-              title: formatMessage({ id: "notice.operate.poster-message-width-min" }) + width + formatMessage({ id: "notice.operate.poster-message-width-max" })
+              title: formatMessage({ id: "notice.operate.poster-message-width-min" }) + width + formatMessage({ id: "notice.operate.poster-message-width-max" }),
             });
-          } else if (569 > this.height > height) {
+          } else if (this.height < 569 > height) {
             reject({
               title: formatMessage({ id: "notice.operate.poster-message-height-min" }) + height + formatMessage({ id: "notice.operate.poster-message-height-max" }),
             });
           } else if (rate !== myRate) {
             reject({
-              title: formatMessage({ id: 'notice.operate.poster-message-rate' })
+              title: formatMessage({ id: 'notice.operate.poster-message-rate' }),
             });
           } else {
             resolve();
@@ -315,7 +320,7 @@ class NewNoticeForm extends Component {
         image.src = src;
       };
       filereader.readAsDataURL(file);
-    });
+    }));
   }
 
   // 上传海报
@@ -331,7 +336,7 @@ class NewNoticeForm extends Component {
               const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
               const avatarUrl = `${JSON.parse(window.sessionStorage.getItem('userInfo')).uid}_poster_${G.moment().unix()}.png`;
               this.setState({ avatarLoading: true });
-              let options = { maxWidth: 1024, maxHeight: 1138 };
+              const options = { maxWidth: 1024, maxHeight: 1138 };
               qiniu.compressImage(file, options).then(data => {
                 const observable = qiniu.upload(data.dist, avatarUrl, res.data, putExtra, config)
                 observable.subscribe(this.nexts.bind(this), this.errors.bind(this), this.completes.bind(this));
@@ -340,29 +345,22 @@ class NewNoticeForm extends Component {
             } else {
               message.error(formatMessage({ id: 'person.operate.reload-page' }));
             }
-          }
-        }
+          },
+        },
       });
     }).catch((err) => {
       Modal.error(err)
     });
   }
 
-  normFile = e => {
-    if (!e || !e.fileList) {
-      return e;
-    }
-    const { fileList } = e;
-    return fileList;
-  };
-
   render() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
-    const { editor, type, poster, posterMessage, avatarLoading } = this.state;
+    const { editor, type, poster, posterMessage, avatarLoading,prompt } = this.state;
     const uploadButton = (
       <div className={styles.posterAdd}>
-        <Icon className={styles.posterIcon} style={{ paddingRight: '16px', fontSize: '24px', fontWeight: '800' }} type={avatarLoading ? 'loading' : 'plus'} /><FormattedMessage id="notice.operate.poster-add" />
+        <Icon className={styles.posterIcon} style={{ paddingRight: '16px', fontSize: '24px', fontWeight: '800' }} type={avatarLoading ? 'loading' : 'plus'} />
+        <FormattedMessage id="notice.operate.poster-add" />
       </div>
     );
     return (
@@ -408,7 +406,7 @@ class NewNoticeForm extends Component {
               toolbar={{
                 options: ['inline', 'blockType', 'fontSize', 'fontFamily', 'list', 'textAlign', 'colorPicker', 'link', 'emoji', 'image', 'history'],
                 fontSize: {
-                  options: [28, 24, 20, 18, 14]
+                  options: [28, 24, 20, 18, 14],
                 },
                 colorPicker: {
                   colors: [
@@ -421,7 +419,7 @@ class NewNoticeForm extends Component {
                     'rgb(184,49,47)', 'rgb(124,112,107)', 'rgb(209,213,216)'],
                 },
                 fontFamily: {
-                  options: ["苹方", "微软雅黑", "DINPro", "Helvetica", "SF UI Text", "Arial"]
+                  options: ["苹方", "微软雅黑", "DINPro", "Helvetica", "SF UI Text", "Arial"],
                 },
                 inline: { inDropdown: true },
                 list: { inDropdown: true },
@@ -452,11 +450,12 @@ class NewNoticeForm extends Component {
                 <div className={styles.mobile}>
                   {/* 内容展示区 */}
                   <div className={styles.mobileText}>
-                    {!poster ? (<div className={styles.mobileNone}>
-                      <h3><FormattedMessage id="notice.operate.no-content" /></h3>
-                      <p className={styles.mobileNoneText}><FormattedMessage id="notice.operate.right-content" /></p>
-                    </div>)
-                      : (type === 0 ? <p>{poster}</p> : <img src={poster} />)
+                    {!poster ? (
+                      <div className={styles.mobileNone}>
+                        <h3><FormattedMessage id="notice.operate.no-content" /></h3>
+                        <p className={styles.mobileNoneText}><FormattedMessage id="notice.operate.right-content" /></p>
+                      </div>
+                    ): (type === 0 ? <p>{poster}</p> : <img src={poster} />)
                     }
                   </div>
                   <Icon type="close-circle" theme="filled" style={{ fontSize: '24px', marginTop: '15px', color: '#F3F5F7' }} />
@@ -469,24 +468,28 @@ class NewNoticeForm extends Component {
                 <Radio.Button value={1}><FormattedMessage id="notice.operate.poster" /></Radio.Button>
               </Radio.Group>
               <div className={styles.textContent}>
-                {type === 0 ?
+                {type === 0 ? (
                   <FormItem style={{ width: '100%', height: '100%', paddingTop: '18px' }}>
                     {getFieldDecorator('text', {
                       rules: [
-                        { required: type === 0 ? true : false, message: formatMessage({ id: 'notice.operate.text-message' }) },
+                        { required: type === 0, message: formatMessage({ id: 'notice.operate.text-message' }) },
                         {
                           max: 50,
                           message: formatMessage({ id: "test.max.long.fifty" }),
                         },
                       ],
-                    })(<TextArea
-                      rows={14}
-                      placeholder={formatMessage({ id: "notice.operate.text-show" })}
-                      style={{ resize: 'none', width: '100%', padding: '18px 20px', height: '320px' }}
-                      onChange={this.onChangeTextArea} />)}
-                  </FormItem> :
-                  <div style={{ width: '100%', height: '100%' }}>
-                    <FormItem style={{
+                    })(
+                      <TextArea
+                        rows={14}
+                        placeholder={formatMessage({ id: "notice.operate.text-show" })}
+                        style={{ resize: 'none', width: '100%', padding: '18px 20px', height: '320px' }}
+                        onChange={this.onChangeTextArea}
+                      />
+                    )}
+                  </FormItem>
+                  ): (
+                    <div style={{ width: '100%', height: '100%' }}>
+                      <FormItem style={{
                       width: '100%',
                       height: '93%',
                       border: '1px solid #ccc',
@@ -497,40 +500,42 @@ class NewNoticeForm extends Component {
                       justifyContent: 'center',
                       alignItems: 'center',
                       padding: '20px',
-                      textAlign: 'center'
+                      textAlign: 'center',
                     }}>
-                      <Upload
-                        className={styles.avatarUploader}
-                        name="poster"
-                        listType="picture-card"
-                        accept="image/*"
-                        showUploadList={false}
-                        beforeUpload={this.beforeUpload.bind(this)}
-                      >
-                        {!poster ? (
-                          uploadButton
-                        ) : (
+                        <Upload
+                          className={styles.avatarUploader}
+                          name="poster"
+                          listType="picture-card"
+                          accept="image/*"
+                          showUploadList={false}
+                          beforeUpload={this.beforeUpload.bind(this)}
+                        >
+                          {!poster ? (uploadButton) : (
                             <img className={styles.avatar} src={poster} alt="poster" />
                           )}
-                      </Upload>
-                      {!poster ? (
-                        <font className={styles.avatarTest}><FormattedMessage id="notice.operate.image-message-one" /><br /><FormattedMessage id="notice.operate.image-message-two" /></font>
+                        </Upload>
+                        {!poster ? (
+                          <font className={styles.avatarTest}>
+                            <FormattedMessage id="notice.operate.image-message-one" />
+                            <br />
+                            <FormattedMessage id="notice.operate.image-message-two" />
+                          </font>
                       ) : ''}
-                    </FormItem>
-                    <p style={{ color: 'red', textAlign: 'left', fontSize: '14px', marginTop: '-20px' }}>{posterMessage}</p>
-                  </div>
-                }
+                      </FormItem>
+                      <p style={{ color: 'red', textAlign: 'left', fontSize: '14px', marginTop: '-20px' }}>{posterMessage}</p>
+                    </div>
+)}
               </div>
             </Col>
           </Row>
           {/* 切换为海报的提示 */}
           <Modal
-            title={this.state.prompt.title}
-            visible={this.state.prompt.visible}
+            title={prompt.title}
+            visible={prompt.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
           >
-            <p>{this.state.prompt.content}</p>
+            <p>{prompt.content}</p>
           </Modal>
         </div>
         {/* 发布 */}

@@ -6,7 +6,7 @@ import {
   getStandNum,
   getHomeStand,
   getHomeRank,
-} from '../services/api';
+} from '@/services/api';
 import { getTimeByType } from '../utils/utils.js';
 import { getLocale } from 'umi/locale';
 import G from '@/global';

@@ -1,4 +1,4 @@
-import { getSvg, getDeskState } from '../services/api';
+import { getSvg, getDeskState } from '@/services/api';
 import { message } from 'antd';
 import G from '@/global';
 import { getLocale } from 'umi/locale';
@@ -7,7 +7,7 @@ export default {
   namespace: 'spaceState',
   state: {
     svg: '',
-    data: ""
+    data: '',
   },
 
   effects: {
@@ -31,7 +31,7 @@ export default {
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
-    }
+    },
   },
 
   reducers: {
@@ -46,6 +46,6 @@ export default {
         ...state,
         data: action.payload,
       };
-    }
+    },
   },
 };

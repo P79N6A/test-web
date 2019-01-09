@@ -18,35 +18,17 @@ class DetailModel extends Component {
       { text: formatMessage({ id: 'admin.sensor.list.occupy' }), value: 0 },
       { text: formatMessage({ id: 'device.list.leisure' }), value: 1 },
       { text: formatMessage({ id: 'device.list.offline' }), value: 2 },
-    ]
+    ],
   }
 
   componentDidMount() {
     this.fetchDataList({ current: 1 });
   }
 
-  // enter 键搜索
-  handelKeydown = e => {
-    if (e.keyCode === 13) {
-      this.onSearch();
-    }
-  };
-
   // 搜索
   onSearch() {
     this.fetchDataList();
   }
-
-  // 清空搜索框内容
-  emitEmpty = () => {
-    this.userNameInput.focus();
-    this.setState({ query: '' });
-  };
-
-  // 获取搜索框值
-  onChangeSearchInfo = e => {
-    this.setState({ query: e.target.value });
-  };
 
   // 表格数据展示
   getColumns(sensorState) {
@@ -74,11 +56,29 @@ class DetailModel extends Component {
               </Tooltip>
             </Fragment>
           );
-        }
+        },
       },
     ];
     return columns;
   }
+
+  // enter 键搜索
+  handelKeydown = e => {
+    if (e.keyCode === 13) {
+      this.onSearch();
+    }
+  };
+
+  // 清空搜索框内容
+  emitEmpty = () => {
+    this.userNameInput.focus();
+    this.setState({ query: '' });
+  };
+
+  // 获取搜索框值
+  onChangeSearchInfo = e => {
+    this.setState({ query: e.target.value });
+  };
 
   // 分页获取数据
   pageChange = pageNumber => {
@@ -107,7 +107,7 @@ class DetailModel extends Component {
         offset: (value && (value.current - 1) * 15),
         limit: (value && value.limit) || gatewayList.limit,
         query: (value && value.query) || query,
-        filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : ((value && value.filterParam) || filterParam)
+        filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : ((value && value.filterParam) || filterParam),
       },
     });
   }
@@ -130,12 +130,20 @@ class DetailModel extends Component {
         footer={[
           <Button key="back" size="small" onClick={handClose}>
             <FormattedMessage id="all.close" />
-          </Button>
+          </Button>,
         ]}
       >
         <div className={styles.main}>
-          <p className={styles.gatewayState}><FormattedMessage id="admin.sensor.detail.virtual.gateway.id" />：{virtualGateway}</p>
-          <p className={styles.gatewayState}><FormattedMessage id="admin.sensor.detail.virtual.gateway.status" />：{stateData[state].text}</p>
+          <p className={styles.gatewayState}>
+            <FormattedMessage id="admin.sensor.detail.virtual.gateway.id" />
+：
+            {virtualGateway}
+          </p>
+          <p className={styles.gatewayState}>
+            <FormattedMessage id="admin.sensor.detail.virtual.gateway.status" />
+：
+            {stateData[state].text}
+          </p>
           <Row className={styles.lageBox}>
             <Col span={24}>
               <Button

@@ -4,9 +4,10 @@ import { formatMessage, FormattedMessage, getLocale } from 'umi/locale';
 import { Row, Col, message, Button, Form, Input } from 'antd';
 import LeftHeader from '@/components/SpaceHeader/LeftHeader';
 import Footer from '@/layouts/Footer';
-import styles from './index.less';
 import G from '@/global';
 import { routerRedux } from 'dva/router';
+
+import styles from './index.less';
 
 const FormItem = Form.Item;
 
@@ -16,14 +17,25 @@ const FormItem = Form.Item;
 class SetNewPassword extends Component {
   state = {
     id: "",
-    save: formatMessage({ id: "all.save" })
+    save: formatMessage({ id: "all.save" }),
   }
 
   componentDidMount() {
+    const {location}=this.props;
     this.setState({
-      id: this.props.location.query.id
+      id: location.query.id,
     })
   }
+
+  // 验证两次输入密码是不是一样
+  compareToFirstPassword = (rule, value, callback) => {
+    const { form } = this.props;
+    if (value && value !== form.getFieldValue('password')) {
+      callback(formatMessage({ id: 'change.two.message' }));
+    } else {
+      callback();
+    }
+  };
 
   // 提交更改
   handleCommit() {
@@ -32,7 +44,7 @@ class SetNewPassword extends Component {
     form.validateFields(err => {
       if (err) return;
       this.setState({
-        save: formatMessage({ id: "reset.password.verify" })
+        save: formatMessage({ id: "reset.password.verify" }),
       })
       const all = form.getFieldsValue();
       delete all.passwordAgain;
@@ -52,28 +64,19 @@ class SetNewPassword extends Component {
   release(res) {
     if (res.status === 'success') {
       this.setState({
-        save: formatMessage({ id: "reset.password.save-success" })
+        save: formatMessage({ id: "reset.password.save-success" }),
       })
     } else {
       this.setState({
-        save: formatMessage({ id: "reset.password.save-fail" })
+        save: formatMessage({ id: "reset.password.save-fail" }),
       })
     }
   }
 
-  // 验证两次输入密码是不是一样
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback(formatMessage({ id: 'change.two.message' }));
-    } else {
-      callback();
-    }
-  };
-
   // 去登录页面
   goLogin() {
-    this.props.dispatch(routerRedux.push('/user/login'));
+    const {dispatch}=this.props;
+    dispatch(routerRedux.push('/user/login'));
   }
 
   render() {
@@ -88,7 +91,7 @@ class SetNewPassword extends Component {
         <LeftHeader />
         <div className={styles.send_content}>
           <Row className={styles.new_password}>
-            <Col {...leftImg}></Col>
+            <Col {...leftImg} />
             <Col {...centerContent}>
               <p className={styles.title}><FormattedMessage id="reset.password.set-new-password" /></p>
               <p className={styles.set_new_password}><FormattedMessage id="reset.password.set-new-password-start" /></p>
@@ -144,7 +147,13 @@ class SetNewPassword extends Component {
                 </Row>
               </Form>
               <p className={styles.question}><FormattedMessage id="reset.password.connect-us" /></p>
-              <p className={styles.email}>Email:_________<span><FormattedMessage id="reset.password.phone" />:_________</span></p>
+              <p className={styles.email}>
+                Email:_________
+                <span>
+                  <FormattedMessage id="reset.password.phone" />
+                  :_________
+                </span>
+              </p>
             </Col>
           </Row>
         </div>

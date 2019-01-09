@@ -145,7 +145,7 @@ class PersonModal extends Component {
           } else {
             message.error(formatMessage({ id: 'person.operate.reload-page' }));
           }
-        }
+        },
       },
     });
   }
@@ -175,7 +175,7 @@ class PersonModal extends Component {
           </Button>,
           <Button key="submit" size="small" type="primary" loading={loading} onClick={this.okHandle.bind(this)}>
             <FormattedMessage id="all.save" />
-          </Button>
+          </Button>,
         ]}
       >
         <p className={styles.subTitle}>{subTitle}</p>

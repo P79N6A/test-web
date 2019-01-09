@@ -9,28 +9,28 @@ const RadioGroup = Radio.Group;
 
 export default class PersonRole extends Component {
 
+  onChange = (e) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ManagementPerson/saveRole',
+      payload: e.target.value,
+    });
+  }
+
   okHandle() {
     const { role, dispatch } = this.props;
     dispatch({
       type: 'ManagementPerson/changeRole',
       payload: {
         role,
-        callback: this.call.bind(this)
-      }
+        callback: this.call.bind(this),
+      },
     });
   }
 
   call() {
     const { closeRole } = this.props;
     closeRole(1);
-  }
-
-  onChange = (e) => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'ManagementPerson/saveRole',
-      payload: e.target.value
-    });
   }
 
   render() {
@@ -41,7 +41,7 @@ export default class PersonRole extends Component {
     return (
       <Modal
         width={780}
-        visible={true}
+        visible
         title={formatMessage({ id: "person.role.set-role" })}
         onOk={this.okHandle.bind(this)}
         onCancel={closeRole}
@@ -51,7 +51,7 @@ export default class PersonRole extends Component {
           </Button>,
           <Button key="submit" size='small' type="primary" onClick={this.okHandle.bind(this)}>
             <FormattedMessage id="all.certain" />
-          </Button>
+          </Button>,
         ]}
       >
         <p className={styles.subTitle}><FormattedMessage id="person.role.open-to-all" /></p>
@@ -59,13 +59,13 @@ export default class PersonRole extends Component {
           <RadioGroup style={{ display: 'block' }} onChange={this.onChange} value={role}>
             <Col {...titleStyle}><FormattedMessage id="person.role.features" /></Col>
             <Col span={6} style={{ textAlign: 'center' }}>
-              <Radio value={'manager'}><FormattedMessage id="person.role.manager" /></Radio>
+              <Radio value="manager"><FormattedMessage id="person.role.manager" /></Radio>
             </Col>
             <Col span={6} style={{ textAlign: 'center' }}>
-              <Radio value={'manager_space'}><FormattedMessage id="person.role.space-manager" /></Radio>
+              <Radio value="manager_space"><FormattedMessage id="person.role.space-manager" /></Radio>
             </Col>
             <Col span={6} style={{ textAlign: 'center' }}>
-              <Radio value={'default'}><FormattedMessage id="person.role.user" /></Radio>
+              <Radio value="default"><FormattedMessage id="person.role.user" /></Radio>
             </Col>
           </RadioGroup>
         </Row>

@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getCustomerList, addCustomer, editCustomer, resetPassword, permissionsList, setPermissions } from '../services/api';
+import { getCustomerList, addCustomer, editCustomer, resetPassword, permissionsList, setPermissions } from '@/services/api';
 import { getLocale, formatMessage } from 'umi/locale';
 import G from '@/global';
 
@@ -15,7 +15,7 @@ export default {
     editValue: '',
     permissionList: [],
     companyId: '',
-    addPermission: []
+    addPermission: [],
   },
 
   effects: {
@@ -64,7 +64,7 @@ export default {
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       };
-    }
+    },
   },
 
   reducers: {

@@ -1,10 +1,10 @@
-import { sendEmail } from '../services/api';
+import { sendEmail } from '@/services/api';
 
 export default {
   namespace: 'RetrievePassword',
   state: {
     email: "",
-    page: 0
+    page: 0,
   },
 
   effects: {
@@ -18,8 +18,8 @@ export default {
     emailSave(state, action) {
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
-    }
+    },
   },
 };

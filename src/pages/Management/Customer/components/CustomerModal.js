@@ -4,7 +4,7 @@ import { Form, Input, Row, Col, Button, message } from 'antd';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 import G from '@/global'
-import styles from './../NewCustomer.less'
+import styles from '../NewCustomer.less'
 
 const FormItem = Form.Item;
 const { TextArea } = Input;
@@ -74,6 +74,7 @@ class NewCustomer extends Component {
       message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
     }
   }
+
   // 添加
   handleCommit() {
     const { form, dispatch, ManagementCustomer } = this.props;
@@ -114,7 +115,7 @@ class NewCustomer extends Component {
       type: 'ManagementCustomer/setEditValue',
       payload: '',
     });
-    this.props.dispatch(routerRedux.push('/management/customer'))
+    dispatch(routerRedux.push('/management/customer'))
   }
 
   render() {
@@ -336,7 +337,7 @@ class NewCustomer extends Component {
             </Col>
           </Row>
         </Form>
-      </div >
+      </div>
     );
   }
 }

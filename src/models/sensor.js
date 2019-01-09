@@ -13,7 +13,7 @@ export default {
       limit: 15,
     },
     // 状态列表
-    stateList: []
+    stateList: [],
   },
 
   effects: {
@@ -42,8 +42,8 @@ export default {
   reducers: {
     save(state, action) {
       const { offset } = action.payload;
-      let stateList = [];
-      action.payload.rows.map((item, i) => {
+      const stateList = [];
+      action.payload.rows.forEach((item, i) => {
         if (G._.findIndex(stateList, { value: item.inUse }) === -1) {
           stateList.push({ "text": item.inUse, "value": item.inUse });
         }
@@ -56,8 +56,8 @@ export default {
           current: Number(offset) / 15 + 1,
           limit: state.sensorData.limit,
         },
-        stateList
+        stateList,
       };
-    }
-  }
+    },
+  },
 };

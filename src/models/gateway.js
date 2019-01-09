@@ -1,4 +1,4 @@
-import { gatewayList, gatewayRemark, gatewayCommand, customerList } from '@/services/api';
+import { gatewayList, gatewayRemark, gatewayCommand, getCustomerList } from '@/services/api';
 import { message } from 'antd';
 import G from '@/global';
 import { formatMessage, getLocale } from 'umi/locale';
@@ -55,7 +55,7 @@ export default {
     },
     // 获取客户列表
     *customerList(_, { call, put }) {
-      const response = yield call(customerList);
+      const response = yield call(getCustomerList);
       if (response && response.status === 'success') {
         yield put({
           type: 'saveCustomer',
@@ -77,26 +77,23 @@ export default {
           offset: Number(offset),
           current: Number(offset) / 15 + 1,
           limit: state.gatewayData.limit,
-        }
+        },
       };
     },
     // 修改配置列表
     changeConfigureModel(state, action) {
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     },
     // 保存客户列表
     saveCustomer(state, action) {
-      let customerList = []
-      action.payload.map((item, i) => {
-        customerList.push({ text: item.companyName, value: item.companyId })
-      })
+      const customerList = action.payload.map((item, i) => ({ text: item.companyName, value: item.companyId }))
       return {
         ...state,
         customerList,
       };
     },
-  }
+  },
 };

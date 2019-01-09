@@ -9,7 +9,7 @@ import G from '@/global';
   adminSensor,
   loading: loading.effects['adminSensor/adminSensorList'],
 }))
-export default class AdminSensor extends Component {
+class AdminSensor extends Component {
   state = {
     query: '',
     visible: false,
@@ -31,23 +31,10 @@ export default class AdminSensor extends Component {
     this.fetchDataList({ current: 1 });
   }
 
-  // enter 键搜索
-  handelKeydown = e => {
-    if (e.keyCode === 13) {
-      this.onSearch();
-    }
-  };
-
   // 搜索
   onSearch() {
     this.fetchDataList();
   }
-
-  // 清空搜索框内容
-  emitEmpty = () => {
-    this.userNameInput.focus();
-    this.setState({ query: '' });
-  };
 
   // 获取搜索框值
   onChangeSearchInfo = e => {
@@ -89,7 +76,7 @@ export default class AdminSensor extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'admin.sensor.list.customer' }),
@@ -102,11 +89,24 @@ export default class AdminSensor extends Component {
               </Tooltip>
             </Fragment>
           );
-        }
-      }
+        },
+      },
     ];
     return columns;
   }
+
+  // enter 键搜索
+  handelKeydown = e => {
+    if (e.keyCode === 13) {
+      this.onSearch();
+    }
+  };
+
+  // 清空搜索框内容
+  emitEmpty = () => {
+    this.userNameInput.focus();
+    this.setState({ query: '' });
+  };
 
   // 分页获取数据
   pageChange = pageNumber => {
@@ -139,7 +139,7 @@ export default class AdminSensor extends Component {
       type: 'adminSensor/getGatewayStatus',
       payload: {
         id,
-      }
+      },
     })
   }
 
@@ -153,7 +153,8 @@ export default class AdminSensor extends Component {
 
   render() {
     const { query, visible, sensorId, sensorState, stateData } = this.state;
-    const { adminSensorData, sensorData } = this.props.adminSensor;
+    const {adminSensor}=this.props;
+    const { adminSensorData, sensorData } = adminSensor;
     const { rows, limit, current, count } = adminSensorData;
     const columns = this.getColumns(current);
     const suffix = query ? <Icon type="close-circle" onClick={this.emitEmpty.bind(this)} /> : null;
@@ -212,18 +213,34 @@ export default class AdminSensor extends Component {
           footer={[
             <Button key="back" size="small" onClick={this.handClose.bind(this)}>
               <FormattedMessage id="all.close" />
-            </Button>
+            </Button>,
           ]}
         >
-          <p><FormattedMessage id="admin.sensor.list.sensor.id" />：{sensorId}</p>
+          <p>
+            <FormattedMessage id="admin.sensor.list.sensor.id" />
+            ：
+            {sensorId}
+          </p>
           {
-            !G._.isEmpty(sensorData) ?
+            !G._.isEmpty(sensorData) ? (
               <span>
-                <p><FormattedMessage id="admin.sensor.detail.status" />：{sensorState[sensorData.sensor_state].text}</p>
-                <p><FormattedMessage id="admin.sensor.detail.virtual.gateway.id" />：{sensorData.virtual_gateway_id}</p>
-                <p><FormattedMessage id="admin.sensor.detail.virtual.gateway.status" />：{stateData[sensorData.virtual_gateway_state].text}</p>
+                <p>
+                  <FormattedMessage id="admin.sensor.detail.status" />
+                  ：
+                  {sensorState[sensorData.sensor_state].text}
+                </p>
+                <p>
+                  <FormattedMessage id="admin.sensor.detail.virtual.gateway.id" />
+                  ：
+                  {sensorData.virtual_gateway_id}
+                </p>
+                <p>
+                  <FormattedMessage id="admin.sensor.detail.virtual.gateway.status" />
+                  ：
+                  {stateData[sensorData.virtual_gateway_state].text}
+                </p>
               </span>
-              :
+              ):
               ''
           }
         </Modal>
@@ -231,3 +248,5 @@ export default class AdminSensor extends Component {
     );
   }
 }
+
+export default AdminSensor;

@@ -9,7 +9,7 @@ import {
   getUseRate,
   getServiceDuration,
   getDeskUseRank,
-} from '../services/api';
+} from '@/services/api';
 
 export default {
   namespace: 'office',
@@ -20,11 +20,11 @@ export default {
       // 工位使用趋势参数
       use_rate: {
         type: 'duration',
-        date_type: "LAST_7DAYS"
+        date_type: "LAST_7DAYS",
       },
       desk_avg_duration: {
         condition_types: 'HOURLY',
-        date_type: 'LAST_DAY'
+        date_type: 'LAST_DAY',
       },
       desk_use_rank_hot: {
         status_type: 'HOT',
@@ -53,7 +53,7 @@ export default {
     useRate: {
       useRateTend: [],
       useRateAverage: [],
-      date: []
+      date: [],
     },
     serviceDuration: {
       total_duration: 0, // 总时长 单位：分钟
@@ -66,7 +66,7 @@ export default {
     // 热门工位排行
     deskUseRankHotList: [],
     // 空闲工位排行
-    deskUseRankFreeList: []
+    deskUseRankFreeList: [],
   },
 
   effects: {
@@ -128,7 +128,7 @@ export default {
         });
         yield put({
           type: 'saveAvgDuration',
-          payload: { dataListCopy }
+          payload: { dataListCopy },
         });
       } else {
         message.error((response && response.message) || formatMessage({ id: "spaceUsage.device-use-error" }));
@@ -164,7 +164,7 @@ export default {
       } else {
         message.error((response && response.message) || formatMessage({ id: "spaceUsage.device-use-error" }));
       }
-    }
+    },
   },
 
   reducers: {
@@ -174,8 +174,8 @@ export default {
         ...state,
         global: {
           ...state.global,
-          ...action.payload
-        }
+          ...action.payload,
+        },
       };
     },
     // 保存工位总数

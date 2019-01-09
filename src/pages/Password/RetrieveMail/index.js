@@ -3,28 +3,30 @@ import { connect } from 'dva';
 import { FormattedMessage, setLocale } from 'umi/locale';
 import { Row, Col, Button } from 'antd';
 import CenterHeader from '@/components/SpaceHeader/CenterHeader';
-import styles from './index.less';
 import { routerRedux } from 'dva/router';
+import styles from './index.less';
 
 @connect(({ RetrieveMail }) => ({
   RetrieveMail,
 }))
-export default class RetrieveMail extends Component {
+class RetrieveMail extends Component {
   state = {
-    id: ""
+    id:'',
   }
 
   componentDidMount() {
-    setLocale(this.props.location.query.lang);
+    const {location}=this.props;
+    setLocale(location.query.lang);
     this.setState({
-      id: this.props.location.query.id
+      id: location.query.id,
     })
-    this.retrievePassword(this.props.location.query.id);
+    this.retrievePassword(location.query.id);
   }
 
   // 跳到找回密码页面
   goNewPassword() {
-    this.props.dispatch(routerRedux.push(`/external/NewPassword?id=${this.props.location.query.id}&lang=${this.props.location.query.id}`));
+    const {dispath,location}=this.props;
+    dispatch(routerRedux.push(`/external/NewPassword?id=${location.query.id}&lang=${location.query.id}`));
   }
 
   // 链接过没过期
@@ -36,7 +38,7 @@ export default class RetrieveMail extends Component {
       payload: {
         id: id || ids,
         callback: this.release.bind(this),
-      }
+      },
     })
   }
 
@@ -49,7 +51,7 @@ export default class RetrieveMail extends Component {
       dispatch({
         type: 'RetrieveMail/saveId',
         payload: {
-          state: 1
+          state: 1,
         },
       });
     }
@@ -57,7 +59,8 @@ export default class RetrieveMail extends Component {
 
   // 跳转space登录页面
   goOn() {
-    this.props.dispatch(routerRedux.push('/user/login'));
+    const {dispatch}=this.props;
+    dispatch(routerRedux.push('/user/login'));
   }
 
 
@@ -68,13 +71,13 @@ export default class RetrieveMail extends Component {
       <div className={styles.content}>
         {/* 头部 */}
         <Row className={styles.box}>
-          <Col {...leftImg}></Col>
+          <Col {...leftImg} />
           <Col {...centerContent}>
             <CenterHeader />
           </Col>
         </Row>
         <Row className={styles.onePage}>
-          <Col {...leftImg}></Col>
+          <Col {...leftImg} />
           <Col {...centerContent}>
             <h3 className={styles.title}>
               <FormattedMessage id="reset.password" />
@@ -86,10 +89,18 @@ export default class RetrieveMail extends Component {
               <FormattedMessage id="reset.password.continue" />
             </Button>
             <p className={styles.question}><FormattedMessage id="reset.password.connect-us" /></p>
-            <p className={styles.email}>Email:_________<span><FormattedMessage id="reset.password.phone" />:_________</span></p>
+            <p className={styles.email}>
+              Email:_________
+              <span>
+                <FormattedMessage id="reset.password.phone" />
+                :_________
+              </span>
+            </p>
           </Col>
         </Row>
       </div>
     );
   }
 }
+
+export default RetrieveMail;

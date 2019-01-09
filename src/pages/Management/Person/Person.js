@@ -12,7 +12,7 @@ import PersonTemplate from './components/PersonTemplate';
   ManagementPerson,
   loading: loading.effects['ManagementPerson/fetch'],
 }))
-export default class Person extends Component {
+class Person extends Component {
   // 表单以及分页
   state = {
     query: '',
@@ -23,7 +23,7 @@ export default class Person extends Component {
     editValue: {},
     filterStatus: [
       { text: formatMessage({ id: 'person.list.status.disconnected' }), value: 1 },
-      { text: formatMessage({ id: 'person.list.status.connected' }), value: 2 }
+      { text: formatMessage({ id: 'person.list.status.connected' }), value: 2 },
     ],
     importTemplate: false,
     roleVisible: false,
@@ -38,28 +38,9 @@ export default class Person extends Component {
     this.getGroupList();
   }
 
-  // 获取用户组列表
-  getGroupList() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'ManagementPerson/usersGroupList',
-      payload: {}
-    })
-  }
-
   onSearch() {
     this.fetchDataList({ offset: 0 });
   }
-
-  onChangeSearchInfo = e => {
-    this.setState({ query: e.target.value });
-  };
-
-  handelKeydown = e => {
-    if (e.keyCode === 13) {
-      this.onSearch();
-    }
-  };
 
   onEdit(text) {
     this.setState({
@@ -70,6 +51,24 @@ export default class Person extends Component {
 
   onDelete(text) {
     this.updatePerson({ uid: text.uid, isDel: true, callback: this.update.bind(this) });
+  }
+
+  onChangeSearchInfo = e => {
+    this.setState({ query: e.target.value });
+  };
+
+  // 取消组管理员
+  onCancel(text) {
+    this.changeRole(text.uid, 'defaultMember');
+  }
+
+  // 获取用户组列表
+  getGroupList() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ManagementPerson/usersGroupList',
+      payload: {},
+    })
   }
 
   getColumns(current, filterStatus, listTitle) {
@@ -107,7 +106,7 @@ export default class Person extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: listTitle.phone,
@@ -120,7 +119,7 @@ export default class Person extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: listTitle.email,
@@ -133,7 +132,7 @@ export default class Person extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: listTitle.position,
@@ -146,7 +145,7 @@ export default class Person extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: listTitle.status,
@@ -162,11 +161,11 @@ export default class Person extends Component {
                 </Tooltip>
               </Fragment>
             ) : (
-                <Fragment>
-                  <Tooltip placement="topLeft" title={filterStatus[0].text}>
-                    <font>{filterStatus[0].text}</font>
-                  </Tooltip>
-                </Fragment>
+              <Fragment>
+                <Tooltip placement="topLeft" title={filterStatus[0].text}>
+                  <font>{filterStatus[0].text}</font>
+                </Tooltip>
+              </Fragment>
               )
           );
         },
@@ -182,7 +181,7 @@ export default class Person extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: listTitle.operate,
@@ -212,29 +211,39 @@ export default class Person extends Component {
               text.role === 'superAdmin' ? <a className={styles.disabledColor}><FormattedMessage id="person.list.set.group.management" /></a> :
                 text.role === 'groupAdmin'
                   ?
-                  // 组管理员
-                  <Popconfirm
-                    placement="left"
-                    title={formatMessage({ id: 'person.list.cancel.group.management.tip' })}
-                    onConfirm={this.onCancel.bind(this, text)}
-                    okText={formatMessage({ id: 'all.certain' })}
-                    cancelText={formatMessage({ id: 'all.cancel' })}
-                  >
-                    <a><FormattedMessage id="person.list.acncel.group.management" /></a>
-                  </Popconfirm>
-                  :
-                  // 默认成员
-                  <a
-                    onClick={() => {
+                  组管理员 (
+                    <Popconfirm
+                      placement="left"
+                      title={formatMessage({ id: 'person.list.cancel.group.management.tip' })}
+                      onConfirm={this.onCancel.bind(this, text)}
+                      okText={formatMessage({ id: 'all.certain' })}
+                      cancelText={formatMessage({ id: 'all.cancel' })}
+                    >
+                      <a><FormattedMessage id="person.list.acncel.group.management" /></a>
+                    </Popconfirm>
+                    ):
+                  默认成员 (
+                    <a
+                      onClick={() => {
                       this.openRole(text, record, index);
-                    }}><FormattedMessage id="person.list.set.group.management" /></a>
-            }
+                    }}
+                    >
+                      <FormattedMessage id="person.list.set.group.management" />
+
+                    </a>
+                  )}
           </Fragment>
         ),
       },
     ];
     return columns;
   }
+
+  handelKeydown = e => {
+    if (e.keyCode === 13) {
+      this.onSearch();
+    }
+  };
 
   emitEmpty = () => {
     this.userNameInput.focus();
@@ -334,14 +343,14 @@ export default class Person extends Component {
   // 批量导入
   importUser() {
     this.setState({
-      importTemplate: true
+      importTemplate: true,
     })
   }
 
   // 批量导入关闭弹窗
   closeTemplate() {
     this.setState({
-      importTemplate: false
+      importTemplate: false,
     });
     const { ManagementPerson } = this.props;
     const { current } = ManagementPerson.data;
@@ -353,7 +362,7 @@ export default class Person extends Component {
     this.setState({
       roleVisible: true,
       uid: text.uid,
-      role: 'groupAdmin'
+      role: 'groupAdmin',
     });
   }
 
@@ -362,7 +371,7 @@ export default class Person extends Component {
     this.setState({
       roleVisible: false,
       uid: '',
-      role: ''
+      role: '',
     });
   }
 
@@ -372,11 +381,6 @@ export default class Person extends Component {
     this.changeRole(uid, role);
   }
 
-  // 取消组管理员
-  onCancel(text) {
-    this.changeRole(text.uid, 'defaultMember');
-  }
-
   changeRole(uid, role) {
     const { dispatch } = this.props;
     dispatch({
@@ -384,8 +388,8 @@ export default class Person extends Component {
       payload: {
         role,
         uid,
-        callback: this.call.bind(this)
-      }
+        callback: this.call.bind(this),
+      },
     });
   }
 
@@ -501,7 +505,7 @@ export default class Person extends Component {
             </Button>,
             <Button key="submit" size="small" type="primary" onClick={this.okHandle.bind(this)}>
               <FormattedMessage id="all.certain" />
-            </Button>
+            </Button>,
           ]}
         >
           <p>设置为组管理员后， 该成员可以使用邮箱登录到管理平台，对 所在用户组内的信息进行管理，登录密码通过邮件通知该成员。</p>
@@ -515,3 +519,5 @@ export default class Person extends Component {
     );
   }
 }
+
+export default Person;

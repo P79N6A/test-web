@@ -15,7 +15,7 @@ const Option = Select.Option;
   ManagementPerson,
   loading: loading.effects['PersonGroup/fetch'],
 }))
-export default class PersonGroup extends Component {
+class PersonGroup extends Component {
   state = {
     query: '',
     groupActive: '',
@@ -30,22 +30,9 @@ export default class PersonGroup extends Component {
     this.fetchDataList();
   }
 
-  // 清空输入框
-  emitEmpty = () => {
-    this.groupInput.focus();
-    this.setState({ query: '' });
-  };
-
   // 输入框发生改变时
   onChangeSearchInfo = e => {
     this.setState({ query: e.target.value });
-  };
-
-  // 鼠标按下时
-  handelKeydown = e => {
-    if (e.keyCode === 13) {
-      this.onSearch();
-    }
   };
 
   // 搜索
@@ -62,33 +49,8 @@ export default class PersonGroup extends Component {
       type: 'PersonGroup/usersGroupList',
       payload: {
         query,
-      }
+      },
     })
-  }
-
-  // 选中组
-  changeGroup(id) {
-    this.setState({
-      groupActive: id
-    });
-    this.fetchDataList({ groupId: id });
-  }
-
-  // 打开添加组的弹窗
-  openGroupModel() {
-    this.setState({
-      groupVisible: true
-    })
-  }
-
-  // 关闭添加组弹窗
-  closeGroupModel(num) {
-    this.setState({
-      groupVisible: false
-    });
-    if (num) {
-      this.getGroupList();
-    }
   }
 
   // 定义表格
@@ -126,7 +88,7 @@ export default class PersonGroup extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'person.list.phone' }),
@@ -139,7 +101,7 @@ export default class PersonGroup extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'app.settings.basic.email' }),
@@ -152,7 +114,7 @@ export default class PersonGroup extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'person.role' }),
@@ -170,21 +132,60 @@ export default class PersonGroup extends Component {
     return columns;
   }
 
-  // 改变角色
-  handleChange(text, record, index, value) {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'PersonGroup/changeRole',
-      payload: {
-        role: value,
-        uid: text.uid,
-      }
-    });
-  }
+  // 清空输入框
+  emitEmpty = () => {
+    this.groupInput.focus();
+    this.setState({ query: '' });
+  };
+
+  // 鼠标按下时
+  handelKeydown = e => {
+    if (e.keyCode === 13) {
+      this.onSearch();
+    }
+  };
+
   // 改变页数
   pageChange = current => {
     this.fetchDataList({ current });
   };
+
+  // 添加人员
+  handleOk = (fieldsValue, avatar, uid) => {
+    const fieldsValues = fieldsValue;
+    delete fieldsValues.isDel;
+    this.setState({ modalLoading: true });
+    delete fieldsValues.upload;
+    this.addPerson({ ...fieldsValues, avatar, callback: this.upload.bind(this) });
+  };
+
+  upload = res => {
+    if (res.status === 'success') {
+      this.setState({ modalLoading: false, visible: false });
+      this.fetchDataList();
+    } else {
+      this.setState({ modalLoading: false });
+    }
+  };
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  };
+
+  // 弹窗
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  addPerson(data) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ManagementPerson/addPerson',
+      payload: data,
+    });
+  }
 
   // 获取人员列表
   fetchDataList(value) {
@@ -202,54 +203,54 @@ export default class PersonGroup extends Component {
     });
   }
 
-  // 添加人员
-  handleOk = (fieldsValue, avatar, uid) => {
-    const fieldsValues = fieldsValue;
-    delete fieldsValues.isDel;
-    this.setState({ modalLoading: true });
-    delete fieldsValues.upload;
-    this.addPerson({ ...fieldsValues, avatar, callback: this.upload.bind(this) });
-  };
-
-  addPerson(data) {
+  // 改变角色
+  handleChange(text, record, index, value) {
     const { dispatch } = this.props;
     dispatch({
-      type: 'ManagementPerson/addPerson',
-      payload: data,
+      type: 'PersonGroup/changeRole',
+      payload: {
+        role: value,
+        uid: text.uid,
+      },
     });
   }
 
-  upload = res => {
-    if (res.status === 'success') {
-      this.setState({ modalLoading: false, visible: false });
-      this.fetchDataList();
-    } else {
-      this.setState({ modalLoading: false });
-    }
-  };
-
-  handleCancel = () => {
-    this.setState({ visible: false, editValue: {} });
-  };
-
-  // 弹窗
-  showModal = () => {
+  // 选中组
+  changeGroup(id) {
     this.setState({
-      visible: true,
+      groupActive: id,
     });
-  };
+    this.fetchDataList({ groupId: id });
+  }
+
+  // 打开添加组的弹窗
+  openGroupModel() {
+    this.setState({
+      groupVisible: true,
+    })
+  }
+
+  // 关闭添加组弹窗
+  closeGroupModel(num) {
+    this.setState({
+      groupVisible: false,
+    });
+    if (num) {
+      this.getGroupList();
+    }
+  }
 
   // 批量导入
   importUser() {
     this.setState({
-      importTemplate: true
+      importTemplate: true,
     })
   }
 
   // 批量导入关闭弹窗
   closeTemplate() {
     this.setState({
-      importTemplate: false
+      importTemplate: false,
     });
     const { ManagementPerson } = this.props;
     const { current } = ManagementPerson.data;
@@ -265,8 +266,8 @@ export default class PersonGroup extends Component {
       payload: {
         isDel: true,
         groupId: groupActive,
-        callback: this.back.bind(this)
-      }
+        callback: this.back.bind(this),
+      },
     })
   }
 
@@ -308,7 +309,10 @@ export default class PersonGroup extends Component {
               />
               <Button size="small" className={styles.btn} onClick={this.openGroupModel.bind(this)}><FormattedMessage id="person.group.create" /></Button>
               <ul className={styles.groupBox}>
-                <p onClick={this.changeGroup.bind(this, '')} className={[styles.title, groupActive === '' && styles.bg_green].join(' ')}><Icon type="caret-down" className={styles.icon} /><FormattedMessage id="person.group.all.member" /></p>
+                <p onClick={this.changeGroup.bind(this, '')} className={[styles.title, groupActive === '' && styles.bg_green].join(' ')}>
+                  <Icon type="caret-down" className={styles.icon} />
+                  <FormattedMessage id="person.group.all.member" />
+                </p>
                 {
                   groupList && groupList.length > 0
                     ?
@@ -385,3 +389,5 @@ export default class PersonGroup extends Component {
     );
   }
 }
+
+export default PersonGroup;

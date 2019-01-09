@@ -34,7 +34,7 @@ export async function getSidebarList() {
         "locale": "menu.home",
         "children": [
 
-        ]
+        ],
       },
       {
         "name": "dshow",
@@ -49,7 +49,7 @@ export async function getSidebarList() {
             "locale": "menu.management.notice",
             "children": [
 
-            ]
+            ],
           },
           {
             "name": "banner",
@@ -58,9 +58,9 @@ export async function getSidebarList() {
             "locale": "menu.management.banner",
             "children": [
 
-            ]
-          }
-        ]
+            ],
+          },
+        ],
       },
       {
         "name": "statistics",
@@ -75,7 +75,7 @@ export async function getSidebarList() {
             "locale": "menu.statistics.spaceState",
             "children": [
 
-            ]
+            ],
           },
           {
             "name": "spaceUsage",
@@ -84,9 +84,9 @@ export async function getSidebarList() {
             "locale": "menu.statistics.spaceUsage",
             "children": [
 
-            ]
-          }
-        ]
+            ],
+          },
+        ],
       },
       {
         "name": "device",
@@ -101,7 +101,7 @@ export async function getSidebarList() {
             "locale": "menu.device.sensor",
             "children": [
 
-            ]
+            ],
           },
           {
             "name": "device",
@@ -110,9 +110,9 @@ export async function getSidebarList() {
             "locale": "menu.management.device",
             "children": [
 
-            ]
-          }
-        ]
+            ],
+          },
+        ],
       },
       {
         "name": "management",
@@ -127,7 +127,7 @@ export async function getSidebarList() {
             "locale": "menu.management.person",
             "children": [
 
-            ]
+            ],
           },
           {
             "name": "personGroup",
@@ -136,11 +136,11 @@ export async function getSidebarList() {
             "locale": "menu.management.personGroup",
             "children": [
 
-            ]
-          }
-        ]
+            ],
+          },
+        ],
       },
-    ]
+    ],
   }
   return request(`${API_URL}/sidebar/list?token=${getToken()}`, {
     method: 'GET',
@@ -705,9 +705,9 @@ export async function gatewayList(payload) {
       "rows": [
         { "id": "001", "SerialNumber": "SerialNumber1", "companyName": "9am", "position": "一层", "remark": "备注" },
         { "id": "002", "SerialNumber": "SerialNumber2", "companyName": "9am", "position": "一层", "remark": "备注" },
-        { "id": "003", "SerialNumber": "SerialNumber3", "companyName": "9am", "position": "一层", "remark": "备注" }
-      ]
-    }
+        { "id": "003", "SerialNumber": "SerialNumber3", "companyName": "9am", "position": "一层", "remark": "备注" },
+      ],
+    },
   }
 
   const body = filterBody({ ...payload, token: getToken() });
@@ -737,25 +737,6 @@ export async function gatewayCommand(payload) {
   });
 }
 
-// 获取所有客户
-export async function customerList() {
-  return {
-    "status": "success",
-    "message": "请求列表成功！",
-    "data": [
-      { "companyId": "bdhf001", "companyName": "8am" },
-      { "companyId": "bdhf002", "companyName": "9am" },
-      { "companyId": "bdhf003", "companyName": "6am" }
-    ]
-  }
-
-  const body = filterBody({ token: getToken() });
-  return request(`${G.API_URL}/customer/list`, {
-    method: 'POST',
-    body,
-  });
-}
-
 // 获取虚拟网关列表
 export async function virtualGatewayList(payload) {
   return {
@@ -768,9 +749,9 @@ export async function virtualGatewayList(payload) {
       "rows": [
         { "gateway": "1", "virtualGateway": "bdhf001", "companyName": "9am", "type": 0, "connectString": "balabala", "state": 0 },
         { "gateway": "2", "virtualGateway": "bdhf002", "companyName": "9am", "type": 1, "connectString": "balabala", "state": 1 },
-        { "gateway": "3", "virtualGateway": "bdhf003", "companyName": "9am", "type": 0, "connectString": "balabala", "state": 0 }
-      ]
-    }
+        { "gateway": "3", "virtualGateway": "bdhf003", "companyName": "9am", "type": 0, "connectString": "balabala", "state": 0 },
+      ],
+    },
   }
 
   const body = filterBody({ ...payload, token: getToken() });
@@ -792,9 +773,9 @@ export async function virtualGatewaySensorList(payload) {
       "rows": [
         { "gatewayId": "dndk001", "state": 0 },
         { "gatewayId": "dndk002", "state": 1 },
-        { "gatewayId": "dndk002", "state": 2 }
-      ]
-    }
+        { "gatewayId": "dndk002", "state": 2 },
+      ],
+    },
   }
 
   const body = filterBody({ ...payload, token: getToken() });
@@ -816,9 +797,9 @@ export async function adminSensorList(payload) {
       "rows": [
         { "id": "dndk001", "number": "A0001", "gatewayId": "cdhsjncd", "customerName": "wework" },
         { "id": "dndk002", "number": "A0002", "gatewayId": "cdhsjncd", "customerName": "wework" },
-        { "id": "dndk003", "number": "A0003", "gatewayId": "cdhsjncd", "customerName": "wework" }
-      ]
-    }
+        { "id": "dndk003", "number": "A0003", "gatewayId": "cdhsjncd", "customerName": "wework" },
+      ],
+    },
   }
 
   const body = filterBody({ ...payload, token: getToken() });
@@ -836,7 +817,7 @@ export async function getGatewayStatus(payload) {
       "sensor_state": 0,
       "virtual_gateway_id": "dacdncjata",
       "virtual_gateway_state": 1,
-    }
+    },
   }
 
   const body = filterBody({ token: getToken() });

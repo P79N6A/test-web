@@ -8,7 +8,7 @@ import styles from './NewNotice.less';
   ManagementNotice,
   ManagementPerson,
 }))
-export default class NewNotice extends Component {
+class NewNotice extends Component {
   render() {
     const { dispatch, ManagementNotice, ManagementPerson } = this.props;
     return (
@@ -24,3 +24,5 @@ export default class NewNotice extends Component {
     );
   }
 }
+
+export default NewNotice;

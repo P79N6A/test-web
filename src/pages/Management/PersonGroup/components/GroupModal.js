@@ -5,8 +5,12 @@ import styles from './GroupModal.less';
 
 export default class GroupModal extends Component {
   state = {
-    group: ''
+    group: '',
   }
+
+  changeGroupInfo = e => {
+    this.setState({ group: e.target.value });
+  };
 
   okHandle() {
     const { group } = this.state;
@@ -23,8 +27,8 @@ export default class GroupModal extends Component {
       type: 'PersonGroup/addUsersGroup',
       payload: {
         group,
-        callback: this.handelBack.bind(this)
-      }
+        callback: this.handelBack.bind(this),
+      },
     })
   }
 
@@ -33,10 +37,6 @@ export default class GroupModal extends Component {
     this.setState({ group: '' });
     closeGroupModel(true);
   }
-
-  changeGroupInfo = e => {
-    this.setState({ group: e.target.value });
-  };
 
   render() {
     const { closeGroupModel, visible } = this.props;
@@ -54,7 +54,7 @@ export default class GroupModal extends Component {
           </Button>,
           <Button key="submit" size="small" type="primary" onClick={this.okHandle.bind(this)}>
             <FormattedMessage id="all.save" />
-          </Button>
+          </Button>,
         ]}
       >
         <Input

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { FormattedMessage } from 'umi/locale';
 import { Row, Col, Button } from 'antd';
 import { routerRedux } from 'dva/router';
-import styles from './../index.less'
+import styles from '../index.less'
 
 
 export default class SendSuccess extends Component {
@@ -14,7 +14,7 @@ export default class SendSuccess extends Component {
       type: 'RetrievePassword/emailSave',
       payload: {
         email: "",
-        page: 0
+        page: 0,
       },
     });
     dispatch(routerRedux.push('/user/login'))
@@ -57,7 +57,10 @@ export default class SendSuccess extends Component {
         <p className={styles.conntectUs}>
           <FormattedMessage id="reset.password.connect-us" />
           <span>Email:_________</span>
-          <span><FormattedMessage id="reset.password.phone" />:_________</span>
+          <span>
+            <FormattedMessage id="reset.password.phone" />
+            :_________
+          </span>
         </p>
       </div>
     );

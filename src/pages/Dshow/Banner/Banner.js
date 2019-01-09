@@ -5,35 +5,27 @@ import { Row, Col, Carousel, Button, Icon, Modal } from 'antd';
 import BannerModal from './components/BannerModal'
 import styles from './Banner.less'
 import G from '@/global';
-const confirm = Modal.confirm;
+
+const confirm = Modal;
 
 @connect(({ Banner, loading }) => ({
   Banner,
   loading: loading.effects['Banner/fetch'],
 }))
-export default class Banner extends Component {
+class Banner extends Component {
   state = {
     // 鼠标 hover 事件
     modalLoading: false,
     bannerId: '',
     bannerUrl: {
       src: '',
-      id: ''
+      id: '',
     },
-    delBanner: '',
-    sortBanner: []
+    sortBanner: [],
   }
 
   componentDidMount() {
     this.getBannerList();
-  }
-
-  // 获取 banner 列表
-  getBannerList() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'Banner/getBanner'
-    });
   }
 
   // 属性改变时
@@ -42,52 +34,24 @@ export default class Banner extends Component {
     const { bannerList } = Banner;
     if (bannerList && bannerList.length > 0) {
       const newBannerList = [];
-      bannerList.map((item, i) => {
+      bannerList.forEach((item, i) => {
         newBannerList.push(item.bannerId)
       })
       this.setState({
         bannerUrl: {
           src: bannerList[0].src,
-          id: bannerList[0].bannerId
+          id: bannerList[0].bannerId,
         },
-        sortBanner: newBannerList
+        sortBanner: newBannerList,
       })
     }
   }
 
-  // banner 点击事件
-  changeBannerShow(src, id) {
-    this.setState({
-      bannerUrl: {
-        src,
-        id
-      }
-    })
-  }
-
-  // 鼠标移入事件
-  bannerMouseEnter(bannerId) {
-    this.setState({
-      bannerId
-    })
-  }
-
-  // 鼠标移出
-  bannerMouseLeave() {
-    this.setState({
-      bannerId: ''
-    })
-  }
-
-  // 删除 banner
-  bannerDel(bannerId) {
+  // 获取 banner 列表
+  getBannerList() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'Banner/delBanner',
-      payload: {
-        bannerId,
-        callback: this.getBannerList.bind(this)
-      }
+      type: 'Banner/getBanner',
     });
   }
 
@@ -97,9 +61,33 @@ export default class Banner extends Component {
     dispatch({
       type: 'Banner/changeVisible',
       payload: {
-        visible: true
-      }
+        visible: true,
+      },
     });
+  }
+
+  // 鼠标移入事件
+  bannerMouseEnter(bannerId) {
+    this.setState({
+      bannerId,
+    })
+  }
+
+  // 鼠标移出
+  bannerMouseLeave() {
+    this.setState({
+      bannerId: '',
+    })
+  }
+
+  // banner 点击事件
+  changeBannerShow(src, id) {
+    this.setState({
+      bannerUrl: {
+        src,
+        id,
+      },
+    })
   }
 
   // 添加 Banner
@@ -117,6 +105,18 @@ export default class Banner extends Component {
     });
   }
 
+  // 删除 banner
+  bannerDel(bannerId) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Banner/delBanner',
+      payload: {
+        bannerId,
+        callback: this.getBannerList.bind(this),
+      },
+    });
+  }
+
   addBannerBack(res) {
     const { dispatch } = this.props;
     dispatch({
@@ -126,8 +126,8 @@ export default class Banner extends Component {
         bannerSrc: '',
         type: 0,
         bannerUrl: '',
-        title: ''
-      }
+        title: '',
+      },
     });
     if (res.status === 'success') {
       this.getBannerList();
@@ -142,37 +142,35 @@ export default class Banner extends Component {
     dispatch({
       type: 'Banner/bannerPublish',
       payload: {
-        callback: this.getBannerList.bind(this)
-      }
+        callback: this.getBannerList.bind(this),
+      },
     });
   }
 
   // 删除确认
   delConfirm(bannerId) {
-    let _this = this;
+    const _this = this;
     confirm({
       title: formatMessage({ id: "notice.operate.certain-title" }),
       content: formatMessage({ id: "banner.delete-message" }),
       okText: formatMessage({ id: "all.certain" }),
       cancelText: formatMessage({ id: "all.cancel" }),
       okButtonProps: {
-        size: 'small'
+        size: 'small',
       },
       cancelButtonProps: {
-        size: 'small'
+        size: 'small',
       },
       onOk() {
         _this.bannerDel(bannerId);
       },
-      onCancel() {
-        console.log('Cancel');
-      },
+      onCancel() {},
     });
   }
 
   // 移动banner
   moveBanner(index, direction) {
-    let x = 0, y = 0;
+    let x = 0; let y = 0;
     const { sortBanner } = this.state;
     const { dispatch } = this.props;
     if (direction === 'left') {
@@ -187,8 +185,8 @@ export default class Banner extends Component {
       type: 'Banner/sortBanner',
       payload: {
         bannerList: sortBanner,
-        callback: this.getBannerList.bind(this)
-      }
+        callback: this.getBannerList.bind(this),
+      },
     });
   }
 
@@ -202,7 +200,7 @@ export default class Banner extends Component {
       md: 7,
       lg: 7,
       xl: 7,
-      xxl: 6
+      xxl: 6,
     };
     return (
       <div className={styles.main}>
@@ -234,27 +232,33 @@ export default class Banner extends Component {
                   <ul className={styles.bannerListBox}>
                     {bannerList.map((item, i) => (
                       <li className={styles.bannerList} key={`banner_${item.bannerId}`}>
-                        <div className={styles.bannerImgBox}
+                        <div
+                          className={styles.bannerImgBox}
                           onMouseEnter={this.bannerMouseEnter.bind(this, item.bannerId)}
                           onMouseLeave={this.bannerMouseLeave.bind(this)}
                         >
                           <img
                             onClick={this.changeBannerShow.bind(this, item.src, item.bannerId)}
                             src={item.src}
-                            style={{ borderBottom: bannerUrl.id === item.bannerId ? '3px solid #A6D6D0' : '3px solid #FFF' }} />
+                            style={{ borderBottom: bannerUrl.id === item.bannerId ? '3px solid #A6D6D0' : '3px solid #FFF' }}
+                          />
                           <div className={styles.bannerModel} style={{ display: bannerList.length > 1 ? bannerId === item.bannerId ? 'block' : 'none' : 'none' }}>
                             <Icon style={{ display: i === 0 ? 'none' : '' }} onClick={this.moveBanner.bind(this, i, 'left')} type="caret-left" theme="outlined" />
                             <Icon style={{ display: i === (bannerList.length - 1) ? 'none' : '' }} onClick={this.moveBanner.bind(this, i, 'right')} type="caret-right" theme="outlined" />
                             <Icon onClick={this.delConfirm.bind(this, item.bannerId)} type="delete" theme="outlined" style={{ float: 'right', lineHeight: '24px', marginRight: '4px' }} />
                           </div>
                         </div>
-                        {item.status === 1 ?
+                        {item.status === 1 ? (
                           <p className={styles.bannerText}>
-                            <span className={styles.bannerCircle} style={{ backgroundColor: '#A6D6D0' }}></span><FormattedMessage id="banner.published" />
-                          </p> :
+                            <span className={styles.bannerCircle} style={{ backgroundColor: '#A6D6D0' }} />
+                            <FormattedMessage id="banner.published" />
+                          </p>
+                        ) : (
                           <p className={styles.bannerText}>
-                            <span className={styles.bannerCircle} style={{ backgroundColor: '#FCB0B1' }}></span><FormattedMessage id="banner.unpublished" />
-                          </p>}
+                            <span className={styles.bannerCircle} style={{ backgroundColor: '#FCB0B1' }} />
+                            <FormattedMessage id="banner.unpublished" />
+                          </p>
+                          )}
                       </li>
                     ))}
                     {/* 添加图片 */}
@@ -264,11 +268,11 @@ export default class Banner extends Component {
                       </li>
                     )}
                   </ul>) : (
-                  <ul className={styles.bannerListBox}>
-                    <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>
-                      <img className={styles.addBanner} src={`${G.picUrl}${formatMessage({ id: "image.banner.add-en" })}`} />
-                    </li>
-                  </ul>
+                    <ul className={styles.bannerListBox}>
+                      <li className={styles.bannerList} onClick={this.addBanner.bind(this)}>
+                        <img className={styles.addBanner} src={`${G.picUrl}${formatMessage({ id: "image.banner.add-en" })}`} />
+                      </li>
+                    </ul>
                 )}
               {/* 发布 */}
               <Row gutter={24}>
@@ -289,8 +293,11 @@ export default class Banner extends Component {
           loading={modalLoading}
           Banner={Banner}
           addBanners={this.addBanners.bind(this)}
-          bannerAdd={bannerAdd} />
+          bannerAdd={bannerAdd}
+        />
       </div>
     );
   }
 }
+
+export default Banner;

@@ -15,10 +15,10 @@ const { TabPane } = Tabs;
   home,
   loading: loading.effects['home/getHomeStand'],
 }))
-export default class Home extends Component {
+class Home extends Component {
   state = {
     rangePickerValue: getTimeDistance('LAST_DAY'),
-    type: 'LAST_DAY'
+    type: 'LAST_DAY',
   };
 
   componentDidMount() {
@@ -57,6 +57,11 @@ export default class Home extends Component {
     this.getHomeStand({ date: rangePickerValue[0], type2: type });
   };
 
+  disabledDate = (nowValue) => {
+    const oldValue = G.moment();
+    return nowValue.valueOf() > oldValue.valueOf();
+  }
+
   isActive(type) {
     const { rangePickerValue } = this.state;
     const value = getTimeDistance(type);
@@ -69,11 +74,6 @@ export default class Home extends Component {
     ) {
       return styles.currentDate;
     }
-  }
-
-  disabledDate = (nowValue) => {
-    const oldValue = G.moment();
-    return nowValue.valueOf() > oldValue.valueOf();
   }
 
   render() {
@@ -214,9 +214,9 @@ export default class Home extends Component {
                   {homeStand.length > 0 ? (
                     <Bar padding={0} height={400} title={`${formatMessage({ id: 'home.unit' })}(${formatMessage({ id: 'home.hour' })})`} data={homeStand} color="#A6D6D0" autoLabel={false} />
                   ) : (
-                      <div className={styles.emptyBar}>
-                        <img src={`${G.picUrl}${formatMessage({ id: "image.stand.time-trend-none" })}`} />
-                      </div>
+                    <div className={styles.emptyBar}>
+                      <img src={`${G.picUrl}${formatMessage({ id: "image.stand.time-trend-none" })}`} />
+                    </div>
                     )}
                 </div>
               </Col>
@@ -231,7 +231,7 @@ export default class Home extends Component {
                         const hours = G.moment.duration(duration, 'm').hours();
                         const minutes = G.moment.duration(duration, 'm').minutes();
                         return (
-                          <li key={`standRank${i}`}>
+                          <li key="standRank">
                             <div>
                               <font className={i < 3 ? styles.active : ''}>{i + 1}</font>
                               <font>{username}</font>
@@ -241,7 +241,12 @@ export default class Home extends Component {
                                 {hours || null}
                                 {hours ? <i><FormattedMessage id="home.hour" /></i> : null}
                                 {minutes || null}
-                                {minutes ? <i><FormattedMessage id="home.minute" /></i> : <i style={{ fontSize: 14 }}>0<i><FormattedMessage id="home.minute" /></i></i>}
+                                {minutes ? <i><FormattedMessage id="home.minute" /></i> : (
+                                  <i style={{ fontSize: 14 }}>
+0
+                                    <i><FormattedMessage id="home.minute" /></i>
+                                  </i>
+)}
                               </font>
                             </div>
                           </li>
@@ -249,9 +254,9 @@ export default class Home extends Component {
                       })}
                     </ul>
                   ) : (
-                      <div className={styles.emptyRand}>
-                        <img src={`${G.picUrl}${formatMessage({ id: "image.stand.time-rank-none" })}`} />
-                      </div>
+                    <div className={styles.emptyRand}>
+                      <img src={`${G.picUrl}${formatMessage({ id: "image.stand.time-rank-none" })}`} />
+                    </div>
                     )}
                 </div>
               </Col>
@@ -262,3 +267,5 @@ export default class Home extends Component {
     );
   }
 }
+
+export default Home;

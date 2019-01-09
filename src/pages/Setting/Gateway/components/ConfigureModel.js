@@ -2,19 +2,20 @@ import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Modal, Button, Input, Form, message } from 'antd';
 import G from '@/global';
-import styles from './../index.less';
+import styles from "../index.less";
+
 const { TextArea } = Input;
 
 class ConfigureModel extends Component {
   state = {
     command: '',
-    result: []
+    result: [],
   }
 
   // 获取文本内容
   onChangeTextArea = (e) => {
     this.setState({
-      command: e.target.value
+      command: e.target.value,
     });
   }
 
@@ -23,10 +24,10 @@ class ConfigureModel extends Component {
     const { command } = this.state;
     const { dispatch, configureList } = this.props;
     if (!G._.isEmpty(configureList) && !G._.isEmpty(command)) {
-      configureList.map((item, i) => {
+      configureList.forEach((item, i) => {
         dispatch({
           type: 'Gateway/gatewayCommand',
-          payload: { id: item, command, callback: this.showResult.bind(this) }
+          payload: { id: item, command, callback: this.showResult.bind(this) },
         });
       })
     } else {
@@ -37,7 +38,8 @@ class ConfigureModel extends Component {
 
   // 展示结果
   showResult(res) {
-    let newResult = this.state.result;
+    const {result}=this.state;
+    const newResult = result;
     newResult.push(res.data)
     this.setState({
       result: newResult,
@@ -47,7 +49,7 @@ class ConfigureModel extends Component {
   // 清空结果
   clear() {
     this.setState({
-      result: []
+      result: [],
     })
   }
 
@@ -70,43 +72,53 @@ class ConfigureModel extends Component {
           </Button>,
         ]}
       >
-        <p className={styles.gatewayNumber}><FormattedMessage id="gateway.configure.gateway-number" />：{configureList.toString()}</p>
+        <p className={styles.gatewayNumber}>
+          <FormattedMessage id="gateway.configure.gateway-number" />
+：
+          {configureList.toString()}
+        </p>
         <h3 className={styles.command}><FormattedMessage id="gateway.configure.command-line" /></h3>
         <TextArea
           rows={8}
           value={command}
           placeholder={formatMessage({ id: "gateway.configure.command" })}
           style={{ resize: 'none' }}
-          onChange={this.onChangeTextArea.bind(this)} />
+          onChange={this.onChangeTextArea.bind(this)}
+        />
         <Button key="implement" type="primary" size="small" onClick={this.implement.bind(this)} style={{ marginTop: '16px' }}><FormattedMessage id="gateway.configure.implement" /></Button>
-        <h3 className={styles.command}><FormattedMessage id="gateway.configure.callback" /><span className={styles.clear} onClick={this.clear.bind(this)}><FormattedMessage id="gateway.configure.clear" /></span></h3>
+        <h3 className={styles.command}>
+          <FormattedMessage id="gateway.configure.callback" />
+          <span className={styles.clear} onClick={this.clear.bind(this)}><FormattedMessage id="gateway.configure.clear" /></span>
+        </h3>
         <div className={styles.resultBox}>
           {
             result && result.length > 0 ? result.map((item, i) => {
-              return <div key={i} className={styles.resultTextModel}>
-                <p className={styles.resultText}>
-                  <span className={styles.leftName}>ID</span>
-                  <span>{item.id}</span>
-                  <span className={styles.rightName}>Status</span>
-                  <span>{item.result.status}</span>
-                </p>
-                <p className={styles.resultText}>
-                  <span className={styles.leftName}>StdoutResult</span>
-                  <span>{JSON.parse(item.result.payload).stdoutResult}</span>
-                </p>
-                {
-                  G._.isEmpty(JSON.parse(item.result.payload).stderrResult) ? '' :
+              return (
+                <div key={item} className={styles.resultTextModel}>
+                  <p className={styles.resultText}>
+                    <span className={styles.leftName}>ID</span>
+                    <span>{item.id}</span>
+                    <span className={styles.rightName}>Status</span>
+                    <span>{item.result.status}</span>
+                  </p>
+                  <p className={styles.resultText}>
+                    <span className={styles.leftName}>StdoutResult</span>
+                    <span>{JSON.parse(item.result.payload).stdoutResult}</span>
+                  </p>
+                  {
+                  G._.isEmpty(JSON.parse(item.result.payload).stderrResult) ? '' : (
                     <p className={styles.resultText}>
                       <span className={styles.leftName}>StderrResult</span>
                       <span>{JSON.parse(item.result.payload).stderrResult}</span>
                     </p>
-                }
+)}
 
-              </div>
+                </div>
+)
             }) : '空'
           }
         </div>
-      </Modal >
+      </Modal>
     );
   }
 }

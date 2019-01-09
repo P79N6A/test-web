@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import { getDeviceStatus } from '@/services/api';
 
 export default {

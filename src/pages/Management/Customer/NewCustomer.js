@@ -6,7 +6,7 @@ import styles from './NewCustomer.less';
 @connect(({ ManagementCustomer }) => ({
   ManagementCustomer,
 }))
-export default class NewCustomer extends Component {
+class NewCustomer extends Component {
   render() {
     const { dispatch, ManagementCustomer } = this.props;
     return (
@@ -16,3 +16,5 @@ export default class NewCustomer extends Component {
     );
   }
 }
+
+export default NewCustomer;

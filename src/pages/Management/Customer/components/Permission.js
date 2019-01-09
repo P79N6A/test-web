@@ -22,31 +22,31 @@ class Permission extends Component {
       payload: {
         companyId,
         addPermission,
-        callback: this.onCancel.bind(this, 1)
-      }
+        callback: this.onCancel.bind(this, 1),
+      },
     })
   };
 
   // 获取自组件的回调函数
   obPermission(id, list) {
     const { permissionList, addPermission, dispatch } = this.props;
-    let data = addPermission;
+    const data = addPermission;
     if (list && list.length > 0) {
-      list.map((item) => {
+      list.forEach((item) => {
         if (data.indexOf(item) < 0) {
           data.push(item);
         }
       })
     } else {
-      let delData = [];
-      permissionList.map((item) => {
+      const delData = [];
+      permissionList.forEach((item) => {
         if (item.menu_id === id) {
-          item.child && item.child.map((lItem) => {
+          item.child && item.child.forEach((lItem) => {
             delData.push(lItem.menu_id);
           })
         }
       });
-      delData && delData.map((bItem) => {
+      delData && delData.forEach((bItem) => {
         if (data.indexOf(bItem) > -1) {
           data.splice(data.indexOf(bItem), 1);
         }
@@ -56,7 +56,7 @@ class Permission extends Component {
       type: 'ManagementCustomer/saveAddPermissions',
       payload: {
         addPermission: data,
-      }
+      },
     })
   }
 
@@ -68,7 +68,7 @@ class Permission extends Component {
     return (
       <Modal
         width={780}
-        visible={true}
+        visible
         title={formatMessage({ id: "customer.permission.set-permission" })}
         onOk={this.okHandle}
         onCancel={this.onCancel.bind(this, 0)}
@@ -78,20 +78,23 @@ class Permission extends Component {
           </Button>,
           <Button key="submit" size='small' type="primary" loading={loading} onClick={this.okHandle}>
             <FormattedMessage id="all.save" />
-          </Button>
+          </Button>,
         ]}
       >
         <p className={styles.subTitle}><FormattedMessage id="customer.permission.set-permission-message" /></p>
         {
           dataList && dataList.length > 0 ?
             dataList.map((item, index) => {
-              return <CheckAll
-                key={item.title + index}
-                obPermission={this.obPermission.bind(this)}
-                plainOptions={item.plainOptions}
-                checkedList={item.checkedList}
-                title={item.title}
-                id={item.id} />
+              return (
+                <CheckAll
+                  key={item.title}
+                  obPermission={this.obPermission.bind(this)}
+                  plainOptions={item.plainOptions}
+                  checkedList={item.checkedList}
+                  title={item.title}
+                  id={item.id}
+                />
+)
             })
             :
             <FormattedMessage id="spaceUsage.none" />

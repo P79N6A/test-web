@@ -9,8 +9,8 @@ import styles from './index.less';
 const TabPane = Tabs.TabPane;
 export default class All extends Component {
   state = {
-    key: "gateway",
-    id: ""
+    key: 'gateway',
+    id: '',
   }
 
   callback(key) {
@@ -23,7 +23,7 @@ export default class All extends Component {
   saveGatewayParams(key, id) {
     this.setState({
       key,
-      id
+      id,
     })
   }
 

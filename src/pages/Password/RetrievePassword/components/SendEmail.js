@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Form, Input, Row, Col, Button } from 'antd';
 import G from '@/global'
-import styles from './../index.less'
+import styles from '../index.less'
 
 const FormItem = Form.Item;
 
@@ -17,7 +17,7 @@ class SendEmail extends Component {
       dispatch({
         type: 'RetrievePassword/emailSave',
         payload: {
-          ...form.getFieldsValue()
+          ...form.getFieldsValue(),
         },
       });
       // 添加

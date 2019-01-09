@@ -14,7 +14,7 @@ import ConfigureModel from './components/ConfigureModel'
   gatewayCommand,
   loading: loading.effects['Gateway/gatewayList'],
 }))
-export default class Gateway extends Component {
+class Gateway extends Component {
   state = {
     query: '',
     filterParam: {},
@@ -28,6 +28,24 @@ export default class Gateway extends Component {
     this.getCustomer();
   }
 
+  // 搜索
+  onSearch() {
+    this.fetchDataList();
+  }
+
+  // 获取搜索框值
+  onChangeSearchInfo = e => {
+    this.setState({ query: e.target.value });
+  };
+
+  // 备注弹窗
+  onMark(text) {
+    this.setState({
+      visible: true,
+      editValue: text,
+    });
+  }
+
   // 获取客户列表
   getCustomer() {
     const { dispatch } = this.props;
@@ -36,61 +54,99 @@ export default class Gateway extends Component {
     });
   }
 
-  // 配置网关
-  configuration() {
-    const { Gateway } = this.props;
-    const { configureList } = Gateway;
-    if (G._.isEmpty(configureList)) {
-      message.error(formatMessage({ id: "gateway.list.choose" }));
-    } else {
-      this.changeConfigure({ configureVisible: true });
-    }
-  }
+  // 表格数据展示
+  getColumns(sortOrder, customerList) {
+    const columns = [
+      {
+        title: formatMessage({ id: "gateway.list.number" }),
+        key: 'SerialNumber',
+        width: 100,
+        sorter: true,
+        sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
+        render: (text, record, index) => (
+          <Fragment>
+            <Tooltip placement="topLeft" title={text.SerialNumber}>
+              <font
+                onClick={() => {
+                this.goVirtualGateway(text, record, index);
+              }}
+                style={{ cursor: 'pointer' }}
+              >
+                {text.SerialNumber}
 
-  // 清空搜索框内容
-  emitEmpty = () => {
-    this.userNameInput.focus();
-    this.setState({ query: '' });
-  };
-
-  // 获取搜索框值
-  onChangeSearchInfo = e => {
-    this.setState({ query: e.target.value });
-  };
-
-  // enter 键搜索
-  handelKeydown = e => {
-    if (e.keyCode === 13) {
-      this.onSearch();
-    }
-  };
-
-  // 搜索
-  onSearch() {
-    this.fetchDataList();
-  }
-
-  // 获取列表
-  fetchDataList(value) {
-    const { dispatch, Gateway } = this.props;
-    const { gatewayData } = Gateway;
-    const { query, sortParam, filterParam } = this.state;
-    dispatch({
-      type: 'Gateway/gatewayList',
-      payload: {
-        offset: (value && (value.current - 1) * 15),
-        limit: (value && value.limit) || gatewayData.limit,
-        query: (value && value.query) || query,
-        sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { resourceTotal: (value && value.sortParams) || sortParam },
-        filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : ((value && value.filterParam) || filterParam)
+              </font>
+            </Tooltip>
+          </Fragment>
+        ),
       },
-    });
+      {
+        title: formatMessage({ id: "device.list.customer" }),
+        key: 'companyName',
+        filters: customerList,
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.companyName}>
+                <span>{text.companyName}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        },
+      },
+      {
+        title: formatMessage({ id: "gateway.list.position" }),
+        key: "position",
+        render: (text) => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.position}>
+                <span>{text.position}</span>
+              </Tooltip>
+            </Fragment>
+          )
+        },
+      },
+      {
+        title: formatMessage({ id: 'all.remarks' }),
+        key: 'remark',
+        render: text => {
+          return (
+            <Fragment>
+              <Tooltip placement="topLeft" title={text.remark}>
+                <font>{text.remark}</font>
+              </Tooltip>
+            </Fragment>
+          );
+        },
+      },
+      {
+        title: formatMessage({ id: 'all.operating' }),
+        key: 'setting',
+        render: (text, record, index) => (
+          <Fragment>
+            <a
+              onClick={() => {
+                const array = [];
+                array.push(text.id)
+                this.changeConfigure({ configureList: array, configureVisible: true });
+              }}
+            >
+              <FormattedMessage id="gateway.list.configure" />
+            </a>
+            <Divider type="vertical" />
+            <a
+              onClick={() => {
+                this.onMark(text, record, index);
+              }}
+            >
+              <FormattedMessage id="all.remarks" />
+            </a>
+          </Fragment>
+        ),
+      },
+    ];
+    return columns;
   }
-
-  // 分页获取数据
-  pageChange = pageNumber => {
-    this.fetchDataList({ current: pageNumber });
-  };
 
   // 表格排序筛选
   handleChange = (pagination, filters, sorter) => {
@@ -108,119 +164,33 @@ export default class Gateway extends Component {
     this.fetchDataList({ filterParam, sortParams });
   };
 
-  // 表格数据展示
-  getColumns(sortOrder, customerList) {
-    const columns = [
-      {
-        title: formatMessage({ id: "gateway.list.number" }),
-        key: 'SerialNumber',
-        width: 100,
-        sorter: true,
-        sortOrder: G._.isEmpty(sortOrder) ? undefined : `${sortOrder}end`,
-        render: (text, record, index) => (
-          <Fragment>
-            <Tooltip placement="topLeft" title={text.SerialNumber}>
-              <font onClick={() => {
-                this.goVirtualGateway(text, record, index);
-              }} style={{ cursor: 'pointer' }}>{text.SerialNumber}</font>
-            </Tooltip>
-          </Fragment>
-        ),
-      },
-      {
-        title: formatMessage({ id: "device.list.customer" }),
-        key: 'companyName',
-        filters: customerList,
-        render: (text) => {
-          return (
-            <Fragment>
-              <Tooltip placement="topLeft" title={text.companyName}>
-                <span>{text.companyName}</span>
-              </Tooltip>
-            </Fragment>
-          )
-        }
-      },
-      {
-        title: formatMessage({ id: "gateway.list.position" }),
-        key: "position",
-        render: (text) => {
-          return (
-            <Fragment>
-              <Tooltip placement="topLeft" title={text.position}>
-                <span>{text.position}</span>
-              </Tooltip>
-            </Fragment>
-          )
-        }
-      },
-      {
-        title: formatMessage({ id: 'all.remarks' }),
-        key: 'remark',
-        render: text => {
-          return (
-            <Fragment>
-              <Tooltip placement="topLeft" title={text.remark}>
-                <font>{text.remark}</font>
-              </Tooltip>
-            </Fragment>
-          );
-        }
-      },
-      {
-        title: formatMessage({ id: 'all.operating' }),
-        key: 'setting',
-        render: (text, record, index) => (
-          <Fragment>
-            <a
-              onClick={() => {
-                let array = [];
-                array.push(text.id)
-                this.changeConfigure({ configureList: array, configureVisible: true });
-              }}
-            >
-              <FormattedMessage id="gateway.list.configure" />
-            </a>
-            <Divider type="vertical" />
-            <a
-              onClick={() => {
-                this.onMark(text, record, index);
-              }}
-            >
-              <FormattedMessage id="all.remarks" />
-            </a>
-          </Fragment>
-        )
-      }
-    ];
-    return columns;
-  }
+  // enter 键搜索
+  handelKeydown = e => {
+    if (e.keyCode === 13) {
+      this.onSearch();
+    }
+  };
+
+  // 分页获取数据
+  pageChange = pageNumber => {
+    this.fetchDataList({ current: pageNumber });
+  };
+
+  // 清空搜索框内容
+  emitEmpty = () => {
+    this.userNameInput.focus();
+    this.setState({ query: '' });
+  };
 
   // table 多选
   onSelectChange = (selectedRowKeys, selectedRows) => {
-    let array = [];
+    const array = [];
     if (!G._.isEmpty(selectedRows)) {
-      selectedRows.map((item, i) => {
+      selectedRows.forEach((item, i) => {
         array.push(item.id)
       })
     }
     this.changeConfigure({ configureList: array });
-  }
-
-  // 修改配置弹窗显示隐藏以及配置列表数据
-  changeConfigure(value) {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'Gateway/changeConfigureModel',
-      payload: { ...value },
-    });
-  }
-  // 备注弹窗
-  onMark(text) {
-    this.setState({
-      visible: true,
-      editValue: text,
-    });
   }
 
   // 确定备注
@@ -231,15 +201,6 @@ export default class Gateway extends Component {
     }
     this.addRemark({ ...fieldsValue, id, callback: this.upload.bind(this) });
   };
-
-  // 调用备注的接口
-  addRemark(data) {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'Gateway/gatewayRemark',
-      payload: data,
-    });
-  }
 
   upload = res => {
     this.setState({ visible: false, editValue: {} });
@@ -255,6 +216,52 @@ export default class Gateway extends Component {
   handClose = () => {
     this.changeConfigure({ configureList: [], configureVisible: false });
     this.fetchDataList({ current: 1 });
+  }
+
+  // 调用备注的接口
+  addRemark(data) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Gateway/gatewayRemark',
+      payload: data,
+    });
+  }
+
+  // 修改配置弹窗显示隐藏以及配置列表数据
+  changeConfigure(value) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'Gateway/changeConfigureModel',
+      payload: { ...value },
+    });
+  }
+
+  // 获取列表
+  fetchDataList(value) {
+    const { dispatch, Gateway } = this.props;
+    const { gatewayData } = Gateway;
+    const { query, sortParam, filterParam } = this.state;
+    dispatch({
+      type: 'Gateway/gatewayList',
+      payload: {
+        offset: (value && (value.current - 1) * 15),
+        limit: (value && value.limit) || gatewayData.limit,
+        query: (value && value.query) || query,
+        sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { resourceTotal: (value && value.sortParams) || sortParam },
+        filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : ((value && value.filterParam) || filterParam),
+      },
+    });
+  }
+
+  // 配置网关
+  configuration() {
+    const { Gateway } = this.props;
+    const { configureList } = Gateway;
+    if (G._.isEmpty(configureList)) {
+      message.error(formatMessage({ id: "gateway.list.choose" }));
+    } else {
+      this.changeConfigure({ configureVisible: true });
+    }
   }
 
   // 处理去虚拟网关页面
@@ -346,3 +353,5 @@ export default class Gateway extends Component {
     );
   }
 }
+
+export default Gateway;

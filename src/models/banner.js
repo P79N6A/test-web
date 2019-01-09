@@ -11,7 +11,7 @@ export default {
       bannerSrc: '',
       type: 0,
       bannerUrl: '',
-      title: ''
+      title: '',
     },
     noticeData: {
       row: [],
@@ -20,7 +20,7 @@ export default {
       limit: 6,
     },
     bannerList: '',
-    defaultBannerList: ''
+    defaultBannerList: '',
   },
 
   effects: {
@@ -87,7 +87,6 @@ export default {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
     },
-
   },
 
   reducers: {
@@ -106,13 +105,13 @@ export default {
     saveBannerList(state, action) {
       return {
         ...state,
-        bannerList: action.payload
+        bannerList: action.payload,
       }
     },
     saveDefaultBannerList(state, action) {
       return {
         ...state,
-        defaultBannerList: action.payload
+        defaultBannerList: action.payload,
       }
     },
     // 控制弹窗内容
@@ -121,10 +120,9 @@ export default {
         ...state,
         bannerAdd: {
           ...state.bannerAdd,
-          ...payload
-        }
+          ...payload,
+        },
       }
-    }
-
-  }
+    },
+  },
 };

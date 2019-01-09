@@ -9,17 +9,16 @@ import {
   Button,
   Input,
   Divider,
-  Drawer,
   Icon,
   Pagination,
   Popconfirm,
   Popover,
-  Tooltip
+  Tooltip,
 } from 'antd';
 
 import G from '@/global';
-import styles from './Notice.less';
 import { routerRedux } from 'dva/router';
+import styles from './Notice.less';
 
 @connect(({ ManagementNotice, loading, ManagementPerson }) => ({
   ManagementPerson,
@@ -27,36 +26,13 @@ import { routerRedux } from 'dva/router';
   loading: loading.effects['ManagementNotice/fetch'],
 }))
 
-export default class Notice extends Component {
+class Notice extends Component {
   // 表单以及分页
   state = {
     query: '',
-    detail: {
-      title: 'Title',
-      lookNum: 20,
-      lastTime: '2018-04',
-      content: '<p>Hello World</p>',
-    },
     noticeState: [],
-    state: [formatMessage({ id: 'notice.list.empty' }), formatMessage({ id: 'notice.list.send' }), formatMessage({ id: 'notice.list.revice' }), formatMessage({ id: 'notice.list.upcoming' }), formatMessage({ id: 'notice.list.read' })]
+    state: [formatMessage({ id: 'notice.list.empty' }), formatMessage({ id: 'notice.list.send' }), formatMessage({ id: 'notice.list.revice' }), formatMessage({ id: 'notice.list.upcoming' }), formatMessage({ id: 'notice.list.read' })],
   };
-
-  componentDidUpdate(nextProps) {
-    const { ManagementNotice } = nextProps;
-    const dataLists = ManagementNotice.data.row;
-    if (dataLists.length > 0) {
-      for (let i = 0; i < dataLists.length; i++) {
-        const titleTd = document.getElementById(`titleTd_${dataLists[i].noticeId}`);
-        if (titleTd) {
-          const titleTdWidth = titleTd.offsetWidth;
-          const titleTextWidth = document.getElementById(`titleText_${dataLists[i].noticeId}`).offsetWidth;
-          document.getElementById(`titleText_${dataLists[i].noticeId}`).style.width = titleTextWidth < titleTdWidth - 25 ? 'auto' : titleTdWidth - 25 + 'px';
-        }
-
-      }
-    }
-  }
-
 
   componentDidMount() {
     const { dispatch, ManagementNotice } = this.props;
@@ -68,6 +44,21 @@ export default class Notice extends Component {
     });
   }
 
+  componentDidUpdate(nextProps) {
+    const { ManagementNotice } = nextProps;
+    const dataLists = ManagementNotice.data.row;
+    if (dataLists.length > 0) {
+      for (let i = 0; i < dataLists.length; i++) {
+        const titleTd = document.getElementById(`titleTd_${dataLists[i].noticeId}`);
+        if (titleTd) {
+          const titleTdWidth = titleTd.offsetWidth;
+          const titleTextWidth = document.getElementById(`titleText_${dataLists[i].noticeId}`).offsetWidth;
+          document.getElementById(`titleText_${dataLists[i].noticeId}`).style.width = titleTextWidth < titleTdWidth - 25 ? 'auto' : `${titleTdWidth - 25  }px`;
+        }
+      }
+    }
+  }
+
   onSearch() {
     this.fetchDataList(1);
   }
@@ -76,26 +67,14 @@ export default class Notice extends Component {
     this.setState({ query: e.target.value });
   };
 
-  handleClickChange = (noticeId) => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'ManagementNotice/getNoticeStat',
-      payload: {
-        noticeId,
-        callback: (res) => {
-          this.setState({
-            noticeState: res.data.row
-          })
-        }
-      },
-    });
-  }
-
   getColumns(current, noticeState, state) {
     const contest = (
       <div>
         {noticeState.map((comment) => (
-          <p key={comment._id}><span>{comment.username || formatMessage({ id: 'notice.list.no-nickname' })}</span><span style={{ float: 'right' }}>{state[comment.readingState]}</span></p>
+          <p key={comment._id}>
+            <span>{comment.username || formatMessage({ id: 'notice.list.no-nickname' })}</span>
+            <span style={{ float: 'right' }}>{state[comment.readingState]}</span>
+          </p>
         ))}
       </div>
     );
@@ -115,16 +94,16 @@ export default class Notice extends Component {
         key: 'title',
         render: (text) => {
           return (
-            <Fragment >
+            <Fragment>
               <Tooltip placement="topLeft" title={text.title}>
                 <div id={`titleTd_${text.noticeId}`} style={{ display: 'flex', flexDirection: 'row' }}>
                   <span id={`titleText_${text.noticeId}`} onClick={this.goDetail.bind(this, text)} className={styles.colSql}>{text.title}</span>
                   <span className={styles.titleTop} style={{ opacity: text.topStatus ? '1' : '0' }}><FormattedMessage id="notice.list.topping" /></span>
                 </div>
               </Tooltip>
-            </Fragment >
+            </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'notice.list.receiver' }),
@@ -138,7 +117,8 @@ export default class Notice extends Component {
                 content={contest}
                 title={formatMessage({ id: 'notice.list.delivered' })}
                 trigger="click"
-                onClick={this.handleClickChange.bind(this, text.noticeId)}>
+                onClick={this.handleClickChange.bind(this, text.noticeId)}
+              >
                 <font style={{ cursor: 'pointer' }}>{`${text.viewCount}/${text.unreadCount + text.viewCount}`}</font>
               </Popover>
             </Fragment>
@@ -156,7 +136,7 @@ export default class Notice extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'all.operating' }),
@@ -179,6 +159,21 @@ export default class Notice extends Component {
       },
     ];
     return columns;
+  }
+
+  handleClickChange = (noticeId) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ManagementNotice/getNoticeStat',
+      payload: {
+        noticeId,
+        callback: (res) => {
+          this.setState({
+            noticeState: res.data.row,
+          })
+        },
+      },
+    });
   }
 
   handelKeydown = e => {
@@ -231,13 +226,14 @@ export default class Notice extends Component {
     dispatch({
       type: 'ManagementNotice/fetch',
       payload: {
-        offset: (current - 1) * 15, limit, query
+        offset: (current - 1) * 15, limit, query,
       },
     });
   }
 
   newNotice() {
-    this.props.dispatch(routerRedux.push('/management/newNotice'))
+    const {dispatch}=this.props;
+    dispatch(routerRedux.push('/management/newNotice'))
   }
 
   goDetail(text) {
@@ -246,7 +242,7 @@ export default class Notice extends Component {
       type: 'ManagementNotice/setCopyValue',
       payload: text,
     });
-    this.props.dispatch(routerRedux.push('/management/detailNotice'))
+    dispatch(routerRedux.push('/management/detailNotice'))
   }
 
   render() {
@@ -316,3 +312,5 @@ export default class Notice extends Component {
     );
   }
 }
+
+export default Notice;

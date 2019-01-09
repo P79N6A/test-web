@@ -9,7 +9,7 @@ const FormItem = Form.Item;
 
 @connect(({ ChangePass, user }) => ({
   ChangePass,
-  user
+  user,
 }))
 class ModalChange extends Component {
   compareToFirstPassword = (rule, value, callback) => {
@@ -25,7 +25,7 @@ class ModalChange extends Component {
 
   // 修改成功或者失败的回调函数(判断角色返回不同页面)
   release = res => {
-    const { form, user } = this.props;
+    const { form, user,dispatch } = this.props;
     const currentAuthority = user.user.currentAuthority;
     if (res.status === 'success') {
       message.success(res.message || formatMessage({ id: 'customer.operate.successfully-modified' }));
@@ -37,11 +37,11 @@ class ModalChange extends Component {
       window.sessionStorage.removeItem('userInfo');
       window.localStorage.setItem('antd-pro-authority', '["guest"]');
       if (currentAuthority === 'user') {
-        this.props.dispatch(routerRedux.push('/user/login'));
+        dispatch(routerRedux.push('/user/login'));
       } else {
-        this.props.dispatch(routerRedux.push('/admin_user/login'));
+        dispatch(routerRedux.push('/admin_user/login'));
       }
-      return;
+      
     } else {
       message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
     }

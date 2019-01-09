@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { getResourceList, addRemark, releaseDevice, removeDevice } from '../services/api';
+import { getResourceList, addRemark, releaseDevice, removeDevice } from '@/services/api';
 import { formatMessage, getLocale } from 'umi/locale';
 import G from '@/global';
 
@@ -56,7 +56,7 @@ export default {
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
-    }
+    },
   },
 
   reducers: {

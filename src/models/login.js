@@ -5,7 +5,7 @@ import { setAuthority, setUserInfo, getUserInfo, setSidebar } from '@/utils/auth
 import { isJSON } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
 import { message } from 'antd';
-import { formatMessage, getLocale } from 'umi/locale';
+import { getLocale } from 'umi/locale';
 import G from '@/global';
 
 export default {
@@ -13,7 +13,7 @@ export default {
 
   state: {
     status: undefined,
-    sidebarList: []
+    sidebarList: [],
   },
 
   effects: {

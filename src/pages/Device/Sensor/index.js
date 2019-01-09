@@ -10,7 +10,7 @@ import RemarkModal from './components/RemarkModel'
   Sensor,
   loading: loading.effects['Sensor/sensorList'],
 }))
-export default class Sensor extends Component {
+class Sensor extends Component {
   state = {
     query: '',
     filterParam: {},
@@ -23,22 +23,9 @@ export default class Sensor extends Component {
     this.fetchDataList({ current: 1 });
   }
 
-  // 清空搜索框内容
-  emitEmpty = () => {
-    this.userNameInput.focus();
-    this.setState({ query: '' });
-  };
-
   // 获取搜索框值
   onChangeSearchInfo = e => {
     this.setState({ query: e.target.value });
-  };
-
-  // enter 键搜索
-  handelKeydown = e => {
-    if (e.keyCode === 13) {
-      this.onSearch();
-    }
   };
 
   // 搜索
@@ -46,41 +33,13 @@ export default class Sensor extends Component {
     this.fetchDataList();
   }
 
-  // 获取列表
-  fetchDataList(value) {
-    const { dispatch, Sensor } = this.props;
-    const { sensorData } = Sensor;
-    const { query, sortParam, filterParam } = this.state;
-    dispatch({
-      type: 'Sensor/sensorList',
-      payload: {
-        offset: (value && (value.current - 1) * 15),
-        limit: (value && value.limit) || sensorData.limit,
-        query: (value && value.query) || query,
-        sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { tag: (value && value.sortParams) || sortParam },
-        filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : ((value && value.filterParam) || filterParam)
-      },
+  // 备注弹窗
+  onMark(text) {
+    this.setState({
+      visible: true,
+      editValue: text,
     });
   }
-
-  // 分页获取数据
-  pageChange = pageNumber => {
-    this.fetchDataList({ current: pageNumber });
-  };
-
-  // 表格排序筛选
-  handleChange = (pagination, filters, sorter) => {
-    const { sortParam } = this.state;
-    let filterParam;
-    let sortParams;
-    filterParam = !G._.isEmpty(filters) ? filters : {};
-    sortParams = G._.isEmpty(sortParam) ? 'desc' : sortParam === 'desc' ? 'asc' : {};
-    this.setState({
-      filterParam,
-      sortParam: sortParams,
-    });
-    this.fetchDataList({ filterParam, sortParams });
-  };
 
   // 表格数据展示
   getColumns(current, sortOrder, stateList) {
@@ -120,7 +79,7 @@ export default class Sensor extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'all.remarks' }),
@@ -133,7 +92,7 @@ export default class Sensor extends Component {
               </Tooltip>
             </Fragment>
           );
-        }
+        },
       },
       {
         title: formatMessage({ id: "sensor.list.last-time" }),
@@ -146,7 +105,7 @@ export default class Sensor extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'all.operating' }),
@@ -161,19 +120,42 @@ export default class Sensor extends Component {
               <FormattedMessage id="all.remarks" />
             </a>
           </Fragment>
-        )
-      }
+        ),
+      },
     ];
     return columns;
   }
 
-  // 备注弹窗
-  onMark(text) {
+
+  // 表格排序筛选
+  handleChange = (pagination, filters, sorter) => {
+    const { sortParam } = this.state;
+    const filterParam = !G._.isEmpty(filters) ? filters : {};
+    const sortParams = G._.isEmpty(sortParam) ? 'desc' : sortParam === 'desc' ? 'asc' : {};
     this.setState({
-      visible: true,
-      editValue: text,
+      filterParam,
+      sortParam: sortParams,
     });
-  }
+    this.fetchDataList({ filterParam, sortParams });
+  };
+
+  // 清空搜索框内容
+  emitEmpty = () => {
+    this.userNameInput.focus();
+    this.setState({ query: '' });
+  };
+
+  // 分页获取数据
+  pageChange = pageNumber => {
+    this.fetchDataList({ current: pageNumber });
+  };
+
+  // enter 键搜索
+  handelKeydown = e => {
+    if (e.keyCode === 13) {
+      this.onSearch();
+    }
+  };
 
   // 确定备注
   handleOk = (fieldsValue, id) => {
@@ -182,6 +164,16 @@ export default class Sensor extends Component {
       return;
     }
     this.addRemark({ ...fieldsValue, id, callback: this.upload.bind(this) });
+  };
+
+  upload = res => {
+    this.setState({ visible: false, editValue: {} });
+    this.fetchDataList();
+  };
+
+  // 关闭备注弹窗
+  handleCancel = () => {
+    this.setState({ visible: false, editValue: {} });
   };
 
   // 调用备注的接口
@@ -193,15 +185,22 @@ export default class Sensor extends Component {
     });
   }
 
-  upload = res => {
-    this.setState({ visible: false, editValue: {} });
-    this.fetchDataList();
-  };
-
-  // 关闭备注弹窗
-  handleCancel = () => {
-    this.setState({ visible: false, remark: '' });
-  };
+  // 获取列表
+  fetchDataList(value) {
+    const { dispatch, Sensor } = this.props;
+    const { sensorData } = Sensor;
+    const { query, sortParam, filterParam } = this.state;
+    dispatch({
+      type: 'Sensor/sensorList',
+      payload: {
+        offset: (value && (value.current - 1) * 15),
+        limit: (value && value.limit) || sensorData.limit,
+        query: (value && value.query) || query,
+        sortParam: G._.isEmpty((value && value.sortParams) || sortParam) ? '' : { tag: (value && value.sortParams) || sortParam },
+        filterParam: G._.isEmpty((value && value.filterParam) || filterParam) ? '' : ((value && value.filterParam) || filterParam),
+      },
+    });
+  }
 
   render() {
     const { query, sortParam, editValue, visible } = this.state;
@@ -271,3 +270,5 @@ export default class Sensor extends Component {
     );
   }
 }
+
+export default Sensor;

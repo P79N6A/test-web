@@ -1,4 +1,4 @@
-import { changePassword } from '../services/api';
+import { changePassword } from '@/services/api';
 
 export default {
   namespace: 'ChangePass',

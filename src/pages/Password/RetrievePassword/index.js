@@ -12,7 +12,7 @@ import G from '@/global';
 @connect(({ RetrievePassword }) => ({
   RetrievePassword,
 }))
-export default class RetrievePassword extends Component {
+class RetrievePassword extends Component {
 
   // 发送邮箱
   sendEmails(form) {
@@ -35,7 +35,7 @@ export default class RetrievePassword extends Component {
       dispatch({
         type: 'RetrievePassword/emailSave',
         payload: {
-          page: 1
+          page: 1,
         },
       });
     } else {
@@ -53,9 +53,9 @@ export default class RetrievePassword extends Component {
           {
             page === 1
               ?
-              <SendSuccess dispatch={dispatch} RetrievePassword={RetrievePassword} sendEmails={this.sendEmails.bind(this)} />
+                <SendSuccess dispatch={dispatch} RetrievePassword={RetrievePassword} sendEmails={this.sendEmails.bind(this)} />
               :
-              <SendEmail dispatch={dispatch} RetrievePassword={RetrievePassword} sendEmails={this.sendEmails.bind(this)} />
+                <SendEmail dispatch={dispatch} RetrievePassword={RetrievePassword} sendEmails={this.sendEmails.bind(this)} />
           }
         </div>
         <Footer />
@@ -63,3 +63,5 @@ export default class RetrievePassword extends Component {
     );
   }
 }
+
+export default RetrievePassword;

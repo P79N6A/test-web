@@ -52,7 +52,7 @@ export default {
           offset: Number(offset),
           current: Number(offset) / 15 + 1,
           limit: state.adminSensorData.limit,
-        }
+        },
       };
     },
     saveData(state, action) {
@@ -61,5 +61,5 @@ export default {
         sensorData: action.payload,
       };
     },
-  }
+  },
 };

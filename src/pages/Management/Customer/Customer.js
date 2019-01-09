@@ -12,61 +12,16 @@ import { checkAddPermission } from '@/utils/utils'
   ManagementCustomer,
   loading: loading.effects['ManagementCustomer/fetch'],
 }))
-export default class Wework extends Component {
+class Wework extends Component {
   // 表单以及分页
   state = {
     query: '',
     sortParam: {},
-    visible: false
+    visible: false,
   };
 
   componentDidMount() {
     this.fetchDataList();
-  }
-
-  // 获取权限列表
-  obpermission(text) {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'ManagementCustomer/permissionsList',
-      payload: {
-        companyId: text.companyId,
-        callback: this.showModel.bind(this)
-      },
-    });
-    dispatch({
-      type: 'ManagementCustomer/saveCompanyId',
-      payload: {
-        companyId: text.companyId
-      }
-    });
-  }
-
-  // 回调函数
-  showModel(res) {
-    const { dispatch } = this.props;
-    const addPermission = checkAddPermission(res.data);
-    if (res.status === 'success') {
-      this.setState({
-        visible: true
-      });
-      dispatch({
-        type: 'ManagementCustomer/saveAddPermissions',
-        payload: {
-          addPermission: addPermission,
-        }
-      })
-    }
-  }
-
-  // 关闭弹窗
-  closeModel(res) {
-    this.setState({
-      visible: false
-    });
-    if (res === 1) {
-      this.fetchDataList();
-    }
   }
 
   onSearch() {
@@ -110,7 +65,7 @@ export default class Wework extends Component {
               </Tooltip>
             </Fragment>
           );
-        }
+        },
       },
       {
         title: formatMessage({ id: 'customer.list.account-number' }),
@@ -123,7 +78,7 @@ export default class Wework extends Component {
               </Tooltip>
             </Fragment>
           );
-        }
+        },
       },
       {
         title: formatMessage({ id: 'home.device.number' }),
@@ -162,7 +117,7 @@ export default class Wework extends Component {
               </Tooltip>
             </Fragment>
           );
-        }
+        },
       },
       {
         title: formatMessage({ id: 'all.operating' }),
@@ -191,7 +146,8 @@ export default class Wework extends Component {
             <a
               onClick={() => {
                 this.obpermission(text, record, index);
-              }}>
+              }}
+            >
               <FormattedMessage id="customer.permission" />
             </a>
           </Fragment>
@@ -215,7 +171,7 @@ export default class Wework extends Component {
   // 排序筛选
   handleChange = (pagination, filters, sorter) => {
     const { sortParam } = this.state;
-    let sortParams = G._.isEmpty(sortParam) ? 'desc' : sortParam === 'desc' ? 'asc' : {};
+    const sortParams = G._.isEmpty(sortParam) ? 'desc' : sortParam === 'desc' ? 'asc' : {};
     this.setState({
       sortParam: sortParams,
     });
@@ -226,6 +182,51 @@ export default class Wework extends Component {
     this.fetchDataList({ current: pageNumber });
   };
 
+  // 获取权限列表
+  obpermission(text) {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'ManagementCustomer/permissionsList',
+      payload: {
+        companyId: text.companyId,
+        callback: this.showModel.bind(this),
+      },
+    });
+    dispatch({
+      type: 'ManagementCustomer/saveCompanyId',
+      payload: {
+        companyId: text.companyId,
+      },
+    });
+  }
+
+  // 回调函数
+  showModel(res) {
+    const { dispatch } = this.props;
+    const addPermission = checkAddPermission(res.data);
+    if (res.status === 'success') {
+      this.setState({
+        visible: true,
+      });
+      dispatch({
+        type: 'ManagementCustomer/saveAddPermissions',
+        payload: {
+          addPermission,
+        },
+      })
+    }
+  }
+
+  // 关闭弹窗
+  closeModel(res) {
+    this.setState({
+      visible: false,
+    });
+    if (res === 1) {
+      this.fetchDataList();
+    }
+  }
+
   // 跳转到设备列表
   jump(text, record) {
     const { dispatch } = this.props;
@@ -234,12 +235,13 @@ export default class Wework extends Component {
       type: 'ManagementCustomer/setcompanyId',
       payload: companyId,
     });
-    this.props.dispatch(routerRedux.push('/management/device'))
+    dispatch(routerRedux.push('/management/device'))
   }
 
   // 添加客户
   newCustomer() {
-    this.props.dispatch(routerRedux.push('/management/newCustomer'))
+    const { dispatch } = this.props;
+    dispatch(routerRedux.push('/management/newCustomer'))
   }
 
   // 重置密码
@@ -341,3 +343,5 @@ export default class Wework extends Component {
     );
   }
 }
+
+export default Wework;

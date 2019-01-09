@@ -1,10 +1,10 @@
-import { retrievePassword, sendPassword } from '../services/api';
+import { retrievePassword, sendPassword } from '@/services/api';
 
 export default {
   namespace: 'RetrieveMail',
   state: {
     name: "",
-    state: 0
+    state: 0,
   },
 
   effects: {
@@ -22,8 +22,8 @@ export default {
     saveId(state, action) {
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
-    }
+    },
   },
 };

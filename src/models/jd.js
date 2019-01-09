@@ -1,11 +1,11 @@
 import { deviceTwins } from '@/services/api';
 import { message } from 'antd';
-import { formatMessage, getLocale } from 'umi/locale';
+import { getLocale } from 'umi/locale';
 
 export default {
   namespace: 'Jd',
   state: {
-    data: ''
+    data: '',
   },
 
   effects: {
@@ -29,5 +29,5 @@ export default {
         data: action.payload,
       };
     },
-  }
+  },
 };

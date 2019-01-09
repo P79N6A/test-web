@@ -3,27 +3,28 @@ import { FormattedMessage } from 'umi/locale';
 import { Icon, Row, Col, Button } from 'antd';
 import G from '@/global';
 import { connect } from 'dva';
-import styles from './components/NewNoticeForm.less';
 import { routerRedux } from 'dva/router';
+import styles from './components/NewNoticeForm.less';
 
 @connect(({ ManagementNotice }) => ({
   ManagementNotice,
 }))
-export default class DetailNotice extends Component {
+class DetailNotice extends Component {
+
+  componentWillMount() {
+    const { ManagementNotice,dispatch } = this.props;
+    if (!ManagementNotice.copyValue) {
+      dispatch(routerRedux.push('/management/notice'));
+    }
+  }
+
   goList() {
     const { dispatch } = this.props;
     dispatch({
       type: 'ManagementNotice/setCopyValue',
       payload: '',
     });
-    this.props.dispatch(routerRedux.push('/management/notice'));
-  }
-
-  componentWillMount() {
-    const { ManagementNotice } = this.props;
-    if (!ManagementNotice.copyValue) {
-      this.props.dispatch(routerRedux.push('/management/notice'));
-    }
+    dispatch(routerRedux.push('/management/notice'));
   }
 
   render() {
@@ -87,3 +88,5 @@ export default class DetailNotice extends Component {
     );
   }
 }
+
+export default DetailNotice;

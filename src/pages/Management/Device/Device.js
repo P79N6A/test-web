@@ -13,7 +13,7 @@ import EquipModal from './components/DeviceModal.js';
   ManagementCustomer,
   loading: loading.effects['ManagementDevice/fetch'],
 }))
-export default class Device extends Component {
+ class Device extends Component {
   // 表单以及分页
   state = {
     query: '',
@@ -81,7 +81,7 @@ export default class Device extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'device.list.status' }),
@@ -95,7 +95,7 @@ export default class Device extends Component {
               </Tooltip>
             </Fragment>
           );
-        }
+        },
       },
       {
         title: currentAuthority === 'admin' ? formatMessage({ id: 'device.list.customer' }) : formatMessage({ id: 'device.list.user' }),
@@ -108,7 +108,7 @@ export default class Device extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'all.remarks' }),
@@ -121,7 +121,7 @@ export default class Device extends Component {
               </Tooltip>
             </Fragment>
           );
-        }
+        },
       },
       {
         title: formatMessage({ id: 'device.list.use-time' }),
@@ -134,7 +134,7 @@ export default class Device extends Component {
               </Tooltip>
             </Fragment>
           )
-        }
+        },
       },
       {
         title: formatMessage({ id: 'all.operating' }),
@@ -142,17 +142,20 @@ export default class Device extends Component {
         render: (text, record, index) => (
           <Fragment>
             {currentAuthority === 'admin' ? (
-              text.companyId ? <Popconfirm
-                placement="left"
-                title={formatMessage({ id: 'device.remove.message' })}
-                onConfirm={this.untiedRemove.bind(this, text)}
-                okText={formatMessage({ id: 'all.remove' })}
-                cancelText={formatMessage({ id: 'all.cancel' })}
-              >
-                <a><FormattedMessage id='all.remove' /></a>
-              </Popconfirm> : <span style={{ color: '#CCCCCC' }}><FormattedMessage id='all.remove' /></span>
-            ) : (
-                text.userUid ?
+              text.companyId ? (
+                <Popconfirm
+                  placement="left"
+                  title={formatMessage({ id: 'device.remove.message' })}
+                  onConfirm={this.untiedRemove.bind(this, text)}
+                  okText={formatMessage({ id: 'all.remove' })}
+                  cancelText={formatMessage({ id: 'all.cancel' })}
+                >
+                  <a><FormattedMessage id='all.remove' /></a>
+                </Popconfirm>
+                ) : 
+                <span style={{ color: '#CCCCCC' }}><FormattedMessage id='all.remove' /></span>
+                ) : (
+                text.userUid ? (
                   <Popconfirm
                     placement="left"
                     title={formatMessage({ id: 'device.untied.message' })}
@@ -161,18 +164,21 @@ export default class Device extends Component {
                     cancelText={formatMessage({ id: 'all.cancel' })}
                   >
                     <a><FormattedMessage id="device.untied" /></a>
-                  </Popconfirm> : <span style={{ color: '#CCCCCC' }}><FormattedMessage id="device.untied" /></span>)}
+                  </Popconfirm>
+                ): 
+                  <span style={{ color: '#CCCCCC' }}><FormattedMessage id="device.untied" /></span>
+                )}
             <Divider type="vertical" />
             <a
               onClick={() => {
-                this.onMark(text, record, index);
-              }}
+                    this.onMark(text, record, index);
+                  }}
             >
               <FormattedMessage id="all.remarks" />
             </a>
           </Fragment>
-        )
-      }
+        ),
+      },
     ];
     return columns;
   }
@@ -222,10 +228,8 @@ export default class Device extends Component {
   // 排序筛选
   handleChange = (pagination, filters, sorter) => {
     const { sortParam } = this.state;
-    let filterParam;
-    let sortParams;
-    sortParams = G._.isEmpty(sortParam) ? 'desc' : sortParam === 'desc' ? 'asc' : {};
-    filterParam = !G._.isEmpty(filters && filters.status) ? { status: filters.status } : {};
+    const sortParams = G._.isEmpty(sortParam) ? 'desc' : sortParam === 'desc' ? 'asc' : {};
+    const filterParam = !G._.isEmpty(filters && filters.status) ? { status: filters.status } : {};
     this.setState({
       filterParam,
       sortParam: sortParams,
@@ -349,3 +353,5 @@ export default class Device extends Component {
     );
   }
 }
+
+export default Device;

@@ -188,7 +188,7 @@ export default {
         const { data } = response;
         const { type, dataList } = data;
         const filter = [];
-        for (let i = 0; i < dataList.length; i += 1) {
+        for (let i = 0; i < dataList.length; i++) {
           const { time, offline_duration, vacant_duration, occupied_duration } = dataList[i];
           [1, 2, 3].forEach(value => {
             let status = '离线';

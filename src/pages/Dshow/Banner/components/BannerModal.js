@@ -16,15 +16,10 @@ class BannerModel extends Component {
       certain: formatMessage({ id: "all.save" }),
       cancel: formatMessage({ id: "all.cancel" }),
       // 0 是首页，1 是选择默认图片，2 是选择通知页面
-      type: 0
+      type: 0,
     },
     // 选择默认图片
     defaultBanner: '',
-    error: {
-      bannerPic: '',
-      bannerNotice: '',
-      bannerUrl: ''
-    }
   };
 
   componentDidMount() {
@@ -32,19 +27,8 @@ class BannerModel extends Component {
     const { current } = Banner.noticeData;
     this.fetchNoticeList(current);
     dispatch({
-      type: 'Banner/getDefaultBanner'
+      type: 'Banner/getDefaultBanner',
     });
-  }
-
-  // 改变弹窗内容以及状态
-  changeModal = (value) => {
-    const { modal } = this.state;
-    this.setState({
-      modal: {
-        ...modal,
-        ...value
-      }
-    })
   }
 
   // 取消
@@ -56,7 +40,7 @@ class BannerModel extends Component {
         bannerSrc: '',
         type: 0,
         bannerUrl: '',
-        title: ''
+        title: '',
       })
     } else {
       if (modal.type === 1) {
@@ -67,12 +51,92 @@ class BannerModel extends Component {
       } else {
         this.changeAddText({
           title: '',
-          bannerUrl: ''
+          bannerUrl: '',
         })
       }
       this.changeModal({ title: formatMessage({ id: "banner.add" }), certain: formatMessage({ id: "all.save" }), type: 0 })
     }
   }
+
+  // 选择打开通知还是外部连接
+  onChangeType = (e) => {
+    this.changeAddText({ type: e.target.value, title: '' })
+  }
+
+  // 获取文本内容
+  onChangeTextArea = (e) => {
+    this.changeAddText({
+      bannerUrl: e.target.value,
+    })
+  }
+
+  // 列表单选
+  onSelectChange = (selectedRowKeys, selectedRows) => {
+    this.changeAddText({
+      title: selectedRows[0].title,
+      bannerUrl: selectedRows[0].noticeId,
+    })
+  }
+  
+  // 通知列表
+  getColumnes(current) {
+    const columns = [
+      {
+        title: formatMessage({ id: 'notice.list.title' }),
+        key: 'title',
+        render: (text) => {
+          return (
+            <Fragment>
+              <span className={styles.colSql}>
+                {text.title}
+              </span>
+            </Fragment>
+          )
+        },
+      },
+      {
+        title: formatMessage({ id: 'notice.list.receiver' }),
+        key: 'unreadCount',
+        render: (text, record, index) => {
+          return (
+            <Fragment>
+              <font style={{ cursor: 'pointer' }}>{`${text.viewCount}/${text.unreadCount + text.viewCount}`}</font>
+            </Fragment>
+          )
+        },
+      },
+      {
+        title: formatMessage({ id: 'notice.list.release-time' }),
+        key: 'createdAt',
+        render: (text) => {
+          return (
+            <Fragment>
+              <span>{G.moment(text.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
+            </Fragment>
+          )
+        },
+      },
+    ];
+    return columns;
+  }
+
+  // 改变弹窗内容以及状态
+  changeModal = (value) => {
+    const { modal } = this.state;
+    this.setState({
+      modal: {
+        ...modal,
+        ...value,
+      },
+    })
+  }
+
+  handleChanges = () => { };
+
+  // 翻页
+  pageChange = pageNumber => {
+    this.fetchNoticeList(pageNumber);
+  };
 
   // 保存
   okHandle = () => {
@@ -101,17 +165,13 @@ class BannerModel extends Component {
     } else {
       if (modal.type === 1) {
         this.changeAddText({
-          bannerSrc: imageUrl
+          bannerSrc: imageUrl,
         })
       }
       this.changeModal({ title: formatMessage({ id: "banner.add" }), certain: formatMessage({ id: "all.save" }), type: 0 })
     }
   };
 
-  // 选择打开通知还是外部连接
-  onChangeType = (e) => {
-    this.changeAddText({ type: e.target.value, title: '' })
-  }
 
   // 修改参数
   changeAddText(value) {
@@ -119,8 +179,8 @@ class BannerModel extends Component {
     dispatch({
       type: 'Banner/changeVisible',
       payload: {
-        ...value
-      }
+        ...value,
+      },
     });
   }
 
@@ -131,66 +191,9 @@ class BannerModel extends Component {
       type: 'Banner/fetch',
       payload: {
         offset: (current - 1) * 6,
-        limit: 6
+        limit: 6,
       },
     });
-  }
-
-  // 翻页
-  pageChange = pageNumber => {
-    this.fetchNoticeList(pageNumber);
-  };
-
-  handleChanges = () => { };
-
-  // 通知列表
-  getColumnes(current) {
-    const columns = [
-      {
-        title: formatMessage({ id: 'notice.list.title' }),
-        key: 'title',
-        render: (text) => {
-          return (
-            <Fragment>
-              <span className={styles.colSql}>
-                {text.title}
-              </span>
-            </Fragment>
-          )
-        }
-      },
-      {
-        title: formatMessage({ id: 'notice.list.receiver' }),
-        key: 'unreadCount',
-        render: (text, record, index) => {
-          return (
-            <Fragment>
-              <font style={{ cursor: 'pointer' }}>{`${text.viewCount}/${text.unreadCount + text.viewCount}`}</font>
-            </Fragment>
-          )
-        },
-      },
-      {
-        title: formatMessage({ id: 'notice.list.release-time' }),
-        key: 'createdAt',
-        render: (text) => {
-          return (
-            <Fragment>
-              <span>{G.moment(text.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
-            </Fragment>
-          )
-        }
-      },
-    ];
-    return columns;
-  }
-
-  // 列表单选
-  onSelectChange = (selectedRowKeys, selectedRows) => {
-    this.changeAddText({
-      title: selectedRows[0].title,
-      bannerUrl: selectedRows[0].noticeId
-    })
   }
 
   next() { }
@@ -205,13 +208,13 @@ class BannerModel extends Component {
       imageUrl: G.picUrl + response.key,
     });
     this.changeAddText({
-      bannerSrc: G.picUrl + response.key
+      bannerSrc: G.picUrl + response.key,
     })
   }
 
   checkImageWH(file, width, height) {
-    return new Promise(function (resolve, reject) {
-      let filereader = new FileReader();
+    return new Promise(((resolve, reject) => {
+      const filereader = new FileReader();
       if (file.size > 1024000) {
         reject({ title: formatMessage({ id: "notice.operate.poster-message-two" }) });
       }
@@ -220,21 +223,21 @@ class BannerModel extends Component {
         reject({ title: formatMessage({ id: "notice.operate.poster-message-error" }) });
       }
       filereader.onload = e => {
-        let src = e.target.result;
+        const src = e.target.result;
         const image = new Image();
         image.onload = function () {
           const rate = Number((this.height / this.width).toFixed(4));
           if (width && this.width > width) {
             reject({
-              title: formatMessage({ id: "notice.operate.poster-message-max-width" }) + width + 'px'
+              title: `${formatMessage({ id: "notice.operate.poster-message-max-width" }) + width  }px`,
             });
           } else if (height && this.height > height) {
             reject({
-              title: formatMessage({ id: "notice.operate.poster-message-max-height" }) + height + 'px'
+              title: `${formatMessage({ id: "notice.operate.poster-message-max-height" }) + height  }px`,
             });
           } else if (rate !== (height / width)) {
             reject({
-              title: formatMessage({ id: "banner.image-rate" })
+              title: formatMessage({ id: "banner.image-rate" }),
             });
           } else {
             resolve();
@@ -244,7 +247,7 @@ class BannerModel extends Component {
         image.src = src;
       };
       filereader.readAsDataURL(file);
-    });
+    }));
   }
 
 
@@ -260,7 +263,7 @@ class BannerModel extends Component {
               const putExtra = { mimeType: ['image/png', 'image/jpeg', 'image/gif'] };
               const avatarUrl = `${JSON.parse(window.sessionStorage.getItem('userInfo')).uid}_banner_${G.moment().unix()}.png`;
               this.setState({ avatarLoading: true });
-              let options = { maxWidth: 1024, maxHeight: 576 };
+              const options = { maxWidth: 1024, maxHeight: 576 };
               qiniu.compressImage(file, options).then(data => {
                 const observable = qiniu.upload(data.dist, avatarUrl, res.data, putExtra, config)
                 observable.subscribe(this.next.bind(this), this.error.bind(this), this.complete.bind(this));
@@ -269,8 +272,8 @@ class BannerModel extends Component {
             } else {
               message.error(formatMessage({ id: 'person.operate.reload-page' }));
             }
-          }
-        }
+          },
+        },
       });
     }).catch((err) => {
       Modal.error(err)
@@ -280,28 +283,21 @@ class BannerModel extends Component {
   // 鼠标移入事件
   defaultBannerMouseEnter(value) {
     this.setState({
-      defaultBanner: value
+      defaultBanner: value,
     })
   }
 
   // 鼠标移出
   defaultBannerMouseLeave() {
     this.setState({
-      defaultBanner: ''
+      defaultBanner: '',
     })
   }
 
   // 选择默认图片
   chooseDefaultBannerUrl(value) {
     this.setState({
-      imageUrl: value
-    })
-  }
-
-  // 获取文本内容
-  onChangeTextArea = (e) => {
-    this.changeAddText({
-      bannerUrl: e.target.value
+      imageUrl: value,
     })
   }
 
@@ -348,11 +344,11 @@ class BannerModel extends Component {
           </Button>,
           <Button style={{ marginRight: '12px' }} key="submit" size='small' type="primary" onClick={this.okHandle}>
             {modal.certain}
-          </Button>
+          </Button>,
         ]}
       >
-        {modal.type === 0 ?
-          < div className={styles.screenShow}>
+        {modal.type === 0 ? (
+          <div className={styles.screenShow}>
             <Row gutter={24}>
               {/* 展示 */}
               <Col {...leftImg}>
@@ -369,16 +365,22 @@ class BannerModel extends Component {
                   name="avatar"
                   accept="image/*"
                   showUploadList={false}
-                  beforeUpload={this.beforeUpload.bind(this)} >
+                  beforeUpload={this.beforeUpload.bind(this)}
+                >
                   <Button className={styles.btn} key="local" size='small' type="primary">
                     <Icon type={avatarLoading ? 'loading' : 'plus'} />
                     <FormattedMessage id="banner.upload-local" />
                   </Button>
                 </Upload>
-                <Button className={styles.btnDefault}
+                <Button
+                  className={styles.btnDefault}
                   key="choose"
                   size='small'
-                  onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.add" }), type: 1, certain: formatMessage({ id: "all.certain" }) })}><FormattedMessage id="banner.choose-default" /></Button>
+                  onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.add" }), type: 1, certain: formatMessage({ id: "all.certain" }) })}
+                >
+                  <FormattedMessage id="banner.choose-default" />
+
+                </Button>
               </Col>
             </Row>
             <p className={styles.bannerAddTitle}><FormattedMessage id="banner.jump" /></p>
@@ -396,8 +398,9 @@ class BannerModel extends Component {
                     key="notice"
                     size='small'
                     type="primary"
-                    disabled={bannerAdd.type === 0 ? false : true}
-                    onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.choose-notice-title" }), type: 2, certain: formatMessage({ id: "all.certain" }) })}>
+                    disabled={bannerAdd.type !== 0}
+                    onClick={this.changeModal.bind(this, { title: formatMessage({ id: "banner.choose-notice-title" }), type: 2, certain: formatMessage({ id: "all.certain" }) })}
+                  >
                     <FormattedMessage id="banner.choose-notice-title" />
                   </Button>
                 </Col>
@@ -408,53 +411,58 @@ class BannerModel extends Component {
                   <Radio style={{ paddingTop: '5px' }} value={1}><FormattedMessage id="banner.open-link" /></Radio>
                 </Col>
                 <Col span={20}>
-                  <Input style={{ marginRight: '4px !important' }} placeholder={formatMessage({ id: "customer.operate.website-link-text" })} value={bannerAdd.type === 0 ? '' : bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type === 1 ? false : true} />
+                  <Input style={{ marginRight: '4px !important' }} placeholder={formatMessage({ id: "customer.operate.website-link-text" })} value={bannerAdd.type === 0 ? '' : bannerAdd.bannerUrl} onChange={this.onChangeTextArea.bind(this)} disabled={bannerAdd.type !== 1} />
                 </Col>
               </Row>
             </RadioGroup>
-          </div> : (modal.type === 1 ? (
-            <div className={styles.screenShow}>
-              <p className={styles.bannerCompanyText}><FormattedMessage id="banner.banner-9am" /></p>
-              {defaultBannerList && defaultBannerList.length > 0 ? defaultBannerList.map((item, i) => (
-                <div
-                  key={`${item.id}_defaultBanner`}
-                  className={styles.defaultBannerList}
-                  onClick={this.chooseDefaultBannerUrl.bind(this, item.url)}
-                  onMouseEnter={this.defaultBannerMouseEnter.bind(this, item.id)}
-                  onMouseLeave={this.defaultBannerMouseLeave.bind(this)}>
-                  <img src={item.url} />
-                  <div className={styles.bannerIconBox} style={{ opacity: item.url === imageUrl ? 1 : (item.id === defaultBanner ? 1 : 0) }}>
-                    <Icon className={styles.bannerIcon}
-                      style={{ opacity: item.url === imageUrl ? 1 : 0 }}
-                      type="check-circle" theme="outlined" />
-                  </div>
-                </div>
+          </div>
+): (modal.type === 1 ? (
+  <div className={styles.screenShow}>
+    <p className={styles.bannerCompanyText}><FormattedMessage id="banner.banner-9am" /></p>
+    {defaultBannerList && defaultBannerList.length > 0 ? defaultBannerList.map((item, i) => (
+      <div
+        key={`${item.id}_defaultBanner`}
+        className={styles.defaultBannerList}
+        onClick={this.chooseDefaultBannerUrl.bind(this, item.url)}
+        onMouseEnter={this.defaultBannerMouseEnter.bind(this, item.id)}
+        onMouseLeave={this.defaultBannerMouseLeave.bind(this)}
+      >
+        <img src={item.url} />
+        <div className={styles.bannerIconBox} style={{ opacity: item.url === imageUrl ? 1 : (item.id === defaultBanner ? 1 : 0) }}>
+          <Icon
+            className={styles.bannerIcon}
+            style={{ opacity: item.url === imageUrl ? 1 : 0 }}
+            type="check-circle"
+            theme="outlined"
+          />
+        </div>
+      </div>
               )) : ""}
-            </div>
+  </div>
           ) : (
-              <div className={styles.screenShow}>
-                <p className={styles.bannerAddText}><FormattedMessage id="banner.choose-notice-message" /></p>
-                <Table
-                  rowKey="_id"
-                  loading={loading}
-                  dataSource={Banner.noticeData.row}
-                  columns={columns}
-                  onChange={this.handleChanges.bind(this)}
-                  pagination={false}
-                  rowSelection={rowSelection}
-                />
-                <Pagination
-                  style={{ marginTop: 20, float: 'right' }}
-                  current={current}
-                  showQuickJumper
-                  total={count}
-                  pageSize={limit}
-                  onChange={this.pageChange.bind(this)}
-                />
-              </div>
+            <div className={styles.screenShow}>
+              <p className={styles.bannerAddText}><FormattedMessage id="banner.choose-notice-message" /></p>
+              <Table
+                rowKey="_id"
+                loading={loading}
+                dataSource={Banner.noticeData.row}
+                columns={columns}
+                onChange={this.handleChanges.bind(this)}
+                pagination={false}
+                rowSelection={rowSelection}
+              />
+              <Pagination
+                style={{ marginTop: 20, float: 'right' }}
+                current={current}
+                showQuickJumper
+                total={count}
+                pageSize={limit}
+                onChange={this.pageChange.bind(this)}
+              />
+            </div>
             ))
         }
-      </Modal >
+      </Modal>
     );
   }
 }

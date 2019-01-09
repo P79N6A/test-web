@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { formatMessage, getLocale } from 'umi/locale';
-import { getNoticeList, getNoticeState, sendNotice, topNotice } from '../services/api';
+import { getNoticeList, getNoticeState, sendNotice, topNotice } from '@/services/api';
 import G from '@/global';
 
 export default {
@@ -69,7 +69,7 @@ export default {
         ...state,
         data: {
           ...state.data,
-          ...action.payload
+          ...action.payload,
         },
       };
     },

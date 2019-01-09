@@ -1,7 +1,7 @@
-import { virtualGatewayList, customerList, virtualGatewaySensorList } from '@/services/api';
+import { virtualGatewayList, getCustomerList, virtualGatewaySensorList } from '@/services/api';
 import { message } from 'antd';
 import G from '@/global';
-import { formatMessage, getLocale } from 'umi/locale';
+import { getLocale } from 'umi/locale';
 
 export default {
   namespace: 'virtualGateway',
@@ -17,7 +17,7 @@ export default {
     // 详情数据
     detail: {
       detailData: {},
-      visible: false
+      visible: false,
     },
     // 详情页面传感器列表
     gatewayList: {
@@ -25,7 +25,7 @@ export default {
       offset: 0,
       current: 1,
       limit: 15,
-    }
+    },
   },
 
   effects: {
@@ -43,7 +43,7 @@ export default {
     },
     // 获取客户列表
     *customerList(_, { call, put }) {
-      const response = yield call(customerList);
+      const response = yield call(getCustomerList);
       if (response && response.status === 'success') {
         yield put({
           type: 'saveCustomer',
@@ -77,13 +77,13 @@ export default {
           offset: Number(offset),
           current: Number(offset) / 15 + 1,
           limit: state.virtualGatewayData.limit,
-        }
+        },
       };
     },
     // 保存客户列表
     saveCustomer(state, action) {
-      let customerList = []
-      action.payload.map((item, i) => {
+      const customerList = [];
+      action.payload.forEach((item, i) => {
         customerList.push({ text: item.companyName, value: item.companyId })
       })
       return {
@@ -97,7 +97,7 @@ export default {
         ...state,
         detail: {
           ...action.payload,
-        }
+        },
       };
     },
     saveSensor(state, action) {
@@ -109,8 +109,8 @@ export default {
           offset: Number(offset),
           current: Number(offset) / 15 + 1,
           limit: state.gatewayList.limit,
-        }
+        },
       };
     },
-  }
+  },
 };

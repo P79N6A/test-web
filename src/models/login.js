@@ -97,8 +97,8 @@ export default {
       );
     },
     // 获取侧边栏
-    *getSidebarList(_, { call, put }) {
-      const response = yield call(getSidebarList);
+    *getSidebarList({ payload }, { call, put }) {
+      const response = yield call(getSidebarList, payload);
       if (response && response.status === 'success') {
         yield put({
           type: 'saveSidebar',

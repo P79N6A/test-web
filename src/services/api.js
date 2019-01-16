@@ -7,10 +7,9 @@ const { API_URL, IXAM_URL, SUBSCRIPTION_KEY } = G;
 export async function login(params) {
   const userAccount = params.userName;
   const password = params.password;
-  const role = params.role;
   return request(`${API_URL}/users/login`, {
     method: 'POST',
-    body: { userAccount, password, role },
+    body: { userAccount, password },
   });
 }
 
@@ -22,127 +21,10 @@ export async function logout() {
   });
 }
 
-// TODO: 获取侧边栏
-export async function getSidebarList() {
-  return {
-    status: "success",
-    data: [
-      {
-        "name": "home",
-        "icon": "home",
-        "path": "/home",
-        "locale": "menu.home",
-        "children": [
-
-        ],
-      },
-      {
-        "name": "dshow",
-        "icon": "tablet",
-        "path": "/dshow",
-        "locale": "menu.dshow",
-        "children": [
-          {
-            "name": "notice",
-            "icon": null,
-            "path": "/management/notice",
-            "locale": "menu.management.notice",
-            "children": [
-
-            ],
-          },
-          {
-            "name": "banner",
-            "icon": null,
-            "path": "/management/banner",
-            "locale": "menu.management.banner",
-            "children": [
-
-            ],
-          },
-        ],
-      },
-      {
-        "name": "statistics",
-        "icon": "pie-chart",
-        "path": "/statistics",
-        "locale": "menu.statistics",
-        "children": [
-          {
-            "name": "spaceState",
-            "icon": null,
-            "path": "/statistics/spaceState",
-            "locale": "menu.statistics.spaceState",
-            "children": [
-
-            ],
-          },
-          {
-            "name": "spaceUsage",
-            "icon": null,
-            "path": "/statistics/spaceUsage",
-            "locale": "menu.statistics.spaceUsage",
-            "children": [
-
-            ],
-          },
-        ],
-      },
-      {
-        "name": "device",
-        "icon": "profile",
-        "path": "/device",
-        "locale": "menu.device",
-        "children": [
-          {
-            "name": "sensor",
-            "icon": null,
-            "path": "/device/sensor",
-            "locale": "menu.device.sensor",
-            "children": [
-
-            ],
-          },
-          {
-            "name": "device",
-            "icon": null,
-            "path": "/management/device",
-            "locale": "menu.management.device",
-            "children": [
-
-            ],
-          },
-        ],
-      },
-      {
-        "name": "management",
-        "icon": "table",
-        "path": "/management",
-        "locale": "menu.management",
-        "children": [
-          {
-            "name": "person",
-            "icon": null,
-            "path": "/management/person",
-            "locale": "menu.management.person",
-            "children": [
-
-            ],
-          },
-          {
-            "name": "personGroup",
-            "icon": null,
-            "path": "/management/person-group",
-            "locale": "menu.management.personGroup",
-            "children": [
-
-            ],
-          },
-        ],
-      },
-    ],
-  }
-  return request(`${API_URL}/sidebar/list?token=${getToken()}`, {
+// 获取侧边栏
+export async function getSidebarList(payload) {
+  const url = filterUrl({ ...payload });
+  return request(`${API_URL}/sidebar/list?${url}`, {
     method: 'GET',
   });
 }
@@ -239,7 +121,7 @@ export async function getHomeData() {
 
 // 获取用户组
 export async function usersGroupList(payload) {
-  const body = filterBody({ ...payload, token: getToken() });
+  const body = filterBody({ ...payload, groupType: 'user', token: getToken() });
   return request(`${G.API_URL}/users/group/list`, {
     method: 'POST',
     body,
@@ -249,7 +131,7 @@ export async function usersGroupList(payload) {
 // 创建用户组
 export async function addUsersGroup(payload) {
   const url = `${G.API_URL}/users/group`;
-  const body = filterBody({ ...payload, token: getToken() });
+  const body = filterBody({ ...payload, groupType: 'user', token: getToken() });
   return request(url, {
     method: 'PUT',
     body,
@@ -258,7 +140,7 @@ export async function addUsersGroup(payload) {
 
 // 删除用户组
 export async function usersGroupUpdate(payload) {
-  const body = filterBody({ ...payload, token: getToken() });
+  const body = filterBody({ ...payload, groupType: 'user', token: getToken() });
   return request(`${G.API_URL}/users/group/update`, {
     method: 'POST',
     body,
@@ -411,9 +293,9 @@ export async function editCustomer(payload) {
 }
 // 重置密码
 export async function resetPassword(payload) {
-  const { account } = payload;
+  const { companyId } = payload;
   const body = filterBody({ token: getToken() });
-  return request(`${G.API_URL}/company/${account}/resetPassword`, {
+  return request(`${G.API_URL}/company/${companyId}/resetPassword`, {
     method: 'POST',
     body,
   });

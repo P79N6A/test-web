@@ -337,6 +337,6 @@ export default connect(({ user, global, setting, login }) => ({
   currentUser: user.user,
   collapsed: global.collapsed,
   layout: setting.layout,
-  login: login,
+  login,
   ...setting,
 }))(BasicLayout);

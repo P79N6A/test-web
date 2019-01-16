@@ -197,7 +197,7 @@ class PersonGroup extends Component {
       payload: {
         limit: (value && value.limit) || limit,
         offset: (value && (value.current - 1) * 15) || (current - 1) * 15,
-        groupId: (value && value.groupId),
+        groupId: (value && value.groupId && `${value.groupId}`),
         query,
       },
     });

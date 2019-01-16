@@ -5,28 +5,28 @@ import styles from './GroupModal.less';
 
 export default class GroupModal extends Component {
   state = {
-    group: '',
+    groupName: '',
   }
 
   changeGroupInfo = e => {
-    this.setState({ group: e.target.value });
+    this.setState({ groupName: e.target.value });
   };
 
   okHandle() {
-    const { group } = this.state;
+    const { groupName } = this.state;
     const { dispatch } = this.props;
-    if (group.length <= 0) {
+    if (groupName.length <= 0) {
       message.error(formatMessage({ id: 'person.group.add.group.name' }));
       return;
     }
-    if (group.length > 20) {
+    if (groupName.length > 20) {
       message.error(formatMessage({ id: 'person.group.add.group.check.message' }));
       return;
     }
     dispatch({
       type: 'PersonGroup/addUsersGroup',
       payload: {
-        group,
+        groupName,
         callback: this.handelBack.bind(this),
       },
     })
@@ -34,13 +34,13 @@ export default class GroupModal extends Component {
 
   handelBack(res) {
     const { closeGroupModel } = this.props;
-    this.setState({ group: '' });
+    this.setState({ groupName: '' });
     closeGroupModel(true);
   }
 
   render() {
     const { closeGroupModel, visible } = this.props;
-    const { group } = this.state;
+    const { groupName } = this.state;
     if (!visible) return null;
     return (
       <Modal
@@ -58,7 +58,7 @@ export default class GroupModal extends Component {
         ]}
       >
         <Input
-          value={group}
+          value={groupName}
           onChange={this.changeGroupInfo.bind(this)}
           className={styles.group}
           placeholder={formatMessage({ id: 'person.group.add.group.placeholder' })}

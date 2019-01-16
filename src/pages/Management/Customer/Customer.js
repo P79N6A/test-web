@@ -249,7 +249,7 @@ class Wework extends Component {
     const { dispatch } = this.props;
     dispatch({
       type: 'ManagementCustomer/resetPassword',
-      payload: { account: value.company.account, callback: this.fetchDataList.bind(this) },
+      payload: { companyId: value.companyId, callback: this.fetchDataList.bind(this) },
     });
   }
 

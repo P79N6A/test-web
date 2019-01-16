@@ -24,6 +24,7 @@ class PersonModal extends Component {
     avatarLoading: false,
     title: formatMessage({ id: 'person.operate.new-users' }),
     subTitle: formatMessage({ id: 'person.operate.new-user-message' }),
+    uid: '',
   };
 
   componentWillReceiveProps(nextProps) {
@@ -34,6 +35,7 @@ class PersonModal extends Component {
       if (visible && !G._.isEmpty(editValue)) {
         this.setState({
           imageUrl: editValue.avatar,
+          uid: editValue.uid,
         });
         nextProps.form.setFieldsValue({
           name: editValue.name,
@@ -66,14 +68,14 @@ class PersonModal extends Component {
   }
 
   okHandle = () => {
-    const { form, handleOk, editValue } = this.props;
-    const { imageUrl } = this.state;
+    const { form, handleOk } = this.props;
+    const { imageUrl, uid } = this.state;
     form.validateFields((err, fieldsValue) => {
       if (err) return;
       handleOk(
         { ...fieldsValue, position: fieldsValue.position || '', remark: fieldsValue.remark || '' },
         imageUrl,
-        editValue.uid,
+        uid,
       );
     });
   };

@@ -162,10 +162,10 @@ class Person extends Component {
               </Fragment>
             ) : (
               <Fragment>
-                <Tooltip placement="topLeft" title={filterStatus[0].text}>
-                  <font>{filterStatus[0].text}</font>
-                </Tooltip>
-              </Fragment>
+                  <Tooltip placement="topLeft" title={filterStatus[0].text}>
+                    <font>{filterStatus[0].text}</font>
+                  </Tooltip>
+                </Fragment>
               )
           );
         },
@@ -210,8 +210,7 @@ class Person extends Component {
               // 超级管理员禁用
               text.role === 'superAdmin' ? <a className={styles.disabledColor}><FormattedMessage id="person.list.set.group.management" /></a> :
                 text.role === 'groupAdmin'
-                  ?
-                  组管理员 (
+                  ? (
                     <Popconfirm
                       placement="left"
                       title={formatMessage({ id: 'person.list.cancel.group.management.tip' })}
@@ -221,12 +220,11 @@ class Person extends Component {
                     >
                       <a><FormattedMessage id="person.list.acncel.group.management" /></a>
                     </Popconfirm>
-                    ):
-                  默认成员 (
+                  ) : (
                     <a
                       onClick={() => {
-                      this.openRole(text, record, index);
-                    }}
+                        this.openRole(text, record, index);
+                      }}
                     >
                       <FormattedMessage id="person.list.set.group.management" />
 

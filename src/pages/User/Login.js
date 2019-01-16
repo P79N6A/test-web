@@ -3,8 +3,8 @@ import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
 import { Alert } from 'antd';
 import Login from '@/components/Login';
-import styles from './Login.less';
 import { routerRedux } from 'dva/router';
+import styles from './Login.less';
 
 const { Tab, UserName, Password, Submit } = Login;
 
@@ -53,7 +53,7 @@ class LoginPage extends Component {
           ...values,
           role,
           type,
-          callback: this.getSidebar.bind(this)
+          callback: this.getSidebar.bind(this),
         },
       });
     }
@@ -64,6 +64,9 @@ class LoginPage extends Component {
     if (res.status === 'success') {
       dispatch({
         type: 'login/getSidebarList',
+        payload: {
+          token: res.data.token,
+        },
       })
     }
   }

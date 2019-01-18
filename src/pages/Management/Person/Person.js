@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { formatMessage, FormattedMessage, getLocale } from 'umi/locale';
 import { connect } from 'dva';
 import { Row, Col, Table, Button, Input, Divider, Pagination, Icon, Popconfirm, Tooltip, Modal } from 'antd';
 
@@ -29,6 +29,7 @@ class Person extends Component {
     roleVisible: false,
     uid: '',
     role: '',
+    email: '',
   };
 
   componentDidMount() {
@@ -59,7 +60,7 @@ class Person extends Component {
 
   // 取消组管理员
   onCancel(text) {
-    this.changeRole(text.uid, 'defaultMember');
+    this.changeRole(text.uid, 'user', 'groupAdmin', '1');
   }
 
   // 获取用户组列表
@@ -93,7 +94,7 @@ class Person extends Component {
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                   <span className={styles.colSql}>{text.name}</span>
                   {
-                    text.role === 'superAdmin' ?
+                    text.role === 'companyAdmin' ?
                       <img className={styles.titleTop} src={`${G.picUrl}image/super_admin.png`} />
                       :
 
@@ -208,7 +209,7 @@ class Person extends Component {
             <Divider type="vertical" />
             {
               // 超级管理员禁用
-              text.role === 'superAdmin' ? <a className={styles.disabledColor}><FormattedMessage id="person.list.set.group.management" /></a> :
+              text.role === 'companyAdmin' ? <a className={styles.disabledColor}><FormattedMessage id="person.list.set.group.management" /></a> :
                 text.role === 'groupAdmin'
                   ? (
                     <Popconfirm
@@ -360,6 +361,7 @@ class Person extends Component {
     this.setState({
       roleVisible: true,
       uid: text.uid,
+      email: text.email,
       role: 'groupAdmin',
     });
   }
@@ -369,23 +371,28 @@ class Person extends Component {
     this.setState({
       roleVisible: false,
       uid: '',
+      email: '',
       role: '',
     });
   }
 
   // 设置管理员
   okHandle() {
-    const { uid, role } = this.state;
-    this.changeRole(uid, role);
+    const { uid, role, email } = this.state;
+    this.changeRole(uid, role, 'user', email);
   }
 
-  changeRole(uid, role) {
+  changeRole(uid, role, oldRole, email) {
     const { dispatch } = this.props;
+    const lang = getLocale();
+    if (!email) return null;
     dispatch({
       type: 'ManagementPerson/changeRole',
       payload: {
         role,
         uid,
+        oldRole,
+        lang,
         callback: this.call.bind(this),
       },
     });

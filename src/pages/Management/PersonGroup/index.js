@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { formatMessage, FormattedMessage } from 'umi/locale';
+import { formatMessage, FormattedMessage, getLocale } from 'umi/locale';
 import { connect } from 'dva';
 import { Row, Col, Table, Button, Input, Icon, Pagination, Tooltip, Select, Popover } from 'antd';
 import GroupModal from './components/GroupModal';
@@ -54,7 +54,7 @@ class PersonGroup extends Component {
   }
 
   // 定义表格
-  getColumns(current) {
+  getColumns(current, groupActive) {
     const columns = [
       {
         title: formatMessage({ id: 'all.serial.number' }),
@@ -76,7 +76,7 @@ class PersonGroup extends Component {
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                   <span className={styles.colSql}>{text.name}</span>
                   {
-                    text.role === 'superAdmin' ?
+                    text.role === 'companyAdmin' ?
                       <img className={styles.titleTop} src={`${G.picUrl}image/super_admin.png`} />
                       :
                       text.role === 'groupAdmin' ?
@@ -120,10 +120,10 @@ class PersonGroup extends Component {
         title: formatMessage({ id: 'person.role' }),
         render: (text, record, index) => (
           <Fragment>
-            <Select defaultValue={text.role} style={{ width: 120 }} onChange={this.handleChange.bind(this, text, record, index)}>
-              <Option value="superAdmin"><FormattedMessage id="person.group.super.admin" /></Option>
+            <Select defaultValue={text.role} disabled={!groupActive} style={{ width: 120 }} onChange={this.handleChange.bind(this, text, record, index, groupActive)}>
+              <Option value="companyAdmin"><FormattedMessage id="person.group.super.admin" /></Option>
               <Option value="groupAdmin"><FormattedMessage id="person.group.group.admin" /></Option>
-              <Option value="defaultMember"><FormattedMessage id="person.group.default.member" /></Option>
+              <Option value="user"><FormattedMessage id="person.group.default.member" /></Option>
             </Select>
           </Fragment>
         ),
@@ -197,20 +197,24 @@ class PersonGroup extends Component {
       payload: {
         limit: (value && value.limit) || limit,
         offset: (value && (value.current - 1) * 15) || (current - 1) * 15,
-        groupId: (value && value.groupId && `${value.groupId}`),
+        groupId: (value && value.groupId),
         query,
       },
     });
   }
 
   // 改变角色
-  handleChange(text, record, index, value) {
+  handleChange(text, record, index, groupActive, value) {
     const { dispatch } = this.props;
+    if (!text.email) return null;
     dispatch({
       type: 'PersonGroup/changeRole',
       payload: {
         role: value,
         uid: text.uid,
+        groupId: groupActive,
+        oldRole: text.role,
+        lang: getLocale(),
       },
     });
   }
@@ -281,7 +285,7 @@ class PersonGroup extends Component {
     const { PersonGroup, dispatch, loading, ManagementPerson } = this.props;
     const { limit, count, current, rows } = PersonGroup.data;
     const { groupList } = PersonGroup;
-    const columns = this.getColumns(current);
+    const columns = this.getColumns(current, groupActive);
     const content = (
       <div>
         <font className={styles.delGroup} onClick={this.delGroup.bind(this)}><FormattedMessage id="person.group.del" /></font>

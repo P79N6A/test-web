@@ -160,9 +160,10 @@ class PersonGroup extends Component {
   };
 
   upload = res => {
+    const { groupActive } = this.state;
     if (res.status === 'success') {
       this.setState({ modalLoading: false, visible: false });
-      this.fetchDataList();
+      this.fetchDataList({ groupId: groupActive });
     } else {
       this.setState({ modalLoading: false });
     }
@@ -321,7 +322,7 @@ class PersonGroup extends Component {
                   groupList && groupList.length > 0
                     ?
                     groupList.map((item, index) => {
-                      return <li key={item.id} onClick={this.changeGroup.bind(this, item.id)} className={[styles.subTitle, groupActive === item.id && styles.bg_green].join(' ')}>{item.name}</li>
+                      return <li key={item.id} onClick={this.changeGroup.bind(this, item.id)} className={[styles.subTitle, groupActive === item.id && styles.bg_green].join(' ')}>{item.id.indexOf('Default') !== -1 ? '默认组' : item.name}</li>
                     })
                     :
                     ''

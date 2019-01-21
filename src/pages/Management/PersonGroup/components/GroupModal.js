@@ -38,8 +38,15 @@ export default class GroupModal extends Component {
     closeGroupModel(true);
   }
 
+  // 关闭弹窗
+  closeGroup() {
+    const { closeGroupModel } = this.props;
+    this.setState({ groupName: '' });
+    closeGroupModel();
+  }
+
   render() {
-    const { closeGroupModel, visible } = this.props;
+    const { visible } = this.props;
     const { groupName } = this.state;
     if (!visible) return null;
     return (
@@ -47,9 +54,9 @@ export default class GroupModal extends Component {
         visible={visible}
         title={formatMessage({ id: 'person.group.create' })}
         onOk={this.okHandle.bind(this)}
-        onCancel={closeGroupModel}
+        onCancel={this.closeGroup.bind(this)}
         footer={[
-          <Button key="back" size="small" onClick={closeGroupModel}>
+          <Button key="back" size="small" onClick={this.closeGroup.bind(this)}>
             <FormattedMessage id="all.cancel" />
           </Button>,
           <Button key="submit" size="small" type="primary" onClick={this.okHandle.bind(this)}>

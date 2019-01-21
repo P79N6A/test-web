@@ -165,6 +165,7 @@ class PersonModal extends Component {
     const { getFieldDecorator } = form;
     const uploadButton = (<Icon type={avatarLoading ? "loading" : "user"} style={{ fontSize: '30px', lineHeight: '60px', paddingTop: '4px', color: '#DFE4E8' }} />);
     const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
+    if (!visible) return null;
     return (
       <Modal
         visible={visible}
@@ -297,6 +298,9 @@ class PersonModal extends Component {
                     groupList && groupList.length > 0
                       ?
                       groupList.map((item, index) => {
+                        if (item.id.indexOf('Default') !== -1) {
+                          return null;
+                        }
                         return <Option key={item.id} value={item.id}>{item.name}</Option>
                       })
                       :

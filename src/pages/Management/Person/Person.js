@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { formatMessage, FormattedMessage, getLocale } from 'umi/locale';
 import { connect } from 'dva';
-import { Row, Col, Table, Button, Input, Divider, Pagination, Icon, Popconfirm, Tooltip, Modal } from 'antd';
+import { Row, Col, Table, Button, Input, Divider, Pagination, Icon, Popconfirm, Tooltip, Modal, message } from 'antd';
 
 import G from '@/global';
 import styles from './Person.less';
@@ -385,7 +385,10 @@ class Person extends Component {
   changeRole(uid, role, oldRole, email) {
     const { dispatch } = this.props;
     const lang = getLocale();
-    if (!email) return null;
+    if (!email) {
+      message.error('请先添加邮箱！')
+      return null;
+    }
     dispatch({
       type: 'ManagementPerson/changeRole',
       payload: {
@@ -393,6 +396,7 @@ class Person extends Component {
         uid,
         oldRole,
         lang,
+        email,
         callback: this.call.bind(this),
       },
     });

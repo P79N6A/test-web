@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FormattedMessage } from 'umi/locale';
-import styles from './../SpaceState.less';
+import styles from "../SpaceState.less";
 import Urwork from "./svg/urwork";
 
 export default class SpaceSvg extends Component {
@@ -10,9 +10,14 @@ export default class SpaceSvg extends Component {
     dispatch({
       type: 'spaceState/getSvg',
       payload: {
-        callback: this.getSvgCall.bind(this)
-      }
+        callback: this.getSvgCall.bind(this),
+      },
     });
+  }
+
+  // 清除计时器
+  componentWillUnmount() {
+    clearInterval(this.interval)
   }
 
   // 获取svg之后的回调函数
@@ -23,7 +28,7 @@ export default class SpaceSvg extends Component {
       dispatch({
         type: 'spaceState/getDeskState',
         payload: {
-          svgId: res.data.svgId
+          svgId: res.data.svgId,
         },
       });
       this.deskState();
@@ -38,7 +43,7 @@ export default class SpaceSvg extends Component {
       dispatch({
         type: 'spaceState/getDeskState',
         payload: {
-          svgId: svg.svgId
+          svgId: svg.svgId,
         },
       });
     }, 3000);
@@ -51,11 +56,11 @@ export default class SpaceSvg extends Component {
       <div className={styles.svgRight}>
         {svg.svgName && svg.svgName === 'urwork.svg' ?
           <Urwork data={data} svg={svg} setCount={setCount} filter={filter} />
-          :
-          <div className={styles.svgPic}>
-            <FormattedMessage id="spaceUsage.none" />
-          </div>
-        }
+          : (
+            <div className={styles.svgPic}>
+              <FormattedMessage id="spaceUsage.none" />
+            </div>
+          )}
       </div>
     );
   }

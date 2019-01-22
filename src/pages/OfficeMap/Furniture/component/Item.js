@@ -67,10 +67,10 @@ class Item extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data.active && !this.props.data.active) {
+    if (nextProps.data && nextProps.data.active && !this.props.data.active) {
       this.startAnim();
     }
-    if (!nextProps.data.active && this.props.data.active) {
+    if (nextProps.data && !nextProps.data.active && this.props.data.active) {
       this.endAnim();
     }
   }
@@ -90,7 +90,7 @@ class Item extends Component {
         <div style={Object.assign({}, styles.peskView2, { opacity: this.state.anim })}>
           <font style={styles.text2}>{showValue && data.number}</font>
         </div>
-        <div style={Object.assign({}, styles.peskView3, { opacity: data.status === 'offline' ? 1 : 0 })}>
+        <div style={Object.assign({}, styles.peskView3, { opacity: data && data.status === 'offline' ? 1 : 0 })}>
           <font style={styles.text3}>{showValue && data.number}</font>
         </div>
         <font style={styles.text1}>{showValue && data.number}</font>

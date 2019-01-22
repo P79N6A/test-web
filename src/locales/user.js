@@ -1,5 +1,5 @@
 const officeMapUser = {
-  userName: 'office_map_ebt',
+  userName: 'office_map_ebt@9am.com',
   password: 'office_map_ebt',
 };
 

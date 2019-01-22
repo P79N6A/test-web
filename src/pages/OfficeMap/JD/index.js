@@ -4,7 +4,7 @@ import styles from './index.less';
 import G from '@/global'
 
 @connect(({ Jd }) => ({
-  Jd
+  Jd,
 }))
 class JD extends Component {
   constructor(props) {
@@ -21,17 +21,17 @@ class JD extends Component {
     }, 15 * 1000);
   }
 
+  // 离开页面时，清除计时器
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   // 请求接口
   getData() {
     const { dispatch } = this.props;
     dispatch({
       type: 'Jd/fetch',
     });
-  }
-
-  // 离开页面时，清除计时器
-  componentWillUnmount() {
-    clearInterval(this.interval);
   }
 
   render() {
@@ -45,9 +45,12 @@ class JD extends Component {
           <font className={styles.copyRightText}>Copyright ©️ 2018 9AM Inc.</font>
         </div>
         <div className={styles.countView}>
-          <font className={styles.countText}>{`${
-            data && data.properties && data.properties.reported && data.properties.reported.count ? data.properties.reported.count : 0
-            }`}人</font>
+          <font className={styles.countText}>
+            {`${
+              data && data.properties && data.properties.reported && data.properties.reported.count ? data.properties.reported.count : 0
+              }`}
+            人
+          </font>
           <font className={styles.countDescribe}>房间人数</font>
         </div>
       </div>

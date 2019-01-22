@@ -761,7 +761,7 @@ export async function sensorRemark(payload) {
  *  tags      Array       查询的传感器tag
  */
 export async function getDeviceStatus(payload) {
-  return request(`${IXAM_URL}/base/devices/status`, {
+  return request(`${IXAM_URL}/space/desks/status`, {
     method: 'POST',
     body: { ...payload, token: getToken() },
     headers: {

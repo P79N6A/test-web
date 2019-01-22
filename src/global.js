@@ -15,7 +15,7 @@ if (env === '') {
 }
 const picUrl = 'http://cdn.space.9amtech.com/';
 const IXAM_URL = process.IXAM_URL;
-const SUBSCRIPTION_KEY = '8a61f42ed2144d18a11b4d0e243434e3';
+const SUBSCRIPTION_KEY = '01d5945a9e8748cbae2810bf2c25b793';
 const CNAME_CONFIG = ['siemens', 'weworkchina', '9amGlobal'];
 const svgColor = {
   strokeOffline: '#DBDBDB',

@@ -148,18 +148,21 @@ class PersonTemplate extends Component {
           this.uploadNumberAdd('none', 100);
           if (res.status === 'success') {
             message.success(`${formatMessage({ id: "person.import.success" })}${res.data.successCount}${formatMessage({ id: "person.import.success.data" })}`);
+            this.setState({
+              type: 0,
+            })
+            this.changeTitle(formatMessage({ id: "person.import.batch-user" }), formatMessage({ id: "all.cancel" }));
             closeTemplate();
-            this.changeTitle(formatMessage({ id: "person.import" }), formatMessage({ id: "all.cancel" }));
           } else if (res.data && res.data.dataList && res.data.dataList.length > 0) {
-              this.changeTitle(formatMessage({ id: "person.import.certain" }), formatMessage({ id: "person.import.again" }));
-              this.setState({
-                type: 1,
-              })
-            } else {
-              message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
-              this.changeTitle(formatMessage({ id: "person.import" }), formatMessage({ id: "all.cancel" }));
-              closeTemplate();
-            };
+            this.changeTitle(formatMessage({ id: "person.import.confirm" }), formatMessage({ id: "person.import.retry" }));
+            this.setState({
+              type: 1,
+            })
+          } else {
+            message.error(G.errorLists[res.code][`message_${getLocale()}`] || 'error');
+            this.changeTitle(formatMessage({ id: "person.import.batch-user" }), formatMessage({ id: "all.cancel" }));
+            closeTemplate();
+          };
           setTimeout(() => {
             this.uploadNumberAdd('none', 0)
           }, 1000)
@@ -189,6 +192,7 @@ class PersonTemplate extends Component {
       },
     };
     const columns = this.getColumns();
+    if (!visible) return null;
     return (
       <div className={styles.modelBox}>
         <Modal
@@ -246,20 +250,20 @@ class PersonTemplate extends Component {
                   </Upload>
                 </div>
               </div>
-            ): (
-              <div>
-                <p>{`${formatMessage({ id: "person.import.file-success-one" })}${errorList.totalLine}${formatMessage({ id: "person.import.file-success-two" })}${errorList.successLine}${formatMessage({ id: "person.import.file-success-three" })}`}</p>
-                <p className={styles.errorList}>{`${formatMessage({ id: "person.import.file-error-one" })}${errorList.totalLine - errorList.successLine}${formatMessage({ id: "person.import.file.error.two" })}`}</p>
-                <Table
-                  rowKey="errorId"
-                  dataSource={errorList.dataList}
-                  columns={columns}
-                  pagination={
-                    { defaultPageSize: 5 }
-                  }
-                />
-              </div>
-          )}
+            ) : (
+                <div>
+                  <p>{`${formatMessage({ id: "person.import.file-success-one" })}${errorList.totalCount}${formatMessage({ id: "person.import.file-success-two" })}${errorList.successCount}${formatMessage({ id: "person.import.file-success-three" })}`}</p>
+                  <p className={styles.errorList}>{`${formatMessage({ id: "person.import.file-error-one" })}${errorList.totalCount - errorList.successCount}${formatMessage({ id: "person.import.file-error-two" })}`}</p>
+                  <Table
+                    rowKey="errorId"
+                    dataSource={errorList.dataList}
+                    columns={columns}
+                    pagination={
+                      { defaultPageSize: 5 }
+                    }
+                  />
+                </div>
+              )}
         </Modal>
         {/* 上传进度条 */}
         <div className={styles.modelProgessBox} style={{ display: `${progress}` }}>

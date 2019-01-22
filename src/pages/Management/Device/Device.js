@@ -13,7 +13,7 @@ import EquipModal from './components/DeviceModal.js';
   ManagementCustomer,
   loading: loading.effects['ManagementDevice/fetch'],
 }))
- class Device extends Component {
+class Device extends Component {
   // 表单以及分页
   state = {
     query: '',
@@ -152,9 +152,9 @@ import EquipModal from './components/DeviceModal.js';
                 >
                   <a><FormattedMessage id='all.remove' /></a>
                 </Popconfirm>
-                ) : 
+              ) :
                 <span style={{ color: '#CCCCCC' }}><FormattedMessage id='all.remove' /></span>
-                ) : (
+            ) : (
                 text.userUid ? (
                   <Popconfirm
                     placement="left"
@@ -165,14 +165,14 @@ import EquipModal from './components/DeviceModal.js';
                   >
                     <a><FormattedMessage id="device.untied" /></a>
                   </Popconfirm>
-                ): 
+                ) :
                   <span style={{ color: '#CCCCCC' }}><FormattedMessage id="device.untied" /></span>
-                )}
+              )}
             <Divider type="vertical" />
             <a
               onClick={() => {
-                    this.onMark(text, record, index);
-                  }}
+                this.onMark(text, record, index);
+              }}
             >
               <FormattedMessage id="all.remarks" />
             </a>

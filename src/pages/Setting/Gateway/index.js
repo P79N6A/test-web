@@ -66,14 +66,8 @@ class Gateway extends Component {
         render: (text, record, index) => (
           <Fragment>
             <Tooltip placement="topLeft" title={text.SerialNumber}>
-              <font
-                onClick={() => {
-                this.goVirtualGateway(text, record, index);
-              }}
-                style={{ cursor: 'pointer' }}
-              >
+              <font style={{ cursor: 'pointer' }}>
                 {text.SerialNumber}
-
               </font>
             </Tooltip>
           </Fragment>

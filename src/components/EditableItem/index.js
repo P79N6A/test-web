@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import React, { PureComponent } from 'react';
 import { Input, Icon } from 'antd';
 import styles from './index.less';

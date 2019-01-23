@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 const sensorA = [
   'A2_1205',
   'A2_1206',

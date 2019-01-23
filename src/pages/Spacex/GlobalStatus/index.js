@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import React, { Component } from 'react';
 import enLocal from 'moment/locale/en-au';
 import Header from './components/Header';

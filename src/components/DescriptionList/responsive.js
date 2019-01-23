@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 export default {
   1: { xs: 24 },
   2: { xs: 24, sm: 12 },

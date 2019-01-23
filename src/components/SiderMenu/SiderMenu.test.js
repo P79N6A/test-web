@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import { urlToList } from '../_utils/pathTools';
 import { getFlatMenuKeys, getMenuMatchKeys } from './SiderMenu';
 

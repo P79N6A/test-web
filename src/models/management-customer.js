@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import { message } from 'antd';
 import { getCustomerList, addCustomer, editCustomer, resetPassword, permissionsList, setPermissions } from '@/services/api';
 import { getLocale, formatMessage } from 'umi/locale';

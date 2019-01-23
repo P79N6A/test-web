@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 // https://umijs.org/config/
 import os from 'os';
 import pageRoutes from './router.config';

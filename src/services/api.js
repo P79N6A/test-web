@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import { request, requestFile } from '@/utils/request';
 import G from '@/global';
 import { filterUrl, filterBody, getToken, filterEdit } from '@/utils/utils';

@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 const officeMapUser = {
   userName: 'office_map_ebt@9am.com',
   password: 'office_map_ebt',

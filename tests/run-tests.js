@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 const { spawn } = require('child_process');
 const { kill } = require('cross-port-killer');
 

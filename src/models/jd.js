@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import { deviceTwins } from '@/services/api';
 import { message } from 'antd';
 import { getLocale } from 'umi/locale';

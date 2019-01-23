@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import city from './geographic/city.json';
 import province from './geographic/province.json';
 

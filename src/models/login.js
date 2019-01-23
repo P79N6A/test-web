@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
 import { login, getSidebarList } from '@/services/api';

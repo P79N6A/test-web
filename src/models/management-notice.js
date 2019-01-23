@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import { message } from 'antd';
 import { formatMessage, getLocale } from 'umi/locale';
 import { getNoticeList, getNoticeState, sendNotice, topNotice } from '@/services/api';

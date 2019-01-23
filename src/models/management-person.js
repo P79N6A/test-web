@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import { message } from 'antd';
 import { getPersonnelList, addPerson, updatePerson, getQiniuToken, usersBatchImport, changeRole, usersGroupList } from '@/services/api';
 import { formatMessage, getLocale } from 'umi/locale';

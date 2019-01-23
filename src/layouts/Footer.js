@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import React, { Fragment } from 'react';
 import { Layout } from 'antd';
 import GlobalFooter from '@/components/GlobalFooter';

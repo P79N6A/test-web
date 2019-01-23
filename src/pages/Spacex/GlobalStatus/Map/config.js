@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 const globalSensor = ['A2_1725', 'A2_1726'];
 
 /**

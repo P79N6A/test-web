@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import moment from 'moment';
 import React from 'react';
 import nzh from 'nzh/cn';

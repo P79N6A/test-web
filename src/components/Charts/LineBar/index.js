@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import React, { Component } from 'react';
 import { Chart, Axis, Tooltip, Geom, Coord } from 'bizcharts';
 import Debounce from 'lodash-decorators/debounce';

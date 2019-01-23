@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import React from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Icon } from 'antd';

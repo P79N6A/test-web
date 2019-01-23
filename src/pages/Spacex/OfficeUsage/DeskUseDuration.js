@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import React, { Component } from 'react';
 import { Row, Col, Card, Icon, Popover, Radio, Spin } from 'antd';
 import { LineBar } from '@/components/Charts';

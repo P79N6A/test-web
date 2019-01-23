@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import React, { PureComponent, createElement } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';

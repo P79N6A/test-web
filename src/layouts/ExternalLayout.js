@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import React, { Fragment } from 'react';
 import { message } from 'antd';
 import DocumentTitle from 'react-document-title';

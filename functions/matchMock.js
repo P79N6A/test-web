@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 const mockFile = require('./mock/index');
 const pathToRegexp = require('path-to-regexp');
 const debug = console.log;

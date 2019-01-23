@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import React from 'react';
 import { Chart, Geom, Axis, Coord, Guide, Shape } from 'bizcharts';
 import autoHeight from '../autoHeight';

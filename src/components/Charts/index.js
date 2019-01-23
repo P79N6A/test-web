@@ -1,3 +1,6 @@
+// Copyright 2019 9AM Software. All rights reserved.
+// Distribution of this file is strictly prohibited.
+
 import numeral from 'numeral';
 import './g2';
 import ChartCard from './ChartCard';

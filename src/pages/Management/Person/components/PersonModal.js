@@ -54,7 +54,7 @@ class PersonModal extends Component {
           email: '',
           position: '',
           remark: '',
-          groupId: groupList && groupList.length > 0 ? groupList[0].id : '',
+          groupId: '',
         });
         this.setState({ title: formatMessage({ id: 'person.operate.new-users' }) });
         this.setState({ subTitle: formatMessage({ id: 'person.operate.new-user-message' }) });
@@ -64,6 +64,7 @@ class PersonModal extends Component {
 
   onCancel(handleCancel) {
     this.setState({ imageUrl: '' });
+    this.clearForm();
     handleCancel();
   }
 
@@ -159,13 +160,24 @@ class PersonModal extends Component {
     })
   }
 
+  // 清除 form 表格内容
+  clearForm() {
+    this.props.form.setFieldsValue({
+      name: '',
+      phone: '',
+      email: '',
+      position: '',
+      remark: '',
+      groupId: '',
+    });
+  }
+
   render() {
     const { visible, loading, handleCancel, form, groupList } = this.props;
     const { imageUrl, avatarLoading, title, subTitle } = this.state;
     const { getFieldDecorator } = form;
     const uploadButton = (<Icon type={avatarLoading ? "loading" : "user"} style={{ fontSize: '30px', lineHeight: '60px', paddingTop: '4px', color: '#DFE4E8' }} />);
     const formItemLayout = { labelCol: { span: 6 }, wrapperCol: { span: 18 } };
-    if (!visible) return null;
     return (
       <Modal
         visible={visible}

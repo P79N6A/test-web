@@ -162,7 +162,7 @@ class Person extends Component {
                 </Tooltip>
               </Fragment>
             ) : (
-              <Fragment>
+                <Fragment>
                   <Tooltip placement="topLeft" title={filterStatus[0].text}>
                     <font>{filterStatus[0].text}</font>
                   </Tooltip>
@@ -274,6 +274,7 @@ class Person extends Component {
     if (res.status === 'success') {
       this.setState({ modalLoading: false, visible: false });
       this.fetchDataList();
+      this.clearContent();
     } else {
       this.setState({ modalLoading: false });
     }
@@ -283,6 +284,7 @@ class Person extends Component {
     if (res.status === 'success') {
       this.setState({ modalLoading: false, visible: false, editValue: {} });
       this.fetchDataList();
+      this.clearContent();
     } else {
       this.setState({ modalLoading: false });
     }
@@ -306,6 +308,18 @@ class Person extends Component {
   pageChange = current => {
     this.fetchDataList({ current });
   };
+
+  // 清除子组件编辑框内容
+  clearContent() {
+    this.refs.personModel.setFieldsValue({
+      name: '',
+      phone: '',
+      email: '',
+      position: '',
+      remark: '',
+      groupId: '',
+    });
+  }
 
   fetchDataList(value) {
     const { dispatch, ManagementPerson } = this.props;
@@ -487,6 +501,7 @@ class Person extends Component {
         </Row>
         {/* 添加以及编辑模板 */}
         <PersonModal
+          ref="personModel"
           dispatch={dispatch}
           visible={visible}
           loading={modalLoading}
@@ -517,7 +532,7 @@ class Person extends Component {
             </Button>,
           ]}
         >
-          <p>设置为组管理员后， 该成员可以使用邮箱登录到管理平台，对 所在用户组内的信息进行管理，登录密码通过邮件通知该成员。</p>
+          <p>设置为组管理员后，该成员可以使用邮箱登录到管理平台，对所在用户组内的信息进行管理，登录密码通过邮件通知该成员。</p>
           <p className={styles.openPermission}>开放权限：</p>
           <p className={styles.firstPage}>1. 首页</p>
           <p className={styles.firstPage}>2. 通知管理</p>

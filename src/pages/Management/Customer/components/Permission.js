@@ -6,11 +6,13 @@ import { formatMessage, FormattedMessage } from 'umi/locale';
 import { Modal, Button, Form, Row, Col } from 'antd';
 import styles from './Permission.less';
 import CheckAll from '@/components/CheckAll';
-import { checkPermissionData } from '@/utils/utils';
+import { checkPermissionData, checkOperateData } from '@/utils/utils';
+import G from '@/global';
 
 class Permission extends Component {
   state = {
     loading: false,
+    localData: [],
   };
 
   onCancel(res) {
@@ -20,46 +22,31 @@ class Permission extends Component {
 
   okHandle = () => {
     const { addPermission, companyId, dispatch } = this.props;
+    const { localData } = this.state;
     dispatch({
       type: 'ManagementCustomer/setPermissions',
       payload: {
         companyId,
-        addPermission,
+        services: G._.isEmpty(localData) ? addPermission : checkOperateData(localData, addPermission),
         callback: this.onCancel.bind(this, 1),
       },
     })
   };
 
   // 获取自组件的回调函数
-  obPermission(id, list) {
-    const { permissionList, addPermission, dispatch } = this.props;
-    const data = addPermission;
-    if (list && list.length > 0) {
-      list.forEach((item) => {
-        if (data.indexOf(item) < 0) {
-          data.push(item);
-        }
-      })
-    } else {
-      const delData = [];
-      permissionList.forEach((item) => {
-        if (item.menu_id === id) {
-          item.child && item.child.forEach((lItem) => {
-            delData.push(lItem.menu_id);
-          })
-        }
-      });
-      delData && delData.forEach((bItem) => {
-        if (data.indexOf(bItem) > -1) {
-          data.splice(data.indexOf(bItem), 1);
+  obPermission(id, list, checkAll) {
+    const { localData } = this.state;
+    const chooseData = localData;
+    if (chooseData.length > 0) {
+      chooseData.forEach((item, index) => {
+        if (item.parent === id) {
+          chooseData.splice(index, 1)
         }
       })
     }
-    dispatch({
-      type: 'ManagementCustomer/saveAddPermissions',
-      payload: {
-        addPermission: data,
-      },
+    chooseData.push({ parent: id, children: list, checkAll });
+    this.setState({
+      localData: chooseData,
     })
   }
 
@@ -97,7 +84,7 @@ class Permission extends Component {
                   title={item.title}
                   id={item.id}
                 />
-)
+              )
             })
             :
             <FormattedMessage id="spaceUsage.none" />

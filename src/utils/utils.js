@@ -7,6 +7,7 @@ import nzh from 'nzh/cn';
 import { parse, stringify } from 'qs';
 import G from '@/global';
 import { spacexUser } from '@/locales/user';
+import { getLocale } from 'umi/locale';
 
 const { globalStartTime } = G;
 const {
@@ -329,16 +330,26 @@ export function checkPermissionData(all) {
   if (!all) {
     return
   }
+  let menu_name = 'cnName';
+  if (getLocale() === 'en-US') {
+    menu_name = 'name';
+  }
   const permission = [];
   all.map((item) => {
     const checkedListCopy = []; const plainOptionsCopy = [];
-    item.child && item.child.map((lItem) => {
-      plainOptionsCopy.push({ 'label': lItem.menu_name, 'value': lItem.menu_id });
+    item.children && item.children.map((lItem) => {
+      plainOptionsCopy.push({ 'label': lItem[menu_name], 'value': lItem.serviceId });
       if (lItem.choose) {
-        checkedListCopy.push(lItem.menu_id)
+        checkedListCopy.push(lItem.serviceId)
       }
     })
-    permission.push({ 'title': item.menu_name, 'id': item.menu_id, checkedList: checkedListCopy, plainOptions: plainOptionsCopy })
+    if (G._.isEmpty(item.children)) {
+      plainOptionsCopy.push({ 'label': item[menu_name], 'value': item.serviceId });
+      if (item.choose) {
+        checkedListCopy.push(item.serviceId)
+      }
+    }
+    permission.push({ 'title': item[menu_name], 'id': item.serviceId, checkedList: checkedListCopy, plainOptions: plainOptionsCopy })
   })
   return permission;
 }
@@ -350,6 +361,40 @@ export function checkData(all) {
     checkList.push(item.value)
   })
   return checkList;
+}
+
+// 处理功能权限未操作过的数据
+export function checkUnOperateData(data) {
+  const list = []; const content = [];
+  data && data.length > 0 && data.forEach((item) => {
+    list.push({ serviceId: item.serviceId, choose: item.choose });
+    if (!G._.isEmpty(item.children)) {
+      item.children.length > 0 && item.children.forEach((lItem) => {
+        content.push({ serviceId: lItem.serviceId, choose: lItem.choose })
+      })
+    }
+  })
+  return list.concat(content);
+}
+
+// 处理功能权限操作过的数据
+export function checkOperateData(data, addPermission) {
+  const list = [];
+  data.length > 0 && data.forEach((item) => {
+    item.children.length > 0 && item.children.forEach((lItem) => {
+      list.push(lItem);
+    })
+    if (item.children.length > 0 && item.checkAll) {
+      list.push(item.parent);
+    }
+  });
+  const result = addPermission.map((item) => {
+    if (list.includes(item.serviceId)) {
+      item.choose = true;
+    }
+    return item
+  });
+  return result;
 }
 
 export function checkAddPermission(data) {

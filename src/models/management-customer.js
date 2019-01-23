@@ -5,6 +5,7 @@ import { message } from 'antd';
 import { getCustomerList, addCustomer, editCustomer, resetPassword, permissionsList, setPermissions } from '@/services/api';
 import { getLocale, formatMessage } from 'umi/locale';
 import G from '@/global';
+import { checkUnOperateData } from '@/utils/utils';
 
 export default {
   namespace: 'ManagementCustomer',
@@ -99,6 +100,7 @@ export default {
       return {
         ...state,
         permissionList: payload,
+        addPermission: checkUnOperateData(payload),
       };
     },
     saveAddPermissions(state, { payload }) {
@@ -110,7 +112,7 @@ export default {
     saveCompanyId(state, { payload }) {
       return {
         ...state,
-        companyId: { ...payload },
+        ...payload,
       };
     },
   },

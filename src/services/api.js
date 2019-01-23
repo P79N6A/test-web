@@ -304,92 +304,17 @@ export async function resetPassword(payload) {
   });
 }
 
-// TODO: 获取权限列表
+// 获取权限列表
 export async function permissionsList(payload) {
-  return {
-    "status": "success",
-    "data": [
-      {
-        "menu_id": "ac0010",
-        "menu_name": "首页",
-        "choose": true,
-        "child": [
-          {
-            "menu_id": "ac0011",
-            "menu_name": "首页",
-            "choose": true,
-          },
-        ],
-      },
-      {
-        "menu_id": "ac0020",
-        "menu_name": "DShow",
-        "choose": false,
-        "child": [
-          {
-            "menu_id": "ac0021",
-            "menu_name": "通知管理",
-            "choose": false,
-          },
-          {
-            "menu_id": "ac0022",
-            "menu_name": "Banner管理",
-            "choose": false,
-          },
-        ],
-      },
-      {
-        "menu_id": "ac0030",
-        "menu_name": "数据",
-        "choose": true,
-        "child": [
-          {
-            "menu_id": "ac0031",
-            "menu_name": "空间实时状态",
-            "choose": true,
-          },
-          {
-            "menu_id": "ac0032",
-            "menu_name": "空间使用情况",
-            "choose": false,
-          },
-          {
-            "menu_id": "ac0033",
-            "menu_name": "升降记录分析",
-            "choose": false,
-          },
-        ],
-      },
-      {
-        "menu_id": "ac0040",
-        "menu_name": "管理",
-        "choose": false,
-        "child": [
-          {
-            "menu_id": "ac0041",
-            "menu_name": "用户管理",
-            "choose": false,
-          },
-          {
-            "menu_id": "ac0042",
-            "menu_name": "设备管理",
-            "choose": true,
-          },
-        ],
-      },
-    ],
-  }
-  const url = filterUrl({ ...payload, token: getToken() });
-  return request(`${G.API_URL}/permissions/list?${url}`, {
-    method: 'GET',
+  const body = filterBody({ ...payload, token: getToken() });
+  return request(`${G.API_URL}/permissions/list`, {
+    method: 'POST',
+    body,
   });
 }
 
-// TODO: 设置权限列表
+// 设置权限列表
 export async function setPermissions(payload) {
-  return {
-    status: 'success',
-  }
   const body = filterBody({ token: getToken(), ...payload });
   return request(`${G.API_URL}/permissions/update`, {
     method: 'POST',

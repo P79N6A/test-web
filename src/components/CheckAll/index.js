@@ -31,7 +31,7 @@ export default class CheckAll extends Component {
       indeterminate: !!checkedList.length && (checkedList.length < plainOptions.length),
       checkAll: checkedList.length === plainOptions.length,
     });
-    obPermission(id, checkedList);
+    obPermission(id, checkedList, checkedList.length === plainOptions.length);
   }
 
   onCheckAllChange = (e) => {
@@ -43,26 +43,27 @@ export default class CheckAll extends Component {
       indeterminate: false,
       checkAll: e.target.checked,
     });
-    obPermission(id, e.target.checked ? newPlainOptions : []);
+    obPermission(id, e.target.checked ? newPlainOptions : [], e.target.checked);
   }
 
   render() {
-    const { plainOptions, checkedList, indeterminate, title } = this.state;
+    const { plainOptions, checkedList, indeterminate, title, checkAll } = this.state;
     return (
       <div>
-        {plainOptions && plainOptions.length > 0 ?
+        {plainOptions && plainOptions.length > 0 ? (
           <div className={styles.box}>
             <Checkbox
               className={styles.checkbox}
               indeterminate={indeterminate}
               onChange={this.onCheckAllChange.bind(this)}
-              checked={this.state.checkAll}
-            >{title}</Checkbox>
+              checked={checkAll}
+            >
+              {title}
+            </Checkbox>
             <CheckboxGroup options={plainOptions} value={checkedList} onChange={this.onChange.bind(this)} />
           </div>
-          :
+        ) :
           ''}
-
       </div>
     );
   }

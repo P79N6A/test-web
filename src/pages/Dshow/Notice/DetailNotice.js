@@ -12,7 +12,7 @@ import styles from './components/NewNoticeForm.less';
 class DetailNotice extends Component {
 
   componentWillMount() {
-    const { ManagementNotice,dispatch } = this.props;
+    const { ManagementNotice, dispatch } = this.props;
     if (!ManagementNotice.copyValue) {
       dispatch(routerRedux.push('/management/notice'));
     }

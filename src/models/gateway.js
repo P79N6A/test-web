@@ -89,7 +89,7 @@ export default {
     },
     // 保存客户列表
     saveCustomer(state, action) {
-      const customerList = action.payload.map((item, i) => ({ text: item.companyName, value: item.companyId }))
+      const customerList = action.payload.rows.map((item, i) => ({ text: item.companyName, value: item.companyId }))
       return {
         ...state,
         customerList,

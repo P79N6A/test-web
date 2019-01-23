@@ -53,7 +53,7 @@ class Notice extends Component {
         if (titleTd) {
           const titleTdWidth = titleTd.offsetWidth;
           const titleTextWidth = document.getElementById(`titleText_${dataLists[i].noticeId}`).offsetWidth;
-          document.getElementById(`titleText_${dataLists[i].noticeId}`).style.width = titleTextWidth < titleTdWidth - 25 ? 'auto' : `${titleTdWidth - 25  }px`;
+          document.getElementById(`titleText_${dataLists[i].noticeId}`).style.width = titleTextWidth < titleTdWidth - 25 ? 'auto' : `${titleTdWidth - 25}px`;
         }
       }
     }
@@ -232,7 +232,7 @@ class Notice extends Component {
   }
 
   newNotice() {
-    const {dispatch}=this.props;
+    const { dispatch } = this.props;
     dispatch(routerRedux.push('/management/newNotice'))
   }
 

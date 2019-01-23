@@ -577,21 +577,6 @@ export async function sortBanner(payload) {
 
 // 获取物理网关列表
 export async function gatewayList(payload) {
-  return {
-    "status": "success",
-    "message": "请求列表成功！",
-    "data": {
-      "offset": 1,
-      "limit": 15,
-      "count": 500,
-      "rows": [
-        { "id": "001", "SerialNumber": "SerialNumber1", "companyName": "9am", "position": "一层", "remark": "备注" },
-        { "id": "002", "SerialNumber": "SerialNumber2", "companyName": "9am", "position": "一层", "remark": "备注" },
-        { "id": "003", "SerialNumber": "SerialNumber3", "companyName": "9am", "position": "一层", "remark": "备注" },
-      ],
-    },
-  }
-
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/gateway/list`, {
     method: 'POST',
@@ -619,71 +604,8 @@ export async function gatewayCommand(payload) {
   });
 }
 
-// 获取虚拟网关列表
-export async function virtualGatewayList(payload) {
-  return {
-    "status": "success",
-    "message": "请求列表成功！",
-    "data": {
-      "offset": 0,
-      "limit": 15,
-      "count": 500,
-      "rows": [
-        { "gateway": "1", "virtualGateway": "bdhf001", "companyName": "9am", "type": 0, "connectString": "balabala", "state": 0 },
-        { "gateway": "2", "virtualGateway": "bdhf002", "companyName": "9am", "type": 1, "connectString": "balabala", "state": 1 },
-        { "gateway": "3", "virtualGateway": "bdhf003", "companyName": "9am", "type": 0, "connectString": "balabala", "state": 0 },
-      ],
-    },
-  }
-
-  const body = filterBody({ ...payload, token: getToken() });
-  return request(`${G.API_URL}/virtual_gateway/list`, {
-    method: 'POST',
-    body,
-  });
-}
-
-// 根据虚拟网关获取传感器列表
-export async function virtualGatewaySensorList(payload) {
-  return {
-    "status": "success",
-    "message": "请求列表成功！",
-    "data": {
-      "offset": 0,
-      "limit": 15,
-      "count": 500,
-      "rows": [
-        { "gatewayId": "dndk001", "state": 0 },
-        { "gatewayId": "dndk002", "state": 1 },
-        { "gatewayId": "dndk002", "state": 2 },
-      ],
-    },
-  }
-
-  const body = filterBody({ ...payload, token: getToken() });
-  return request(`${G.API_URL}/virtual/gateway/sensor/list`, {
-    method: 'POST',
-    body,
-  });
-}
-
 // admin 传感器列表以及查询
 export async function adminSensorList(payload) {
-  return {
-    "status": "success",
-    "message": "请求列表成功！",
-    "data": {
-      "offset": 0,
-      "limit": 15,
-      "count": 500,
-      "rows": [
-        { "id": "dndk001", "number": "A0001", "gatewayId": "cdhsjncd", "customerName": "wework" },
-        { "id": "dndk002", "number": "A0002", "gatewayId": "cdhsjncd", "customerName": "wework" },
-        { "id": "dndk003", "number": "A0003", "gatewayId": "cdhsjncd", "customerName": "wework" },
-      ],
-    },
-  }
-
   const body = filterBody({ ...payload, token: getToken() });
   return request(`${G.API_URL}/admin/sensor/list`, {
     method: 'POST',

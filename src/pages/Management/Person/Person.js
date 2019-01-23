@@ -162,7 +162,7 @@ class Person extends Component {
                 </Tooltip>
               </Fragment>
             ) : (
-                <Fragment>
+              <Fragment>
                   <Tooltip placement="topLeft" title={filterStatus[0].text}>
                     <font>{filterStatus[0].text}</font>
                   </Tooltip>

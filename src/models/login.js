@@ -37,11 +37,6 @@ export default {
           payload: response.data,
         });
         reloadAuthorized();
-        if (payload.redirect) {
-          yield put(routerRedux.replace(payload.redirect));
-        } else {
-          yield put(routerRedux.replace('/home'));
-        }
       } else {
         message.error(G.errorLists[response.code][`message_${getLocale()}`] || 'error');
       }
@@ -102,6 +97,7 @@ export default {
     // 获取侧边栏
     *getSidebarList({ payload }, { call, put }) {
       const response = yield call(getSidebarList, payload);
+      payload.callback(response);
       if (response && response.status === 'success') {
         yield put({
           type: 'saveSidebar',

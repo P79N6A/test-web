@@ -42,6 +42,19 @@ class LoginPage extends Component {
       });
     });
 
+  getSidebar(res) {
+    const { dispatch } = this.props;
+    if (res.status === 'success') {
+      dispatch({
+        type: 'login/getSidebarList',
+        payload: {
+          token: res.data.token,
+          callback: this.newRouter.bind(this),
+        },
+      })
+    }
+  }
+
   handleSubmit = (location, err, values) => {
     let role = 'user';
     if (location.pathname === '/admin_user/login') {
@@ -62,18 +75,6 @@ class LoginPage extends Component {
     }
   };
 
-  getSidebar(res) {
-    const { dispatch } = this.props;
-    if (res.status === 'success') {
-      dispatch({
-        type: 'login/getSidebarList',
-        payload: {
-          token: res.data.token,
-        },
-      })
-    }
-  }
-
   changeAutoLogin = e => {
     this.setState({
       autoLogin: e.target.checked,
@@ -86,6 +87,18 @@ class LoginPage extends Component {
 
   retrievePassword = () => {
     this.props.dispatch(routerRedux.push('/external/RetrievePassword'))
+  }
+
+  newRouter(res) {
+    if (res.status === 'success') {
+      let path = '';
+      if (res.data[0].children.length > 0) {
+        path = res.data[0].children[0].path
+      } else {
+        path = res.data[0].path
+      }
+      this.props.dispatch(routerRedux.replace(path));
+    }
   }
 
   render() {

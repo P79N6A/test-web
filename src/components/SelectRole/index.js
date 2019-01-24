@@ -4,7 +4,8 @@
 import React, { Component, Fragment } from 'react';
 import { Checkbox, Row, Col } from 'antd';
 import G from '@/global';
-import styles from './index.less'
+import { getLocale } from 'umi/locale';
+import styles from './index.less';
 
 export default class SelectRole extends Component {
 
@@ -15,6 +16,7 @@ export default class SelectRole extends Component {
 
   render() {
     const { data } = this.props;
+    const name = getLocale() === 'en-US' ? 'name' : 'cnName'
     return (
       <div>
         {
@@ -23,14 +25,14 @@ export default class SelectRole extends Component {
               return (
                 <Row key={item.serviceId}>
                   <Col className={styles.box} span={7}>
-                    <Checkbox onChange={this.onChange.bind(this, 'parent')} checked={item.choose} value={item.serviceId}>{item.name}</Checkbox>
+                    <Checkbox onChange={this.onChange.bind(this, 'parent')} checked={item.choose} value={item.serviceId}>{item[name]}</Checkbox>
                   </Col>
                   {
                     G._.isEmpty(item.children) ? '' :
                       item.children.map((itemChildren) => {
                         return (
                           <Col className={styles.box} key={itemChildren.serviceId} span={4}>
-                            <Checkbox onChange={this.onChange.bind(this, 'child')} checked={itemChildren.choose} value={itemChildren.serviceId}>{itemChildren.name}</Checkbox>
+                            <Checkbox onChange={this.onChange.bind(this, 'child')} checked={itemChildren.choose} value={itemChildren.serviceId}>{itemChildren[name]}</Checkbox>
                           </Col>
                         )
                       })

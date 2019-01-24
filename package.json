@@ -6,10 +6,12 @@
   "scripts": {
     "presite": "npm run generate-mock && cd functions && npm install",
     "start:dev": "cross-env SERVER_URL=http://localhost:8000 API_URL=http://39.108.86.241:9201 IXAM_URL=https://ixam.azure-api.cn DSHOW_URL=http://39.108.86.241:9201 APP_TYPE=site umi dev",
+    "start:staging": "cross-env SERVER_URL=http://localhost:8000 API_URL=http://39.108.86.241:9202 IXAM_URL=https://ixam.azure-api.cn DSHOW_URL=http://39.108.86.241:9202 APP_TYPE=site umi dev",
     "start:pro": "cross-env SERVER_URL=http://localhost:8000 API_URL=http://47.95.219.105:9200 IXAM_URL=https://ixam.azure-api.cn DSHOW_URL=http://47.94.253.27:9200 APP_TYPE=site umi dev",
     "start:global": "cross-env SERVER_URL=http://localhost:8000 API_URL=http://13.64.100.46:9200 IXAM_URL=http://13.64.100.46:9500 DSHOW_URL=http://13.64.100.46:9200 APP_TYPE=site umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
     "build:dev": "cross-env SERVER_URL=http://39.108.86.241 CDN_URL=http://cdn.space.9amtech.com/dev/ API_URL=http://39.108.86.241:9201 IXAM_URL=https://ixam.azure-api.cn DSHOW_URL=http://39.108.86.241:9201 BUILD_ENV=dev umi build",
+    "build:staging": "cross-env SERVER_URL=http://39.108.86.241 CDN_URL=http://cdn.space.9amtech.com/staging/ API_URL=http://39.108.86.241:9202 IXAM_URL=https://ixam.azure-api.cn DSHOW_URL=http://39.108.86.241:9202 BUILD_ENV=dev umi build",
     "build:pro": "cross-env SERVER_URL=http://space.9amtech.com CDN_URL=http://cdn.space.9amtech.com/dist/ API_URL=http://47.95.219.105:9200 IXAM_URL=https://ixam.azure-api.cn DSHOW_URL=http://47.94.253.27:9200 BUILD_ENV=pro umi build",
     "build:global": "cross-env SERVER_URL=http://13.64.100.46 CDN_URL=http://cdn.space.9amtech.com/global/ API_URL=http://13.64.100.46:9200 IXAM_URL=http://13.64.100.46:9500 DSHOW_URL=http://13.64.100.46:9200 BUILD_ENV=pro umi build",
     "site": "npm run presite && cross-env APP_TYPE=site npm run build && firebase deploy",
@@ -95,9 +97,6 @@
     "webpack-dev-middleware": "^3.4.0",
     "webpack-dev-server": "^3.1.9",
     "webpack-hot-middleware": "^2.24.3"
-  },
-  "optionalDependencies": {
-    "puppeteer": "^1.6.0"
   },
   "lint-staged": {
     "**/*.{js,jsx,less}": [

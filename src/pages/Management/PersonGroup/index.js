@@ -325,7 +325,7 @@ class PersonGroup extends Component {
                   groupList && groupList.length > 0
                     ?
                     groupList.map((item, index) => {
-                      return index === 0 ? <p key={item.id} onClick={this.changeGroup.bind(this, item.id)} className={[styles.title, groupActive === item.id && styles.bg_green].join(' ')}>{item.id.indexOf('Default') !== -1 ? '未分组的成员' : item.name}</p> : ''
+                      return index === 0 ? <p key={item.id} onClick={this.changeGroup.bind(this, item.id)} className={[styles.title, groupActive === item.id && styles.bg_green].join(' ')}>{item.id.indexOf('Default') !== -1 ? formatMessage({ id: 'person.group.Ungrouped-members' }) : item.name}</p> : ''
                     })
                     :
                     ''

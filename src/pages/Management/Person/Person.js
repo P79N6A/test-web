@@ -164,8 +164,9 @@ class Person extends Component {
                   <font>{text.resource.serialNumber}</font>
                 </Tooltip>
               </Fragment>
-            ) : (
-              <Fragment>
+            ) :
+              (
+                <Fragment>
                   <Tooltip placement="topLeft" title={filterStatus[0].text}>
                     <font>{filterStatus[0].text}</font>
                   </Tooltip>
@@ -403,7 +404,7 @@ class Person extends Component {
     const { dispatch } = this.props;
     const lang = getLocale();
     if (!email) {
-      message.error('请先添加邮箱！')
+      message.error(formatMessage({ id: 'person.role.add-email' }))
       return null;
     }
     dispatch({
@@ -523,7 +524,7 @@ class Person extends Component {
         {/* 设置为管理员 */}
         <Modal
           visible={roleVisible}
-          title="设置组管理员"
+          title={formatMessage({ id: 'person.role.set-group-manager' })}
           onOk={this.okHandle.bind(this)}
           onCancel={this.closeRole.bind(this)}
           footer={[
@@ -535,12 +536,12 @@ class Person extends Component {
             </Button>,
           ]}
         >
-          <p>设置为组管理员后，该成员可以使用邮箱登录到管理平台，对所在用户组内的信息进行管理，登录密码通过邮件通知该成员。</p>
-          <p className={styles.openPermission}>开放权限：</p>
-          <p className={styles.firstPage}>1. 首页</p>
-          <p className={styles.firstPage}>2. 通知管理</p>
-          <p className={styles.firstPage}>3. 云桌管理</p>
-          <p className={styles.firstPage}>4. 用户管理</p>
+          <p><FormattedMessage id="person.role.set-group-manager-permission" /></p>
+          <p className={styles.openPermission}><FormattedMessage id="person.role.group-manager-open-permission" /></p>
+          <p className={styles.firstPage}><FormattedMessage id="person.role.group-manager-home" /></p>
+          <p className={styles.firstPage}><FormattedMessage id="person.role.group-manager-notice" /></p>
+          <p className={styles.firstPage}><FormattedMessage id="person.role.group-manager-device" /></p>
+          <p className={styles.firstPage}><FormattedMessage id="person.role.group-manager-person" /></p>
         </Modal>
       </div>
     );

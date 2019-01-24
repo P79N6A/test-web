@@ -124,6 +124,15 @@ export default {
   "person.role.space-manager": "Space Administrator",
   "person.role.user": "Member",
   "person.role.default": "Default Role",
+  // TODO: 翻译
+  "person.role.add-email": "请先添加邮箱",
+  "person.role.set-group-manager": "设置组管理员",
+  "person.role.set-group-manager-permission": "设置为组管理员后，该成员可以使用邮箱登录到管理平台，对所在用户组内的信息进行管理，登录密码通过邮件通知该成员。",
+  "person.role.group-manager-open-permission": "开放权限：",
+  "person.role.group-manager-home": "1. Home",
+  "person.role.group-manager-notice": "2. Notice",
+  "person.role.group-manager-device": "3. Cloud Desk Management",
+  "person.role.group-manager-person": "4. User Management",
   // 用户管理（批量导入）
   "person.import.batch": "Bulk-import",
   "person.import.batch-user": "Bulk-import Users",
@@ -165,6 +174,8 @@ export default {
   "person.group.add.group.name": "Please Input Usergroup Name",
   "person.group.add.group.check.message": "The usergroup name cannot exceed 20 characters in length",
   "person.group.add.group.placeholder": "Please input usergroup name",
+  // TODO: 翻译
+  "person.group.Ungrouped-members": "未分组的成员",
   // 设备管理
   "device.list": "Device List",
   "device.list.search-user-text": "Device ID/Users/Remarks",

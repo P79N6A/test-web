@@ -124,6 +124,14 @@ export default {
   "person.role.space-manager": "空间管理员",
   "person.role.user": "普通成员",
   "person.role.default": "默认角色",
+  "person.role.add-email": "请先添加邮箱",
+  "person.role.set-group-manager": "设置组管理员",
+  "person.role.set-group-manager-permission": "设置为组管理员后，该成员可以使用邮箱登录到管理平台，对所在用户组内的信息进行管理，登录密码通过邮件通知该成员。",
+  "person.role.group-manager-open-permission": "开放权限：",
+  "person.role.group-manager-home": "1. 首页",
+  "person.role.group-manager-notice": "2. 通知管理",
+  "person.role.group-manager-device": "3. 云桌管理",
+  "person.role.group-manager-person": "4. 用户管理",
   // 用户管理（批量导入）
   "person.import.batch": "批量导入",
   "person.import.batch-user": "批量导入用户",
@@ -165,6 +173,7 @@ export default {
   "person.group.add.group.name": "请填写用户组名称",
   "person.group.add.group.check.message": "用户组名字长度不能超过20字符",
   "person.group.add.group.placeholder": "请输入用户组名称",
+  "person.group.Ungrouped-members": "未分组的成员",
   // 设备管理
   "device.list": "设备列表",
   "device.list.search-user-text": "设备编号 / 使用者 / 备注",

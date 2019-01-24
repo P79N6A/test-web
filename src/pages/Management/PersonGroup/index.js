@@ -123,9 +123,13 @@ class PersonGroup extends Component {
         title: formatMessage({ id: 'person.role' }),
         render: (text, record, index) => (
           <Fragment>
-            <Select defaultValue={text.role} disabled={!groupActive} style={{ width: 120 }} onChange={this.handleChange.bind(this, text, record, index, groupActive)}>
+            <Select defaultValue={text.role} style={{ width: 120 }} onChange={this.handleChange.bind(this, text, record, index, groupActive)}>
               <Option value="companyAdmin"><FormattedMessage id="person.group.super.admin" /></Option>
-              <Option value="groupAdmin"><FormattedMessage id="person.group.group.admin" /></Option>
+              {
+                groupActive === '' || groupActive === 'Default' ? ''
+                  :
+                  (<Option value="groupAdmin"><FormattedMessage id="person.group.group.admin" /></Option>)
+              }
               <Option value="user"><FormattedMessage id="person.group.default.member" /></Option>
             </Select>
           </Fragment>
@@ -317,6 +321,15 @@ class PersonGroup extends Component {
               />
               <Button size="small" className={styles.btn} onClick={this.openGroupModel.bind(this)}><FormattedMessage id="person.group.create" /></Button>
               <ul className={styles.groupBox}>
+                {
+                  groupList && groupList.length > 0
+                    ?
+                    groupList.map((item, index) => {
+                      return index === 0 ? <p key={item.id} onClick={this.changeGroup.bind(this, item.id)} className={[styles.title, groupActive === item.id && styles.bg_green].join(' ')}>{item.id.indexOf('Default') !== -1 ? '未分组的成员' : item.name}</p> : ''
+                    })
+                    :
+                    ''
+                }
                 <p onClick={this.changeGroup.bind(this, '')} className={[styles.title, groupActive === '' && styles.bg_green].join(' ')}>
                   <Icon type="caret-down" className={styles.icon} />
                   <FormattedMessage id="person.group.all.member" />
@@ -325,7 +338,7 @@ class PersonGroup extends Component {
                   groupList && groupList.length > 0
                     ?
                     groupList.map((item, index) => {
-                      return <li key={item.id} onClick={this.changeGroup.bind(this, item.id)} className={[styles.subTitle, groupActive === item.id && styles.bg_green].join(' ')}>{item.id.indexOf('Default') !== -1 ? '默认组' : item.name}</li>
+                      return index > 0 ? <li key={item.id} onClick={this.changeGroup.bind(this, item.id)} className={[styles.subTitle, groupActive === item.id && styles.bg_green].join(' ')}>{item.name}</li> : ''
                     })
                     :
                     ''

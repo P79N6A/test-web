@@ -325,44 +325,6 @@ export function totalTime(data) {
   return `<div style="font-size:30px;color:#35536C;"><p style="line-height:28px;margin-bottom:0;">${data}</p><p style="font-size:10px;line-height:14px;">小时/工位/天</p></div>`;
 }
 
-// 处理功能权限列表数据
-export function checkPermissionData(all) {
-  if (!all) {
-    return
-  }
-  let menu_name = 'cnName';
-  if (getLocale() === 'en-US') {
-    menu_name = 'name';
-  }
-  const permission = [];
-  all.map((item) => {
-    const checkedListCopy = []; const plainOptionsCopy = [];
-    item.children && item.children.map((lItem) => {
-      plainOptionsCopy.push({ 'label': lItem[menu_name], 'value': lItem.serviceId });
-      if (lItem.choose) {
-        checkedListCopy.push(lItem.serviceId)
-      }
-    })
-    if (G._.isEmpty(item.children)) {
-      plainOptionsCopy.push({ 'label': item[menu_name], 'value': item.serviceId });
-      if (item.choose) {
-        checkedListCopy.push(item.serviceId)
-      }
-    }
-    permission.push({ 'title': item[menu_name], 'id': item.serviceId, checkedList: checkedListCopy, plainOptions: plainOptionsCopy })
-  })
-  return permission;
-}
-
-// 处理选择的数据
-export function checkData(all) {
-  const checkList = [];
-  all.map((item) => {
-    checkList.push(item.value)
-  })
-  return checkList;
-}
-
 // 处理功能权限未操作过的数据
 export function checkUnOperateData(data) {
   const list = []; const content = [];
@@ -375,26 +337,6 @@ export function checkUnOperateData(data) {
     }
   })
   return list.concat(content);
-}
-
-// 处理功能权限操作过的数据
-export function checkOperateData(data, addPermission) {
-  const list = [];
-  data.length > 0 && data.forEach((item) => {
-    item.children.length > 0 && item.children.forEach((lItem) => {
-      list.push(lItem);
-    })
-    if (item.children.length > 0 && item.checkAll) {
-      list.push(item.parent);
-    }
-  });
-  const result = addPermission.map((item) => {
-    if (list.includes(item.serviceId)) {
-      item.choose = true;
-    }
-    return item
-  });
-  return result;
 }
 
 export function checkAddPermission(data) {

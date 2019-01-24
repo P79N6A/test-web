@@ -3,16 +3,13 @@
 
 import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
-import { Modal, Button, Form, Row, Col } from 'antd';
+import { Modal, Button, Form } from 'antd';
 import styles from './Permission.less';
-import CheckAll from '@/components/CheckAll';
-import { checkPermissionData, checkOperateData } from '@/utils/utils';
-import G from '@/global';
+import SelectRole from '@/components/SelectRole';
 
 class Permission extends Component {
   state = {
     loading: false,
-    localData: [],
   };
 
   onCancel(res) {
@@ -22,38 +19,63 @@ class Permission extends Component {
 
   okHandle = () => {
     const { addPermission, companyId, dispatch } = this.props;
-    const { localData } = this.state;
     dispatch({
       type: 'ManagementCustomer/setPermissions',
       payload: {
         companyId,
-        services: G._.isEmpty(localData) ? addPermission : checkOperateData(localData, addPermission),
+        services: addPermission,
         callback: this.onCancel.bind(this, 1),
       },
     })
   };
 
   // 获取自组件的回调函数
-  obPermission(id, list, checkAll) {
-    const { localData } = this.state;
-    const chooseData = localData;
-    if (chooseData.length > 0) {
-      chooseData.forEach((item, index) => {
-        if (item.parent === id) {
-          chooseData.splice(index, 1)
+  obPermission(type, value, choose) {
+    const { permissionList, dispatch } = this.props;
+    let result = [];
+    if (type === 'parent') {
+      result = permissionList.map((item) => {
+        if (value === item.serviceId) {
+          item.choose = choose;
+          const { children } = item;
+          if (children.length > 0) {
+            for (let i = 0; i < children.length; i++) {
+              children[i].choose = choose;
+            }
+          }
         }
-      })
+        return item
+      });
+    } else {
+      result = permissionList.map((item) => {
+        const { children } = item;
+        if (children.length > 0) {
+          let num = 0;
+          for (let i = 0; i < children.length; i++) {
+            // 给点击的更改 choose
+            if (children[i].serviceId === value) {
+              children[i].choose = choose;
+            }
+            // 判断父级的 choose
+            if (children[i].choose) {
+              num++;
+            }
+          }
+          // 更改父级的 choose
+          num === 0 ? item.choose = false : item.choose = true;
+        }
+        return item
+      });
     }
-    chooseData.push({ parent: id, children: list, checkAll });
-    this.setState({
-      localData: chooseData,
+    dispatch({
+      type: 'ManagementCustomer/savePermissionsList',
+      payload: result,
     })
   }
 
   render() {
     const { loading } = this.state;
-    const { visible, permissionList } = this.props;
-    const dataList = checkPermissionData(permissionList);
+    const { visible, permissionList, addPermission } = this.props;
     if (!visible) return null;
     return (
       <Modal
@@ -73,20 +95,13 @@ class Permission extends Component {
       >
         <p className={styles.subTitle}><FormattedMessage id="customer.permission.set-permission-message" /></p>
         {
-          dataList && dataList.length > 0 ?
-            dataList.map((item, index) => {
-              return (
-                <CheckAll
-                  key={item.title}
-                  obPermission={this.obPermission.bind(this)}
-                  plainOptions={item.plainOptions}
-                  checkedList={item.checkedList}
-                  title={item.title}
-                  id={item.id}
-                />
-              )
-            })
-            :
+          permissionList.length > 0 ? (
+            <SelectRole
+              data={permissionList}
+              result={addPermission}
+              obPermission={this.obPermission.bind(this)}
+            />
+          ) :
             <FormattedMessage id="spaceUsage.none" />
         }
       </Modal>

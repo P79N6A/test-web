@@ -4,9 +4,10 @@
 import React, { Component } from 'react';
 import { formatMessage, FormattedMessage } from 'umi/locale';
 import { connect } from 'dva';
-import { Alert } from 'antd';
+import { Alert, message } from 'antd';
 import Login from '@/components/Login';
 import { routerRedux } from 'dva/router';
+import G from '@/global';
 import styles from './Login.less';
 
 const { Tab, UserName, Password, Submit } = Login;
@@ -92,6 +93,10 @@ class LoginPage extends Component {
   newRouter(res) {
     if (res.status === 'success') {
       let path = '';
+      if (G._.isEmpty(res.data)) {
+        message.error(formatMessage({ id: 'login.set-permission' }));
+        return;
+      }
       if (res.data[0].children.length > 0) {
         path = res.data[0].children[0].path
       } else {

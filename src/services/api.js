@@ -337,7 +337,7 @@ export async function getDeskState(payload) {
   });
 }
 
-// TODO: 工位总数
+// 工位总数
 export async function getDeskCount(payload) {
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/count?${url}`, {
@@ -345,7 +345,7 @@ export async function getDeskCount(payload) {
   });
 }
 
-// TODO: 昨日使用个数以及昨日未使用数
+// 昨日使用个数以及昨日未使用数
 export async function getYuseCount(payload) {
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/yesterday_count?${url}`, {
@@ -361,84 +361,16 @@ export async function getAvgDuration(payload) {
   });
 }
 
-// TODO: 工位使用趋势
+// 工位使用趋势
 export async function getUseRate(payload) {
-  return {
-    "status": "success",
-    "data": {
-      "type": payload.type,
-      "date_type": "LAST_7DAYS",
-      "dataList": [
-        {
-          "time": "2018-11-25T07:38:14.619Z",
-          "occupied_duration": 89,
-          "vacant_duration": 180,
-          "offline_duration": 21,
-          "daily_average_duration": 56,
-        },
-        {
-          "time": "2018-11-26T07:38:14.619Z",
-          "occupied_duration": 89,
-          "vacant_duration": 180,
-          "offline_duration": 21,
-          "daily_average_duration": 56,
-        },
-        {
-          "time": "2018-11-27T07:38:14.619Z",
-          "occupied_duration": 89,
-          "vacant_duration": 180,
-          "offline_duration": 21,
-          "daily_average_duration": 56,
-        },
-        {
-          "time": "2018-11-27T07:38:14.619Z",
-          "occupied_duration": 43,
-          "vacant_duration": 31,
-          "offline_duration": 56,
-          "daily_average_duration": 1,
-        },
-        {
-          "time": "2018-11-28T07:38:14.619Z",
-          "occupied_duration": 343,
-          "vacant_duration": 333,
-          "offline_duration": 133,
-          "daily_average_duration": 13,
-        },
-        {
-          "time": "2018-11-29T07:38:14.619Z",
-          "occupied_duration": 340,
-          "vacant_duration": 300,
-          "offline_duration": 100,
-          "daily_average_duration": 10,
-        },
-        {
-          "time": "2018-11-30T07:38:14.619Z",
-          "occupied_duration": 400,
-          "vacant_duration": 300,
-          "offline_duration": 300,
-          "daily_average_duration": 20,
-        },
-      ],
-    },
-  }
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/use_rate?${url}`, {
     method: 'GET',
   });
 }
 
-// TODO: 服务时长统计
+// 服务时长统计
 export async function getServiceDuration(payload) {
-  return {
-    "status": "success",
-    "data": {
-      "total_duration": 1754952,
-      "occupied_duration": 161070,
-      "vacant_duration": 1593882,
-      "offline_duration": 1123662,
-      "average_duration": 6,
-    },
-  }
   const url = filterUrl({ ...payload, token: getToken() });
   return request(`${API_URL}/desk/service_duration?${url}`, {
     method: 'GET',

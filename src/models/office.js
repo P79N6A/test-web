@@ -26,7 +26,7 @@ export default {
         date_type: "LAST_7DAYS",
       },
       desk_avg_duration: {
-        condition_types: 'HOURLY',
+        type: 'HOURLY',
         date_type: 'LAST_DAY',
       },
       desk_use_rank_hot: {
@@ -119,12 +119,12 @@ export default {
         response.data.dataList.forEach(value => {
           if (response.data.condition_type === 'HOURLY') {
             dataListCopy.push({
-              x: `${value.week}:00`,
+              x: `${Number(value.hour)}:00`,
               y: Number((value.duration / 60).toFixed(2)),
             });
           } else {
             dataListCopy.push({
-              x: G.moment(G.moment().day(value.week)._d).format('dddd'),
+              x: G.moment(G.moment().day(Number(value.week))._d).format('dddd'),
               y: Number((value.duration / 60).toFixed(2)),
             });
           }

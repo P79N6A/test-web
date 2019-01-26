@@ -316,6 +316,7 @@ export default {
   "login.image": "背景图片",
   "login.error": "登录失败！",
   "login.token.lose": "登录信息过期",
+  "login.set-permission": "请先设置权限！",
   // 备用
   "app.settings.basic.email": "邮箱",
   "app.settings.basic.email-message": "输入邮箱",

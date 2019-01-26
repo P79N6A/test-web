@@ -318,6 +318,8 @@ export default {
   "login.image": "Background Picture",
   "login.error": "Login Failed!",
   "login.token.lose": "Login Info Expired",
+  // TODO: 翻译
+  "login.set-permission": "请先设置权限！",
   // 备用
   "app.settings.basic.email": "Email Address",
   "app.settings.basic.email-message": "Please type in email address",

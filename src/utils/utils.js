@@ -314,9 +314,13 @@ export function processData(data) {
 }
 
 // 处理服务时长统计数据
-export function serviceData(data) {
+export function serviceData(data, condition_type) {
   const serviceData = [];
-  serviceData.push({ x: '使用时长', y: data.occupied_duration }, { x: '空闲时长', y: data.vacant_duration })
+  serviceData.push(
+    { x: '使用时长', y: data.occupied_duration },
+    { x: '空闲时长', y: data.vacant_duration },
+    { x: '暂无数据', y: data.occupied_duration === 0 && data.vacant_duration === 0 ? condition_type : 0 },
+  );
   return serviceData;
 }
 

@@ -1,4 +1,4 @@
-FROM registry.cn-beijing.aliyuncs.com/9am/apis AS apis
+FROM registry.cn-beijing.aliyuncs.com/9am/apis:latest AS apis
 
 FROM node:slim AS web
 
@@ -11,10 +11,10 @@ RUN npm --registry https://registry.npm.taobao.org install
 
 ADD . /root
 COPY --from=apis /root/errorCode.js /root/src
-RUN npm run build:staging
+RUN npm run build:dev
 RUN rm -rf node_modules
 
 FROM node:slim
 COPY --from=web /root /root
 
-CMD ["sh", "/root/scripts/start_staging.sh"]
+CMD ["sh", "-c", "/root/scripts/start.sh dev"]
